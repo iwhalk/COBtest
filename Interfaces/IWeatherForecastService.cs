@@ -4,10 +4,10 @@ namespace ApiGateway.Interfaces
 {
     public interface IWeatherForecastService
     {
-        Task<byte[]> ReadAsync(string? weatherForecast = null);
-        Task<WeatherForecast> ReadAsync(int id);
-        Task<bool> UpdateAsync(int id, WeatherForecast weatherForecast);
-        Task<WeatherForecast> CreateAsync(WeatherForecast weatherForecast);
-        Task<bool> RemoveAsync(int id);
+        Task<ApiResponse> ReadAsync(string? weatherForecast = null);
+        Task<ApiResponse> ReadAsync(int id);
+        Task<ApiResponse> UpdateAsync(int id, WeatherForecast weatherForecast);
+        Task<ApiResponse> CreateAsync(WeatherForecast weatherForecast);
+        Task<ApiResponse> RemoveAsync(int id);
     }
 }

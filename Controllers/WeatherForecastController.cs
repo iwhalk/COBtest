@@ -30,11 +30,9 @@ namespace ApiGateway.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet(Name = "GetWeatherForecast")]
-        public async Task<IActionResult> GetAsync()
+        public async Task<ApiResponse> GetAsync()
         {
-            var file = await _weatherForecastService.ReadAsync();
-
-            return File(file, "application/pdf", "1.pdf");
+            return await _weatherForecastService.ReadAsync();
             //return Enumerable.Range(1, 5).Select(index => new WeatherForecast
             //{
             //    Date = DateTime.Now.AddDays(index),

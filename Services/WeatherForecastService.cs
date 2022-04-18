@@ -12,30 +12,29 @@ namespace ApiGateway.Services
         {
         }
 
-        public Task<WeatherForecast> CreateAsync(WeatherForecast weatherForecast)
+        public async Task<ApiResponse> CreateAsync(WeatherForecast weatherForecast)
         {
-            throw new NotImplementedException();
+            return await PostAsync(weatherForecast, path: "weatherforecast");
         }
 
-        public async Task<byte[]> ReadAsync(string? weatherForecast = null)
+        public async Task<ApiResponse> ReadAsync(string? weatherForecast = null)
         {
-            return await GetStreamAsync(path: "weatherforecast");
-
+            return await GetAsync(path: "weatherforecast");
         }
 
-        public Task<WeatherForecast> ReadAsync(int id)
+        public async Task<ApiResponse> ReadAsync(int id)
         {
-            throw new NotImplementedException();
+            return await GetAsync(id, path: "weatherforecast");
         }
 
-        public Task<bool> RemoveAsync(int id)
+        public async Task<ApiResponse> RemoveAsync(int id)
         {
-            throw new NotImplementedException();
+            return await DeleteAsync(id, path: "weatherforecast");
         }
 
-        public Task<bool> UpdateAsync(int id, WeatherForecast weatherForecast)
+        public async Task<ApiResponse> UpdateAsync(int id, WeatherForecast weatherForecast)
         {
-            throw new NotImplementedException();
+            return await PutAsync(id, weatherForecast, path: "weatherforecast");
         }
     }
 }

@@ -22,21 +22,12 @@ namespace ApiGateway.Proxies
         //{
         //}
 
-        public async Task<TClass?> GetAsync(object id, Dictionary<string, string>? parameters = null, string? path = null)
+        public async Task<ApiResponse> GetAsync(object id, Dictionary<string, string>? parameters = null, string? path = null)
         {
             try
             {
-                //_httpClient = await GetHttpClientAsync();
                 using HttpResponseMessage httpResponse = await _httpClient.GetAsync(GetUri(id, parameters, path));
-                if (httpResponse.IsSuccessStatusCode)
-                {
-                    return await httpResponse.Content.ReadFromJsonAsync<TClass>();
-                }
-                else
-                {
-                    Console.WriteLine(await httpResponse.Content?.ReadAsStringAsync());
-                    return null;
-                }
+                return await ParseHttpResponseAsync(httpResponse);
             }
             catch (Exception e)
             {
@@ -64,7 +55,7 @@ namespace ApiGateway.Proxies
                 };
             }
         }
-        public async Task<byte[]> GetStreamAsync(Dictionary<string, string>? parameters = null, string? path = null)
+        public async Task<byte[]?> GetStreamAsync(Dictionary<string, string>? parameters = null, string? path = null)
         {
             try
             {
@@ -86,21 +77,13 @@ namespace ApiGateway.Proxies
             }
         }
 
-        public async Task<TClass> PostAsync(TClass data, Dictionary<string, string> parameters = null, string path = null)
+        public async Task<ApiResponse> PostAsync(TClass data, Dictionary<string, string>? parameters = null, string? path = null)
         {
             try
             {
                 //_httpClient = await GetHttpClientAsync();
                 using HttpResponseMessage httpResponse = await _httpClient.PostAsJsonAsync(GetUri(default, parameters, path), data);
-                if (httpResponse.IsSuccessStatusCode)
-                {
-                    return await httpResponse.Content.ReadFromJsonAsync<TClass>();
-                }
-                else
-                {
-                    Console.WriteLine(await httpResponse.Content?.ReadAsStringAsync());
-                    return null;
-                }
+                return await ParseHttpResponseAsync(httpResponse);
             }
             catch (Exception e)
             {
@@ -110,21 +93,13 @@ namespace ApiGateway.Proxies
             }
         }
 
-        public async Task<TClass> PostAsync(HttpContent content, Dictionary<string, string> parameters = null, string path = null)
+        public async Task<ApiResponse> PostAsync(HttpContent content, Dictionary<string, string> parameters = null, string path = null)
         {
             try
             {
                 //_httpClient = await GetHttpClientAsync();
                 using HttpResponseMessage httpResponse = await _httpClient.PostAsync(GetUri(default, parameters, path), content);
-                if (httpResponse.IsSuccessStatusCode)
-                {
-                    return await httpResponse.Content.ReadFromJsonAsync<TClass>();
-                }
-                else
-                {
-                    Console.WriteLine(await httpResponse.Content?.ReadAsStringAsync());
-                    return null;
-                }
+                return await ParseHttpResponseAsync(httpResponse);
             }
             catch (Exception e)
             {
@@ -134,21 +109,13 @@ namespace ApiGateway.Proxies
             }
         }
 
-        public async Task<bool> PutAsync(object id, TClass data, Dictionary<string, string> parameters = null, string path = null)
+        public async Task<ApiResponse> PutAsync(object id, TClass data, Dictionary<string, string> parameters = null, string path = null)
         {
             try
             {
                 //_httpClient = await GetHttpClientAsync();
                 using HttpResponseMessage httpResponse = await _httpClient.PutAsJsonAsync(GetUri(id, parameters, path), data);
-                if (httpResponse.IsSuccessStatusCode)
-                {
-                    return true;
-                }
-                else
-                {
-                    Console.WriteLine(await httpResponse.Content?.ReadAsStringAsync());
-                    return false;
-                }
+                return await ParseHttpResponseAsync(httpResponse);
             }
             catch (Exception e)
             {
@@ -158,21 +125,13 @@ namespace ApiGateway.Proxies
             }
         }
 
-        public async Task<bool> PutAsync(object id, HttpContent content, Dictionary<string, string> parameters = null, string path = null)
+        public async Task<ApiResponse> PutAsync(object id, HttpContent content, Dictionary<string, string> parameters = null, string path = null)
         {
             try
             {
                 //_httpClient = await GetHttpClientAsync();
                 using HttpResponseMessage httpResponse = await _httpClient.PutAsync(GetUri(id, parameters, path), content);
-                if (httpResponse.IsSuccessStatusCode)
-                {
-                    return true;
-                }
-                else
-                {
-                    Console.WriteLine(await httpResponse.Content?.ReadAsStringAsync());
-                    return false;
-                }
+                return await ParseHttpResponseAsync(httpResponse);
             }
             catch (Exception e)
             {
@@ -182,21 +141,13 @@ namespace ApiGateway.Proxies
             }
         }
 
-        public async Task<bool> DeleteAsync(object id, Dictionary<string, string> parameters = null, string path = null)
+        public async Task<ApiResponse> DeleteAsync(object id, Dictionary<string, string> parameters = null, string path = null)
         {
             try
             {
                 //_httpClient = await GetHttpClientAsync();
                 using HttpResponseMessage httpResponse = await _httpClient.DeleteAsync(GetUri(id, parameters, path));
-                if (httpResponse.IsSuccessStatusCode)
-                {
-                    return true;
-                }
-                else
-                {
-                    Console.WriteLine(await httpResponse.Content?.ReadAsStringAsync());
-                    return false;
-                }
+                return await ParseHttpResponseAsync(httpResponse);
             }
             catch (Exception e)
             {
@@ -206,7 +157,7 @@ namespace ApiGateway.Proxies
             }
         }
 
-        private static string GetUri(object id, Dictionary<string, string>? parameters = null, string? path = null)
+        private static string GetUri(object? id, Dictionary<string, string>? parameters = null, string? path = null)
         {
             if (string.IsNullOrEmpty(path))
             {
@@ -243,7 +194,7 @@ namespace ApiGateway.Proxies
                         {
                             "application/json" => await httpResponse.Content.ReadFromJsonAsync<object>(),
                             "text/plain" => await httpResponse.Content.ReadAsStringAsync(),
-                            "application/pdf" => await httpResponse.Content.ReadAsStreamAsync(),
+                            "application/pdf" => await httpResponse.Content.ReadAsByteArrayAsync(),
                             _ => new(),
                         };
                     }
