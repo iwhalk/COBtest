@@ -53,7 +53,8 @@ namespace ApiGateway.Services
             var claims = new List<Claim>
             {
                 new Claim (ClaimTypes.NameIdentifier, user.Id),
-                new Claim (ClaimTypes.Email, user.Email),
+                new Claim (ClaimTypes.Email, user.NormalizedEmail),
+                new Claim (ClaimTypes.Name, user.NormalizedUserName),
             };
             var tokenDescriptor = new SecurityTokenDescriptor
             {

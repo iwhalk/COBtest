@@ -2,9 +2,9 @@
 {
     public static class HttpClientJwtTokenExtension
     {
-        public static void AddBearerToken(this HttpClient client, IHttpContextAccessor contextAccessor)
+        public static void AddBearerToken(this HttpClient client, IHttpContextAccessor? contextAccessor)
         {
-            if (contextAccessor?.HttpContext?.User == null)
+            if (contextAccessor?.HttpContext?.User?.Identity == null)
                 return;
             if (contextAccessor.HttpContext.User.Identity.IsAuthenticated && contextAccessor.HttpContext.Request.Headers.ContainsKey("Authorization"))
             {

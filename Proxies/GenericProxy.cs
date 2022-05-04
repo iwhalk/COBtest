@@ -7,164 +7,210 @@ using System.Text;
 
 namespace ApiGateway.Proxies
 {
-    public abstract class GenericProxy<TClass> where TClass : class
+    /// <summary>
+    /// Clase con los metodos para realizar llamadas http a los endpoints del servicio
+    /// </summary>
+    /// <typeparam name="TClass">Tipo del objeto que recibe y retorna los endpoints del servicio</typeparam>
+    public abstract class GenericProxy
     {
         private readonly HttpClient _httpClient;
+        //private readonly ILogger<GenericProxy> _logger;
 
-        protected GenericProxy(IHttpContextAccessor httpContextAccessor, HttpClient httpClient, IHttpClientFactory httpClientFactory)
+        protected GenericProxy(IHttpContextAccessor httpContextAccessor,
+                               IHttpClientFactory httpClientFactory,
+                               //ILogger<GenericProxy> logger,
+                               string httpClientName)
         {
-            _httpClient = httpClientFactory.CreateClient("WeatherForecast");
-
+            _httpClient = httpClientFactory.CreateClient(httpClientName);
             _httpClient.AddBearerToken(httpContextAccessor);
+            //_logger = logger;
         }
 
         //private async Task<HttpClient> GetHttpClientAsync()
         //{
         //}
 
+        /// <summary>
+        /// Realiza una llamada http GET de un solo objeto con ID al endpoint del servicio especificado
+        /// </summary>
+        /// <param name="id">Identificador primario del objeto solicitado</param>
+        /// <param name="parameters">Diccionario de parametros a embebir en la URI en formato "llave","valor"</param>
+        /// <param name="path">Ruta del servicio, si no se especifica se asumira el nombre del objeto como ruta</param>
+        /// <returns>Respuesta en un objeto generico del endpoint del servicio consultado serializada en formato JSON</returns>
+
+        public async Task<ApiResponse> GetAsync<T>(object id, Dictionary<string, string>? parameters = null, string? path = null)
+        {
+            using HttpResponseMessage httpResponse = await _httpClient.GetAsync(GetUri<T>(id, parameters, path));
+            return await ParseHttpResponseAsync<T>(httpResponse);
+        }
         public async Task<ApiResponse> GetAsync(object id, Dictionary<string, string>? parameters = null, string? path = null)
         {
-            try
-            {
-                using HttpResponseMessage httpResponse = await _httpClient.GetAsync(GetUri(id, parameters, path));
-                return await ParseHttpResponseAsync(httpResponse);
-            }
-            catch (Exception e)
-            {
-
-                Console.WriteLine(e);
-                throw;
-            }
+            using HttpResponseMessage httpResponse = await _httpClient.GetAsync(GetUri<object>(id, parameters, path));
+            return await ParseHttpResponseAsync<object>(httpResponse);
         }
 
+        /// <summary>
+        /// Realiza una llamada http GET al endpoint del servicio especificado
+        /// </summary>
+        /// <param name="parameters">Diccionario de parametros a embebir en la URI en formato "llave","valor"</param>
+        /// <param name="path">Ruta del servicio, si no se especifica se asumira el nombre del objeto como ruta</param>
+        /// <returns>Respuesta en un arreglo de objetos genericos del endpoint del servicio consultado serializada en formato JSON</returns>
+        public async Task<ApiResponse> GetAsync<T>(Dictionary<string, string>? parameters = null, string? path = null)
+        {
+            using HttpResponseMessage httpResponse = await _httpClient.GetAsync(GetUri<T>(default, parameters, path));
+            return await ParseHttpResponseAsync<T>(httpResponse);
+        }
         public async Task<ApiResponse> GetAsync(Dictionary<string, string>? parameters = null, string? path = null)
         {
-            try
-            {
-                using HttpResponseMessage httpResponse = await _httpClient.GetAsync(GetUri(default, parameters, path));
-                return await ParseHttpResponseAsync(httpResponse);
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-                return new()
-                {
-                    Success = false,
-                    StatusCode = 500,
-                    Content = e.Message,
-                };
-            }
+            using HttpResponseMessage httpResponse = await _httpClient.GetAsync(GetUri<object>(default, parameters, path));
+            return await ParseHttpResponseAsync<object>(httpResponse);
         }
-        public async Task<byte[]?> GetStreamAsync(Dictionary<string, string>? parameters = null, string? path = null)
+
+        /// <summary>
+        /// Realiza una llamada http GET al endpoint del servicio especificado
+        /// </summary>
+        /// <param name="parameters">Diccionario de parametros a embebir en la URI en formato "llave","valor"</param>
+        /// <param name="path">Ruta del servicio, si no se especifica se asumira el nombre del objeto como ruta</param>
+        /// <returns>Respuesta en un arreglo de bytes del endpoint del servicio consultado</returns>
+        public async Task<byte[]> GetStreamAsync<T>(Dictionary<string, string>? parameters = null, string? path = null)
         {
-            try
-            {
-                using HttpResponseMessage httpResponse = await _httpClient.GetAsync(GetUri(default, parameters, path));
-
-                return await httpResponse.Content.ReadAsByteArrayAsync();
-                //return await ParseHttpResponseAsync(httpResponse);
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-                return null;
-                //return new()
-                //{
-                //    Success = false,
-                //    StatusCode = 500,
-                //    Content = e.Message,
-                //};
-            }
+            using HttpResponseMessage httpResponse = await _httpClient.GetAsync(GetUri<T>(default, parameters, path));
+            return await httpResponse.Content.ReadAsByteArrayAsync();
         }
-
-        public async Task<ApiResponse> PostAsync(TClass data, Dictionary<string, string>? parameters = null, string? path = null)
+        public async Task<byte[]> GetStreamAsync(Dictionary<string, string>? parameters = null, string? path = null)
         {
-            try
-            {
-                //_httpClient = await GetHttpClientAsync();
-                using HttpResponseMessage httpResponse = await _httpClient.PostAsJsonAsync(GetUri(default, parameters, path), data);
-                return await ParseHttpResponseAsync(httpResponse);
-            }
-            catch (Exception e)
-            {
-
-                Console.WriteLine(e);
-                throw;
-            }
+            using HttpResponseMessage httpResponse = await _httpClient.GetAsync(GetUri<object>(default, parameters, path));
+            return await httpResponse.Content.ReadAsByteArrayAsync();
         }
 
+        /// <summary>
+        /// Realiza una llamada http POST al endpoint del servicio especificado
+        /// </summary>
+        /// <param name="data">Objeto poblado del tipo definido en la clase</param>
+        /// <param name="parameters">Diccionario de parametros a embebir en la URI en formato "llave","valor"</param>
+        /// <param name="path">Ruta del servicio, si no se especifica se asumira el nombre del objeto como ruta</param>
+        /// <returns>Respuesta en un objeto del tipo definido en la clase del endpoint del servicio consultado</returns>
+        public async Task<byte[]> PostStreamAsync<T>(T data, Dictionary<string, string>? parameters = null, string? path = null)
+        {
+            using HttpResponseMessage httpResponse = await _httpClient.PostAsJsonAsync(GetUri<T>(default, parameters, path), data);
+            return await httpResponse.Content.ReadAsByteArrayAsync();
+        }
+        public async Task<byte[]> PostStreamAsync(HttpContent content, Dictionary<string, string>? parameters = null, string? path = null)
+        {
+            using HttpResponseMessage httpResponse = await _httpClient.PostAsync(GetUri<object>(default, parameters, path), content);
+            return await httpResponse.Content.ReadAsByteArrayAsync();
+        }
+
+        /// <summary>
+        /// Realiza una llamada http POST al endpoint del servicio especificado
+        /// </summary>
+        /// <param name="data">Objeto poblado del tipo definido en la clase</param>
+        /// <param name="parameters">Diccionario de parametros a embebir en la URI en formato "llave","valor"</param>
+        /// <param name="path">Ruta del servicio, si no se especifica se asumira el nombre del objeto como ruta</param>
+        /// <returns>Respuesta en un objeto del tipo definido en la clase del endpoint del servicio consultado</returns>
+        public async Task<ApiResponse> PostAsync<T>(T data, Dictionary<string, string>? parameters = null, string? path = null)
+        {
+            using HttpResponseMessage httpResponse = await _httpClient.PostAsJsonAsync(GetUri<T>(default, parameters, path), data);
+            return await ParseHttpResponseAsync<T>(httpResponse);
+        }
+        public async Task<ApiResponse> PostAsync(object data, Dictionary<string, string>? parameters = null, string? path = null)
+        {
+            using HttpResponseMessage httpResponse = await _httpClient.PostAsJsonAsync(GetUri<object>(default, parameters, path), data);
+            return await ParseHttpResponseAsync<object>(httpResponse);
+        }
+
+        /// <summary>
+        /// Realiza una llamada http POST al endpoint del servicio especificado
+        /// </summary>
+        /// <param name="content">Objeto serializado en datos por multiples partes</param>
+        /// <param name="parameters">Diccionario de parametros a embebir en la URI en formato "llave","valor"</param>
+        /// <param name="path">Ruta del servicio, si no se especifica se asumira el nombre del objeto como ruta</param>
+        /// <returns>Respuesta en un objeto del tipo definido en la clase del endpoint del servicio consultado</returns>
+        public async Task<ApiResponse> PostAsync<T>(HttpContent content, Dictionary<string, string> parameters = null, string path = null)
+        {
+            using HttpResponseMessage httpResponse = await _httpClient.PostAsync(GetUri<T>(default, parameters, path), content);
+            return await ParseHttpResponseAsync<T>(httpResponse);
+        }
         public async Task<ApiResponse> PostAsync(HttpContent content, Dictionary<string, string> parameters = null, string path = null)
         {
-            try
-            {
-                //_httpClient = await GetHttpClientAsync();
-                using HttpResponseMessage httpResponse = await _httpClient.PostAsync(GetUri(default, parameters, path), content);
-                return await ParseHttpResponseAsync(httpResponse);
-            }
-            catch (Exception e)
-            {
-
-                Console.WriteLine(e);
-                throw;
-            }
+            using HttpResponseMessage httpResponse = await _httpClient.PostAsync(GetUri<object>(default, parameters, path), content);
+            return await ParseHttpResponseAsync<object>(httpResponse);
         }
 
-        public async Task<ApiResponse> PutAsync(object id, TClass data, Dictionary<string, string> parameters = null, string path = null)
+        /// <summary>
+        /// Realiza una llamada http PUT al endpoint del servicio especificado
+        /// </summary>
+        /// <param name="id">Identificador primario del objeto a modificar</param>
+        /// <param name="data">Objeto poblado del tipo definido en la clase</param>
+        /// <param name="parameters">Diccionario de parametros a embebir en la URI en formato "llave","valor"</param>
+        /// <param name="path">Ruta del servicio, si no se especifica se asumira el nombre del objeto como ruta</param>
+        /// <returns>Respuesta de tipo bool si la operacion se completo de manera satisfactoria en el endpoint del servicio consultado</returns>
+        public async Task<ApiResponse> PutAsync<T>(object id, T data, Dictionary<string, string> parameters = null, string path = null)
         {
-            try
-            {
-                //_httpClient = await GetHttpClientAsync();
-                using HttpResponseMessage httpResponse = await _httpClient.PutAsJsonAsync(GetUri(id, parameters, path), data);
-                return await ParseHttpResponseAsync(httpResponse);
-            }
-            catch (Exception e)
-            {
-
-                Console.WriteLine(e);
-                throw;
-            }
+            using HttpResponseMessage httpResponse = await _httpClient.PutAsJsonAsync(GetUri<T>(id, parameters, path), data);
+            return await ParseHttpResponseAsync<T>(httpResponse);
+        }
+        public async Task<ApiResponse> PutAsync(object id, object data, Dictionary<string, string> parameters = null, string path = null)
+        {
+            using HttpResponseMessage httpResponse = await _httpClient.PutAsJsonAsync(GetUri<object>(id, parameters, path), data);
+            return await ParseHttpResponseAsync<object>(httpResponse);
         }
 
+        /// <summary>
+        /// Realiza una llamada http PUT al endpoint del servicio especificado
+        /// </summary>
+        /// <param name="id">Identificador primario del objeto a modificar</param>
+        /// <param name="content">Objeto serializado en datos por multiples partes</param>
+        /// <param name="parameters">Diccionario de parametros a embebir en la URI en formato "llave","valor"</param>
+        /// <param name="path">Ruta del servicio, si no se especifica se asumira el nombre del objeto como ruta</param>
+        /// <returns>Respuesta de tipo bool si la operacion se completo de manera satisfactoria en el endpoint del servicio consultado</returns>
+        public async Task<ApiResponse> PutAsync<T>(object id, HttpContent content, Dictionary<string, string> parameters = null, string path = null)
+        {
+            using HttpResponseMessage httpResponse = await _httpClient.PutAsync(GetUri<T>(id, parameters, path), content);
+            return await ParseHttpResponseAsync<T>(httpResponse);
+        }
         public async Task<ApiResponse> PutAsync(object id, HttpContent content, Dictionary<string, string> parameters = null, string path = null)
         {
-            try
-            {
-                //_httpClient = await GetHttpClientAsync();
-                using HttpResponseMessage httpResponse = await _httpClient.PutAsync(GetUri(id, parameters, path), content);
-                return await ParseHttpResponseAsync(httpResponse);
-            }
-            catch (Exception e)
-            {
-
-                Console.WriteLine(e);
-                throw;
-            }
+            using HttpResponseMessage httpResponse = await _httpClient.PutAsync(GetUri<object>(id, parameters, path), content);
+            return await ParseHttpResponseAsync<object>(httpResponse);
         }
 
+        /// <summary>
+        /// Realiza una llamada http DELETE al endpoint del servicio especificado
+        /// </summary>
+        /// <param name="id">Identificador primario del objeto a modificar</param>
+        /// <param name="parameters">Diccionario de parametros a embebir en la URI en formato "llave","valor"</param>
+        /// <param name="path">Ruta del servicio, si no se especifica se asumira el nombre del objeto como ruta</param>
+        /// <returns>Respuesta de tipo bool si la operacion se completo de manera satisfactoria en el endpoint del servicio consultado</returns>
+        public async Task<ApiResponse> DeleteAsync<T>(object id, Dictionary<string, string> parameters = null, string path = null)
+        {
+            using HttpResponseMessage httpResponse = await _httpClient.DeleteAsync(GetUri<T>(id, parameters, path));
+            return await ParseHttpResponseAsync<T>(httpResponse);
+        }
         public async Task<ApiResponse> DeleteAsync(object id, Dictionary<string, string> parameters = null, string path = null)
         {
-            try
-            {
-                //_httpClient = await GetHttpClientAsync();
-                using HttpResponseMessage httpResponse = await _httpClient.DeleteAsync(GetUri(id, parameters, path));
-                return await ParseHttpResponseAsync(httpResponse);
-            }
-            catch (Exception e)
-            {
-
-                Console.WriteLine(e);
-                throw;
-            }
+            using HttpResponseMessage httpResponse = await _httpClient.DeleteAsync(GetUri<object>(id, parameters, path));
+            return await ParseHttpResponseAsync<object>(httpResponse);
         }
 
-        private static string GetUri(object? id, Dictionary<string, string>? parameters = null, string? path = null)
+        /// <summary>
+        /// Obtiene la URI codificada del endpoint del servicio a consultar
+        /// </summary>
+        /// <param name="id">Identificador primario del objeto</param>
+        /// <param name="parameters">Diccionario de parametros a embebir en la URI en formato "llave","valor"</param>
+        /// <param name="path">Ruta del servicio, si no se especifica se asumira el nombre del objeto como ruta</param>
+        /// <returns>URI codificada en una cadena</returns>
+        private static string? GetUri<T>(object? id, Dictionary<string, string>? parameters = null, string? path = null)
         {
             if (string.IsNullOrEmpty(path))
             {
-                string typeName = PluralizationProvider.Pluralize(typeof(TClass).Name);
-                string controllerName = new(typeName.Where(c => char.IsLetterOrDigit(c) || char.IsWhiteSpace(c)).ToArray());
+                if (typeof(T) != typeof(object))
+                {
+                    string typeName = PluralizationProvider.Pluralize(typeof(T).Name);
+                    string controllerName = new(typeName.Where(c => char.IsLetterOrDigit(c) || char.IsWhiteSpace(c)).ToArray());
+                    path = $"api/{controllerName}";
+                }
 
-                path = $"api/{controllerName}";
             }
 
             if (id != null && !id.Equals(0))
@@ -174,45 +220,69 @@ namespace ApiGateway.Proxies
 
             return parameters == null ? path : QueryHelpers.AddQueryString(path, parameters);
         }
-        private static async Task<ApiResponse> ParseHttpResponseAsync(HttpResponseMessage httpResponse)
+
+        /// <summary>
+        /// Deserializa la respuesta del endpoint del servicio en un objeto nuevo
+        /// </summary>
+        /// <param name="httpResponse">Respuesta de la llamada HTTP al endpoint del servicio</param>
+        /// <returns>Respuesta del endpoint del servicio en un objeto nuevo</returns>
+        private static async Task<ApiResponse> ParseHttpResponseAsync<T>(HttpResponseMessage httpResponse)
         {
-            try
+            ApiResponse response = new()
             {
-                ApiResponse response = new()
-                {
-                    Success = httpResponse.IsSuccessStatusCode,
-                    StatusCode = (int)httpResponse.StatusCode
-                };
+                Success = httpResponse.IsSuccessStatusCode,
+                Status = (int)httpResponse.StatusCode
+            };
 
-                if (httpResponse.Content != null)
+            if (httpResponse.Content != null)
+            {
+                var mediaType = httpResponse.Content.Headers.ContentType?.MediaType;
+                if (mediaType != null && response.Success)
                 {
-                    var mediaType = httpResponse.Content.Headers.ContentType?.MediaType;
-                    if (mediaType != null)
+                    response.ContentType = mediaType;
+                    response.Content = mediaType switch
                     {
-                        response.ContentType = mediaType;
-                        response.Content = mediaType switch
-                        {
-                            "application/json" => await httpResponse.Content.ReadFromJsonAsync<object>(),
-                            "text/plain" => await httpResponse.Content.ReadAsStringAsync(),
-                            "application/pdf" => await httpResponse.Content.ReadAsByteArrayAsync(),
-                            _ => new(),
-                        };
-                    }
+                        "application/json" => await httpResponse.Content.ReadFromJsonAsync<T>(),
+                        "text/json" => await httpResponse.Content.ReadFromJsonAsync<T>(),
+                        "text/plain" => await httpResponse.Content.ReadAsStringAsync(),
+                        string a when a.Contains("application",
+                                                 StringComparison.CurrentCultureIgnoreCase) => await httpResponse.Content.ReadAsByteArrayAsync(),
+                        string b when b.Contains("image",
+                                                 StringComparison.CurrentCultureIgnoreCase) => await httpResponse.Content.ReadAsByteArrayAsync(),
+                        _ => new(),                        
+                    };
                 }
-
-                return response;
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-                return new()
+                if (!response.Success)
                 {
-                    Success = false,
-                    StatusCode = (int)httpResponse.StatusCode,
-                    Content = e.Message,
-                };
+                    response.ErrorMessage = mediaType switch
+                    {
+                        "application/problem+json" => (await httpResponse.Content.ReadFromJsonAsync<HttpValidationProblemDetails>())?.Detail,
+                        "text/plain" => await httpResponse.Content.ReadAsStringAsync(),
+                        _ => default,
+                    };
+                }
             }
+
+            return response;
         }
+
+        /// <summary>
+        /// Serializa una excepción en una nueva respuesta de API
+        /// </summary>
+        /// <param name="e">L</param>
+        /// <returns>Excepción serializada en un objeto nuevo</returns>
+        //private ApiResponse SerializeException(Exception e)
+        //{
+        //    _logger.LogError(e, e.Message);
+        //    return new()
+        //    {
+        //        Success = false,
+        //        StatusCode = 500,
+        //        Content = e.StackTrace,
+        //        ErrorMessage = e.Message,
+        //    };
+        //}
+
         //public async Task<string> GetLoggedInUserAsync()
         //{
         //    var currentAuthenticationState = await _authenticationState.GetAuthenticationStateAsync();
