@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using ReportesData.Models;
+using System.Collections;
 using System.Runtime.Serialization.Json;
 using System.Text;
 using System.Text.Json;
@@ -32,7 +33,10 @@ namespace ApiGateway.Models
             ErrorMessage = apiResponse.ErrorMessage;
             Content = apiResponse.Content?.GetType() switch
             {
-                var cls when cls == typeof(JsonElement) => ((JsonElement)apiResponse.Content).Deserialize<TClass>(),
+                var cls when cls == typeof(JsonElement) => ((JsonElement)apiResponse.Content).Deserialize<TClass>(new JsonSerializerOptions
+                {
+                    PropertyNameCaseInsensitive = true
+                }),
                 var cls when cls == typeof(TClass) => (TClass)apiResponse.Content,
                 _ => default,
             };

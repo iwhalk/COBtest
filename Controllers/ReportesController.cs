@@ -18,6 +18,7 @@ namespace ApiGateway.Controllers
             _reportesService = reportesService;
         }
 
+        // GET: api/<ReportesController>/usuarioPlaza
         /// <summary>
         /// Obtener la informacion del usuario logueado en la plaza.
         /// </summary>
@@ -36,6 +37,13 @@ namespace ApiGateway.Controllers
         }
 
         // GET: api/<ReportesController>/administradores
+        /// <summary>
+        /// Obtener la informacion de los administradores registrados en la plaza.
+        /// </summary>
+        /// <returns>Regresa un arreglo con los detalles de los administradores.</returns>
+        /// <response code="200">Regresa el arreglo de objetos solicitado</response>
+        /// <response code="400">Alguno de los datos requeridos es incorrecto</response>
+        /// <response code="500">Error por excepcion no controlada en el Gateway</response>
         [HttpGet("administradores")]
         [Produces("application/json", "application/problem+json")]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -47,6 +55,13 @@ namespace ApiGateway.Controllers
         }
 
         // GET: api/<ReportesController>/delegaciones
+        /// <summary>
+        /// Obtener la informacion de las delegaciones registradas en la plaza.
+        /// </summary>
+        /// <returns>Regresa un arreglo con los detalles de las delegaciones.</returns>
+        /// <response code="200">Regresa el arreglo de objetos solicitado</response>
+        /// <response code="400">Alguno de los datos requeridos es incorrecto</response>
+        /// <response code="500">Error por excepcion no controlada en el Gateway</response>
         [HttpGet("delegaciones")]
         [Produces("application/json", "application/problem+json")]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -58,6 +73,13 @@ namespace ApiGateway.Controllers
         }
 
         // GET: api/<ReportesController>/encargadosTurno
+        /// <summary>
+        /// Obtener la informacion de los encargados de turno registrados en la plaza.
+        /// </summary>
+        /// <returns>Regresa un arreglo con los detalles de los encargados de turno.</returns>
+        /// <response code="200">Regresa el arreglo de objetos solicitado</response>
+        /// <response code="400">Alguno de los datos requeridos es incorrecto</response>
+        /// <response code="500">Error por excepcion no controlada en el Gateway</response>
         [HttpGet("encargadosTurno")]
         [Produces("application/json", "application/problem+json")]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -69,6 +91,13 @@ namespace ApiGateway.Controllers
         }
 
         // GET: api/<ReportesController>/plazas
+        /// <summary>
+        /// Obtener la informacion de las plazas registradas en la plaza.
+        /// </summary>
+        /// <returns>Regresa un arreglo con los detalles de las plazas.</returns>
+        /// <response code="200">Regresa el arreglo de objetos solicitado</response>
+        /// <response code="400">Alguno de los datos requeridos es incorrecto</response>
+        /// <response code="500">Error por excepcion no controlada en el Gateway</response>
         [HttpGet("plazas")]
         [Produces("application/json", "application/problem+json")]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -80,6 +109,13 @@ namespace ApiGateway.Controllers
         }
 
         // GET: api/<ReportesController>/turnos
+        /// <summary>
+        /// Obtener la informacion de los turnos registrados en la plaza.
+        /// </summary>
+        /// <returns>Regresa un arreglo con los detalles de los turnos.</returns>
+        /// <response code="200">Regresa el arreglo de objetos solicitado</response>
+        /// <response code="400">Alguno de los datos requeridos es incorrecto</response>
+        /// <response code="500">Error por excepcion no controlada en el Gateway</response>
         [HttpGet("turnos")]
         [Produces("application/json", "application/problem+json")]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -90,40 +126,85 @@ namespace ApiGateway.Controllers
             return Ok(await _reportesService.GetTurnos());
         }
 
-        // POST: api/<ReportesController>/reportecajeroreceptor
-        [HttpPost("reportecajeroreceptor")]
+        // GET: api/<ReportesController>/bolsascajeroreceptor
+        /// <summary>
+        /// Obtener la informacion de las plazas registradas en la plaza.
+        /// </summary>
+        /// <returns>Regresa un arreglo con los detalles de las plazas.</returns>
+        /// <response code="200">Regresa el arreglo de objetos solicitado</response>
+        /// <response code="400">Alguno de los datos requeridos es incorrecto</response>
+        /// <response code="500">Error por excepcion no controlada en el Gateway</response>
+        [HttpPost("bolsascajeroreceptor")]
         [Produces("application/json", "application/problem+json")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
+        public async Task<ActionResult<ApiResponse<IEnumerable<Bolsa>>>> CreateBolsasCajeroReceptor(CajeroReceptor cajeroReceptor)
+        {
+            return Ok(await _reportesService.CreateBolsasCajeroReceptor(cajeroReceptor));
+        }
+
+        // POST: api/<ReportesController>/reportecajeroreceptor
+        /// <summary>
+        /// Obtener el reporte de cajero en formato pdf.
+        /// </summary>
+        /// <returns>Regresa un stream de datos "application/pdf" del reporte solicitado.</returns>
+        /// <response code="200">Regresa el reporte solicitado</response>
+        /// <response code="400">Alguno de los datos requeridos es incorrecto</response>
+        /// <response code="500">Error por excepcion no controlada en el Gateway</response>
+        [HttpPost("reportecajeroreceptor")]
+        [Produces("application/pdf", "application/json", "application/problem+json")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> CreateReporteCajeroReceptor(CajeroReceptor cajeroReceptor)
         {
-            var file = await _reportesService.CreateReporteCajeroReceptorAsync(cajeroReceptor);
-            return File(file, "application/pdf", "ReporteCajeroReceptor.pdf");
+            var response = await _reportesService.CreateReporteCajeroReceptorAsync(cajeroReceptor);
+            if (response.Success && response.Content != null)
+                return File(response.Content, "application/pdf", "ReporteCajeroReceptor.pdf");
+            return Ok(response);
         }
 
         // POST: api/<ReportesController>/reporteturnocarriles
+        /// <summary>
+        /// Obtener el reporte de carriles en formato pdf.
+        /// </summary>
+        /// <returns>Regresa un stream de datos "application/pdf" del reporte solicitado.</returns>
+        /// <response code="200">Regresa el reporte solicitado</response>
+        /// <response code="400">Alguno de los datos requeridos es incorrecto</response>
+        /// <response code="500">Error por excepcion no controlada en el Gateway</response>
         [HttpPost("reporteturnocarriles")]
-        [Produces("application/json", "application/problem+json")]
+        [Produces("application/pdf", "application/json", "application/problem+json")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> CreateReporteTurnoCarriles(TurnoCarriles turnoCarriles)
         {
-            var file = await _reportesService.CreateReporteTurnoCarrilesAsync(turnoCarriles);
-            return File(file, "application/pdf", "ReporteTurnoCarriles.pdf");
+            var response = await _reportesService.CreateReporteTurnoCarrilesAsync(turnoCarriles);
+            if (response.Success)
+                return File(response.Content, "application/pdf", "ReporteTurnoCarriles.pdf");
+            return Ok(response);
         }
 
         // POST: api/<ReportesController>/reportediacaseta
+        /// <summary>
+        /// Obtener el reporte del dia por caseta en formato pdf.
+        /// </summary>
+        /// <returns>Regresa un stream de datos "application/pdf" del reporte solicitado.</returns>
+        /// <response code="200">Regresa el reporte solicitado</response>
+        /// <response code="400">Alguno de los datos requeridos es incorrecto</response>
+        /// <response code="500">Error por excepcion no controlada en el Gateway</response>
         [HttpPost("reportediacaseta")]
-        [Produces("application/json", "application/problem+json")]
+        [Produces("application/pdf", "application/json", "application/problem+json")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> CreateReporteDiaCaseta(DiaCaseta diaCaseta)
         {
-            var file = await _reportesService.CreateReporteDiaCasetaAsync(diaCaseta);
-            return File(file, "application/pdf", "ReporteDiaCaseta.pdf");
+            var response = await _reportesService.CreateReporteDiaCasetaAsync(diaCaseta);
+            if (response.Success)
+                return File(response.Content, "application/pdf", "ReporteDiaCaseta.pdf");
+            return Ok(response);
         }
 
     }

@@ -11,8 +11,9 @@ namespace ApiGateway.Interfaces
         Task<ApiResponse<KeyValuePair<string, string>>> GetTurnos();
         Task<ApiResponse<List<Personal>>> GetAdministradores();
         Task<ApiResponse<List<Personal>>> GetEncargadosTurno();
-        Task<byte[]> CreateReporteCajeroReceptorAsync(CajeroReceptor cajeroReceptor);
-        Task<byte[]> CreateReporteTurnoCarrilesAsync(TurnoCarriles turnoCarriles);
-        Task<byte[]> CreateReporteDiaCasetaAsync(DiaCaseta diaCaseta);
+        Task<ApiResponse<List<Bolsa>>> CreateBolsasCajeroReceptor(CajeroReceptor cajeroReceptor);
+        Task<ApiResponse<byte[]>> CreateReporteCajeroReceptorAsync(CajeroReceptor cajeroReceptor);
+        Task<ApiResponse<byte[]>> CreateReporteTurnoCarrilesAsync(TurnoCarriles turnoCarriles);
+        Task<ApiResponse<byte[]>> CreateReporteDiaCasetaAsync(DiaCaseta diaCaseta);
     }
 }

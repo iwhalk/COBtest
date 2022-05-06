@@ -49,7 +49,6 @@ var openApiInfo = new OpenApiInfo()
     Description = ""
 };
 
-builder.Services.AddHttpClient("WeatherForecast", client => client.BaseAddress = new Uri("https://localhost:7293/"));
 builder.Services.AddHttpClient("Reportes", client => client.BaseAddress = new Uri("https://localhost:7293/"));
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>

@@ -2,6 +2,7 @@
 using ApiGateway.Models;
 using ApiGateway.Proxies;
 using ReportesData.Models;
+using System.Text.Json;
 
 namespace ApiGateway.Services
 {
@@ -12,58 +13,57 @@ namespace ApiGateway.Services
         {
         }
 
-        public async Task<byte[]> CreateReporteCajeroReceptorAsync(CajeroReceptor cajeroReceptor)
+        public async Task<ApiResponse<byte[]>> CreateReporteCajeroReceptorAsync(CajeroReceptor cajeroReceptor)
         {
-            var res = await PostStreamAsync(cajeroReceptor, path: "reportecajeroreceptor");
-            return res;
+            return await PostAsync<byte[]>(cajeroReceptor, path: "reportecajeroreceptor");
+            //return new ApiResponse<byte[]>(res);
         }
 
-        public async Task<byte[]> CreateReporteDiaCasetaAsync(DiaCaseta diaCaseta)
+        public async Task<ApiResponse<byte[]>> CreateReporteDiaCasetaAsync(DiaCaseta diaCaseta)
         {
-            var res = await PostStreamAsync(diaCaseta, path: "reportediacaseta");
-            return res;
+            return await PostAsync<byte[]>(diaCaseta, path: "reportediacaseta");
+            //return new ApiResponse<byte[]>(res);
         }
 
-        public async Task<byte[]> CreateReporteTurnoCarrilesAsync(TurnoCarriles turnoCarriles)
+        public async Task<ApiResponse<byte[]>> CreateReporteTurnoCarrilesAsync(TurnoCarriles turnoCarriles)
         {
-            var res = await PostStreamAsync(turnoCarriles, path: "reporteturnocarriles");
-            return res;
+            return await PostAsync<byte[]>(turnoCarriles, path: "reporteturnocarriles");
+            //return new ApiResponse<byte[]>(res);
+        }
+
+        public async Task<ApiResponse<List<Bolsa>>> CreateBolsasCajeroReceptor(CajeroReceptor cajeroReceptor)
+        {
+            return await PostAsync<List<Bolsa>>(cajeroReceptor, path: "bolsascajeroreceptor");
         }
 
         public async Task<ApiResponse<List<Personal>>> GetAdministradores()
         {
-            var res = await GetAsync<List<Personal>>(path: "administradores");
-            return new ApiResponse<List<Personal>>(res);
+            return await GetAsync<List<Personal>>(path: "administradores");
         }
 
         public async Task<ApiResponse<List<TypeDelegacion>>> GetDelegaciones()
         {
-            var res = await GetAsync<List<TypeDelegacion>>(path: "delegaciones");
-            return new ApiResponse<List<TypeDelegacion>>(res);
+            return await GetAsync<List<TypeDelegacion>>(path: "delegaciones");
         }
 
         public async Task<ApiResponse<List<Personal>>> GetEncargadosTurno()
         {
-            var res = await GetAsync<List<Personal>>(path: "encargadosturno");
-            return new ApiResponse<List<Personal>>(res);
+            return await GetAsync<List<Personal>>(path: "encargadosturno");
         }
 
         public async Task<ApiResponse<List<TypePlaza>>> GetPlazas()
         {
-            var res = await GetAsync<List<TypePlaza>>(path: "plazas");
-            return new ApiResponse<List<TypePlaza>>(res);
+            return await GetAsync<List<TypePlaza>>(path: "plazas");
         }
 
         public async Task<ApiResponse<KeyValuePair<string, string>>> GetTurnos()
         {
-            var res = await GetAsync<KeyValuePair<string, string>>(path: "turnos");
-            return new ApiResponse<KeyValuePair<string, string>>(res);
+            return await GetAsync<KeyValuePair<string, string>>(path: "turnos");
         }
 
         public async Task<ApiResponse<UsuarioPlaza>> GetUsuarioPlazaAsync()
         {
-            var res = await GetAsync<UsuarioPlaza>(path: "usuarioPlaza");
-            return new ApiResponse<UsuarioPlaza>(res);
+            return await GetAsync<UsuarioPlaza>(path: "usuarioPlaza");
         }
     }
 }
