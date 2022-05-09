@@ -2,6 +2,7 @@
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Net.Mime;
 
 namespace ApiGateway.Controllers
 {
@@ -16,7 +17,20 @@ namespace ApiGateway.Controllers
             _mediator = mediator;
         }
 
-        [HttpPost("Register")]
+        /// <summary>
+        /// Registrar nuevo usuario 
+        /// </summary>
+        /// <param name="createCommand">Parametros de registro</param>
+        /// <returns>Regresa el usuario creado.</returns>
+        /// <response code="201">Regresa el objeto creado</response>
+        /// <response code="400">Alguno de los datos requeridos es incorrecto</response>
+        /// <response code="500">Error por excepcion no controlada en el Gateway</response>
+        [HttpPost("registro")]
+        [Consumes(MediaTypeNames.Application.Json)]
+        [Produces("application/json", "application/problem+json")]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> Register(UserCreateCommand createCommand)
         {
             if (ModelState.IsValid)
@@ -26,12 +40,26 @@ namespace ApiGateway.Controllers
                 {
                     return BadRequest(result.Errors);
                 }
-                return Ok();
+                var res = await _mediator.Send(new UserFindCommand { Email = createCommand.Email });
+                return CreatedAtAction("Find", new { res.Id }, res );
             }
             return BadRequest();
         }
 
-        [HttpPost("Authenticate")]
+        /// <summary>
+        /// Solicitar JWT
+        /// </summary>
+        /// <param name="loginCommand">Parametros de autenticación</param>
+        /// <returns>Regresa el token JWT al usuario autenticado.</returns>
+        /// <response code="200">Regresa el objeto solicitado</response>
+        /// <response code="400">Alguno de los datos requeridos es incorrecto</response>
+        /// <response code="500">Error por excepcion no controlada en el Gateway</response>
+        [HttpPost("autenticacion")]
+        [Consumes(MediaTypeNames.Application.Json)]
+        [Produces("application/json", "application/problem+json")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> Login(UserLoginCommand loginCommand)
         {
             if (ModelState.IsValid)
@@ -40,6 +68,38 @@ namespace ApiGateway.Controllers
                 if (!result.Succeeded)
                 {
                     return BadRequest("Access Denied");
+                }
+                return Ok(result);
+            }
+            return BadRequest();
+        }
+
+        /// <summary>
+        /// Consultar usuario
+        /// </summary>
+        /// <param name="id">Realizar busqueda por Id</param>
+        /// <param name="email">Realizar busqueda por email</param>
+        /// <param name="userName">Realizar busqueda por nombre de usuario</param>
+        /// <returns>Regresa la información del usuario consultado</returns>
+        /// <response code="200">Regresa el objeto solicitado</response>
+        /// <response code="400">Alguno de los datos requeridos es incorrecto</response>
+        /// <response code="404">No se pudo encontrar el objeto solicitado</response>
+        /// <response code="500">Error por excepcion no controlada en el Gateway</response>
+        [HttpGet("usuario")]
+        [Produces("application/json", "application/problem+json")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> Find(string? id = null, string? email = null, string? userName = null)
+        {
+            if (!string.IsNullOrEmpty(id) || !string.IsNullOrEmpty(email) || !string.IsNullOrEmpty(userName))
+            {
+                UserFindCommand findCommand = new() { Id = id, Email = email, Username = userName };
+                var result = await _mediator.Send(findCommand);
+                if (!result.Succeeded)
+                {
+                    return NotFound();
                 }
                 return Ok(result);
             }

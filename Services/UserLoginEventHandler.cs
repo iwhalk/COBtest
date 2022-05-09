@@ -15,14 +15,14 @@ namespace ApiGateway.Services
     public class UserLoginEventHandler : IRequestHandler<UserLoginCommand, IdentityAccess>
     {
         private readonly SignInManager<ApplicationUser> _signInManager;
-        private readonly ApplicationDbContext _dbContext;
+        private readonly UserManager<ApplicationUser> _userManager;
         private readonly IConfiguration _configuration;
 
-        public UserLoginEventHandler(SignInManager<ApplicationUser> signInManager, ApplicationDbContext appDbContext, IConfiguration configuration)
+        public UserLoginEventHandler(SignInManager<ApplicationUser> signInManager, IConfiguration configuration, UserManager<ApplicationUser> userManager)
         {
             _signInManager = signInManager;
-            _dbContext = appDbContext;
             _configuration = configuration;
+            _userManager = userManager;
         }
 
         public async Task<IdentityAccess> Handle(UserLoginCommand loginCommand, CancellationToken cancellationToken)
@@ -31,7 +31,7 @@ namespace ApiGateway.Services
             {
                 Succeeded = false
             };
-            var user = await _dbContext.Users.FirstOrDefaultAsync(x => x.Email == loginCommand.Email, cancellationToken);
+            var user = await _userManager.FindByEmailAsync(loginCommand.Email);
             if (user == null) return result;
 
             var response = await _signInManager.CheckPasswordSignInAsync(user, loginCommand.Password, false);
