@@ -16,10 +16,10 @@ namespace ApiGateway.Proxies
         private readonly HttpClient _httpClient;
         //private readonly ILogger<GenericProxy> _logger;
 
-        protected GenericProxy(IHttpContextAccessor httpContextAccessor,
+        protected GenericProxy(IHttpContextAccessor? httpContextAccessor,
                                IHttpClientFactory httpClientFactory,
                                //ILogger<GenericProxy> logger,
-                               string httpClientName)
+                               string? httpClientName)
         {
             _httpClient = httpClientFactory.CreateClient(httpClientName);
             _httpClient.AddBearerToken(httpContextAccessor);
@@ -38,12 +38,12 @@ namespace ApiGateway.Proxies
         /// <param name="path">Ruta del servicio, si no se especifica se asumira el nombre del objeto como ruta</param>
         /// <returns>Respuesta en un objeto generico del endpoint del servicio consultado serializada en formato JSON</returns>
 
-        public async Task<ApiResponse<T>> GetAsync<T>(object id, Dictionary<string, string>? parameters = null, string? path = null)
+        public async Task<ApiResponse<T>> GetAsync<T>(object? id, Dictionary<string, string>? parameters = null, string? path = null)
         {
             using HttpResponseMessage httpResponse = await _httpClient.GetAsync(GetUri<T>(id, parameters, path));
             return await ParseHttpResponseAsync<T>(httpResponse);
         }
-        public async Task<ApiResponse> GetAsync(object id, Dictionary<string, string>? parameters = null, string? path = null)
+        public async Task<ApiResponse> GetAsync(object? id, Dictionary<string, string>? parameters = null, string? path = null)
         {
             using HttpResponseMessage httpResponse = await _httpClient.GetAsync(GetUri<object>(id, parameters, path));
             return await ParseHttpResponseAsync(httpResponse);
@@ -73,17 +73,17 @@ namespace ApiGateway.Proxies
         /// <param name="parameters">Diccionario de parametros a embebir en la URI en formato "llave","valor"</param>
         /// <param name="path">Ruta del servicio, si no se especifica se asumira el nombre del objeto como ruta</param>
         /// <returns>Respuesta en un objeto del tipo definido en la clase del endpoint del servicio consultado</returns>
-        public async Task<ApiResponse<T>> PostAsync<T>(T value, Dictionary<string, string>? parameters = null, string? path = null)
+        public async Task<ApiResponse<T>> PostAsync<T>(T? value, Dictionary<string, string>? parameters = null, string? path = null)
         {
             using HttpResponseMessage httpResponse = await _httpClient.PostAsJsonAsync(GetUri<T>(default, parameters, path), value);
             return await ParseHttpResponseAsync<T>(httpResponse);
         }
-        public async Task<ApiResponse<T>> PostAsync<T>(object value, Dictionary<string, string>? parameters = null, string? path = null)
+        public async Task<ApiResponse<T>> PostAsync<T>(object? value, Dictionary<string, string>? parameters = null, string? path = null)
         {
             using HttpResponseMessage httpResponse = await _httpClient.PostAsJsonAsync(GetUri<object>(default, parameters, path), value);
             return await ParseHttpResponseAsync<T>(httpResponse);
         }
-        public async Task<ApiResponse> PostAsync(object value, Dictionary<string, string>? parameters = null, string? path = null)
+        public async Task<ApiResponse> PostAsync(object? value, Dictionary<string, string>? parameters = null, string? path = null)
         {
             using HttpResponseMessage httpResponse = await _httpClient.PostAsJsonAsync(GetUri<object>(default, parameters, path), value);
             return await ParseHttpResponseAsync(httpResponse);
@@ -96,12 +96,12 @@ namespace ApiGateway.Proxies
         /// <param name="parameters">Diccionario de parametros a embebir en la URI en formato "llave","valor"</param>
         /// <param name="path">Ruta del servicio, si no se especifica se asumira el nombre del objeto como ruta</param>
         /// <returns>Respuesta en un objeto del tipo definido en la clase del endpoint del servicio consultado</returns>
-        public async Task<ApiResponse<T>> PostAsync<T>(HttpContent content, Dictionary<string, string> parameters = null, string path = null)
+        public async Task<ApiResponse<T>> PostAsync<T>(HttpContent? content, Dictionary<string, string>? parameters = null, string? path = null)
         {
             using HttpResponseMessage httpResponse = await _httpClient.PostAsync(GetUri<T>(default, parameters, path), content);
             return await ParseHttpResponseAsync<T>(httpResponse);
         }
-        public async Task<ApiResponse> PostAsync(HttpContent content, Dictionary<string, string> parameters = null, string path = null)
+        public async Task<ApiResponse> PostAsync(HttpContent? content, Dictionary<string, string>? parameters = null, string? path = null)
         {
             using HttpResponseMessage httpResponse = await _httpClient.PostAsync(GetUri<object>(default, parameters, path), content);
             return await ParseHttpResponseAsync(httpResponse);
@@ -115,12 +115,12 @@ namespace ApiGateway.Proxies
         /// <param name="parameters">Diccionario de parametros a embebir en la URI en formato "llave","valor"</param>
         /// <param name="path">Ruta del servicio, si no se especifica se asumira el nombre del objeto como ruta</param>
         /// <returns>Respuesta de tipo bool si la operacion se completo de manera satisfactoria en el endpoint del servicio consultado</returns>
-        public async Task<ApiResponse<T>> PutAsync<T>(object id, T value, Dictionary<string, string> parameters = null, string path = null)
+        public async Task<ApiResponse<T>> PutAsync<T>(object? id, T? value, Dictionary<string, string>? parameters = null, string? path = null)
         {
             using HttpResponseMessage httpResponse = await _httpClient.PutAsJsonAsync(GetUri<T>(id, parameters, path), value);
             return await ParseHttpResponseAsync<T>(httpResponse);
         }
-        public async Task<ApiResponse> PutAsync(object id, object value, Dictionary<string, string> parameters = null, string path = null)
+        public async Task<ApiResponse> PutAsync(object? id, object? value, Dictionary<string, string>? parameters = null, string? path = null)
         {
             using HttpResponseMessage httpResponse = await _httpClient.PutAsJsonAsync(GetUri<object>(id, parameters, path), value);
             return await ParseHttpResponseAsync(httpResponse);
@@ -134,12 +134,12 @@ namespace ApiGateway.Proxies
         /// <param name="parameters">Diccionario de parametros a embebir en la URI en formato "llave","valor"</param>
         /// <param name="path">Ruta del servicio, si no se especifica se asumira el nombre del objeto como ruta</param>
         /// <returns>Respuesta de tipo bool si la operacion se completo de manera satisfactoria en el endpoint del servicio consultado</returns>
-        public async Task<ApiResponse<T>> PutAsync<T>(object id, HttpContent content, Dictionary<string, string> parameters = null, string path = null)
+        public async Task<ApiResponse<T>> PutAsync<T>(object? id, HttpContent? content, Dictionary<string, string>? parameters = null, string? path = null)
         {
             using HttpResponseMessage httpResponse = await _httpClient.PutAsync(GetUri<T>(id, parameters, path), content);
             return await ParseHttpResponseAsync<T>(httpResponse);
         }
-        public async Task<ApiResponse> PutAsync(object id, HttpContent content, Dictionary<string, string> parameters = null, string path = null)
+        public async Task<ApiResponse> PutAsync(object? id, HttpContent? content, Dictionary<string, string>? parameters = null, string? path = null)
         {
             using HttpResponseMessage httpResponse = await _httpClient.PutAsync(GetUri<object>(id, parameters, path), content);
             return await ParseHttpResponseAsync(httpResponse);
@@ -152,12 +152,12 @@ namespace ApiGateway.Proxies
         /// <param name="parameters">Diccionario de parametros a embebir en la URI en formato "llave","valor"</param>
         /// <param name="path">Ruta del servicio, si no se especifica se asumira el nombre del objeto como ruta</param>
         /// <returns>Respuesta de tipo bool si la operacion se completo de manera satisfactoria en el endpoint del servicio consultado</returns>
-        public async Task<ApiResponse<T>> DeleteAsync<T>(object id, Dictionary<string, string> parameters = null, string path = null)
+        public async Task<ApiResponse<T>> DeleteAsync<T>(object? id, Dictionary<string, string>? parameters = null, string? path = null)
         {
             using HttpResponseMessage httpResponse = await _httpClient.DeleteAsync(GetUri<T>(id, parameters, path));
             return await ParseHttpResponseAsync<T>(httpResponse);
         }
-        public async Task<ApiResponse> DeleteAsync(object id, Dictionary<string, string> parameters = null, string path = null)
+        public async Task<ApiResponse> DeleteAsync(object? id, Dictionary<string, string>? parameters = null, string? path = null)
         {
             using HttpResponseMessage httpResponse = await _httpClient.DeleteAsync(GetUri<object>(id, parameters, path));
             return await ParseHttpResponseAsync(httpResponse);

@@ -39,7 +39,7 @@ var securityRequirements = new OpenApiSecurityRequirement()
                 Id = "Bearer"
             }
         },
-        new string[] {}
+        Array.Empty<string>()
     }
 };
 var openApiInfo = new OpenApiInfo()
@@ -98,6 +98,7 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options => {
+    options.SwaggerDoc("v1", openApiInfo);
     options.AddSecurityDefinition("Bearer", securityScheme);
     options.AddSecurityRequirement(securityRequirements);
 });

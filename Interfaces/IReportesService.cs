@@ -8,7 +8,7 @@ namespace ApiGateway.Interfaces
         Task<ApiResponse<UsuarioPlaza>> GetUsuarioPlazaAsync();
         Task<ApiResponse<List<TypeDelegacion>>> GetDelegaciones();
         Task<ApiResponse<List<TypePlaza>>> GetPlazas();
-        Task<ApiResponse<KeyValuePair<string, string>>> GetTurnos();
+        Task<ApiResponse<KeyValuePair<string, string>[]>> GetTurnos();
         Task<ApiResponse<List<Personal>>> GetAdministradores();
         Task<ApiResponse<List<Personal>>> GetEncargadosTurno();
         Task<ApiResponse<List<Bolsa>>> CreateBolsasCajeroReceptor(CajeroReceptor cajeroReceptor);

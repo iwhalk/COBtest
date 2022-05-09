@@ -2,6 +2,7 @@
 using ApiGateway.Models;
 using Microsoft.AspNetCore.Mvc;
 using ReportesData.Models;
+using System.Net.Mime;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -121,7 +122,7 @@ namespace ApiGateway.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<ApiResponse<KeyValuePair<string, string>>>> GetTurnos()
+        public async Task<ActionResult<ApiResponse<KeyValuePair<string, string>[]>>> GetTurnos()
         {
             return Ok(await _reportesService.GetTurnos());
         }
@@ -135,6 +136,7 @@ namespace ApiGateway.Controllers
         /// <response code="400">Alguno de los datos requeridos es incorrecto</response>
         /// <response code="500">Error por excepcion no controlada en el Gateway</response>
         [HttpPost("bolsascajeroreceptor")]
+        [Consumes(MediaTypeNames.Application.Json)]
         [Produces("application/json", "application/problem+json")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]
@@ -153,6 +155,7 @@ namespace ApiGateway.Controllers
         /// <response code="400">Alguno de los datos requeridos es incorrecto</response>
         /// <response code="500">Error por excepcion no controlada en el Gateway</response>
         [HttpPost("reportecajeroreceptor")]
+        [Consumes(MediaTypeNames.Application.Json)]
         [Produces("application/pdf", "application/json", "application/problem+json")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]
@@ -174,6 +177,7 @@ namespace ApiGateway.Controllers
         /// <response code="400">Alguno de los datos requeridos es incorrecto</response>
         /// <response code="500">Error por excepcion no controlada en el Gateway</response>
         [HttpPost("reporteturnocarriles")]
+        [Consumes(MediaTypeNames.Application.Json)]
         [Produces("application/pdf", "application/json", "application/problem+json")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]
@@ -195,6 +199,7 @@ namespace ApiGateway.Controllers
         /// <response code="400">Alguno de los datos requeridos es incorrecto</response>
         /// <response code="500">Error por excepcion no controlada en el Gateway</response>
         [HttpPost("reportediacaseta")]
+        [Consumes(MediaTypeNames.Application.Json)]
         [Produces("application/pdf", "application/json", "application/problem+json")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]
