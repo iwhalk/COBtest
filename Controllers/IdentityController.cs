@@ -3,6 +3,7 @@ using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Net.Mime;
+using System.Security.Claims;
 
 namespace ApiGateway.Controllers
 {
@@ -54,24 +55,58 @@ namespace ApiGateway.Controllers
         /// <response code="200">Regresa el objeto solicitado</response>
         /// <response code="400">Alguno de los datos requeridos es incorrecto</response>
         /// <response code="500">Error por excepcion no controlada en el Gateway</response>
-        [HttpPost("autenticacion")]
-        [Consumes(MediaTypeNames.Application.Json)]
+        [HttpPost("autenticar")]
+        [Consumes("application/x-www-form-urlencoded")]
         [Produces("application/json", "application/problem+json")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> Login(UserLoginCommand loginCommand)
+        public async Task<IActionResult> Login([FromForm]UserLoginCommand loginCommand)
         {
             if (ModelState.IsValid)
             {
                 var result = await _mediator.Send(loginCommand);
                 if (!result.Succeeded)
                 {
-                    return BadRequest("Access Denied");
+                    return BadRequest(result);
                 }
+                RefreshTokenCookie(result.RefreshToken);
                 return Ok(result);
             }
             return BadRequest();
+        }
+
+        /// <summary>
+        /// Solicitar nuevo JWT
+        /// </summary>
+        /// <returns>Reexpide nuevos tokens al usuario autenticado por refresh_token</returns>
+        /// <response code="200">Regresa el objeto solicitado</response>
+        /// <response code="400">Alguno de los datos requeridos es incorrecto</response>
+        /// <response code="500">Error por excepcion no controlada en el Gateway</response>
+        [HttpPost("refrescartoken")]
+        [Produces("application/json", "application/problem+json")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> RefreshToken()
+        {
+            if (User.Identity.IsAuthenticated)
+            {
+                UserLoginCommand loginCommand = new()
+                {
+                    Email = (User.Claims.FirstOrDefault(x => x.Type.Equals(ClaimTypes.Email))?.Value),
+                    RefreshToken = Request.Cookies["refreshToken"],
+                };
+                var result = await _mediator.Send(loginCommand);
+                if (!result.Succeeded)
+                {
+                    return BadRequest(result);
+                }
+                RefreshTokenCookie(result.RefreshToken);
+                return Ok(result);
+            }
+            return BadRequest();
+
         }
 
         /// <summary>
@@ -104,6 +139,16 @@ namespace ApiGateway.Controllers
                 return Ok(result);
             }
             return BadRequest();
+        }
+
+        private void RefreshTokenCookie(string refreshToken)
+        {
+            var cookieOptions = new CookieOptions
+            {
+                HttpOnly = true,
+                Expires = DateTime.UtcNow.AddDays(7)
+            };
+            Response.Cookies.Append("refreshToken", refreshToken, cookieOptions);
         }
     }
 }
