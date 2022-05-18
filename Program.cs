@@ -1,3 +1,4 @@
+using ApiGateway;
 using ApiGateway.Data;
 using ApiGateway.Interfaces;
 using ApiGateway.Models;
@@ -6,19 +7,27 @@ using ApiGateway.Services;
 using Hellang.Middleware.ProblemDetails;
 using MediatR;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.SqlServer;
+using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.Net.Http.Headers;
 using Microsoft.OpenApi.Models;
 using System.Reflection;
 using System.Text;
+using static OpenIddict.Abstractions.OpenIddictConstants;
+using Microsoft.AspNetCore.Identity;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 var secretKey = Encoding.ASCII.GetBytes(builder.Configuration.GetValue<string>("SecretKey"));
+var key = new SymmetricSecurityKey(secretKey);
+
 var securityScheme = new OpenApiSecurityScheme()
 {
     Name = "Authorization",
@@ -51,8 +60,13 @@ var openApiInfo = new OpenApiInfo()
 
 builder.Services.AddHttpClient("Reportes", client => client.BaseAddress = new Uri("https://localhost:7293/"));
 
+builder.Services.AddCors();
+
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseSqlServer(connectionString));
+{
+    options.UseSqlServer(connectionString);
+    options.UseOpenIddict();
+});
 
 builder.Services.AddDefaultIdentity<ApplicationUser>(options => {
     options.SignIn.RequireConfirmedAccount = false;
@@ -63,8 +77,8 @@ builder.Services.AddDefaultIdentity<ApplicationUser>(options => {
 })
     .AddEntityFrameworkStores<ApplicationDbContext>();
 
-builder.Services.AddAuthentication(options => 
-{ 
+builder.Services.AddAuthentication(options =>
+{
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
     options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
     options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -76,12 +90,70 @@ builder.Services.AddAuthentication(options =>
         options.TokenValidationParameters = new TokenValidationParameters
         {
             ValidateIssuerSigningKey = true,
-            IssuerSigningKey = new SymmetricSecurityKey(secretKey),
+            IssuerSigningKey = key,
             ValidateIssuer = false,
             ValidateAudience = false,
             ClockSkew = TimeSpan.Zero
         };
     });
+builder.Services.Configure<IdentityOptions>(options =>
+{
+    options.ClaimsIdentity.UserNameClaimType = Claims.Name;
+    options.ClaimsIdentity.UserIdClaimType = Claims.Subject;
+    options.ClaimsIdentity.RoleClaimType = Claims.Role;
+    options.ClaimsIdentity.EmailClaimType = Claims.Email;
+});
+
+builder.Services.AddOpenIddict()
+
+        // Register the OpenIddict core components.
+        .AddCore(options =>
+        {
+            options.UseEntityFrameworkCore()
+                .UseDbContext<ApplicationDbContext>();
+        })
+
+        // Register the OpenIddict server components.
+        .AddServer(options =>
+        {
+            options
+                .AllowAuthorizationCodeFlow()
+                .AllowPasswordFlow()
+                .AllowRefreshTokenFlow();
+
+            options
+                .SetAuthorizationEndpointUris("/api/identity/authorize")
+                .SetLogoutEndpointUris("/api/identity/logout")
+                .SetTokenEndpointUris("/api/identity/token")
+                .SetUserinfoEndpointUris("/api/identity/userinfo");
+
+            options
+                .RegisterScopes(Scopes.Email, Scopes.Profile, Scopes.Roles);
+
+            // Encryption and signing of tokens
+            options
+                //.AddEphemeralEncryptionKey()
+                .AddDevelopmentEncryptionCertificate()
+                .AddDevelopmentSigningCertificate()
+                .DisableAccessTokenEncryption()
+                .AddSigningKey(key);
+
+            // Register scopes (permissions)
+            options
+                .RegisterScopes("api");
+
+            // Register the ASP.NET Core host and configure the ASP.NET Core-specific options.
+            options
+                .UseAspNetCore()
+                .EnableAuthorizationEndpointPassthrough()
+                .EnableLogoutEndpointPassthrough()
+                .EnableStatusCodePagesIntegration()
+                .EnableTokenEndpointPassthrough();
+        })
+        .AddValidation(options =>
+        {
+            options.Configure(o => o.TokenValidationParameters.IssuerSigningKey = key);
+        });
 
 builder.Services.AddProblemDetails(setup =>
 {
@@ -107,24 +179,47 @@ builder.Services.AddSwaggerGen(options => {
 
 builder.Services.AddMediatR(Assembly.Load("ApiGateway"));
 
+builder.Services.AddHostedService<Worker>();
 builder.Services.AddScoped<IReportesService, ReportesService>();
+
+builder.Services.AddControllersWithViews();
+builder.Services.AddRazorPages();
 
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
+    app.UseWebAssemblyDebugging();
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+app.UseBlazorFrameworkFiles();
 
-app.UseProblemDetails();
+app.UseCors(x => x
+                .AllowAnyMethod()
+                .AllowAnyHeader()
+                .SetIsOriginAllowed(origin => true) // allow any origin
+                .AllowCredentials());
+
+app.UseRouting();
 
 app.UseHttpsRedirection();
 
 app.UseAuthentication();
 
 app.UseAuthorization();
+
+app.UseStaticFiles();
+
+app.UseEndpoints(options =>
+{
+    options.MapRazorPages();
+    options.MapControllers();
+    options.MapFallbackToFile("index.html");
+});
+
+app.UseProblemDetails();
 
 app.MapControllers();
 

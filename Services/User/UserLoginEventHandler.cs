@@ -1,16 +1,23 @@
 ﻿using ApiGateway.Data;
 using ApiGateway.Models;
+using ApiGateway.Extensions;
+using ApiGateway.Helpers;
 using MediatR;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
+using OpenIddict.Abstractions;
+using OpenIddict.Server.AspNetCore;
 using System.ComponentModel.DataAnnotations;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
 using System.Text.Json.Serialization;
+using static OpenIddict.Abstractions.OpenIddictConstants;
 
 namespace ApiGateway.Services
 {
@@ -19,12 +26,23 @@ namespace ApiGateway.Services
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IConfiguration _configuration;
+        private readonly IOpenIddictApplicationManager _applicationManager;
+        private readonly IOpenIddictAuthorizationManager _authorizationManager;
+        private readonly IOpenIddictScopeManager _scopeManager;
 
-        public UserLoginEventHandler(SignInManager<ApplicationUser> signInManager, IConfiguration configuration, UserManager<ApplicationUser> userManager)
+        public UserLoginEventHandler(SignInManager<ApplicationUser> signInManager,
+                                     UserManager<ApplicationUser> userManager,
+                                     IConfiguration configuration,
+                                     IOpenIddictApplicationManager applicationManager,
+                                     IOpenIddictAuthorizationManager authorizationManager,
+                                     IOpenIddictScopeManager scopeManager)
         {
             _signInManager = signInManager;
             _configuration = configuration;
             _userManager = userManager;
+            _applicationManager = applicationManager;
+            _authorizationManager = authorizationManager;
+            _scopeManager = scopeManager;
         }
 
         public async Task<IdentityAccess> Handle(UserLoginCommand loginCommand, CancellationToken cancellationToken)
@@ -68,11 +86,27 @@ namespace ApiGateway.Services
             }
 
             result.Succeeded = true;
-            result.Scope = loginCommand.Scope;
-            GenerateJwtToken(user, result);
-            GenerateRefreshToken(user, result);
+            result.Claims = GetClaimsPrincipal(user);
+            result.User = user;
+            //GenerateJwtToken(user, result);
+            //GenerateRefreshToken(user, result);
             await _userManager.UpdateAsync(user);
             return result;
+        }
+
+        private ClaimsPrincipal GetClaimsPrincipal(ApplicationUser user)
+        {
+            var claims = new List<Claim>
+            {
+                new Claim (ClaimTypes.NameIdentifier, user.Id),
+                new Claim (ClaimTypes.Email, user.NormalizedEmail),
+                new Claim (ClaimTypes.Name, user.NormalizedUserName),
+                new Claim(Claims.Subject, user.Id),
+            };
+
+            var claimsIdentity = new ClaimsIdentity(claims, OpenIddictServerAspNetCoreDefaults.AuthenticationScheme);
+
+           return new ClaimsPrincipal(claimsIdentity);
         }
 
         private void GenerateJwtToken(ApplicationUser user, IdentityAccess identity)
@@ -84,6 +118,7 @@ namespace ApiGateway.Services
                 new Claim (ClaimTypes.NameIdentifier, user.Id),
                 new Claim (ClaimTypes.Email, user.NormalizedEmail),
                 new Claim (ClaimTypes.Name, user.NormalizedUserName),
+                new Claim(Claims.Subject, user.Id),
             };
             var tokenDescriptor = new SecurityTokenDescriptor
             {
@@ -116,6 +151,7 @@ namespace ApiGateway.Services
 
     public class UserLoginCommand : IRequest<IdentityAccess>
     {
+        [DataType(DataType.Password)]
         [Required(ErrorMessage = "El campo {0} es requerido.")]
         public string? Password { get; set; }
         [EmailAddress]
@@ -130,6 +166,9 @@ namespace ApiGateway.Services
     {
         [JsonIgnore]
         public bool Succeeded { get; set; }
+
+        public ClaimsPrincipal? Claims { get; set; }
+        public ApplicationUser? User { get; set; }
 
         [JsonPropertyName("access_token")]
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]

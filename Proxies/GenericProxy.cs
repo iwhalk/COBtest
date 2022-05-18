@@ -200,14 +200,14 @@ namespace ApiGateway.Proxies
         {
             ApiResponse<T> response = new()
             {
-                Success = httpResponse.IsSuccessStatusCode,
+                Succeeded = httpResponse.IsSuccessStatusCode,
                 Status = (int)httpResponse.StatusCode
             };
 
             if (httpResponse.Content != null)
             {
                 var mediaType = httpResponse.Content.Headers.ContentType?.MediaType;
-                if (mediaType != null && response.Success)
+                if (mediaType != null && response.Succeeded)
                 {
                     response.ContentType = mediaType;
                     response.Content = mediaType switch
@@ -221,7 +221,7 @@ namespace ApiGateway.Proxies
                         _ => default,                        
                     };
                 }
-                if (!response.Success)
+                if (!response.Succeeded)
                 {
                     response.ErrorMessage = mediaType switch
                     {
@@ -239,14 +239,14 @@ namespace ApiGateway.Proxies
         {
             ApiResponse response = new()
             {
-                Success = httpResponse.IsSuccessStatusCode,
+                Succeeded = httpResponse.IsSuccessStatusCode,
                 Status = (int)httpResponse.StatusCode
             };
 
             if (httpResponse.Content != null)
             {
                 var mediaType = httpResponse.Content.Headers.ContentType?.MediaType;
-                if (mediaType != null && response.Success)
+                if (mediaType != null && response.Succeeded)
                 {
                     response.ContentType = mediaType;
                     response.Content = mediaType switch
@@ -261,7 +261,7 @@ namespace ApiGateway.Proxies
                         _ => new(),
                     };
                 }
-                if (!response.Success)
+                if (!response.Succeeded)
                 {
                     response.ErrorMessage = mediaType switch
                     {

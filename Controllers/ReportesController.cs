@@ -1,5 +1,6 @@
 ﻿using ApiGateway.Interfaces;
 using ApiGateway.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ReportesData.Models;
 using System.Net.Mime;
@@ -9,6 +10,7 @@ using System.Net.Mime;
 namespace ApiGateway.Controllers
 {
     [Route("api/[controller]")]
+    [Authorize]
     [ApiController]
     public class ReportesController : ControllerBase
     {
@@ -32,7 +34,7 @@ namespace ApiGateway.Controllers
         [ProducesResponseType(typeof(ApiResponse<UsuarioPlaza>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult> GetUsuarioPlaza()
+        public async Task<ActionResult<ApiResponse<UsuarioPlaza>>> GetUsuarioPlaza()
         {
             return Ok(await _reportesService.GetUsuarioPlazaAsync());
         }
@@ -163,7 +165,7 @@ namespace ApiGateway.Controllers
         public async Task<IActionResult> CreateReporteCajeroReceptor(CajeroReceptor cajeroReceptor)
         {
             var response = await _reportesService.CreateReporteCajeroReceptorAsync(cajeroReceptor);
-            if (response.Success && response.Content != null)
+            if (response.Succeeded && response.Content != null)
                 return File(response.Content, "application/pdf", "ReporteCajeroReceptor.pdf");
             return Ok(response);
         }
@@ -185,7 +187,7 @@ namespace ApiGateway.Controllers
         public async Task<IActionResult> CreateReporteTurnoCarriles(TurnoCarriles turnoCarriles)
         {
             var response = await _reportesService.CreateReporteTurnoCarrilesAsync(turnoCarriles);
-            if (response.Success)
+            if (response.Succeeded)
                 return File(response.Content, "application/pdf", "ReporteTurnoCarriles.pdf");
             return Ok(response);
         }
@@ -207,7 +209,7 @@ namespace ApiGateway.Controllers
         public async Task<IActionResult> CreateReporteDiaCaseta(DiaCaseta diaCaseta)
         {
             var response = await _reportesService.CreateReporteDiaCasetaAsync(diaCaseta);
-            if (response.Success)
+            if (response.Succeeded)
                 return File(response.Content, "application/pdf", "ReporteDiaCaseta.pdf");
             return Ok(response);
         }

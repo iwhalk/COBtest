@@ -9,7 +9,7 @@ namespace ApiGateway.Models
 {
     public class ApiResponse
     {
-        public bool Success { get; set; }
+        public bool Succeeded { get; set; }
         public int Status { get; set; }
         public string? ContentType { get; set; }
         public object? Content { get; set; }
@@ -18,7 +18,7 @@ namespace ApiGateway.Models
     }
     public class ApiResponse<TClass>
     {
-        public bool Success { get; set; }
+        public bool Succeeded { get; set; }
         public int Status { get; set; }
         public string? ContentType { get; set; }
         public TClass? Content { get; set; }
@@ -30,7 +30,7 @@ namespace ApiGateway.Models
         }
         public ApiResponse(ApiResponse apiResponse)
         {
-            Success = apiResponse.Success;
+            Succeeded = apiResponse.Succeeded;
             Status = apiResponse.Status;
             ContentType = apiResponse.ContentType;
             ErrorMessage = apiResponse.ErrorMessage;
