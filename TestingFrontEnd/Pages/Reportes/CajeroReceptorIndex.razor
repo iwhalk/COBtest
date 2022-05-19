@@ -1,0 +1,91 @@
+﻿@page "/reportes/cajeroreceptor"
+
+@if (!Render)
+{
+    <h2>Loading...</h2>
+}
+else
+{    
+    <div class="row clearfix min-vh-100">
+        <div class="col-lg-4">
+            <h3>Cajero-Receptor</h3>
+            <EditForm EditContext="@EditContext" OnSubmit="@ConsultarBolsas">
+                <DataAnnotationsValidator />
+                <ValidationSummary />
+                <div class="mb-2">
+                    <label for="NomDelegacion">Delegación:</label>
+                    <FluentTextField id="NomDelegacion" style="width: 100%;" Readonly="true" @bind-Value=@Delegacion.NomDelegacion></FluentTextField>
+                </div>
+                <div class="mb-2">
+                    <label for="NomPlaza">Plaza de Cobro:</label>
+                    <FluentTextField id="NomPlaza" style="width: 100%;" Readonly="true" @bind-Value=@Plaza.NomPlaza></FluentTextField>
+                </div>
+                <div class="mb-2">
+                    <label for="NumCapufeCajeroReceptor">Número de Cajero:</label>
+                    <FluentTextField id="NumCapufeCajeroReceptor" style="width: 100%;" @bind-Value=ReporteCajeroReceptorModel.NumCapufeCajeroReceptor></FluentTextField>
+                </div>
+                <div class="mb-3">
+                    <label for="IdTurno">Turno:</label>
+                    <FluentSelect id="IdTurno" style="width: 100%;" TValue=string @bind-Value=ReporteCajeroReceptorModel.IdTurno>
+                        @foreach (var item in Turnos)
+                        {
+                            <FluentOption Value=@(item.Key)>@item.Value</FluentOption>
+                        }
+                    </FluentSelect>
+                </div>
+                <div class="mb-3">
+                    <label for="NumGeaAdministrador">Administrador:</label>
+                    <FluentSelect id="NumGeaAdministrador" style="width: 100%;" TValue=string @bind-Value=ReporteCajeroReceptorModel.NumGeaAdministrador>
+                        @foreach (var item in Administradores)
+                        {
+                            <FluentOption Value=@(item.NumGea)>@item.Nombre</FluentOption>
+                        }
+                    </FluentSelect>
+                </div>
+                <div class="mb-4">
+                    <label for="Fecha">Fecha:</label>
+                    <InputDate id="Fecha" style="width: 100%;" @bind-Value="ReporteCajeroReceptorModel.Fecha" class="form-control" />
+                </div>
+                <div class="mb-3">
+                    <FluentButton type="submit" style="width: 100%;">Consultar Bolsas</FluentButton>
+                    <br>
+                    <p hidden="@HideError">No se encontraron bolsas con los datos proporcionados.</p>
+                </div>
+            </EditForm>
+        </div>
+        <div class="col-lg-8">
+            <p hidden="@HideLoader">Cargando...</p>
+            @if (BlobUrl?.Length > 0)
+            {
+                <h3>Reporte</h3>
+                <iframe width="100%" height="100%" src="@BlobUrl" type="application/pdf"></iframe>
+            }
+            @if (Bolsas?.Count > 0)
+            {
+                <h3>Bolsas</h3>
+                <FluentDataGrid id="manualGrid" GenerateHeader=GenerateHeaderOptions.None GridTemplateColumns="2fr 2fr 2fr 2fr 1fr" TItem=string>
+                    <FluentDataGridRow TItem=string RowType="DataGridRowType.Header">
+                        <FluentDataGridCell GridColumn=1 CellType="DataGridCellType.ColumnHeader">Inicio</FluentDataGridCell>
+                        <FluentDataGridCell GridColumn=2 CellType="DataGridCellType.ColumnHeader">Fin</FluentDataGridCell>
+                        <FluentDataGridCell GridColumn=3 CellType="DataGridCellType.ColumnHeader">Carril</FluentDataGridCell>
+                        <FluentDataGridCell GridColumn=4 CellType="DataGridCellType.ColumnHeader">Nombre</FluentDataGridCell>
+                        <FluentDataGridCell GridColumn=5 CellType="DataGridCellType.ColumnHeader">Acciones</FluentDataGridCell>
+                    </FluentDataGridRow>
+                        @foreach (var item in Bolsas)
+                        {
+                            <FluentDataGridRow TItem=string>
+                                <FluentDataGridCell GridColumn=1>@item.Inicio</FluentDataGridCell>
+                                <FluentDataGridCell GridColumn=2>@item.Fin</FluentDataGridCell>
+                                <FluentDataGridCell GridColumn=3>@item.Carril</FluentDataGridCell>
+                                <FluentDataGridCell GridColumn=4>@item.Nombre</FluentDataGridCell>
+                                <FluentDataGridCell GridColumn=5>
+                                    <FluentButton Appearance="Appearance.Accent" @onclick="() => GenerarReporte(item.Id)">Reporte</FluentButton>
+                                </FluentDataGridCell>
+                            </FluentDataGridRow>
+                        }
+                </FluentDataGrid>
+            }
+        </div>
+    </div>
+
+}

@@ -1,0 +1,39 @@
+﻿@page "/"
+
+<PageTitle>Index</PageTitle>
+
+<main role="main" class="container">
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <h2 class="titulobienvenido">BIENVENIDO</h2>
+                <hr />
+            </div>
+            <div class="col-md-4">                
+                <NavLink class="nav-link" href="/reportes/cajeroreceptor">
+                    <button class="btn botoninicio separacioninicio animate action-button green">
+                        <img src="assets/img/local.svg" style="height:auto; width:140px;" />
+                        <h3 class="tituloinicio">CAJERO</h3>
+                    </button>
+                </NavLink>
+            </div>
+            <div class="col-md-4">
+                <NavLink class="nav-link" href="counter">
+                    <button class="btn botoninicio separacioninicio animate action-button red">
+                        <img src="assets/img/turno.svg" style="height:auto; width:140px;" />
+                        <h3 class="tituloinicio">TURNO</h3>
+                    </button>
+                </NavLink>
+            </div>
+            <div class="col-md-4">
+                <NavLink class="nav-link" href="counter">
+                    <button class="btn botoninicio separacioninicio animate action-button blue">
+                        <img src="assets/img/today.svg" style="height:auto; width:140px;" />
+                        <h3 class="tituloinicio">DÍA</h3>
+                    </button>
+                </NavLink>
+            </div>
+        </div>
+    </div>
+</main>

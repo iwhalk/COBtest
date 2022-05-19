@@ -35,8 +35,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Shared\Shared.csproj" />
-    <ProjectReference Include="..\TestingFrontEnd\TestingFrontEnd.csproj" />
+    <ProjectReference Include="Shared\Shared.csproj" />
+    <ProjectReference Include="TestingFrontEnd\TestingFrontEnd.csproj" />
   </ItemGroup>
 
   <ItemGroup>
