@@ -1,5 +1,5 @@
-﻿using ApiGateway.Models;
-using ReportesData.Models;
+﻿using ReportesData.Models;
+using Shared;
 
 namespace ApiGateway.Interfaces
 {

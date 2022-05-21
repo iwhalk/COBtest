@@ -1,63 +1,49 @@
 ﻿using ReportesData.Models;
 using TestingFrontEnd.Interfaces;
 using TestingFrontEnd.Stores;
-using System.Net.Http.Json;
-using TestingFrontEnd.Models;
 
 namespace TestingFrontEnd.Services
 {
     public class ReportesService : IReportesService
     {
         private readonly ApplicationContext _context;
-        private readonly HttpClient _httpClient;
+        private readonly IGenericRepository _repository;
 
-        public ReportesService(ApplicationContext context, HttpClient httpClient)
+        public ReportesService(ApplicationContext context, IGenericRepository repository)
         {
             _context = context;
-            _httpClient = httpClient;
+            _repository = repository;
         }
 
         public async Task<List<Bolsa>> CreateBolsasCajeroReceptorAsync(CajeroReceptor cajeroReceptor)
         {
-            var response = await _httpClient.PostAsJsonAsync("api/reportes/bolsascajeroreceptor", cajeroReceptor);
-            if (response != null && response.IsSuccessStatusCode)
-            {
-                var apiResponse = await response.Content.ReadFromJsonAsync<ApiResponse<List<Bolsa>>>();
-                return apiResponse.Content;
-            }
-            return null;
+            return await _repository.PostAsync<List<Bolsa>>("api/reportes/bolsascajeroreceptor", cajeroReceptor);
         }
 
         public async Task<byte[]> CreateReporteCajeroReceptorAsync(CajeroReceptor cajeroReceptor)
         {
-            var response = await _httpClient.PostAsJsonAsync("api/reportes/reportecajeroreceptor", cajeroReceptor);
-            if (response != null && response.IsSuccessStatusCode)
-            {
-                var apiResponse = await response.Content.ReadAsByteArrayAsync();
-                return apiResponse;
-            }
-            return null;
+            return await _repository.PostAsync<byte[]>("api/reportes/reportecajeroreceptor", cajeroReceptor);
         }
 
-        public Task<byte[]> CreateReporteDiaCasetaAsync(DiaCaseta diaCaseta)
+        public async Task<byte[]> CreateReporteDiaCasetaAsync(DiaCaseta diaCaseta)
         {
-            throw new NotImplementedException();
+            return await _repository.PostAsync<byte[]>("api/reportes/reportediacaseta", diaCaseta);
         }
 
         public async Task<byte[]> CreateReporteTurnoCarrilesAsync(TurnoCarriles turnoCarriles)
         {
-            throw new NotImplementedException();
+            return await _repository.PostAsync<byte[]>("api/reportes/reporteturnocarriles", turnoCarriles);
         }
 
         public async Task<List<Personal>> GetAdministradoresAsync()
         {
             if (_context.Administradores == null)
             {
-                var response = await _httpClient.GetAsync("api/reportes/administradores");
-                if (response != null && response.IsSuccessStatusCode)
+                var response = await _repository.GetAsync<List<Personal>>("api/reportes/administradores");
+                if (response != null)
                 {
-                    var apiResponse = await response.Content.ReadFromJsonAsync<ApiResponse<List<Personal>>>();
-                    _context.Administradores = apiResponse.Content;
+                    _context.Administradores = response;
+                    return _context.Administradores;
                 }
             }
             return _context.Administradores;
@@ -67,11 +53,10 @@ namespace TestingFrontEnd.Services
         {
             if (_context.Delegaciones == null)
             {
-                var response = await _httpClient.GetAsync("api/reportes/delegaciones");
-                if (response != null && response.IsSuccessStatusCode)
+                var response = await _repository.GetAsync<List<TypeDelegacion>>("api/reportes/delegaciones");
+                if (response != null)
                 {
-                    var apiResponse = await response.Content.ReadFromJsonAsync<ApiResponse<List<TypeDelegacion>>>();
-                    _context.Delegaciones = apiResponse.Content;
+                    _context.Delegaciones = response;
                 }
             }
             return _context.Delegaciones;
@@ -81,11 +66,10 @@ namespace TestingFrontEnd.Services
         {
             if (_context.EncargadosTurno == null)
             {
-                var response = await _httpClient.GetAsync("api/reportes/encargadosturno");
-                if (response != null && response.IsSuccessStatusCode)
+                var response = await _repository.GetAsync<List<Personal>>("api/reportes/encargadosturno");
+                if (response != null)
                 {
-                    var apiResponse = await response.Content.ReadFromJsonAsync<ApiResponse<List<Personal>>>();
-                    _context.EncargadosTurno = apiResponse.Content;
+                    _context.EncargadosTurno = response;
                 }
             }
             return _context.EncargadosTurno;
@@ -95,11 +79,10 @@ namespace TestingFrontEnd.Services
         {
             if (_context.Plazas == null)
             {
-                var response = await _httpClient.GetAsync("api/reportes/plazas");
-                if (response != null && response.IsSuccessStatusCode)
+                var response = await _repository.GetAsync<List<TypePlaza>>("api/reportes/plazas");
+                if (response != null)
                 {
-                    var apiResponse = await response.Content.ReadFromJsonAsync<ApiResponse<List<TypePlaza>>>();
-                    _context.Plazas = apiResponse.Content;
+                    _context.Plazas = response;
                 }
             }
             return _context.Plazas;
@@ -109,11 +92,10 @@ namespace TestingFrontEnd.Services
         {
             if (_context.EncargadosTurno == null)
             {
-                var response = await _httpClient.GetAsync("api/reportes/turnos");
-                if (response != null && response.IsSuccessStatusCode)
+                var response = await _repository.GetAsync<KeyValuePair<string, string>[]>("api/reportes/turnos");
+                if (response != null)
                 {
-                    var apiResponse = await response.Content.ReadFromJsonAsync<ApiResponse<KeyValuePair<string, string>[]>>();
-                    _context.Turnos = apiResponse.Content;
+                    _context.Turnos = response;
                 }
             }
             return _context.Turnos;
@@ -123,11 +105,10 @@ namespace TestingFrontEnd.Services
         {
             if (_context.UsuarioPlaza == null)
             {
-                var response = await _httpClient.GetAsync("api/reportes/usuarioPlaza");
-                if (response != null && response.IsSuccessStatusCode)
+                var response = await _repository.GetAsync<UsuarioPlaza>("api/reportes/usuarioPlaza");
+                if (response != null)
                 {
-                    var apiResponse = await response.Content.ReadFromJsonAsync<ApiResponse<UsuarioPlaza>>();
-                    _context.UsuarioPlaza = apiResponse.Content;
+                    _context.UsuarioPlaza = response;
                 }
             }
             return _context.UsuarioPlaza;

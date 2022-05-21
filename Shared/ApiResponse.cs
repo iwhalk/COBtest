@@ -1,11 +1,7 @@
-﻿using ReportesData.Models;
-using System.Collections;
-using System.Runtime.Serialization.Json;
-using System.Text;
-using System.Text.Json;
+﻿using System.Text.Json;
 using System.Text.Json.Serialization;
 
-namespace ApiGateway.Models
+namespace Shared
 {
     public class ApiResponse
     {
@@ -14,7 +10,7 @@ namespace ApiGateway.Models
         public string? ContentType { get; set; }
         public object? Content { get; set; }
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-        public string? ErrorMessage { get; internal set; }
+        public string? ErrorMessage { get; set; }
     }
     public class ApiResponse<TClass>
     {
@@ -23,7 +19,7 @@ namespace ApiGateway.Models
         public string? ContentType { get; set; }
         public TClass? Content { get; set; }
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-        public string? ErrorMessage { get; internal set; }
+        public string? ErrorMessage { get; set; }
 
         public ApiResponse()
         {

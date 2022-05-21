@@ -1,9 +1,8 @@
 ﻿using ApiGateway.Extensions;
-using ApiGateway.Models;
 using Microsoft.AspNetCore.WebUtilities;
 using PluralizeService.Core;
+using Shared;
 using System.Net;
-using System.Text;
 
 namespace ApiGateway.Proxies
 {

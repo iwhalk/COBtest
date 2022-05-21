@@ -2,6 +2,7 @@
 using ApiGateway.Models;
 using ApiGateway.Proxies;
 using ReportesData.Models;
+using Shared;
 using System.Text.Json;
 
 namespace ApiGateway.Services

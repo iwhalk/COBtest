@@ -11,6 +11,7 @@ using TestingFrontEnd.Stores;
 using TestingFrontEnd.Services;
 using TestingFrontEnd.Interfaces;
 using Microsoft.JSInterop;
+using TestingFrontEnd.Repositories;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.RootComponents.Add<App>("#app");
@@ -27,6 +28,7 @@ builder.Services.AddFluentUIComponents();
 
 builder.Services.AddScoped<ApplicationContext>();
 builder.Services.AddScoped<IReportesService, ReportesService>();
+builder.Services.AddScoped<IGenericRepository, GenericRepository>();
 
 // Supply HttpClient instances that include access tokens when making requests to the server project.
 builder.Services.AddScoped(provider =>

@@ -20,6 +20,7 @@ using System.Reflection;
 using System.Text;
 using static OpenIddict.Abstractions.OpenIddictConstants;
 using Microsoft.AspNetCore.Identity;
+using Hellang.Middleware.ProblemDetails.Mvc;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -57,6 +58,19 @@ var openApiInfo = new OpenApiInfo()
     Title = "API Gateway",
     Description = ""
 };
+
+builder.Services.AddProblemDetails(setup =>
+{
+    setup.IncludeExceptionDetails = (ctx, env) => builder.Environment.IsDevelopment() || builder.Environment.IsStaging();
+    setup.Rethrow<NotSupportedException>();
+    setup.MapToStatusCode<NotImplementedException>(StatusCodes.Status501NotImplemented);
+    setup.MapToStatusCode<HttpRequestException>(StatusCodes.Status503ServiceUnavailable);
+    setup.MapToStatusCode<Exception>(StatusCodes.Status500InternalServerError);
+})
+.AddControllers()
+    // Adds MVC conventions to work better with the ProblemDetails middleware.
+    .AddProblemDetailsConventions()
+.AddJsonOptions(x => x.JsonSerializerOptions.DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull);
 
 builder.Services.AddHttpClient("Reportes", client => client.BaseAddress = new Uri("https://localhost:7293/"));
 
@@ -155,10 +169,6 @@ builder.Services.AddOpenIddict()
             options.Configure(o => o.TokenValidationParameters.IssuerSigningKey = key);
         });
 
-builder.Services.AddProblemDetails(setup =>
-{
-    setup.IncludeExceptionDetails = (ctx, env) => builder.Environment.IsDevelopment() || builder.Environment.IsStaging();
-});
 
 builder.Services.AddLogging(loggingBuilder => {
     var loggingSection = builder.Configuration.GetSection("Logging");
@@ -194,6 +204,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+app.UseProblemDetails();
 app.UseBlazorFrameworkFiles();
 
 app.UseCors(x => x
@@ -218,8 +229,6 @@ app.UseEndpoints(options =>
     options.MapControllers();
     options.MapFallbackToFile("index.html");
 });
-
-app.UseProblemDetails();
 
 app.MapControllers();
 

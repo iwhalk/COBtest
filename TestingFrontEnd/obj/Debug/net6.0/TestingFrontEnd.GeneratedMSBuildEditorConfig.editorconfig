@@ -22,6 +22,10 @@ build_property._RazorSourceGeneratorDebug =
 build_metadata.AdditionalFiles.TargetPath = QXBwLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
+[C:/Users/martin/source/repos/ApiGateway/TestingFrontEnd/Components/PdfViewer.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQZGZWaWV3ZXIucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/Users/martin/source/repos/ApiGateway/TestingFrontEnd/Pages/Authentication.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQXV0aGVudGljYXRpb24ucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
@@ -40,6 +44,14 @@ build_metadata.AdditionalFiles.CssScope =
 
 [C:/Users/martin/source/repos/ApiGateway/TestingFrontEnd/Pages/Reportes/CajeroReceptorIndex.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUmVwb3J0ZXNcQ2FqZXJvUmVjZXB0b3JJbmRleC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/martin/source/repos/ApiGateway/TestingFrontEnd/Pages/Reportes/DiaCasetaIndex.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUmVwb3J0ZXNcRGlhQ2FzZXRhSW5kZXgucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/martin/source/repos/ApiGateway/TestingFrontEnd/Pages/Reportes/TurnoCarrilesIndex.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUmVwb3J0ZXNcVHVybm9DYXJyaWxlc0luZGV4LnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/martin/source/repos/ApiGateway/TestingFrontEnd/Shared/LoginDisplay.razor]

@@ -6,6 +6,7 @@ namespace TestingFrontEnd.Stores
     {
         public event Action OnChange;
         private int counter;
+        private string errorMessage; 
         private UsuarioPlaza usuarioPlaza;
         private List<TypeDelegacion> delegaciones;
         private List<TypePlaza> plazas;
@@ -73,6 +74,15 @@ namespace TestingFrontEnd.Stores
             set
             {
                 turnos = value;
+                NotifyStateChanged();
+            }
+        }
+        public string ErrorMessage
+        {
+            get => errorMessage;
+            set
+            {
+                errorMessage = value;
                 NotifyStateChanged();
             }
         }
