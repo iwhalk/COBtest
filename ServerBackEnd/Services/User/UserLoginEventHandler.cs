@@ -68,7 +68,7 @@ namespace ApiGateway.Services
                 return result;
             }
 
-            if (loginCommand.RefreshToken != null && !loginCommand.RefreshToken.Equals(user.RefreshToken) || user.RefreshTokenExpiryTime <= DateTime.Now)
+            if (loginCommand.RefreshToken != null && !loginCommand.RefreshToken.Equals(user.RefreshToken) || loginCommand.RefreshToken != null && user.RefreshTokenExpiryTime <= DateTime.Now)
             {
                 result.Error = "unauthorized_client";
                 result.ErrorDescription = "refresh_token invalido";
