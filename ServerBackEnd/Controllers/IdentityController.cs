@@ -1,5 +1,6 @@
 ﻿using ApiGateway.Models;
 using ApiGateway.Services;
+using AspNet.Security.OpenIdConnect.Primitives;
 using MediatR;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Authentication;
@@ -121,6 +122,7 @@ namespace ApiGateway.Controllers
                     });
                     return forbidResult;
                 }
+
                 claimsPrincipal = authorization.Principal;
             }
             else if (request.IsPasswordGrantType())

@@ -209,7 +209,7 @@
       "System.Private.CoreLib.dll": "sha256-cC5\/4QFeEaYp0kJy5xgdDbYrYr8Rflocn4O4\/B\/5l0I=",
       "ReportesData.dll": "sha256-wU68\/QVlj5FlZfawmmdnTkpdbBZyS0d8\/M0Y\/IejWz4=",
       "Shared.dll": "sha256-TYecJZh28x9+GkWFzNh+1kSCbLU0pQw4ux8KZOX5zmU=",
-      "TestingFrontEnd.dll": "sha256-X1+8i5NPSjaZgSU9l2NzfmHxW0QkhcYTDBZvXCLNs9M="
+      "TestingFrontEnd.dll": "sha256-QH4hCSfJppy3xVJ\/XXm0SMANXagShrp6798D\/rMl0Mk="
     },
     "extensions": null,
     "lazyAssembly": null,
@@ -218,7 +218,7 @@
     },
     "pdb": {
       "Shared.pdb": "sha256-OguLZJ3UJ4EvukQ\/shWezSZT+SZEpDCleDt4S6kBexk=",
-      "TestingFrontEnd.pdb": "sha256-2XQtUW0t5EcAwOPAc6QDleqy4U0fhPrNVrIZXfnQFzg="
+      "TestingFrontEnd.pdb": "sha256-\/C6CQP9B4z9hUOktp3p5091Lj013993IPfN8kYnBU7I="
     },
     "runtime": {
       "dotnet.6.0.4.dckq00jdfr.js": "sha256-jOfMbaXeCm62yx0cPv3Z19yvcknDcZyUnruATVPdGPE=",

@@ -21,7 +21,10 @@ namespace ApiGateway.Services
                 UserName = createCommand.UserName,
                 Email = createCommand.Email
             };
-            return await _userManager.CreateAsync(entry, createCommand.Password);
+            var res = await _userManager.CreateAsync(entry, createCommand.Password);
+            var user = await _userManager.FindByNameAsync(createCommand.UserName);
+            if(res.Succeeded) res = await _userManager.AddToRoleAsync(user, "User");
+            return res;
         }
     }
 
