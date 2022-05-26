@@ -1,11 +1,8 @@
 ﻿using ApiGateway.Models;
 using ApiGateway.Services;
-using AspNet.Security.OpenIdConnect.Primitives;
 using MediatR;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using OpenIddict.Abstractions;
@@ -53,7 +50,7 @@ namespace ApiGateway.Controllers
                     return BadRequest(result.Errors);
                 }
                 var res = await _mediator.Send(new UserFindCommand { Email = createCommand.Email });
-                return CreatedAtAction("Find", new { res.Id }, res );
+                return CreatedAtAction("Find", new { res.Id }, res);
             }
             return BadRequest();
         }
@@ -112,7 +109,7 @@ namespace ApiGateway.Controllers
             }
             else if (request.IsAuthorizationCodeGrantType())
             {
-                var authorization = await HttpContext.AuthenticateAsync(OpenIddictServerAspNetCoreDefaults.AuthenticationScheme); 
+                var authorization = await HttpContext.AuthenticateAsync(OpenIddictServerAspNetCoreDefaults.AuthenticationScheme);
                 if (!authorization.Succeeded)
                 {
                     forbidResult.Properties = new AuthenticationProperties(new Dictionary<string, string?>
