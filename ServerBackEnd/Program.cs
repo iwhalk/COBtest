@@ -1,6 +1,5 @@
 using ApiGateway;
 using ApiGateway.Data;
-using ApiGateway.Interfaces;
 using ApiGateway.Models;
 using ApiGateway.Proxies;
 using ApiGateway.Services;
@@ -72,129 +71,128 @@ builder.Services.AddProblemDetails(setup =>
     .AddProblemDetailsConventions()
 .AddJsonOptions(x => x.JsonSerializerOptions.DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull);
 
-builder.Services.AddHttpClient("Reportes", client => client.BaseAddress = new Uri("https://localhost:7293/"));
+////builder.Services.AddHttpClient("Reportes", client => client.BaseAddress = new Uri("https://localhost:7293/"));
 
-builder.Services.AddCors();
+//builder.Services.AddCors();
 
-builder.Services.AddDbContext<ApplicationDbContext>(options =>
-{
-    options.UseSqlServer(connectionString);
-    options.UseOpenIddict();
-});
+////builder.Services.AddDbContext<ApplicationDbContext>(options =>
+////{
+////    options.UseSqlServer(connectionString);
+////    options.UseOpenIddict();
+////});
 
-builder.Services.AddDefaultIdentity<ApplicationUser>(options => {
-    options.SignIn.RequireConfirmedAccount = false;
-    options.Password.RequireDigit = false;
-    options.Password.RequireNonAlphanumeric = false;
-    options.Password.RequireLowercase = false;
-    options.User.RequireUniqueEmail = true;
-})
-    .AddRoles<IdentityRole>()
-    .AddEntityFrameworkStores<ApplicationDbContext>();
+//builder.Services.AddDefaultIdentity<ApplicationUser>(options => {
+//    options.SignIn.RequireConfirmedAccount = false;
+//    options.Password.RequireDigit = false;
+//    options.Password.RequireNonAlphanumeric = false;
+//    options.Password.RequireLowercase = false;
+//    options.User.RequireUniqueEmail = true;
+//})
+//    .AddRoles<IdentityRole>()
+//    .AddEntityFrameworkStores<ApplicationDbContext>();
 
-builder.Services.AddAuthentication(options =>
-{
-    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-    options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
-})
-    .AddJwtBearer(options =>
-    {
-        options.RequireHttpsMetadata = false;
-        options.SaveToken = true;
-        options.TokenValidationParameters = new TokenValidationParameters
-        {
-            ValidateIssuerSigningKey = true,
-            IssuerSigningKey = key,
-            ValidateIssuer = false,
-            ValidateAudience = false,
-            ClockSkew = TimeSpan.Zero
-        };
-    });
-builder.Services.Configure<IdentityOptions>(options =>
-{
-    options.ClaimsIdentity.UserNameClaimType = Claims.Name;
-    options.ClaimsIdentity.UserIdClaimType = Claims.Subject;
-    options.ClaimsIdentity.RoleClaimType = Claims.Role;
-    options.ClaimsIdentity.EmailClaimType = Claims.Email;
-});
+//builder.Services.AddAuthentication(options =>
+//{
+//    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+//    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+//    options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+//})
+//    .AddJwtBearer(options =>
+//    {
+//        options.RequireHttpsMetadata = false;
+//        options.SaveToken = true;
+//        options.TokenValidationParameters = new TokenValidationParameters
+//        {
+//            ValidateIssuerSigningKey = true,
+//            IssuerSigningKey = key,
+//            ValidateIssuer = false,
+//            ValidateAudience = false,
+//            ClockSkew = TimeSpan.Zero
+//        };
+//    });
+//builder.Services.Configure<IdentityOptions>(options =>
+//{
+//    options.ClaimsIdentity.UserNameClaimType = Claims.Name;
+//    options.ClaimsIdentity.UserIdClaimType = Claims.Subject;
+//    options.ClaimsIdentity.RoleClaimType = Claims.Role;
+//    options.ClaimsIdentity.EmailClaimType = Claims.Email;
+//});
 
-builder.Services.AddOpenIddict()
+//builder.Services.AddOpenIddict()
 
-        // Register the OpenIddict core components.
-        .AddCore(options =>
-        {
-            options.UseEntityFrameworkCore()
-                .UseDbContext<ApplicationDbContext>();
-        })
+//        // Register the OpenIddict core components.
+//        //.AddCore(options =>
+//        //{
+//        //    options.UseEntityFrameworkCore()
+//        //        .UseDbContext<ApplicationDbContext>();
+//        //})
 
-        // Register the OpenIddict server components.
-        .AddServer(options =>
-        {
-            options
-                .AllowAuthorizationCodeFlow()
-                .AllowPasswordFlow()
-                .AllowRefreshTokenFlow()
-                .AcceptAnonymousClients();
+//        // Register the OpenIddict server components.
+//        .AddServer(options =>
+//        {
+//            options
+//                .AllowAuthorizationCodeFlow()
+//                .AllowPasswordFlow()
+//                .AllowRefreshTokenFlow()
+//                .AcceptAnonymousClients();
 
-            options
-                .SetAuthorizationEndpointUris("/api/identity/authorize")
-                .SetLogoutEndpointUris("/api/identity/logout")
-                .SetTokenEndpointUris("/api/identity/token")
-                .SetUserinfoEndpointUris("/api/identity/userinfo");
+//            options
+//                .SetAuthorizationEndpointUris("/api/identity/authorize")
+//                .SetLogoutEndpointUris("/api/identity/logout")
+//                .SetTokenEndpointUris("/api/identity/token")
+//                .SetUserinfoEndpointUris("/api/identity/userinfo");
 
-            options
-                .RegisterScopes(Scopes.Email, Scopes.Profile, Scopes.Roles);
+//            options
+//                .RegisterScopes(Scopes.Email, Scopes.Profile, Scopes.Roles);
 
-            // Encryption and signing of tokens
-            options
-                //.AddEphemeralEncryptionKey()
-                .AddDevelopmentEncryptionCertificate()
-                .AddDevelopmentSigningCertificate()
-                .DisableAccessTokenEncryption()
-                .AddSigningKey(key);
+//            // Encryption and signing of tokens
+//            options
+//                //.AddEphemeralEncryptionKey()
+//                .AddDevelopmentEncryptionCertificate()
+//                .AddDevelopmentSigningCertificate()
+//                .DisableAccessTokenEncryption()
+//                .AddSigningKey(key);
 
-            // Register scopes (permissions)
-            options
-                .RegisterScopes("api");
+//            // Register scopes (permissions)
+//            options
+//                .RegisterScopes("api");
 
-            // Register the ASP.NET Core host and configure the ASP.NET Core-specific options.
-            options
-                .UseAspNetCore()
-                .EnableAuthorizationEndpointPassthrough()
-                .EnableLogoutEndpointPassthrough()
-                .EnableStatusCodePagesIntegration()
-                .EnableTokenEndpointPassthrough();
-        })
-        .AddValidation(options =>
-        {
-            options.Configure(o => o.TokenValidationParameters.IssuerSigningKey = key);
-        });
+//            // Register the ASP.NET Core host and configure the ASP.NET Core-specific options.
+//            options
+//                .UseAspNetCore()
+//                .EnableAuthorizationEndpointPassthrough()
+//                .EnableLogoutEndpointPassthrough()
+//                .EnableStatusCodePagesIntegration()
+//                .EnableTokenEndpointPassthrough();
+//        })
+//        .AddValidation(options =>
+//        {
+//            options.Configure(o => o.TokenValidationParameters.IssuerSigningKey = key);
+//        });
 
 
-builder.Services.AddLogging(loggingBuilder => {
-    var loggingSection = builder.Configuration.GetSection("Logging");
-    loggingBuilder.AddFile(loggingSection);
-});
+//builder.Services.AddLogging(loggingBuilder => {
+//    var loggingSection = builder.Configuration.GetSection("Logging");
+//    loggingBuilder.AddFile(loggingSection);
+//});
 
-builder.Services.AddAuthentication();
-builder.Services.AddAuthorization();
+//builder.Services.AddAuthentication();
+//builder.Services.AddAuthorization();
 
-builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen(options => {
-    options.SwaggerDoc("v1", openApiInfo);
-    options.AddSecurityDefinition("Bearer", securityScheme);
-    options.AddSecurityRequirement(securityRequirements);
-});
+//builder.Services.AddControllers();
+//// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+//builder.Services.AddEndpointsApiExplorer();
+//builder.Services.AddSwaggerGen(options => {
+//    options.SwaggerDoc("v1", openApiInfo);
+//    options.AddSecurityDefinition("Bearer", securityScheme);
+//    options.AddSecurityRequirement(securityRequirements);
+//});
 
-builder.Services.AddMediatR(Assembly.Load("ApiGateway"));
+//builder.Services.AddMediatR(Assembly.Load("ApiGateway"));
 
-builder.Services.AddHostedService<Worker>();
-builder.Services.AddScoped<IReportesService, ReportesService>();
+//builder.Services.AddHostedService<Worker>();
 
-builder.Services.AddControllersWithViews();
+//builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
 
 var app = builder.Build();
