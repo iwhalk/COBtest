@@ -30,6 +30,7 @@ builder.Services.AddScoped<ApplicationContext>();
 builder.Services.AddScoped<IReportesService, ReportesService>();
 builder.Services.AddScoped<IGenericRepository, GenericRepository>();
 
+
 // Supply HttpClient instances that include access tokens when making requests to the server project.
 builder.Services.AddScoped(provider =>
 {
