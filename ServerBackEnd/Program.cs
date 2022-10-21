@@ -182,11 +182,12 @@ builder.Services.AddProblemDetails(setup =>
 //builder.Services.AddControllers();
 //// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 //builder.Services.AddEndpointsApiExplorer();
-//builder.Services.AddSwaggerGen(options => {
-//    options.SwaggerDoc("v1", openApiInfo);
-//    options.AddSecurityDefinition("Bearer", securityScheme);
-//    options.AddSecurityRequirement(securityRequirements);
-//});
+builder.Services.AddSwaggerGen(options =>
+{
+    options.SwaggerDoc("v1", openApiInfo);
+    options.AddSecurityDefinition("Bearer", securityScheme);
+    options.AddSecurityRequirement(securityRequirements);
+});
 
 //builder.Services.AddMediatR(Assembly.Load("ApiGateway"));
 
