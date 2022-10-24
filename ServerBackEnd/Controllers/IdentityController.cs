@@ -56,6 +56,66 @@ namespace ApiGateway.Controllers
         }
 
         /// <summary>
+        /// Registrar roles de usuario 
+        /// </summary>
+        /// <param name="addRolesCommand">Parametros de registro</param>
+        /// <returns>Regresa el codigo de estado.</returns>
+        /// <response code="204">Se agregaron correctamento los roles al usuario</response>
+        /// <response code="400">Alguno de los datos requeridos es incorrecto</response>
+        /// <response code="500">Error por excepcion no controlada en el Gateway</response>
+        [HttpPost("addRoles")]
+        [Consumes(MediaTypeNames.Application.Json)]
+        [Produces("application/json", "application/problem+json")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(IEnumerable<IdentityError>), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> AddRoles(AddRolesCommand addRolesCommand)
+        {
+            if (ModelState.IsValid)
+            {
+                var result = await _mediator.Send(addRolesCommand);
+                if (!result.Succeeded)
+                {
+                    return BadRequest(result.Errors);
+                }
+                return NoContent();
+            }
+            return BadRequest();
+        }
+
+
+        /// <summary>
+        /// Registrar roles de usuario 
+        /// </summary>
+        /// <param name="addRolesCommand">Parametros de registro</param>
+        /// <returns>Regresa el codigo de estado.</returns>
+        /// <response code="204">Se agregaron correctamento los roles al usuario</response>
+        /// <response code="400">Alguno de los datos requeridos es incorrecto</response>
+        /// <response code="500">Error por excepcion no controlada en el Gateway</response>
+        //[Obsolete]
+        [HttpPost("addUserRoles")]
+        [Consumes(MediaTypeNames.Application.Json)]
+        [Produces("application/json", "application/problem+json")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(IEnumerable<IdentityError>), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> AddUserRoles(UserAddRolesCommand addRolesCommand)
+        {
+            if (ModelState.IsValid)
+            {
+                var result = await _mediator.Send(addRolesCommand);
+                if (!result.Succeeded)
+                {
+                    return BadRequest(result.Errors);
+                }
+                return NoContent();
+            }
+            return BadRequest();
+        }
+
+        /// <summary>
         /// Consultar usuario
         /// </summary>
         /// <param name="id">Realizar busqueda por Id</param>

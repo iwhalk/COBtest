@@ -87,6 +87,7 @@ builder.Services.AddDefaultIdentity<ApplicationUser>(options =>
     options.Password.RequireDigit = false;
     options.Password.RequireNonAlphanumeric = false;
     options.Password.RequireLowercase = false;
+    options.Password.RequireUppercase = false;
     options.User.RequireUniqueEmail = true;
 })
     .AddRoles<IdentityRole>()
@@ -194,9 +195,13 @@ builder.Services.AddSwaggerGen(options =>
 builder.Services.AddMediatR(Assembly.Load("ApiGateway"));
 
 builder.Services.AddHostedService<Worker>();
+builder.Services.AddScoped<IReportesService, ReportesService>();
+//Mojo
+//builder.Services.AddScoped<IRolService, UserAddRolesEventHandler>();
 
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
+
 
 var app = builder.Build();
 
