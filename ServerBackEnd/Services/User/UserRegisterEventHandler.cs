@@ -20,12 +20,14 @@ namespace ApiGateway.Services
         public async Task<IdentityResult> Handle(UserCreateCommand createCommand, CancellationToken cancellationToken)
         {
             MailService mailService = new MailService();
-            
-            
+
+            createCommand.UserName = createCommand.Email;
             var entry = new ApplicationUser
             {
                 UserName = createCommand.UserName,
-                Email = createCommand.Email
+                Email = createCommand.Email,
+                Name = createCommand.Name ?? "",
+                LastName = createCommand.LastName ?? "",
             };
             var password = GenerarPassword();
             Email email = new Email()
@@ -50,7 +52,7 @@ namespace ApiGateway.Services
                                 "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"};
             Random EleccionAleatoria = new Random();
 
-            for (int i = 0; i < 8; i++)
+            for (int i = 0; i < 12; i++)
             {
                 int LetraAleatoria = EleccionAleatoria.Next(0, 100);
                 int NumeroAleatorio = EleccionAleatoria.Next(0, 9);
@@ -73,6 +75,11 @@ namespace ApiGateway.Services
         public string? Password { get; set; }
         [Required, EmailAddress]
         public string Email { get; set; }
-        public string UserName { get; set; }
+        public string? UserName { get; set; }
+        [Required]
+        public string Name { get; set; }
+
+        [Required]
+        public string LastName { get; set; }
     }
 }
