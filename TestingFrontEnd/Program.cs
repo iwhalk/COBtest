@@ -8,7 +8,7 @@ using Microsoft.Extensions.DependencyInjection;
 using TanvirArjel.Blazor.DependencyInjection;
 using Microsoft.Fast.Components.FluentUI;
 using TestingFrontEnd.Stores;
-using TestingFrontEnd.Services;
+//using TestingFrontEnd.Services;
 using TestingFrontEnd.Interfaces;
 using Microsoft.JSInterop;
 using TestingFrontEnd.Repositories;
@@ -27,7 +27,6 @@ builder.Services.AddComponents();
 builder.Services.AddFluentUIComponents();
 
 builder.Services.AddScoped<ApplicationContext>();
-builder.Services.AddScoped<IReportesService, ReportesService>();
 builder.Services.AddScoped<IGenericRepository, GenericRepository>();
 
 
