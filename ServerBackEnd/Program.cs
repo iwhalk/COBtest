@@ -193,9 +193,12 @@ builder.Services.AddMediatR(Assembly.Load("ApiGateway"));
 
 builder.Services.AddHostedService<Worker>();
 builder.Services.AddScoped<IReportesService, ReportesService>();
+//Mojo
+//builder.Services.AddScoped<IRolService, UserAddRolesEventHandler>();
 
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
+
 
 var app = builder.Build();
 
