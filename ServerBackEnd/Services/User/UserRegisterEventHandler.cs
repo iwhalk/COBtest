@@ -37,11 +37,15 @@ namespace ApiGateway.Services
                 Subject = "Password secreto",
                 Body = password,
             };
-            mailService.MailSender(email);
+            //mailService.MailSender(email);
             var res = await _userManager.CreateAsync(entry, password);
             //_emailservice.sendemail(bodi{ passworf = passwor})
             var user = await _userManager.FindByNameAsync(createCommand.UserName);
-            if(res.Succeeded) res = await _userManager.AddToRoleAsync(user, "User");
+            if (res.Succeeded)
+            {
+                res = await _userManager.AddToRoleAsync(user, "User");
+                mailService.MailSender(email);
+            }
             return res;
         }
 
