@@ -224,3 +224,15 @@ footer {
     border-bottom: 14px solid #669644;
     text-shadow: 0px -2px #669644;
 }
+
+.box {
+    position: relative;    
+}
+
+.center {
+    min-height: 100vh;
+    background-color: blueviolet;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}

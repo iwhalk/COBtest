@@ -1,7 +1,16 @@
 ﻿@page "/authentication/{action}"
 @using Microsoft.AspNetCore.Components.WebAssembly.Authentication
-<RemoteAuthenticatorView Action="@Action" />
 
-@code{
+<RemoteAuthenticatorView Action="@Action">
+    <LoggingIn>
+        <div class="d-flex justify-content-center my-6">
+            <div class="d-flex flex-column">
+                <FluentProgressRing style="width: 102px; height: 102px;"></FluentProgressRing>
+            </div>     
+        </div>
+    </LoggingIn>
+</RemoteAuthenticatorView>
+
+@code {
     [Parameter] public string? Action { get; set; }
 }
