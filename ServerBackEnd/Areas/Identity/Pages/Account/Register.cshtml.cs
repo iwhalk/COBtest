@@ -19,6 +19,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
+using ApiGateway.Services;
+using MediatR;
 
 namespace ApiGateway.Areas.Identity.Pages.Account
 {
@@ -30,12 +32,14 @@ namespace ApiGateway.Areas.Identity.Pages.Account
         private readonly IUserEmailStore<ApplicationUser> _emailStore;
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
+        private readonly IMediator _mediator;
 
         public RegisterModel(
             UserManager<ApplicationUser> userManager,
             IUserStore<ApplicationUser> userStore,
             SignInManager<ApplicationUser> signInManager,
             ILogger<RegisterModel> logger,
+            IMediator mediator,
             IEmailSender emailSender)
         {
             _userManager = userManager;
@@ -43,6 +47,7 @@ namespace ApiGateway.Areas.Identity.Pages.Account
             _emailStore = GetEmailStore();
             _signInManager = signInManager;
             _logger = logger;
+            _mediator = mediator;
             _emailSender = emailSender;
         }
 
@@ -89,6 +94,7 @@ namespace ApiGateway.Areas.Identity.Pages.Account
             [DataType(DataType.Text)]
             [Display(Name = "Apellidos")]
             public string LastName { get; set; }
+
             /// <summary>
             ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
             ///     directly from your code. This API may change or be removed in future releases.
@@ -99,14 +105,14 @@ namespace ApiGateway.Areas.Identity.Pages.Account
             [Display(Name = "Password")]
             public string Password { get; set; }
 
-            //    /// <summary>
-            //    ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-            //    ///     directly from your code. This API may change or be removed in future releases.
-            //    /// </summary>
-            //    [DataType(DataType.Password)]
-            //    [Display(Name = "Confirm password")]
-            //    [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
-            //    public string ConfirmPassword { get; set; }
+            /// <summary>
+            ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
+            ///     directly from your code. This API may change or be removed in future releases.
+            /// </summary>
+            [DataType(DataType.Password)]
+            [Display(Name = "Confirm password")]
+            [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
+            public string ConfirmPassword { get; set; }
         }
 
 
@@ -122,19 +128,14 @@ namespace ApiGateway.Areas.Identity.Pages.Account
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if (ModelState.IsValid)
             {
-                var user = CreateUser();
-                user.Name = Input.Name;
-                user.LastName = Input.LastName;
-                await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
-                await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
-                var result = await _userManager.CreateAsync(user, Input.Password);
-                if (result.Succeeded) result = await _userManager.AddToRoleAsync(user, "User");
+                UserCreateCommand userCreate = new UserCreateCommand { Email = Input.Email, Name = Input.Name, LastName = Input.LastName };
+                var result = await _mediator.Send(userCreate);
 
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User created a new account with password.");
-
-                    var userId = await _userManager.GetUserIdAsync(user); 
+                    var user = await _userManager.FindByEmailAsync(Input.Email);
+                    var userId = await _userManager.GetUserIdAsync(user);
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                     code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
                     var callbackUrl = Url.Page(
@@ -151,7 +152,7 @@ namespace ApiGateway.Areas.Identity.Pages.Account
                         return RedirectToPage("RegisterConfirmation", new { email = Input.Email, returnUrl = returnUrl });
                     }
                     else
-                    {
+                    {                        
                         await _signInManager.SignInAsync(user, isPersistent: false);
                         return LocalRedirect(returnUrl);
                     }
@@ -160,8 +161,8 @@ namespace ApiGateway.Areas.Identity.Pages.Account
                 {
                     ModelState.AddModelError(string.Empty, error.Description);
                 }
-            }
 
+            }
             // If we got this far, something failed, redisplay form
             return Page();
         }
