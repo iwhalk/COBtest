@@ -35,11 +35,11 @@ namespace ApiGateway
                     Type = ClientTypes.Public,
                     PostLogoutRedirectUris =
                 {
-                    new Uri("https://localhost:7151/authentication/logout-callback")
+                    new Uri("https://localhost:7140/authentication/logout-callback")
                 },
                     RedirectUris =
                 {
-                    new Uri("https://localhost:7151/authentication/login-callback")
+                    new Uri("https://localhost:7140/authentication/login-callback")
                 },
                     Permissions =
                 {

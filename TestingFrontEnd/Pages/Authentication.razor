@@ -1,4 +1,5 @@
 ﻿@page "/authentication/{action}"
+
 @using Microsoft.AspNetCore.Components.WebAssembly.Authentication
 
 <RemoteAuthenticatorView Action="@Action">
@@ -9,6 +10,62 @@
             </div>     
         </div>
     </LoggingIn>
+    <CompletingLoggingIn>
+        <div class="d-flex justify-content-center my-6">
+            <div class="d-flex flex-column">
+                <FluentProgressRing style="width: 102px; height: 102px;"></FluentProgressRing>
+            </div>     
+        </div>
+    </CompletingLoggingIn>
+    <LogInFailed>
+        <div class="d-flex justify-content-center my-6">
+            <div class="d-flex flex-column">
+                <FluentProgressRing style="width: 102px; height: 102px;"></FluentProgressRing>
+            </div>     
+        </div>
+    </LogInFailed>
+    <LogOut>
+        <div class="d-flex justify-content-center my-6">
+            <div class="d-flex flex-column">
+                <FluentProgressRing style="width: 102px; height: 102px;"></FluentProgressRing>
+            </div>     
+        </div>
+    </LogOut>  
+    <CompletingLogOut>
+        <div class="d-flex justify-content-center my-6">
+            <div class="d-flex flex-column">
+                <FluentProgressRing style="width: 102px; height: 102px;"></FluentProgressRing>
+            </div>     
+        </div>
+    </CompletingLogOut>  
+    <LogOutFailed>
+        <div class="d-flex justify-content-center my-6">
+            <div class="d-flex flex-column">
+                <FluentProgressRing style="width: 102px; height: 102px;"></FluentProgressRing>
+            </div>     
+        </div>
+    </LogOutFailed>
+    <LogOutSucceeded>
+        <div class="d-flex justify-content-center my-6">
+            <div class="d-flex flex-column">
+                <FluentProgressRing style="width: 102px; height: 102px;"></FluentProgressRing>
+            </div>     
+        </div>
+    </LogOutSucceeded>
+    <UserProfile>
+        <div class="d-flex justify-content-center my-6">
+            <div class="d-flex flex-column">
+                <FluentProgressRing style="width: 102px; height: 102px;"></FluentProgressRing>
+            </div>     
+        </div>
+    </UserProfile>
+    <Registering>
+        <div class="d-flex justify-content-center my-6">
+            <div class="d-flex flex-column">
+                <FluentProgressRing style="width: 102px; height: 102px;"></FluentProgressRing>
+            </div>     
+        </div>
+    </Registering>
 </RemoteAuthenticatorView>
 
 @code {
