@@ -1,6 +1,5 @@
 using ApiGateway;
 using ApiGateway.Data;
-using ApiGateway.Interfaces;
 using ApiGateway.Models;
 using ApiGateway.Proxies;
 using ApiGateway.Services;
@@ -82,11 +81,13 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseOpenIddict();
 });
 
-builder.Services.AddDefaultIdentity<ApplicationUser>(options => {
+builder.Services.AddDefaultIdentity<ApplicationUser>(options =>
+{
     options.SignIn.RequireConfirmedAccount = false;
     options.Password.RequireDigit = false;
     options.Password.RequireNonAlphanumeric = false;
     options.Password.RequireLowercase = false;
+    options.Password.RequireUppercase = false;
     options.User.RequireUniqueEmail = true;
 })
     .AddRoles<IdentityRole>()
@@ -121,14 +122,14 @@ builder.Services.Configure<IdentityOptions>(options =>
 
 builder.Services.AddOpenIddict()
 
-        // Register the OpenIddict core components.
+         //register the openiddict core components.
         .AddCore(options =>
         {
             options.UseEntityFrameworkCore()
                 .UseDbContext<ApplicationDbContext>();
         })
 
-        // Register the OpenIddict server components.
+         //register the openiddict server components.
         .AddServer(options =>
         {
             options
@@ -148,7 +149,7 @@ builder.Services.AddOpenIddict()
 
             // Encryption and signing of tokens
             options
-                //.AddEphemeralEncryptionKey()
+                .AddEphemeralEncryptionKey()
                 .AddDevelopmentEncryptionCertificate()
                 .AddDevelopmentSigningCertificate()
                 .DisableAccessTokenEncryption()
@@ -172,7 +173,8 @@ builder.Services.AddOpenIddict()
         });
 
 
-builder.Services.AddLogging(loggingBuilder => {
+builder.Services.AddLogging(loggingBuilder =>
+{
     var loggingSection = builder.Configuration.GetSection("Logging");
     loggingBuilder.AddFile(loggingSection);
 });
@@ -183,7 +185,8 @@ builder.Services.AddAuthorization();
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen(options => {
+builder.Services.AddSwaggerGen(options =>
+{
     options.SwaggerDoc("v1", openApiInfo);
     options.AddSecurityDefinition("Bearer", securityScheme);
     options.AddSecurityRequirement(securityRequirements);
@@ -193,9 +196,12 @@ builder.Services.AddMediatR(Assembly.Load("ApiGateway"));
 
 builder.Services.AddHostedService<Worker>();
 builder.Services.AddScoped<IReportesService, ReportesService>();
+//Mojo
+//builder.Services.AddScoped<IRolService, UserAddRolesEventHandler>();
 
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
+
 
 var app = builder.Build();
 
