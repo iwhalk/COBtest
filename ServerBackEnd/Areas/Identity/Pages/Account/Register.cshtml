@@ -1,10 +1,8 @@
 ﻿@page
 @model RegisterModel
 @{
-    ViewData["Title"] = "Register";
+    ViewData["Title"] = "";
 }
-
-<h1>@ViewData["Title"]</h1>
 
 <head>
     <meta charset="UTF-8">
@@ -22,14 +20,14 @@
     background: #E3F2F6;">
 </header>
 <body style="overflow: hidden">
-    <div class="position-absolute top-0 d-block d-sm-block d-md-none" style="background-image: url('imagenes/imagenInmuebles.jpg'); width: 100%; height: 100%;"></div>
+    <div class="position-relative top-0 d-block d-sm-block d-md-none" style="background-image: url('~/ServerBackEnd/wwwroot/img/imagenInmuebles.jpg'); width: 100%; height: 100%;"></div>
     <div id="GlobalRegistro" class="position-relative my-10">
         <div id="RecuadrosRegistroDesktop" class="d-flex justify-content-center">
 
             <div id="ImagenRegistro" class="position-relative shadow-sm -ms-25 d-none d-md-block">
                 <img src="~/img/imageninmuebles.jpg" class="rounded-3" style="width: 40.55em;">
             </div>
-            <div id="FormularioRegistro" class="bg-white border rounded-3 shadow-lg my-4-5 position-absolute top-10 start-20 d-none d-md-block">
+            <div id="FormularioRegistro" class="bg-white border rounded-3 shadow-lg mt-5 position-absolute top-10 start-20 d-none d-md-block">
                 <form action="">
                     <div class="d-flex flex-column p-5 px-6">
                         <span class="my-3 mt-4 mb-5 text-center fs-1 fw-bolder">Ingresa tus datos</span>
@@ -42,14 +40,14 @@
                         <span class="d-flex justify-content-center border-start border-5 border-primary rounded shadow my-2 mb-5">
                             <input type="text" class="text-center my-2 mx-3 ps-1 py-2" style="width: 20em; border: 0;" placeholder="Correo">
                         </span>
-                        <button class="btn btn-primary btn-lg shadow mb-4 mt-2">Crear Cuenta</button>
+                        <button class="btn btn-primary btn-lg shadow mb-2 mt-2">Crear Cuenta</button>
                     </div>
                 </form>
             </div>
         </div>
 
-        <div id="RecuadroRegistroMobile" class="d-flex justify-content-center row ps-5 w-90 d-block d-sm-block d-md-none">
-            <div id="FormularioRegistroMobile" class="bg-white border rounded-3 shadow-lg mt-6 start-20 p-1" style="--bs-bg-opacity: .61;">
+        <div id="RecuadroRegistroMobile" class="d-flex justify-content-center row w-90 d-block d-sm-block d-md-none">
+            <div id="FormularioRegistroMobile" class="bg-white border rounded-3 shadow-lg mt-5 start-20 p-1" style="--bs-bg-opacity: .61;">
                 <form action="">
                     <div class="d-flex flex-column px-4 mb-2">
                         <span class="mt-2 mb-4 text-center fs-1 fw-bolder" style="color: #6a6a6a;">Ingresa tus datos</span>
@@ -62,7 +60,7 @@
                         <span class="bg-white d-flex justify-content-center border-start border-5 border-primary rounded shadow my-2">
                             <input type="text" class="text-center my-2 mx-1 ps-1-" style="width: 15em; border: 0;" placeholder="Correo">
                         </span>
-                        <button class="btn btn-primary btn-lg shadow mt-4 mb-2 ms-cuatro w-75">Crear Cuenta</button>
+                        <button class="btn btn-primary btn-lg shadow mt-4 mb-2 ms-5 w-75">Crear Cuenta</button>
                     </div>
                 </form>
             </div>
