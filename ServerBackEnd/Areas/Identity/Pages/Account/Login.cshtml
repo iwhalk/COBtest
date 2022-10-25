@@ -1,6 +1,7 @@
 ﻿@page
 @model LoginModel
 
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -42,19 +43,19 @@
                         <span class="d-flex justify-content-center border-start border-5 border-primary rounded shadow my-2 ps-3">
                             <i class="bi bi-key fs-1 opacity-38"></i>
                             <input asp-for="Input.Password" class="border-start border-1 my-2 mx-3 ps-3" style="width: 15em; border: 0;" placeholder="Contraseña" autocomplete="current-password" aria-required="true"/>
-                            <i class="bi bi-eye pt-tres pe-4"></i>
+                            <i onclick="@Model.ChangeShowPassword()" class="bi bi-eye pt-tres pe-4"></i>
                         </span>                    
                         <span asp-validation-for="Input.Password" class="text-danger"></span>    
                         <a class="text-end fs-6 fst-italic mt-2" style="color: #B5B4CD;">Restablecer Contraseña</a>
-                        <button id="login-submit" class="btn btn-primary btn-lg shadow mb-4 mt-2"><i class="bi bi-box-arrow-in-right p-1"></i>Iniciar Sesión</button>                      
+                        <button id="login-submit" type="submit" class="btn btn-primary btn-lg shadow mb-4 mt-2"><i class="bi bi-box-arrow-in-right p-1"></i>Iniciar Sesión</button>                      
                         <a class="nav-link" href="/Identity/Account/Register">
-                            <span class="text-center fs-6 fst-italic mt-2" style="color: #B5B4CD;">¿Aún no tienes cuenta? Registrate</span>
+                            <span class="text-center fs-6 fst-italic mt-2" style="color: #B5B4CD;">¿Aún no tienes cuenta? Registrate</span>\                           
                         </a>
                     </div>
                 </form>
             </div>
         </div>
-
+        <h1>@Model.ShowPassword</h1>        
         <div id="RecuadroMobile" class="d-flex justify-content-center row w-90 d-block d-sm-block d-md-none">
             <div id="FormularioMobile" class="bg-white border rounded-3 shadow-lg mt-6 start-20 p-1" style="--bs-bg-opacity: .61;">
                 <form id="account" method="post">
@@ -71,9 +72,10 @@
                             <i class="bi bi-key fs-1 opacity-38"></i>
                             <input asp-for="Input.Password" class="border-start border-1 my-2 mx-3 ps-3" style="width: 15em; border: 0;" placeholder="Contraseña" autocomplete="current-password" aria-required="true" />
                             <i class="bi bi-eye pt-2 pe-4"></i>
-                        </span>                        
+                        </span> 
+                        <span asp-validation-for="Input.Password" class="text-danger"></span>
                         <a href="" class="text-end fs-6 fst-italic mt-2" style="color: #717171;">Restablecer Contraseña</a>
-                        <button class="btn btn-primary btn-lg shadow mt-2 mb-2 ms-5 w-75">Iniciar Sesión</button>
+                        <button type="submit" class="btn btn-primary btn-lg shadow mt-2 mb-2 ms-5 w-75">Iniciar Sesión</button>
                     </div>
                 </form>
             </div>
