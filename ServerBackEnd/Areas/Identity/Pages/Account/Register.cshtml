@@ -1,8 +1,5 @@
 ﻿@page
 @model RegisterModel
-@{
-    ViewData["Title"] = "";
-}
 
 <head>
     <meta charset="UTF-8">
@@ -21,64 +18,71 @@
 </header>
 <body style="overflow: hidden">
     <div class="position-relative top-0 d-block d-sm-block d-md-none" style="background-image: url('~/ServerBackEnd/wwwroot/img/imagenInmuebles.jpg'); width: 100%; height: 100%;"></div>
-    <div id="GlobalRegistro" class="position-relative my-10">
-        <div id="RecuadrosRegistroDesktop" class="d-flex justify-content-center">
+        <div id="GlobalRegistro" class="position-relative my-10">
+            <div id="RecuadrosRegistroDesktop" class="d-flex justify-content-center">
 
-            <div id="ImagenRegistro" class="position-relative shadow-sm -ms-25 d-none d-md-block">
-                <img src="~/img/imageninmuebles.jpg" class="rounded-3" style="width: 40.55em;">
+                <div id="ImagenRegistro" class="position-relative shadow-sm -ms-25 d-none d-md-block">
+                    <img src="~/img/imageninmuebles.jpg" class="rounded-3" style="width: 40.55em;">
+                </div>
+                <div id="FormularioRegistro" class="bg-white border rounded-3 shadow-lg mt-5 position-absolute top-10 start-20 d-none d-md-block">
+                    <form method="post">
+                        <div class="d-flex flex-column p-5 px-6">
+                            <span class="my-3 mt-4 mb-5 text-center fs-1 fw-bolder">Ingresa tus datos</span>
+                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                            <span class="d-flex justify-content-center border-start border-5 border-primary rounded shadow my-2">
+                                <input asp-for="Input.Nombres" class="text-center my-2 mx-3 ps-1 py-2" style="width: 20em; border: 0;" placeholder="Nombres" aria-required="true" />
+                            </span>
+                            <span asp-validation-for="Input.Nombres" class="text-danger"></span>
+                            <span class="d-flex justify-content-center border-start border-5 border-primary rounded shadow my-2">
+                                <input asp-for="Input.Apelldios" class="text-center my-2 mx-3 ps-1 py-2" style="width: 20em; border: 0;" placeholder="Apellidos" aria-required="true" />
+                            </span>
+                            <span asp-validation-for="Input.Apelldios" class="text-danger"></span>
+                            <span class="d-flex justify-content-center border-start border-5 border-primary rounded shadow my-2 mb-5">                            
+                                <input asp-for="Input.Email" class="text-center my-2 mx-3 ps-1 py-2" style="width: 20em; border: 0;" placeholder="Correo" aria-required="true" />
+                            </span>
+                            <span asp-validation-for="Input.Email" class="text-danger"></span>
+                            <button type="submit" class="btn btn-primary btn-lg shadow mb-2 mt-2">Crear Cuenta</button>
+                        </div>
+                    </form>
+                </div>
             </div>
-            <div id="FormularioRegistro" class="bg-white border rounded-3 shadow-lg mt-5 position-absolute top-10 start-20 d-none d-md-block">
-                <form action="">
-                    <div class="d-flex flex-column p-5 px-6">
-                        <span class="my-3 mt-4 mb-5 text-center fs-1 fw-bolder">Ingresa tus datos</span>
-                        <span class="d-flex justify-content-center border-start border-5 border-primary rounded shadow my-2">
-                            <input type="text" class="text-center my-2 mx-3 ps-1 py-2" style="width: 20em; border: 0;" placeholder="Nombre">
-                        </span>
-                        <span class="d-flex justify-content-center border-start border-5 border-primary rounded shadow my-2">
-                            <input type="text" class="text-center my-2 mx-3 ps-1 py-2" style="width: 20em; border: 0;" placeholder="Apellido">
-                        </span>
-                        <span class="d-flex justify-content-center border-start border-5 border-primary rounded shadow my-2 mb-5">
-                            <input type="text" class="text-center my-2 mx-3 ps-1 py-2" style="width: 20em; border: 0;" placeholder="Correo">
-                        </span>
-                        <button class="btn btn-primary btn-lg shadow mb-2 mt-2">Crear Cuenta</button>
-                    </div>
-                </form>
+
+            <div id="RecuadroRegistroMobile" class="d-flex justify-content-center row w-90 d-block d-sm-block d-md-none">
+                <div id="FormularioRegistroMobile" class="bg-white border rounded-3 shadow-lg mt-5 start-20 p-1" style="--bs-bg-opacity: .61;">
+                    <form method="post">
+                        <div class="d-flex flex-column px-4 mb-2">
+                            <span class="mt-2 mb-4 text-center fs-1 fw-bolder" style="color: #6a6a6a;">Ingresa tus datos</span>
+                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                            <span class="bg-white d-flex justify-content-center border-start border-5 border-primary rounded shadow my-2">
+                                <input type="text" class="text-center my-2 mx-1 ps-1-" style="width: 15em; border: 0;" placeholder="Nombre">
+                                <input asp-for="Input.Nombres" class="text-center my-2 mx-1 ps-1-" style="width: 15em; border: 0;" placeholder="Nombres" aria-required="true" />
+                            </span>
+                            <span asp-validation-for="Input.Nombres" class="text-danger"></span>
+                            <span class="bg-white d-flex justify-content-center border-start border-5 border-primary rounded shadow my-2">
+                                <input type="text" class="text-center my-2 mx-1 ps-1-" style="width: 15em; border: 0;" placeholder="Apellido">
+                                <input asp-for="Input.Apelldios" class="text-center my-2 mx-1 ps-1-" style="width: 15em; border: 0;" placeholder="Apellidos" aria-required="true" />
+                            </span>
+                            <span asp-validation-for="Input.Apelldios" class="text-danger"></span>
+                            <span class="bg-white d-flex justify-content-center border-start border-5 border-primary rounded shadow">                            
+                                <input asp-for="Input.Email" class="text-center my-2 mx-1 ps-1-" style="width: 15em; border: 0;" placeholder="Correo" aria-required="true" />
+                            </span>
+                            <span asp-validation-for="Input.Email" class="text-danger my-2"></span>
+                            <button type="submit" class="btn btn-primary btn-lg shadow mt-4 mb-2 ms-5 w-75">Crear Cuenta</button>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
 
-        <div id="RecuadroRegistroMobile" class="d-flex justify-content-center row w-90 d-block d-sm-block d-md-none">
-            <div id="FormularioRegistroMobile" class="bg-white border rounded-3 shadow-lg mt-5 start-20 p-1" style="--bs-bg-opacity: .61;">
-                <form action="">
-                    <div class="d-flex flex-column px-4 mb-2">
-                        <span class="mt-2 mb-4 text-center fs-1 fw-bolder" style="color: #6a6a6a;">Ingresa tus datos</span>
-                        <span class="bg-white d-flex justify-content-center border-start border-5 border-primary rounded shadow my-2">
-                            <input type="text" class="text-center my-2 mx-1 ps-1-" style="width: 15em; border: 0;" placeholder="Nombre">
-                        </span>
-                        <span class="bg-white d-flex justify-content-center border-start border-5 border-primary rounded shadow my-2">
-                            <input type="text" class="text-center my-2 mx-1 ps-1-" style="width: 15em; border: 0;" placeholder="Apellido">
-                        </span>
-                        <span class="bg-white d-flex justify-content-center border-start border-5 border-primary rounded shadow my-2">
-                            <input type="text" class="text-center my-2 mx-1 ps-1-" style="width: 15em; border: 0;" placeholder="Correo">
-                        </span>
-                        <button class="btn btn-primary btn-lg shadow mt-4 mb-2 ms-5 w-75">Crear Cuenta</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-
-    <footer class="position-absolute -bottom-20 -end-10 d-none d-md-block"
-            style="width: 400px;
-        height: 400px;
-        -moz-border-radius: 50%;
-        -webkit-border-radius: 50%;
-        border-radius: 50%;
-        background: #2B286F;">
-    </footer>
-
-
-    <script src="node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
-    </div>
+        <footer class="position-absolute -bottom-20 -end-10 d-none d-md-block"
+                style="width: 400px;
+            height: 400px;
+            -moz-border-radius: 50%;
+            -webkit-border-radius: 50%;
+            border-radius: 50%;
+            background: #2B286F;">
+        </footer>    
+     </div>
 </body>
 
 @*<div class="row">
