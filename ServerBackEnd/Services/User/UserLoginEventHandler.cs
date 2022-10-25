@@ -19,7 +19,7 @@ using System.Text;
 using System.Text.Json.Serialization;
 using static OpenIddict.Abstractions.OpenIddictConstants;
 
-namespace ApiGateway.Services
+namespace ApiGateway.Services.User
 {
     public class UserLoginEventHandler : IRequestHandler<UserLoginCommand, IdentityAccess>
     {
@@ -106,7 +106,7 @@ namespace ApiGateway.Services
 
             var claimsIdentity = new ClaimsIdentity(claims, OpenIddictServerAspNetCoreDefaults.AuthenticationScheme);
 
-           return new ClaimsPrincipal(claimsIdentity);
+            return new ClaimsPrincipal(claimsIdentity);
         }
 
         private void GenerateJwtToken(ApplicationUser user, IdentityAccess identity)

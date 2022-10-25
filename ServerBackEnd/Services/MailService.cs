@@ -7,7 +7,7 @@ using MimeKit;
 using ApiGateway.Data;
 using static System.Net.Mime.MediaTypeNames;
 
-namespace ApiGateway.Service
+namespace ApiGateway.Services
 {
     public class MailService
     {
@@ -20,7 +20,7 @@ namespace ApiGateway.Service
                 //From address
                 message.From.Add(new MailboxAddress("PROSIS", "send1@grupo-prosis.com"));
                 //To address
-                message.To.Add(new MailboxAddress(email.Name,email.To));
+                message.To.Add(new MailboxAddress(email.Name, email.To));
                 //Subject
                 message.Subject = email.Subject;
                 //Body
@@ -41,10 +41,10 @@ namespace ApiGateway.Service
             }
             catch (Exception ex)
             {
-                
+
                 return false;
             }
         }
     }
-    
+
 }

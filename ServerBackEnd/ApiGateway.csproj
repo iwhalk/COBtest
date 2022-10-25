@@ -36,7 +36,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ReportesInmobiliaria\ReportesInmobiliaria.csproj" />
     <ProjectReference Include="..\Shared\Shared.csproj" />
     <ProjectReference Include="..\TestingFrontEnd\TestingFrontEnd.csproj" />
   </ItemGroup>

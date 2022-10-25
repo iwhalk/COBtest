@@ -1,5 +1,5 @@
 ﻿using ApiGateway.Models;
-using ApiGateway.Services;
+using ApiGateway.Services.User;
 using MediatR;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Authentication;
