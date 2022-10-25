@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inmuebles</title>
+
+    <link rel="stylesheet" href="styles.css"/>
+    <link rel="stylesheet" href="/node_modules/bootstrap-icons/font/bootstrap-icons.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+</head>
+<body class="body">
+    <nav class="navbar navbar-dark fondo">
+        <div class="container-fluid fondo">
+            <a class="navbar-brand" href="#">
+                <img src="/Shared/Assets/BLANCO CON COLOR1.png" class="logo" alt="" width="10%">
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasDarkNavbar" aria-controls="offcanvasDarkNavbar">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+        </div>
+    </nav>
+    <div class="cont">
+    </div>
+    <footer class="footer"></footer>
+</body>
+</html>
+
+<style>
+    .body{
+        margin: 0;
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+    }
+    .paragraph{
+        padding: 1em;
+        margin: 0;
+    }
+    .footer{
+        background-color: #2C2B7B;
+        padding: 1em 0;
+        text-align: center;
+        margin-top: auto;
+    }
+    .cont {
+        min-height: 90.2vh;
+        background-image: url(../Assets/casa.jpeg);
+        background-size: 100% auto ;
+        background-position: center top;
+        background-repeat: no-repeat;
+        margin-top: 8px;
+        opacity: .45;
+    }
+    .fondo{
+        background-color: #2C2B7B;
+        height: 60px;
+    }
+    .logo { 
+        margin: -30px; 
+        margin-left:0px; 
+        width: 150px; 
+        height: 120px; 
+    }
+</style>  
