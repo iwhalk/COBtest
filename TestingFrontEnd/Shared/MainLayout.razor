@@ -1,14 +1,12 @@
-﻿@inherits LayoutComponentBase
+﻿@using TestingFrontEnd.Components
+@inherits LayoutComponentBase
 
-<div class="">
-    @*<div class="sidebar">
-        <NavMenu />
-    </div>*@
-
-    <main>       
+<div class="">   
+    <Navbar></Navbar>
+    <main>
+        <div class="">
             @Body
-    </main>
-
-    
+        </div>
+    </main>    
 </div>
 

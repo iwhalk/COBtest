@@ -1,7 +1,6 @@
 ﻿@page
 @model LoginModel
 
-
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -30,7 +29,7 @@
                 <img src="~/img/imagenInmuebles.jpg" class="rounded-3" style="width: 40.55em;">
             </div>            
             <div id="FormularioDesktop" class="bg-white border rounded-3 shadow-lg my-6 position-absolute start-20 d-none d-md-block">
-                <form method="post">
+                <form id="account" method="post">
                     <div class="d-flex flex-column p-5 px-6">
                         <span class="my-3 mb-5 text-center fs-1 fw-bolder">Login</span>
                         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
@@ -43,18 +42,19 @@
                         <span class="d-flex justify-content-center border-start border-5 border-primary rounded shadow my-2 ps-3">
                             <i class="bi bi-key fs-1 opacity-38"></i>
                             <input asp-for="Input.Password" class="border-start border-1 my-2 mx-3 ps-3" style="width: 15em; border: 0;" placeholder="Contraseña" autocomplete="current-password" aria-required="true"/>
-                            <i onclick="@Model.ChangeShowPassword()" class="bi bi-eye pt-tres pe-4"></i>
+                            <i class="bi bi-eye pt-tres pe-4"></i>
                         </span>                    
                         <span asp-validation-for="Input.Password" class="text-danger"></span>    
                         <a class="text-end fs-6 fst-italic mt-2" style="color: #B5B4CD;">Restablecer Contraseña</a>
-                        <button id="login-submit" type="submit" class="btn btn-primary btn-lg shadow mb-4 mt-2"><i class="bi bi-box-arrow-in-right p-1"></i>Iniciar Sesión</button>                      
+                        <button id="login-submit" class="btn btn-primary btn-lg shadow mb-4 mt-2"><i class="bi bi-box-arrow-in-right p-1"></i>Iniciar Sesión</button>                      
                         <a class="nav-link" href="/Identity/Account/Register">
-                            <span class="text-center fs-6 fst-italic mt-2" style="color: #B5B4CD;">¿Aún no tienes cuenta? Registrate</span>                         
+                            <span class="text-center fs-6 fst-italic mt-2" style="color: #B5B4CD;">¿Aún no tienes cuenta? Registrate</span>
                         </a>
                     </div>
                 </form>
             </div>
-        </div>               
+        </div>
+
         <div id="RecuadroMobile" class="d-flex justify-content-center row w-90 d-block d-sm-block d-md-none">
             <div id="FormularioMobile" class="bg-white border rounded-3 shadow-lg mt-6 start-20 p-1" style="--bs-bg-opacity: .61;">
                 <form id="account" method="post">
@@ -71,10 +71,9 @@
                             <i class="bi bi-key fs-1 opacity-38"></i>
                             <input asp-for="Input.Password" class="border-start border-1 my-2 mx-3 ps-3" style="width: 15em; border: 0;" placeholder="Contraseña" autocomplete="current-password" aria-required="true" />
                             <i class="bi bi-eye pt-2 pe-4"></i>
-                        </span> 
-                        <span asp-validation-for="Input.Password" class="text-danger"></span>
+                        </span>                        
                         <a href="" class="text-end fs-6 fst-italic mt-2" style="color: #717171;">Restablecer Contraseña</a>
-                        <button type="submit" class="btn btn-primary btn-lg shadow mt-2 mb-2 ms-5 w-75">Iniciar Sesión</button>
+                        <button class="btn btn-primary btn-lg shadow mt-2 mb-2 ms-5 w-75">Iniciar Sesión</button>
                     </div>
                 </form>
             </div>
@@ -85,7 +84,9 @@
             <a class="nav-link" href="/Identity/Account/Register">
                 <span class="text-center fs-6 fst-italic mt-5 ms-4 ps-5" style="color: #B5B4CD;">¿Aún no tienes cuenta? Registrate</span>
             </a>
-        </div>        
+        </div>
+
+        
     </div>
 
     <footer class="position-absolute -bottom-20 -end-10  d-none d-md-block" 
@@ -98,50 +99,6 @@
     </footer>    
    </div>        
 </body>
-
-@*<div class="row">
-    <div class="col-md-4">
-        <section>
-            <form id="account" method="post">
-                <h2>Autenticar usuario local.</h2>
-                <hr />
-                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                <div class="form-floating">
-                    <input asp-for="Input.Email" class="form-control" autocomplete="username" aria-required="true" />
-                    <label asp-for="Input.Email" class="form-label"></label>
-                    <span asp-validation-for="Input.Email" class="text-danger"></span>
-                </div>
-                <div class="form-floating">
-                    <input asp-for="Input.Password" class="form-control" autocomplete="current-password" aria-required="true" />
-                    <label asp-for="Input.Password" class="form-label"></label>
-                    <span asp-validation-for="Input.Password" class="text-danger"></span>
-                </div>
-                <div>
-                    <div class="checkbox">
-                        <label asp-for="Input.RememberMe" class="form-label">
-                            <input class="form-check-input" asp-for="Input.RememberMe" />
-                            @Html.DisplayNameFor(m => m.Input.RememberMe)
-                        </label>
-                    </div>
-                </div>
-                <div>
-                    <button id="login-submit" type="submit" class="w-100 btn btn-lg btn-primary">Log in</button>
-                </div>
-                @* <div>
-                <p>
-                <a id="forgot-password" asp-page="./ForgotPassword">Forgot your password?</a>
-                </p>
-                <p>
-                <a asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl">Registrar nuevo usuario</a>
-                </p>
-                <p>
-                <a id="resend-confirmation" asp-page="./ResendEmailConfirmation">Resend email confirmation</a>
-                </p>
-                </div>
-            </form>
-        </section>
-    </div>
-</div>*@
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />        
