@@ -20,6 +20,7 @@ using System.Text;
 using static OpenIddict.Abstractions.OpenIddictConstants;
 using Microsoft.AspNetCore.Identity;
 using Hellang.Middleware.ProblemDetails.Mvc;
+using System.Security.Cryptography.X509Certificates;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -27,7 +28,11 @@ var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 var secretKey = Encoding.ASCII.GetBytes(builder.Configuration.GetValue<string>("SecretKey"));
 var key = new SymmetricSecurityKey(secretKey);
-
+var thumbprint = "A2956D21BD9AD1B06AD9DBE8949782B0D8210948";
+var certificate = new X509Certificate2(
+    "cert.pfx",
+    "12345"
+);
 var securityScheme = new OpenApiSecurityScheme()
 {
     Name = "Authorization",
@@ -57,6 +62,16 @@ var openApiInfo = new OpenApiInfo()
     Title = "API Gateway",
     Description = ""
 };
+if (builder.Environment.IsDevelopment())
+{
+
+}
+else
+{
+    var bytes = File.ReadAllBytes($"/var/ssl/private/{thumbprint}.p12");
+    certificate = new X509Certificate2(bytes);
+
+}
 
 builder.Services.AddProblemDetails(setup =>
 {
@@ -149,9 +164,10 @@ builder.Services.AddOpenIddict()
 
             // Encryption and signing of tokens
             options
-                .AddEphemeralEncryptionKey()
-                .AddDevelopmentEncryptionCertificate()
-                .AddDevelopmentSigningCertificate()
+                //.AddEphemeralEncryptionKey()
+                .AddEncryptionCertificate(certificate)
+                .AddSigningCertificate(certificate)
+                //.AddDevelopmentSigningCertificate()
                 .DisableAccessTokenEncryption()
                 .AddSigningKey(key);
 
@@ -194,7 +210,8 @@ builder.Services.AddSwaggerGen(options =>
 
 builder.Services.AddMediatR(Assembly.Load("ApiGateway"));
 
-//builder.Services.AddHostedService<Worker>();
+builder.Services.AddHostedService<Worker>();
+
 //builder.Services.AddScoped<IReportesService, ReportesService>();
 //Mojo
 //builder.Services.AddScoped<IRolService, UserAddRolesEventHandler>();

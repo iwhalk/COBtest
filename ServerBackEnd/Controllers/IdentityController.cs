@@ -45,7 +45,7 @@ namespace ApiGateway.Controllers
             if (ModelState.IsValid)
             {
                 var result = await _mediator.Send(createCommand);
-                if (!result.Succeeded)
+                if (!result.Succeeded) 
                 {
                     return BadRequest(result.Errors);
                 }
