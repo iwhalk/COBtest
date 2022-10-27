@@ -21,6 +21,7 @@ using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 using ApiGateway.Services;
 using MediatR;
+using ApiGateway.Services.User;
 
 namespace ApiGateway.Areas.Identity.Pages.Account
 {

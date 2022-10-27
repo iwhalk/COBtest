@@ -10,12 +10,6 @@ namespace Shared.Models
 {
     public partial class AspNetUser
     {
-        public AspNetUser()
-        {
-            AspNetUserRoles = new HashSet<AspNetUserRole>();
-            LogTagLists = new HashSet<LogTagList>();
-        }
-
         [Key]
         public string Id { get; set; }
         [StringLength(256)]
@@ -39,15 +33,10 @@ namespace Shared.Models
         public DateTimeOffset? LockoutEnd { get; set; }
         public bool LockoutEnabled { get; set; }
         public int AccessFailedCount { get; set; }
-        public bool? Active { get; set; }
         [StringLength(50)]
         public string Name { get; set; }
         [StringLength(50)]
         public string LastName { get; set; }
-
-        [InverseProperty("User")]
-        public virtual ICollection<AspNetUserRole> AspNetUserRoles { get; set; }
-        [InverseProperty("IdUserNavigation")]
-        public virtual ICollection<LogTagList> LogTagLists { get; set; }
+        public bool? Active { get; set; }
     }
 }
