@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Identity;
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 
-namespace ApiGateway.Services
+namespace ApiGateway.Services.User
 {
     public class UserFindEventHandler : IRequestHandler<UserFindCommand, User>
     {
