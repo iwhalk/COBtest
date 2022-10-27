@@ -1,26 +1,22 @@
 using ApiGateway;
 using ApiGateway.Data;
+using ApiGateway.Interfaces;
 using ApiGateway.Models;
-using ApiGateway.Proxies;
 using ApiGateway.Services;
 using Hellang.Middleware.ProblemDetails;
-using MediatR;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.SqlServer;
-using Microsoft.Extensions.Hosting;
-using Microsoft.IdentityModel.Tokens;
-using Microsoft.Net.Http.Headers;
-using Microsoft.OpenApi.Models;
-using System.Reflection;
-using System.Text;
-using static OpenIddict.Abstractions.OpenIddictConstants;
-using Microsoft.AspNetCore.Identity;
 using Hellang.Middleware.ProblemDetails.Mvc;
+using MediatR;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
+using Quartz;
+using System.Reflection;
 using System.Security.Cryptography.X509Certificates;
+using System.Text;
+//using static ApiGateway.Services.UsuariosService;
+using static OpenIddict.Abstractions.OpenIddictConstants;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -28,8 +24,9 @@ var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 var secretKey = Encoding.ASCII.GetBytes(builder.Configuration.GetValue<string>("SecretKey"));
 var key = new SymmetricSecurityKey(secretKey);
-var thumbprint = "A2956D21BD9AD1B06AD9DBE8949782B0D8210948";
-X509Certificate2 certificate = null;
+var certificateThumbprint = Encoding.ASCII.GetBytes(builder.Configuration.GetValue<string>("CertificateThumbprint"));
+X509Certificate2? certificate = null;
+    
 var securityScheme = new OpenApiSecurityScheme()
 {
     Name = "Authorization",
@@ -39,6 +36,7 @@ var securityScheme = new OpenApiSecurityScheme()
     In = ParameterLocation.Header,
     Description = "JWT Authentication"
 };
+
 var securityRequirements = new OpenApiSecurityRequirement()
 {
     {
@@ -68,20 +66,18 @@ if (builder.Environment.IsDevelopment())
 }
 else
 {
-    byte[] bytes = null;
+    byte[]? bytes = null;
     try
     {
-        bytes = File.ReadAllBytes($"/var/ssl/private/{thumbprint}.p12");
+        bytes = File.ReadAllBytes($"/var/ssl/private/{certificateThumbprint}.p12");
         Console.WriteLine(bytes);
     }
     catch (Exception e)
     {
         Console.WriteLine(e.Message);
-        throw;
     }
     if(bytes != null)
     certificate = new X509Certificate2(bytes);
-
 }
 
 builder.Services.AddProblemDetails(setup =>
@@ -137,7 +133,15 @@ builder.Services.AddAuthentication(options =>
             ValidateAudience = false,
             ClockSkew = TimeSpan.Zero
         };
+    })
+    .AddCookie(options =>
+    {
+        options.LoginPath = "/login";
+        options.LogoutPath = "/logout";
+        options.ExpireTimeSpan = TimeSpan.FromMinutes(50);
+        options.SlidingExpiration = false;
     });
+
 builder.Services.Configure<IdentityOptions>(options =>
 {
     options.ClaimsIdentity.UserNameClaimType = Claims.Name;
@@ -146,16 +150,26 @@ builder.Services.Configure<IdentityOptions>(options =>
     options.ClaimsIdentity.EmailClaimType = Claims.Email;
 });
 
+builder.Services.AddQuartz(options =>
+{
+    options.UseMicrosoftDependencyInjectionJobFactory();
+    options.UseSimpleTypeLoader();
+    options.UseInMemoryStore();
+});
+builder.Services.AddQuartzHostedService(options => options.WaitForJobsToComplete = true);
+
 builder.Services.AddOpenIddict()
 
-         //register the openiddict core components.
+        // Register the OpenIddict core components.
         .AddCore(options =>
         {
             options.UseEntityFrameworkCore()
                 .UseDbContext<ApplicationDbContext>();
+
+            options.UseQuartz();
         })
 
-         //register the openiddict server components.
+        // Register the OpenIddict server components.
         .AddServer(options =>
         {
             options
@@ -174,13 +188,20 @@ builder.Services.AddOpenIddict()
                 .RegisterScopes(Scopes.Email, Scopes.Profile, Scopes.Roles);
 
             // Encryption and signing of tokens
-            options
-                //.AddEphemeralEncryptionKey()
-                .AddEncryptionCertificate(certificate)
-                .AddSigningCertificate(certificate)
-                //.AddDevelopmentSigningCertificate()
-                .DisableAccessTokenEncryption()
-                .AddSigningKey(key);
+            if (certificate == null)
+            {
+                options
+                    .AddEphemeralEncryptionKey()
+                    .AddDevelopmentSigningCertificate();
+            }
+            else
+            {
+                options
+                    .AddEncryptionCertificate(certificate)
+                    .AddSigningCertificate(certificate)
+                    .DisableAccessTokenEncryption()
+                    .AddSigningKey(key);
+            }
 
             // Register scopes (permissions)
             options
@@ -196,14 +217,32 @@ builder.Services.AddOpenIddict()
         })
         .AddValidation(options =>
         {
+            options.UseLocalServer();
             options.Configure(o => o.TokenValidationParameters.IssuerSigningKey = key);
+            options.UseAspNetCore();
         });
 
 
 builder.Services.AddLogging(loggingBuilder =>
 {
     var loggingSection = builder.Configuration.GetSection("Logging");
-    loggingBuilder.AddFile(loggingSection);
+    loggingBuilder.AddFile(loggingSection, fileLoggerOpts => {
+        fileLoggerOpts.FormatLogEntry = (msg) =>
+        {
+            var sb = new System.Text.StringBuilder();
+            StringWriter sw = new StringWriter(sb);
+            var jsonWriter = new Newtonsoft.Json.JsonTextWriter(sw);
+            jsonWriter.WriteStartArray();
+            jsonWriter.WriteValue(DateTime.Now.ToString("o"));
+            jsonWriter.WriteValue(msg.LogLevel.ToString());
+            jsonWriter.WriteValue(msg.LogName);
+            jsonWriter.WriteValue(msg.EventId.Id);
+            jsonWriter.WriteValue(msg.Message);
+            jsonWriter.WriteValue(msg.Exception?.ToString());
+            jsonWriter.WriteEndArray();
+            return sb.ToString();
+        };
+});
 });
 
 builder.Services.AddAuthentication();
@@ -217,19 +256,18 @@ builder.Services.AddSwaggerGen(options =>
     options.SwaggerDoc("v1", openApiInfo);
     options.AddSecurityDefinition("Bearer", securityScheme);
     options.AddSecurityRequirement(securityRequirements);
+    // Set the comments path for the Swagger JSON and UI.
+    var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+    var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+    options.IncludeXmlComments(xmlPath);
 });
 
 builder.Services.AddMediatR(Assembly.Load("ApiGateway"));
 
 //builder.Services.AddHostedService<Worker>();
 
-//builder.Services.AddScoped<IReportesService, ReportesService>();
-//Mojo
-//builder.Services.AddScoped<IRolService, UserAddRolesEventHandler>();
-
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
-
 
 var app = builder.Build();
 
