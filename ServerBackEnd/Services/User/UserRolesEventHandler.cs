@@ -7,7 +7,7 @@ using Shared;
 using System.ComponentModel.DataAnnotations;
 using System.Security.Claims;
 
-namespace ApiGateway.Services
+namespace ApiGateway.Services.User
 {
 
 
@@ -26,46 +26,46 @@ namespace ApiGateway.Services
 
         public async Task<IdentityResult> Handle(UserAddRolesCommand addRolesCommand, CancellationToken cancellationToken)
         {
-        var res = IdentityResult.Failed();
-        var user = await _userManager.FindByIdAsync(addRolesCommand.UserId);
-        if (user == null)
-        {
-            res = IdentityResult.Failed(_userManager.ErrorDescriber.InvalidUserName(addRolesCommand.UserId));
-            return res;
-        }
-
-        if (addRolesCommand.Role != null)
-        {
-            var roleExists = await _roleManager.RoleExistsAsync(addRolesCommand.Role);
-            if (!roleExists)
+            var res = IdentityResult.Failed();
+            var user = await _userManager.FindByIdAsync(addRolesCommand.UserId);
+            if (user == null)
             {
-                res = IdentityResult.Failed(_userManager.ErrorDescriber.InvalidRoleName(addRolesCommand.Role));
+                res = IdentityResult.Failed(_userManager.ErrorDescriber.InvalidUserName(addRolesCommand.UserId));
                 return res;
             }
 
-            res = await _userManager.AddToRoleAsync(user, addRolesCommand.Role);
-        }
-
-        if (addRolesCommand.Roles != null)
-        {
-            foreach (var role in addRolesCommand.Roles)
+            if (addRolesCommand.Role != null)
             {
-                var roleExists = await _roleManager.RoleExistsAsync(role);
+                var roleExists = await _roleManager.RoleExistsAsync(addRolesCommand.Role);
                 if (!roleExists)
                 {
-                    res = IdentityResult.Failed(_userManager.ErrorDescriber.InvalidRoleName(role));
+                    res = IdentityResult.Failed(_userManager.ErrorDescriber.InvalidRoleName(addRolesCommand.Role));
                     return res;
                 }
+
+                res = await _userManager.AddToRoleAsync(user, addRolesCommand.Role);
             }
-            res = await _userManager.AddToRolesAsync(user, addRolesCommand.Roles);
+
+            if (addRolesCommand.Roles != null)
+            {
+                foreach (var role in addRolesCommand.Roles)
+                {
+                    var roleExists = await _roleManager.RoleExistsAsync(role);
+                    if (!roleExists)
+                    {
+                        res = IdentityResult.Failed(_userManager.ErrorDescriber.InvalidRoleName(role));
+                        return res;
+                    }
+                }
+                res = await _userManager.AddToRolesAsync(user, addRolesCommand.Roles);
+            }
+
+            //await _logRolInsertion.InsertLogAddOrRemoveRole(addRolesCommand);
+
+
+            return res;
         }
-
-        //await _logRolInsertion.InsertLogAddOrRemoveRole(addRolesCommand);
-
-
-        return res;
     }
-}
 
     public class UserRemoveRolesEventHandler : IRequestHandler<UserRemoveRolesCommand, IdentityResult>
     {

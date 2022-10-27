@@ -1,4 +1,4 @@
-﻿using ApiGateway.Services;
+﻿using ApiGateway.Services.User;
 using Microsoft.AspNetCore.Identity;
 using Shared;
 
