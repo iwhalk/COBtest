@@ -25,21 +25,21 @@ namespace ApiGateway
 
             var manager = scope.ServiceProvider.GetRequiredService<IOpenIddictApplicationManager>();
 
-            if (await manager.FindByClientIdAsync("blazor-client") is null)
+            if (await manager.FindByClientIdAsync("blazor-azure") is null)
             {
                 await manager.CreateAsync(new OpenIddictApplicationDescriptor
                 {
-                    ClientId = "blazor-client",
+                    ClientId = "blazor-azure",
                     ConsentType = ConsentTypes.Explicit,
-                    DisplayName = "Blazor client application",
+                    DisplayName = "Blazor azure application",
                     Type = ClientTypes.Public,
                     PostLogoutRedirectUris =
                 {
-                    new Uri("https://localhost:7151/authentication/logout-callback")
+                    new Uri("https://proyectoinmobiliaria.azurewebsites.net/authentication/logout-callback")
                 },
                     RedirectUris =
                 {
-                    new Uri("https://localhost:7151/authentication/login-callback")
+                    new Uri("https://proyectoinmobiliaria.azurewebsites.net/authentication/login-callback")
                 },
                     Permissions =
                 {
