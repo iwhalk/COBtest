@@ -318,31 +318,31 @@ namespace ApiGateway.Controllers
         /// <response code="200">Regresa el objeto solicitado</response>
         /// <response code="400">Alguno de los datos requeridos es incorrecto</response>
         /// <response code="500">Error por excepcion no controlada en el Gateway</response>
-        //[HttpPost("refreshtoken")]
-        //[Produces("application/json", "application/problem+json")]
-        //[ProducesResponseType(StatusCodes.Status200OK)]
-        //[ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]
-        //[ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
-        //public async Task<IActionResult> RefreshToken()
-        //{
-        //    if (User.Identity.IsAuthenticated)
-        //    {
-        //        UserLoginCommand loginCommand = new()
-        //        {
-        //            Email = (User.Claims.FirstOrDefault(x => x.Type.Equals(ClaimTypes.Email))?.Value),
-        //            RefreshToken = Request.Cookies["refreshToken"],
-        //        };
-        //        var result = await _mediator.Send(loginCommand);
-        //        if (!result.Succeeded)
-        //        {
-        //            return BadRequest(result);
-        //        }
-        //        RefreshTokenCookie(result.RefreshToken);
-        //        return Ok(result);
-        //    }
-        //    return BadRequest();
+        [HttpPost("refreshtoken")]
+        [Produces("application/json", "application/problem+json")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> RefreshToken()
+        {
+            if (User.Identity.IsAuthenticated)
+            {
+                UserLoginCommand loginCommand = new()
+                {
+                    Email = (User.Claims.FirstOrDefault(x => x.Type.Equals(ClaimTypes.Email))?.Value),
+                    RefreshToken = Request.Cookies["refreshToken"],
+                };
+                var result = await _mediator.Send(loginCommand);
+                if (!result.Succeeded)
+                {
+                    return BadRequest(result);
+                }
+                RefreshTokenCookie(result.RefreshToken);
+                return Ok(result);
+            }
+            return BadRequest();
 
-        //}
+        }
 
         private void RefreshTokenCookie(string refreshToken)
         {
