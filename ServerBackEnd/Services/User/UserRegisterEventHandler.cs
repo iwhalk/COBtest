@@ -2,11 +2,9 @@
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 using System.ComponentModel.DataAnnotations;
-using ApiGateway.Services;
-using ApiGateway.Service;
 using ApiGateway.Data;
 
-namespace ApiGateway.Services
+namespace ApiGateway.Services.User
 {
     public class UserRegisterEventHandler : IRequestHandler<UserCreateCommand, IdentityResult>
     {
