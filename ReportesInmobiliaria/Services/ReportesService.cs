@@ -256,7 +256,7 @@ namespace ReportesInmobiliaria.Services
             IQueryable<LogRole> logRoles = _dbContext.LogRoles;
             IQueryable<LogTagList> logTagLists = _dbContext.LogTagLists;
             IQueryable<LogRoleModule> logRoleModules = _dbContext.LogRoleModules;
-            IQueryable<AspNetUser> users = _dbContext.AspNetUsers.Include(x => x.AspNetUserRoles);
+            IQueryable<AspNetUser> users = _dbContext.AspNetUsers;
             IQueryable<ActionCatalog> actions = _dbContext.ActionCatalogs;
             IQueryable<AspNetRole> roles = _dbContext.AspNetRoles;
             IQueryable<Shared.Models.Module> modules = _dbContext.Modules;
