@@ -1,31 +1,26 @@
-@page "/Actas"
-@attribute [Authorize]
-<PageTitle>Actas</PageTitle>
+﻿@page "/IndexReceptionCertificates"
 
 <body>    
-    <div id="ContenedorActas" class="bg-[url('/assets/img/fondocasa.png')] imgfondo">
+    <div id="ContenedorHome" class="bg-[url('/assets/img/fondocasa.png')] imgfondo">    
         <div class="flex justify-center py-6">
             <label for="" class="font-sans font-semibold text-4xl text-blue-900">Acta Entrega Recepción de Inmueble</label>
         </div>
         <div class="flex justify-around py-20">
             <div class="flex justify-center py-20">
-                <button><Boton></Boton></button>  
+                <ButtonLink TypeIcon="CreacionActa"></ButtonLink>
             </div>
-            <ModalTypeActa ShowModal="false"></ModalTypeActa>
             <div class="flex justify-center py-20">
-                <button><Boton></Boton></button>  
+                <ButtonLink TypeIcon="HistoricoActa"></ButtonLink>
             </div>
-        </div>
-    </div>    
+        </div>    
+    </div>
 </body>
-
-
 
 <style>
     .imgfondo {
         position: relative;
         min-height: 90.2vh;
-        background-size: cover ;
+        background-size: cover;
         background-position: center;
         background-repeat: no-repeat;
     }

@@ -3,18 +3,21 @@
 <PageTitle>Index</PageTitle>
 
 <body>    
-    <div id="ContenedorHome" class="bg-[url('/assets/img/fondocasa.png')] imgfondo">
-        <div class="flex justify-center py-6">
-            <label for="" class="font-sans font-semibold text-4xl text-blue-900">Acta Entrega Recepción de Inmueble</label>
-        </div>
-        <div class="flex justify-around py-20">
-            <div class="flex justify-center py-20">
-                <button><Boton></Boton></button>  
-            </div>
-            <div class="flex justify-center py-20">
-                <button><Boton></Boton></button>  
-            </div>
-        </div>
+    <div id="ContenedorHome" class="bg-[url('/assets/img/fondocasa.png')] imgfondo">        
+            <div class="flex justify-center py-6">
+                <label for="" class="font-sans font-semibold text-4xl text-blue-900">Acta Entrega Recepción de Inmueble</label>
+            </div>        
+            @if (!OpenModal) {
+                <div class="flex justify-around py-20">
+                    <div class="flex justify-center py-20">
+                        <button @onclick="ChangeOpenModal"><ButtonLink TypeIcon="Actas"></ButtonLink></button>
+                    </div>            
+                    <div class="flex justify-center py-20">
+                        <ButtonLink TypeIcon="Historico"></ButtonLink>
+                    </div>
+                </div>
+            }
+            <ModalTypeReceptionCertificates OnClick="ChangeOpenModal" ShowModal="@OpenModal"></ModalTypeReceptionCertificates>            
     </div>    
 </body>
 
