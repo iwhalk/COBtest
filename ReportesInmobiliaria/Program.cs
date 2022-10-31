@@ -15,7 +15,7 @@ using ReportesInmobiliaria.Utilities;
 
 var builder = WebApplication.CreateBuilder(args);
 //var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
-var connectionString = "Server=10.1.1.135;Database=BackOfficeIntermodalCapa;User=PROSIS_DEV;Password=Pr0$1$D3v;MultipleActiveResultSets=true";
+var connectionString = "Server=prosisdev.database.windows.net;Database=prosisdb_3;User=PROSIS_DEVELOPER;Password=PR0515_D3ev3l0p3r;MultipleActiveResultSets=true";
 var secretKey = builder.Configuration.GetValue<string>("SecretKey");
 var key = Encoding.ASCII.GetBytes(secretKey);
 
@@ -26,6 +26,8 @@ Thread.CurrentThread.CurrentUICulture = culture;
 
 // Add services to the container.
 builder.Services.AddDbContext<AppDbContext>(options =>
+    options.UseSqlServer(connectionString).EnableSensitiveDataLogging());
+builder.Services.AddDbContext<InmobiliariaDbContext>(options =>
     options.UseSqlServer(connectionString).EnableSensitiveDataLogging());
 builder.Services.AddHttpContextAccessor();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -70,6 +72,8 @@ builder.Services.AddScoped<IModulesService, ModulesService>();
 builder.Services.AddScoped<ITagsService, TagsService>();
 builder.Services.AddScoped<ITelepeajeService, TelepeajeService>();
 builder.Services.AddScoped<IReportesService, ReportesService>();
+builder.Services.AddScoped<ILessorService, LessorService>();
+builder.Services.AddScoped<ITenantService, TenantService>();
 builder.Services.AddScoped<ReportesFactory>();
 builder.Services.AddScoped<AuxiliaryMethods>();
 
@@ -99,6 +103,54 @@ app.UseCors(x => x
                 .AllowAnyHeader()
                 .SetIsOriginAllowed(origin => true) // allow any origin
                 .AllowCredentials());
+#region Inmobiliaria
+app.MapGet("/Lessor",
+    async (ILessorService _lessorService, ILogger<Program> _logger) =>
+    {
+        try
+        {
+            var lessors = await _lessorService.GetLessors();
+            return Results.Ok(lessors);
+        }
+        catch (Exception e)
+        {
+            _logger.LogError(e, e.Message);
+            if (e.GetType() == typeof(ValidationException))
+                return Results.Problem(e.Message, statusCode: 400);
+            return Results.Problem(e.Message);
+
+        }
+    })
+.WithName("GetLessors")
+.Produces<List<LaneCatalog>>(StatusCodes.Status200OK)
+.Produces<HttpValidationProblemDetails>(StatusCodes.Status400BadRequest, "application/problem+json")
+.Produces<HttpValidationProblemDetails>(StatusCodes.Status500InternalServerError, "application/problem+json");
+
+
+
+app.MapGet("/Tenant",
+    async (ITenantService _tenantService , ILogger<Program> _logger) =>
+    {
+        try
+        {
+            var tenants = await _tenantService.GetTenant();
+            return Results.Ok(tenants);
+        }
+        catch (Exception e)
+        {
+            _logger.LogError(e, e.Message);
+            if (e.GetType() == typeof(ValidationException))
+                return Results.Problem(e.Message, statusCode: 400);
+            return Results.Problem(e.Message);
+
+        }
+    })
+.WithName("GetTenant")
+.Produces<List<LaneCatalog>>(StatusCodes.Status200OK)
+.Produces<HttpValidationProblemDetails>(StatusCodes.Status400BadRequest, "application/problem+json")
+.Produces<HttpValidationProblemDetails>(StatusCodes.Status500InternalServerError, "application/problem+json");
+#endregion
+
 #region Reportes
 
 app.MapGet("/Reportes/TransaccionesCrucesTotales", async (string? dia, string? mes, string? semana, string? tag, string ? noDePlaca, string ? noEconomico, IReportesService _reportesService, ILogger<Program> _logger) =>
