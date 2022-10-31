@@ -43,6 +43,7 @@ builder.Services.AddScoped<ILessorService, LessorService>();
 builder.Services.AddScoped<ITenantService, TenantService>();
 builder.Services.AddScoped<IPropertyService, PropertyService>();
 builder.Services.AddScoped<IPropertyTypeService, PropertyTypeService>();
+builder.Services.AddScoped<IServicesService, ServicesService>();
 
 
 // Supply HttpClient instances that include access tokens when making requests to the server project.
