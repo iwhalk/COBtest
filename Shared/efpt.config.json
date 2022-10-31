@@ -15,23 +15,59 @@
    "SelectedToBeGenerated": 0,
    "Tables": [
       {
+         "Name": "[dbo].[Areas]",
+         "ObjectType": 0
+      },
+      {
          "Name": "[dbo].[AspNetUsers]",
          "ObjectType": 0
       },
       {
-         "Name": "[dbo].[Lessor]",
+         "Name": "[dbo].[Blobs]",
          "ObjectType": 0
       },
       {
-         "Name": "[dbo].[Property]",
+         "Name": "[dbo].[BlobsInventories]",
          "ObjectType": 0
       },
       {
-         "Name": "[dbo].[PropertyType]",
+         "Name": "[dbo].[Descriptions]",
          "ObjectType": 0
       },
       {
-         "Name": "[dbo].[Tenant]",
+         "Name": "[dbo].[Features]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Inventories]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Lessors]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Modules]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Properties]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[PropertyTypes]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[ReceptionCertificates]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Services]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Tenants]",
          "ObjectType": 0
       }
    ],

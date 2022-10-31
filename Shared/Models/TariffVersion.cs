@@ -12,7 +12,7 @@ namespace Shared.Models
     {
         public TariffVersion()
         {
-            Tariffs = new HashSet<Tariff>();
+            Tariffs = new HashSet<TariffVersion>();
         }
 
         [Key]
@@ -26,6 +26,6 @@ namespace Shared.Models
         public int? IdCatalog { get; set; }
 
         [InverseProperty("IdTariffVersionNavigation")]
-        public virtual ICollection<Tariff> Tariffs { get; set; }
+        public virtual ICollection<TariffVersion> Tariffs { get; set; }
     }
 }

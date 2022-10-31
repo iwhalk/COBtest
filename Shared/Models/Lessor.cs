@@ -8,7 +8,6 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Shared.Models
 {
-    [Table("Lessor")]
     public partial class Lessor
     {
         public Lessor()
