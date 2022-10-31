@@ -69,7 +69,6 @@ html {
   position: relative;
   min-height: 100%;
 }
-
 body {
   margin-bottom: 60px;
 }
@@ -80,9 +79,8 @@ body {
   overflow: scroll;
   white-space: nowrap;
   line-height: 60px;
-} 
-
+}
+*/
 .fs-7 {
   font-size: 2.5rem !important;
 }
-    */
