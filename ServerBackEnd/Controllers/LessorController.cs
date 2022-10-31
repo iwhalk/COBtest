@@ -17,7 +17,7 @@ namespace ApiGateway.Controllers
             _lessorService = lessorService;
         }
 
-        [HttpGet]
+        [HttpGet("Get")]
         public async Task<ActionResult> GetLessor()
         {
             var result = await _lessorService.GetLessorAsync();
@@ -30,7 +30,7 @@ namespace ApiGateway.Controllers
             return BadRequest(result);  
         }
 
-        [HttpPost]
+        [HttpPost("Post")]
         public async Task<ActionResult> PostLessor(Lessor lessor)
         {
             var result = await _lessorService.PostLessorAsync(lessor);

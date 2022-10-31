@@ -1,5 +1,4 @@
 ﻿using ApiGateway.Interfaces;
-using ApiGateway.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -10,18 +9,18 @@ namespace ApiGateway.Controllers
     [Route("api/[controller]")]
     [Authorize]
     [ApiController]
-    public class PropertyController : ControllerBase
+    public class PropertyTypeController : ControllerBase
     {
-        private readonly IPropertyService _propertyService;
-        public PropertyController(IPropertyService propertyService)
+        private readonly IPropertyTypeService _typeService;
+        public PropertyTypeController(IPropertyTypeService typeService)
         {
-            _propertyService = propertyService;
+            _typeService = typeService;
         }
 
         [HttpGet("Get")]
-        public async Task<ActionResult> GetProperty()
+        public async Task<ActionResult> GetPropertyType()
         {
-            var result = await _propertyService.GetPropertyAsync();
+            var result = await _typeService.GetPropertyTypeAsync();
 
             if (result.Succeeded)
             {
@@ -32,9 +31,9 @@ namespace ApiGateway.Controllers
         }
 
         [HttpPost("Post")]
-        public async Task<ActionResult> PostProperty(Property property)
+        public async Task<ActionResult> PostPropertyType(PropertyType propertyType)
         {
-            var result = await _propertyService.PostPropertyAsync(property);
+            var result = await _typeService.PostPropertyTypeAsync(propertyType);
 
             if (result.Succeeded)
             {

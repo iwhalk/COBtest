@@ -14,6 +14,7 @@ using Microsoft.JSInterop;
 using TestingFrontEnd.Repositories;
 using System.Security.Cryptography.X509Certificates;
 using Microsoft.AspNetCore.Components;
+using TestingFrontEnd.Services;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 var client = "blazor-client";
@@ -37,6 +38,11 @@ builder.Services.AddFluentUIComponents();
 
 builder.Services.AddScoped<ApplicationContext>();
 builder.Services.AddScoped<IGenericRepository, GenericRepository>();
+
+builder.Services.AddScoped<ILessorService, LessorService>();
+builder.Services.AddScoped<ITenantService, TenantService>();
+builder.Services.AddScoped<IPropertyService, PropertyService>();
+builder.Services.AddScoped<IPropertyTypeService, PropertyTypeService>();
 
 
 // Supply HttpClient instances that include access tokens when making requests to the server project.

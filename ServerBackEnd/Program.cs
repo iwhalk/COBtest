@@ -269,6 +269,11 @@ builder.Services.AddMediatR(Assembly.Load("ApiGateway"));
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
 
+builder.Services.AddScoped<ILessorService, LessorService>();
+builder.Services.AddScoped<ITenantService, TenantService>();
+builder.Services.AddScoped<IPropertyService, PropertyService>();
+builder.Services.AddScoped<IPropertyTypeService, PropertyTypeService>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
