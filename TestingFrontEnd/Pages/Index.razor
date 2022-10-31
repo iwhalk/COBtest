@@ -7,17 +7,15 @@
             <div class="flex justify-center py-6">
                 <label for="" class="font-sans font-semibold text-4xl text-blue-900">Acta Entrega Recepción de Inmueble</label>
             </div>        
-            @if (!OpenModal) {
-                <div class="flex justify-around py-20">
+            
+            <div class="flex justify-around py-20">
                     <div class="flex justify-center py-20">
-                        <button @onclick="ChangeOpenModal"><ButtonLink TypeIcon="Actas"></ButtonLink></button>
+                        <ButtonLink TypeIcon="Actas"></ButtonLink>
                     </div>            
                     <div class="flex justify-center py-20">
                         <ButtonLink TypeIcon="Historico"></ButtonLink>
                     </div>
-                </div>
-            }
-            <ModalTypeReceptionCertificates OnClick="ChangeOpenModal" ShowModal="@OpenModal"></ModalTypeReceptionCertificates>            
+            </div>                        
     </div>    
 </body>
 
