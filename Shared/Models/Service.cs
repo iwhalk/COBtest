@@ -8,22 +8,22 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Shared.Models
 {
-    public partial class PropertyType
+    public partial class Service
     {
-        public PropertyType()
+        public Service()
         {
-            Properties = new HashSet<Property>();
+            Features = new HashSet<Feature>();
         }
 
         [Key]
-        [Column("ID_PropertyType")]
-        public int IdPropertyType { get; set; }
+        [Column("ID_Service")]
+        public int IdService { get; set; }
         [Required]
-        [StringLength(30)]
+        [StringLength(50)]
         [Unicode(false)]
-        public string PropertyTypeName { get; set; }
+        public string ServiceName { get; set; }
 
-        [InverseProperty("IdPropertyTypeNavigation")]
-        public virtual ICollection<Property> Properties { get; set; }
+        [InverseProperty("IdServiceNavigation")]
+        public virtual ICollection<Feature> Features { get; set; }
     }
 }

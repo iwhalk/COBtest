@@ -8,9 +8,15 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Shared.Models
 {
-    [Table("Property")]
     public partial class Property
     {
+        public Property()
+        {
+            BlobsInventories = new HashSet<BlobsInventory>();
+            Inventories = new HashSet<Inventory>();
+            ReceptionCertificates = new HashSet<ReceptionCertificate>();
+        }
+
         [Key]
         [Column("ID_Property")]
         public int IdProperty { get; set; }
@@ -47,5 +53,11 @@ namespace Shared.Models
         [ForeignKey("IdPropertyType")]
         [InverseProperty("Properties")]
         public virtual PropertyType IdPropertyTypeNavigation { get; set; }
+        [InverseProperty("IdPropertyNavigation")]
+        public virtual ICollection<BlobsInventory> BlobsInventories { get; set; }
+        [InverseProperty("IdPropertyNavigation")]
+        public virtual ICollection<Inventory> Inventories { get; set; }
+        [InverseProperty("IdPropertyNavigation")]
+        public virtual ICollection<ReceptionCertificate> ReceptionCertificates { get; set; }
     }
 }

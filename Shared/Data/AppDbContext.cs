@@ -27,20 +27,20 @@ namespace Shared.Data
         public virtual DbSet<AspNetRole> AspNetRoles { get; set; }
         public virtual DbSet<AspNetUser> AspNetUsers { get; set; }
         public virtual DbSet<AspNetUserRole> AspNetUserRoles { get; set; }
-        public virtual DbSet<FinalPost> FinalPosts { get; set; }
+        //public virtual DbSet<FinalPost> FinalPosts { get; set; }
         public virtual DbSet<LaneCatalog> LaneCatalogs { get; set; }
         public virtual DbSet<LogRole> LogRoles { get; set; }
         public virtual DbSet<LogRoleModule> LogRoleModules { get; set; }
         public virtual DbSet<LogTagList> LogTagLists { get; set; }
         public virtual DbSet<LogUserActivity> LogUserActivities { get; set; }
         public virtual DbSet<Module> Modules { get; set; }
-        public virtual DbSet<SackStatement> SackStatements { get; set; }
+        //public virtual DbSet<SackStatement> SackStatements { get; set; }
         public virtual DbSet<TagList> TagLists { get; set; }
         public virtual DbSet<Tariff> Tariffs { get; set; }
         public virtual DbSet<Transaction> Transactions { get; set; }
         public virtual DbSet<TypeClass> TypeClasses { get; set; }
         public virtual DbSet<TypePayment> TypePayments { get; set; }
-        public virtual DbSet<UsersOpe> UsersOpes { get; set; }
+        //public virtual DbSet<UsersOpe> UsersOpes { get; set; }
         public virtual DbSet<Viapasstags> Viapasstags { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -59,23 +59,23 @@ namespace Shared.Data
                 entity.HasKey(e => new { e.UserId, e.RoleId });
             });
 
-            modelBuilder.Entity<FinalPost>(entity =>
-            {
-                entity.HasKey(e => e.IdFinalPosts)
-                    .HasName("PK__FinalPos__FC32A3A64C0B8348");
+            //modelBuilder.Entity<FinalPost>(entity =>
+            //{
+            //    entity.HasKey(e => e.IdFinalPosts)
+            //        .HasName("PK__FinalPos__FC32A3A64C0B8348");
 
-                entity.HasOne(d => d.IdCatalogNavigation)
-                    .WithMany(p => p.FinalPosts)
-                    .HasForeignKey(d => d.IdCatalog)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_FinalPosts_ID_Catalog");
+            //    entity.HasOne(d => d.IdCatalogNavigation)
+            //        .WithMany(p => p.FinalPosts)
+            //        .HasForeignKey(d => d.IdCatalog)
+            //        .OnDelete(DeleteBehavior.ClientSetNull)
+            //        .HasConstraintName("FK_FinalPosts_ID_Catalog");
 
-                entity.HasOne(d => d.IdUserNavigation)
-                    .WithMany(p => p.FinalPosts)
-                    .HasForeignKey(d => d.IdUser)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_FinalPosts_ID_User");
-            });
+            //    entity.HasOne(d => d.IdUserNavigation)
+            //        .WithMany(p => p.FinalPosts)
+            //        .HasForeignKey(d => d.IdUser)
+            //        .OnDelete(DeleteBehavior.ClientSetNull)
+            //        .HasConstraintName("FK_FinalPosts_ID_User");
+            //});
 
             modelBuilder.Entity<LaneCatalog>(entity =>
             {
@@ -87,11 +87,11 @@ namespace Shared.Data
             {
             });
 
-            modelBuilder.Entity<SackStatement>(entity =>
-            {
-                entity.HasKey(e => e.IdSac)
-                    .HasName("PK__SackStat__27FFB30C8965CAE5");
-            });
+            //modelBuilder.Entity<SackStatement>(entity =>
+            //{
+            //    entity.HasKey(e => e.IdSac)
+            //        .HasName("PK__SackStat__27FFB30C8965CAE5");
+            //});
 
             modelBuilder.Entity<TagList>(entity =>
             {
@@ -192,11 +192,11 @@ namespace Shared.Data
                     .HasForeignKey(d => d.IdTariff)
                     .HasConstraintName("FK_Transactions_ID_Tariff");
 
-                entity.HasOne(d => d.IdUserNavigation)
-                    .WithMany(p => p.Transactions)
-                    .HasForeignKey(d => d.IdUser)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_Transactions_ID_User");
+                //entity.HasOne(d => d.IdUserNavigation)
+                //    .WithMany(p => p.Transactions)
+                //    .HasForeignKey(d => d.IdUser)
+                //    .OnDelete(DeleteBehavior.ClientSetNull)
+                //    .HasConstraintName("FK_Transactions_ID_User");
             });
 
             modelBuilder.Entity<TypeClass>(entity =>
@@ -213,11 +213,11 @@ namespace Shared.Data
                 entity.Property(e => e.IdPayment).ValueGeneratedNever();
             });
 
-            modelBuilder.Entity<UsersOpe>(entity =>
-            {
-                entity.HasKey(e => e.IdUserOpe)
-                    .HasName("PK__UsersOPE__F629E50720C42A46");
-            });
+            //modelBuilder.Entity<UsersOpe>(entity =>
+            //{
+            //    entity.HasKey(e => e.IdUserOpe)
+            //        .HasName("PK__UsersOPE__F629E50720C42A46");
+            //});
 
             OnModelCreatingPartial(modelBuilder);
         }

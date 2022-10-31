@@ -13,7 +13,7 @@ namespace Shared.Models
     {
         public LaneCatalog()
         {
-            FinalPosts = new HashSet<FinalPost>();
+            //FinalPosts = new HashSet<FinalPost>();
             Tariffs = new HashSet<Tariff>();
             Transactions = new HashSet<Transaction>();
         }
@@ -43,8 +43,8 @@ namespace Shared.Models
         public string IdTypeVoie { get; set; }
 
         [InverseProperty("IdCatalogNavigation")]
-        public virtual ICollection<FinalPost> FinalPosts { get; set; }
-        [InverseProperty("IdCatalogNavigation")]
+        //public virtual ICollection<FinalPost> FinalPosts { get; set; }
+        //[InverseProperty("IdCatalogNavigation")]
         public virtual ICollection<Tariff> Tariffs { get; set; }
         [InverseProperty("IdCatalogNavigation")]
         public virtual ICollection<Transaction> Transactions { get; set; }

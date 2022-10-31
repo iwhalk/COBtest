@@ -19,14 +19,106 @@ namespace Shared.Data
         {
         }
 
+        public virtual DbSet<Area> Areas { get; set; }
         public virtual DbSet<AspNetUser> AspNetUsers { get; set; }
+        public virtual DbSet<Blob> Blobs { get; set; }
+        public virtual DbSet<BlobsInventory> BlobsInventories { get; set; }
+        public virtual DbSet<Description> Descriptions { get; set; }
+        public virtual DbSet<Feature> Features { get; set; }
+        public virtual DbSet<Inventory> Inventories { get; set; }
         public virtual DbSet<Lessor> Lessors { get; set; }
         public virtual DbSet<Property> Properties { get; set; }
         public virtual DbSet<PropertyType> PropertyTypes { get; set; }
+        public virtual DbSet<ReceptionCertificate> ReceptionCertificates { get; set; }
+        public virtual DbSet<Service> Services { get; set; }
         public virtual DbSet<Tenant> Tenants { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<Area>(entity =>
+            {
+                entity.HasKey(e => e.IdArea)
+                    .HasName("PK__Areas__42A5C44C0FE9F5F8");
+            });
+
+            modelBuilder.Entity<Blob>(entity =>
+            {
+                entity.HasKey(e => e.IdBlobs)
+                    .HasName("PK__Blobs__DED4FFECA37A54E1");
+            });
+
+            modelBuilder.Entity<BlobsInventory>(entity =>
+            {
+                entity.HasKey(e => e.IdBlobsInventory)
+                    .HasName("PK__BlobsInv__1A3C40D35F4BF0DF");
+
+                entity.HasOne(d => d.IdBlobsNavigation)
+                    .WithMany(p => p.BlobsInventories)
+                    .HasForeignKey(d => d.IdBlobs)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_BlobsInventories_ID_Blobs");
+
+                entity.HasOne(d => d.IdInventoryNavigation)
+                    .WithMany(p => p.BlobsInventories)
+                    .HasForeignKey(d => d.IdInventory)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_BlobsInventories_ID_Inventory");
+
+                entity.HasOne(d => d.IdPropertyNavigation)
+                    .WithMany(p => p.BlobsInventories)
+                    .HasForeignKey(d => d.IdProperty)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_BlobsInventories_ID_Property");
+            });
+
+            modelBuilder.Entity<Description>(entity =>
+            {
+                entity.HasKey(e => e.IdDescription)
+                    .HasName("PK__Descript__145EFCBCD37C2D36");
+
+                entity.HasOne(d => d.IdFeatureNavigation)
+                    .WithMany(p => p.Descriptions)
+                    .HasForeignKey(d => d.IdFeature)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_Descriptions_ID_Feature");
+            });
+
+            modelBuilder.Entity<Feature>(entity =>
+            {
+                entity.HasKey(e => e.IdFeature)
+                    .HasName("PK__Features__F3A163F1C20C0900");
+
+                entity.HasOne(d => d.IdServiceNavigation)
+                    .WithMany(p => p.Features)
+                    .HasForeignKey(d => d.IdService)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_Features_ID_Service");
+            });
+
+            modelBuilder.Entity<Inventory>(entity =>
+            {
+                entity.HasKey(e => e.IdInventory)
+                    .HasName("PK__Inventor__2210F49E10265952");
+
+                entity.HasOne(d => d.IdAreaNavigation)
+                    .WithMany(p => p.Inventories)
+                    .HasForeignKey(d => d.IdArea)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_Inventory_ID_Area");
+
+                entity.HasOne(d => d.IdDescriptionNavigation)
+                    .WithMany(p => p.Inventories)
+                    .HasForeignKey(d => d.IdDescription)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_Inventory_ID_Description");
+
+                entity.HasOne(d => d.IdPropertyNavigation)
+                    .WithMany(p => p.Inventories)
+                    .HasForeignKey(d => d.IdProperty)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_Inventory_ID_Property");
+            });
+
             modelBuilder.Entity<Lessor>(entity =>
             {
                 entity.HasKey(e => e.IdLessor)
@@ -55,6 +147,30 @@ namespace Shared.Data
             {
                 entity.HasKey(e => e.IdPropertyType)
                     .HasName("PK__Property__EC791A66ACFA202D");
+            });
+
+            modelBuilder.Entity<ReceptionCertificate>(entity =>
+            {
+                entity.HasKey(e => e.IdReceptionCertificate)
+                    .HasName("PK__Actas__4EE6FB68E33B8ACA");
+
+                entity.HasOne(d => d.IdPropertyNavigation)
+                    .WithMany(p => p.ReceptionCertificates)
+                    .HasForeignKey(d => d.IdProperty)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_ReceptionCertificates_ID_Property");
+
+                entity.HasOne(d => d.IdTenantNavigation)
+                    .WithMany(p => p.ReceptionCertificates)
+                    .HasForeignKey(d => d.IdTenant)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_ReceptionCertificates_ID_Tenant");
+            });
+
+            modelBuilder.Entity<Service>(entity =>
+            {
+                entity.HasKey(e => e.IdService)
+                    .HasName("PK__Services__8C3D4AEFF7ABC97F");
             });
 
             modelBuilder.Entity<Tenant>(entity =>
