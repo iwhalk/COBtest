@@ -4,9 +4,11 @@ namespace Shared.Components
 {
     public partial class ModalTypeActa : ComponentBase
     {
-        public ModalTypeActa()
-        {
 
+        [Parameter]
+        public bool ShowModal { get; set; } = false;
+        public ModalTypeActa()
+        {            
         }
     }
 }
