@@ -85,10 +85,6 @@ namespace Shared.Data
 
             modelBuilder.Entity<LogTagList>(entity =>
             {
-                entity.HasOne(d => d.IdUserNavigation)
-                    .WithMany(p => p.LogTagLists)
-                    .HasForeignKey(d => d.IdUser)
-                    .HasConstraintName("FK_LogTagList_ID_User");
             });
 
             modelBuilder.Entity<SackStatement>(entity =>
