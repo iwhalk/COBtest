@@ -1,32 +1,31 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Shared.Data;
 using ReportesInmobiliaria.Interfaces;
-using Shared.Data;
-using Shared.Models;
 using System.ComponentModel.DataAnnotations;
-using System.DirectoryServices.ActiveDirectory;
 using System.Security.Claims;
+using Microsoft.EntityFrameworkCore;
+using Shared.Models;
 
 namespace ReportesInmobiliaria.Services
 {
-    public class LessorService : ILessorService
+    public class ServicesService : IServicesService
     {
         private readonly InmobiliariaDbContext _dbContext;
         private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public LessorService(InmobiliariaDbContext dbContext, IHttpContextAccessor httpContextAccessor)
+        public ServicesService(InmobiliariaDbContext dbContext, IHttpContextAccessor httpContextAccessor)
         {
             _dbContext = dbContext;
             _httpContextAccessor = httpContextAccessor;
         }
 
-        public async Task<List<Lessor>> GetLessorsAsync()
+        public async Task<List<Service?>> GetServicesAsync()
         {
-            return await _dbContext.Lessors.ToListAsync();
+            return await _dbContext.Services.ToListAsync();
         }
 
-        public async Task<Lessor?> CreateLessorAsync(Lessor lessor)
+        public async Task<Service?> CreateServicesAsync(Service service)
         {
-            await _dbContext.Lessors.AddAsync(lessor);
+            await _dbContext.Services.AddAsync(service);
             try
             {
                 await _dbContext.SaveChangesAsync();
@@ -35,7 +34,7 @@ namespace ReportesInmobiliaria.Services
             {
                 throw;
             }
-            return lessor;
+            return service;
         }
     }
 }

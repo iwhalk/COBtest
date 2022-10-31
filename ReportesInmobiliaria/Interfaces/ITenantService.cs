@@ -4,6 +4,7 @@ namespace ReportesInmobiliaria.Interfaces
 {
     public interface ITenantService
     {
-        Task<List<Tenant>> GetTenant();
+        Task<List<Tenant?>> GetTenantAsync();
+        Task<Tenant?> CreateTenantAsync(Tenant tenant);
     }
 }

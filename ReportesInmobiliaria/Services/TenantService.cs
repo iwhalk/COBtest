@@ -18,9 +18,23 @@ namespace ReportesInmobiliaria.Services
             _httpContextAccessor = httpContextAccessor;
         }
 
-        public async Task<List<Tenant>> GetTenant()
+        public async Task<List<Tenant?>> GetTenantAsync()
         {
             return await _dbContext.Tenants.ToListAsync();
+        }
+
+        public async Task<Tenant?> CreateTenantAsync(Tenant tenant)
+        {
+            await _dbContext.Tenants.AddAsync(tenant);
+            try
+            {
+                await _dbContext.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                throw;
+            }
+            return tenant;
         }
     }
 }
