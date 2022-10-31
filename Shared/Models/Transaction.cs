@@ -111,8 +111,8 @@ namespace Shared.Models
         [ForeignKey("IdTariff")]
         [InverseProperty("Transactions")]
         public virtual Tariff IdTariffNavigation { get; set; }
-        [ForeignKey("IdUser")]
-        [InverseProperty("Transactions")]
-        public virtual UsersOpe IdUserNavigation { get; set; }
+        //[ForeignKey("IdUser")]
+        //[InverseProperty("Transactions")]
+        //public virtual UsersOpe IdUserNavigation { get; set; }
     }
 }
