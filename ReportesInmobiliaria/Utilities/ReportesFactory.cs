@@ -71,7 +71,8 @@ namespace ReportesInmobiliaria.Utilities
             DefineStyles();
             CreateLayout(reporte);
 
-            CrearReporteArrendadores(reporte as ReporteArrendadores);
+            //CrearReporteArrendadores(reporte as ReporteArrendadores);
+            CrearReporte(reporte as ReporteFeatures);
 
             PdfDocumentRenderer pdfRenderer = new(true)
             {
@@ -116,7 +117,8 @@ namespace ReportesInmobiliaria.Utilities
             style.ParagraphFormat.TabStops.AddTabStop("16cm", TabAlignment.Right);
         }
 
-        void CrearReporteArrendadores(ReporteArrendadores? reporteArrendadores)
+        //void CrearReporteArrendadores(ReporteArrendadores? reporteArrendadores)
+        void CrearReporte(ReporteFeatures? reporteFeatures)
         {
             section.PageSetup.Orientation = Orientation.Landscape;
 
@@ -139,13 +141,13 @@ namespace ReportesInmobiliaria.Utilities
             // Create the text frame for the data values
             dataValuesFrame = section.AddTextFrame();
             dataValuesFrame.Width = "7.0cm";
-            dataValuesFrame.Left = "6.5cm";
-            dataValuesFrame.RelativeHorizontal = RelativeHorizontal.Page;
+            dataValuesFrame.Left = "3.5cm";
+            dataValuesFrame.RelativeHorizontal = RelativeHorizontal.Margin;
             dataValuesFrame.Top = "4.0cm";
             dataValuesFrame.RelativeVertical = RelativeVertical.Page;
 
             // Put header in header frame
-            Paragraph paragraph = headerFrame.AddParagraph("REPORTE ARRENDADORES");//Titulo
+            Paragraph paragraph = headerFrame.AddParagraph("REPORTE FEATURES");//Titulo
             paragraph.Format.Font.Name = "Calibri";
             paragraph.Format.Font.Size = 13;
             paragraph.Format.Font.Bold = true;
@@ -156,13 +158,15 @@ namespace ReportesInmobiliaria.Utilities
             paragraph.Format.Font.Bold = true;
             paragraph.AddText("Fecha de generaciòn: ");
             paragraph.AddLineBreak();
-            paragraph.AddText("Total de Arrendatarios: ");
+            paragraph.AddText("Total de Features: ");
 
             // Put values in data Frame
             paragraph = dataValuesFrame.AddParagraph();
-            paragraph.AddText(reporteArrendadores.FechaGeneracion.ToString("dd/MM/yyyy hh:mm tt") ?? "");
+            //paragraph.AddText(reporteArrendadores.FechaGeneracion.ToString("dd/MM/yyyy hh:mm tt") ?? "");
+            paragraph.AddText(reporteFeatures.generationDate.ToString("dd/MM/yyyy hh:mm tt") ?? "");
             paragraph.AddLineBreak();
-            paragraph.AddText(reporteArrendadores.Arrendadores.Count().ToString() ?? "");
+            //paragraph.AddText(reporteArrendadores.Arrendadores.Count().ToString() ?? "");
+            paragraph.AddText(reporteFeatures.caracteristicas.Count().ToString() ?? "");
 
             // Add the data separation field
             paragraph = section.AddParagraph();
@@ -186,11 +190,11 @@ namespace ReportesInmobiliaria.Utilities
             column = table.AddColumn("5cm");
             column.Format.Alignment = ParagraphAlignment.Center;
 
-            column = table.AddColumn("7cm");
-            column.Format.Alignment = ParagraphAlignment.Center;
+            //column = table.AddColumn("7cm");
+            //column.Format.Alignment = ParagraphAlignment.Center;
 
-            column = table.AddColumn("4cm");
-            column.Format.Alignment = ParagraphAlignment.Center;
+            //column = table.AddColumn("4cm");
+            //column.Format.Alignment = ParagraphAlignment.Center;
 
             // Create the header of the table
             Row row = table.AddRow();
@@ -200,11 +204,12 @@ namespace ReportesInmobiliaria.Utilities
             row.Format.Font.Size = 10;
             row.Shading.Color = TableColor;
             row.Cells[0].AddParagraph("Nombre");
-            row.Cells[1].AddParagraph("RFC");
-            row.Cells[2].AddParagraph("Direccìón");
-            row.Cells[3].AddParagraph("Telefono");
+            row.Cells[1].AddParagraph("idService");
+            //row.Cells[2].AddParagraph("Direccìón");
+            //row.Cells[3].AddParagraph("Telefono");
 
-            FillGenericContent(reporteArrendadores.Arrendadores);
+            //FillGenericContent(reporteArrendadores.Arrendadores);
+            FillGenericContent(reporteFeatures.caracteristicas);
         }
 
         void CreateLayout<T>(T reporte)

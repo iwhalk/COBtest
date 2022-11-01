@@ -3,6 +3,6 @@
     public class Caracteristicas
     {
         public string nombre { get; set; }
-        public int idService { get; set; }
+        public string idService { get; set; }
     }
 }

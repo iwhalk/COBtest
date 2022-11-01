@@ -80,6 +80,7 @@ builder.Services.AddScoped<IInventoryService, InventoryService>();
 builder.Services.AddScoped<IServicesService, ServicesService>();
 builder.Services.AddScoped<IDescriptionService, DescriptionService>();
 builder.Services.AddScoped<IReportesService, ReportesService>();
+builder.Services.AddScoped<IReporteFeaturesService, ReporteFeaturesService>();
 builder.Services.AddScoped<ReportesFactory>();
 
 builder.Services.AddCors();
@@ -454,28 +455,28 @@ app.MapGet("/ReporteArrendores", async (int? id,IReportesService _reportesServic
 .Produces<HttpValidationProblemDetails>(StatusCodes.Status500InternalServerError, "application/problem+json");
 //.AllowAnonymous();
 
-//app.MapGet("/ReporteFeatures", async (int? id, IReportesService _reportesService, ILogger<Program> _logger) =>
-//{
-//    try
+app.MapGet("/ReporteFeatures", async (int? id, IReporteFeaturesService _reportesService, ILogger<Program> _logger) =>
+{
+    try
 
-//    {
-//        var newModule = await _reportesService.GetReporteArrendadores(id);
-//        if (newModule == null) return Results.NoContent();
-//        //System.IO.File.WriteAllBytes("ReporteTransaccionesCrucesTotales.pdf", newModule);
-//        return Results.File(newModule, "application/pdf");
-//    }
-//    catch (Exception e)
-//    {
-//        _logger.LogError(e, e.Message);
-//        if (e.GetType() == typeof(ValidationException))
-//            return Results.Problem(e.Message, statusCode: 400);
-//        return Results.Problem(e.Message);
-//    }
-//})
-//.WithName("GetReporteArrendadores")
-//.Produces<IResult>(StatusCodes.Status200OK, "application/pdf")
-//.Produces<HttpValidationProblemDetails>(StatusCodes.Status400BadRequest, "application/problem+json")
-//.Produces<HttpValidationProblemDetails>(StatusCodes.Status500InternalServerError, "application/problem+json");
+    {
+        var newModule = await _reportesService.GetReporteFeatures(id);
+        if (newModule == null) return Results.NoContent();
+        //System.IO.File.WriteAllBytes("ReporteTransaccionesCrucesTotales.pdf", newModule);
+        return Results.File(newModule, "application/pdf");
+    }
+    catch (Exception e)
+    {
+        _logger.LogError(e, e.Message);
+        if (e.GetType() == typeof(ValidationException))
+            return Results.Problem(e.Message, statusCode: 400);
+        return Results.Problem(e.Message);
+    }
+})
+.WithName("GetReporteFeatures")
+.Produces<IResult>(StatusCodes.Status200OK, "application/pdf")
+.Produces<HttpValidationProblemDetails>(StatusCodes.Status400BadRequest, "application/problem+json")
+.Produces<HttpValidationProblemDetails>(StatusCodes.Status500InternalServerError, "application/problem+json");
 
 #endregion
 
