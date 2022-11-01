@@ -2,10 +2,10 @@
 
 namespace TestingFrontEnd.Components
 {
-    public partial class ModalTenant : ComponentBase
+    public partial class FormLessorOrTenant : ComponentBase
     {
         [Parameter]
-        public bool ShowModal { get; set; }
+        public string TitleForm { get; set; } = "";
         [Parameter]
         public EventCallback OnClick { get; set; }
     }
