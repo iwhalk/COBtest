@@ -126,7 +126,7 @@ namespace ApiGateway.Areas.Identity.Pages.Account
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
             returnUrl ??= Url.Content("~/");
-                ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
+            ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if (ModelState.IsValid)
             {
                 UserCreateCommand userCreate = new UserCreateCommand { Email = Input.Email, Name = Input.Name, LastName = Input.LastName };
