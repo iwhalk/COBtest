@@ -453,6 +453,30 @@ app.MapGet("/ReporteArrendores", async (int? id,IReportesService _reportesServic
 .Produces<HttpValidationProblemDetails>(StatusCodes.Status400BadRequest, "application/problem+json")
 .Produces<HttpValidationProblemDetails>(StatusCodes.Status500InternalServerError, "application/problem+json");
 //.AllowAnonymous();
+
+//app.MapGet("/ReporteFeatures", async (int? id, IReportesService _reportesService, ILogger<Program> _logger) =>
+//{
+//    try
+
+//    {
+//        var newModule = await _reportesService.GetReporteArrendadores(id);
+//        if (newModule == null) return Results.NoContent();
+//        //System.IO.File.WriteAllBytes("ReporteTransaccionesCrucesTotales.pdf", newModule);
+//        return Results.File(newModule, "application/pdf");
+//    }
+//    catch (Exception e)
+//    {
+//        _logger.LogError(e, e.Message);
+//        if (e.GetType() == typeof(ValidationException))
+//            return Results.Problem(e.Message, statusCode: 400);
+//        return Results.Problem(e.Message);
+//    }
+//})
+//.WithName("GetReporteArrendadores")
+//.Produces<IResult>(StatusCodes.Status200OK, "application/pdf")
+//.Produces<HttpValidationProblemDetails>(StatusCodes.Status400BadRequest, "application/problem+json")
+//.Produces<HttpValidationProblemDetails>(StatusCodes.Status500InternalServerError, "application/problem+json");
+
 #endregion
 
 #endregion

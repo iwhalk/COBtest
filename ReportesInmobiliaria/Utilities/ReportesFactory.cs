@@ -1,8 +1,12 @@
 ﻿using MigraDoc;
-using MigraDoc.DocumentObjectModel;
-using MigraDoc.DocumentObjectModel.Shapes;
-using MigraDoc.DocumentObjectModel.Tables;
-using MigraDoc.Rendering;
+using MigraDocCore.DocumentObjectModel;
+using MigraDocCore.DocumentObjectModel.Shapes;
+using MigraDocCore.DocumentObjectModel.Tables;
+using MigraDocCore.Rendering;
+//using MigraDoc.DocumentObjectModel;
+//using MigraDoc.DocumentObjectModel.Shapes;
+//using MigraDoc.DocumentObjectModel.Tables;
+//using MigraDoc.Rendering;
 using Shared.Models;
 using System.Globalization;
 using System.Text;
