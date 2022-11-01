@@ -8,22 +8,22 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Shared.Models
 {
-    public partial class PropertyType
+    public partial class Area
     {
-        public PropertyType()
+        public Area()
         {
-            Properties = new HashSet<Property>();
+            Inventories = new HashSet<Inventory>();
         }
 
         [Key]
-        [Column("ID_PropertyType")]
-        public int IdPropertyType { get; set; }
+        [Column("ID_Area")]
+        public int IdArea { get; set; }
         [Required]
-        [StringLength(30)]
+        [StringLength(20)]
         [Unicode(false)]
-        public string PropertyTypeName { get; set; }
+        public string AreaName { get; set; }
 
-        [InverseProperty("IdPropertyTypeNavigation")]
-        public virtual ICollection<Property> Properties { get; set; }
+        [InverseProperty("IdAreaNavigation")]
+        public virtual ICollection<Inventory> Inventories { get; set; }
     }
 }
