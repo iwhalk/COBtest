@@ -2,13 +2,13 @@
 @attribute [Authorize]
 <PageTitle>Inventario</PageTitle>
 
-<body class="flex flex-column min-h-screen">
+<body class="flex flex-column min-h-screen bg-[url('/assets/img/fondocasa.png')] imgfondo">
     <div id="ContenedorInventario" class="flex">
         <div id="ListActas" class="flex ml-4">
         <LeftListActas></LeftListActas>
         <LeftListActas></LeftListActas>
         </div>
-        <div id="ContenedorElementos" class="mt-24 mb-2 flex justify-around relative border-1 rounded-lg p-2 -ml-2 mr-6 w-full">
+        <div id="ContenedorElementos" class="mt-24 mb-2 flex justify-around relative border-1 border-black rounded-lg p-2 -ml-2 mr-6 w-full">
 
             <div id="ComponteInputs" class="flex p-2">
                 <div class="flex">  
@@ -65,3 +65,13 @@
     </div>
     
 </body>
+
+<style>
+    .imgfondo {
+    position: relative;
+    min-height: 90.2vh;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+</style>
