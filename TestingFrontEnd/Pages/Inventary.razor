@@ -4,13 +4,15 @@
 
 <body>
     <div id="ContenedorInventario" class="flex">
+        <div id="ListActas" class="flex ml-4">
         <LeftListActas></LeftListActas>
         <LeftListActas></LeftListActas>
-        <div id="ContenedorElementos" class="mt-32 flex">
+        </div>
+        <div id="ContenedorElementos" class="mt-24 flex justify-around relative border-1 rounded-lg p-2 -ml-2 mr-6 w-full">
 
-            <div id="Componte1" class="flex">
+            <div id="ComponteInputs" class="flex p-2">
                 <div class="flex">                                   
-                    <div class="mx-5">
+                    <div>
                         <li class="py-2 flex text-blue-900">Color<input type="text" class="border-2 bg-slate-100 ml-5 w-3/6 flex justify-end"></li>
                         <li class="py-2 flex text-blue-900">Material<input type="text" class="border-2 bg-slate-100 ml-5 w-3/6 flex justify-end"></li>
                         <li class="py-2 flex text-blue-900">Estado General<input type="text" class="border-2 bg-slate-100 ml-5 w-3/6 flex justify-end"></li>
@@ -23,7 +25,7 @@
                 </div>
             </div>
 
-            <div id="Componente2">
+            <div id="ComponenteRecuadros" class="p-2">
                 <div>
                     <label for="" class="text-center text-xl text-blue-900 font-semibold mb-2">Oberservaciones</label>
                     <input type="text" class="border-2 bg-slate-100 ml-5 w-96 h-48 flex justify-end">
@@ -34,18 +36,24 @@
                 </div>
             </div>
 
+            <div id="ComponenteCambiable" class="flex absolute bottom-20 left-20">
+                <div id="ColumBotones1" class="mx-6 flex flex-col">
+                    <button class="py-2 my-4 w-48 border rounded-lg bg-slate-400 text-white">Céramica</button>
+                    <button class="py-2 my-4 w-48 border rounded-lg bg-slate-400 text-white">Porcelanato</button>
+                    <button class="py-2 my-4 w-48 border rounded-lg bg-slate-400 text-white">Madera</button>
+                </div>
+                <div id="ColumBotones2" class="mx-6 flex flex-col">
+                    <button class="py-2 my-4 w-48 border rounded-lg bg-slate-400 text-white">Piedra Natural</button>
+                    <button class="py-2 my-4 w-48 border rounded-lg bg-slate-400 text-white">Laminado</button>
+                    <button class="py-2 my-4 w-48 border rounded-lg bg-slate-400 text-white">Vinilico</button>
+                </div>
+                <div id="ColumBotones3" class="mx-6 flex flex-col">
+                    <button class="py-2 my-4 w-48 border rounded-lg bg-slate-400 text-white">Concreto</button>
+                    <button class="py-2 my-4 w-48 border rounded-lg bg-slate-400 text-white">Mármol</button>
+                </div>
+            </div>
+
         </div>
     </div>
     
 </body>
-
-
-<style>
-    .imgfondo {
-        position: relative;
-        min-height: 90.2vh;
-        background-size: cover ;
-        background-position: center;
-        background-repeat: no-repeat;
-    }
-</style>
