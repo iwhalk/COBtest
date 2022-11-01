@@ -3,29 +3,18 @@
 <PageTitle>Index</PageTitle>
 
 <body>    
-    <div id="ContenedorHome" class="bg-[url('/assets/img/fondocasa.png')] imgfondo">
-        <div class="flex justify-center pt-6">
-            <label for="" class="font-sans font-semibold text-4xl text-blue-900">Acta Entrega Recepción de Inmueble</label>
-        </div>
-        @*<ModalArrendatarios></ModalArrendatarios>*@
-        <ModalTypeActa></ModalTypeActa>
-        <div class="flex justify-around py-20">
-            <div class="flex justify-center pt-20">
-                <Boton></Boton>
-            </div>
-            <div class="flex justify-center pt-20">
-                <Boton></Boton>
-            </div>
-        </div>
+    <div id="ContenedorHome" class="bg-[url('/assets/img/fondocasa.png')] imgfondo">        
+            <div class="flex justify-center py-6">
+                <label for="" class="font-sans font-semibold text-4xl text-blue-900">Acta Entrega Recepción de Inmueble</label>
+            </div>        
+            
+            <div class="flex justify-around py-20">
+                    <div class="flex justify-center py-20">
+                        <ButtonLink TypeIcon="Actas"></ButtonLink>
+                    </div>            
+                    <div class="flex justify-center py-20">
+                        <ButtonLink TypeIcon="Historico"></ButtonLink>
+                    </div>
+            </div>                        
     </div>    
 </body>
-
-<style>
-    .imgfondo {
-        position: relative;
-        min-height: 90.2vh;
-        background-size: cover ;
-        background-position: center;
-        background-repeat: no-repeat;
-    }
-</style>
