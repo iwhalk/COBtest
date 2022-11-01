@@ -18,7 +18,7 @@ namespace ApiGateway.Controllers
             _tenantService = tenantService;
         }
 
-        [HttpGet("Get")]
+        [HttpGet]
         public async Task<ActionResult> GetTenant()
         {
             var result = await _tenantService.GetTenantAsync();
@@ -31,7 +31,7 @@ namespace ApiGateway.Controllers
             return BadRequest(result);
         }
 
-        [HttpPost("Post")]
+        [HttpPost]
         public async Task<ActionResult> PostTenant(Tenant tenant)
         {
             var result = await _tenantService.PostTenantAsync(tenant);

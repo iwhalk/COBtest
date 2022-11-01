@@ -17,7 +17,7 @@ namespace ApiGateway.Controllers
             _typeService = typeService;
         }
 
-        [HttpGet("Get")]
+        [HttpGet]
         public async Task<ActionResult> GetPropertyType()
         {
             var result = await _typeService.GetPropertyTypeAsync();
@@ -30,7 +30,7 @@ namespace ApiGateway.Controllers
             return BadRequest(result);
         }
 
-        [HttpPost("Post")]
+        [HttpPost]
         public async Task<ActionResult> PostPropertyType(PropertyType propertyType)
         {
             var result = await _typeService.PostPropertyTypeAsync(propertyType);

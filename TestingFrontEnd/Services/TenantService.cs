@@ -13,11 +13,11 @@ namespace TestingFrontEnd.Services
 
         public async Task<List<Tenant>> GetTenantAsync()
         {
-            return await _repository.GetAsync<List<Tenant>>("api/Tenant/Get");
+            return await _repository.GetAsync<List<Tenant>>("api/Tenant");
         }
         public async Task<Tenant> PostTenantAsync(Tenant tenant)
         {
-            return await _repository.PostAsync<Tenant>("api/Tenant/Post", tenant);
+            return await _repository.PostAsync<Tenant>("api/Tenant", tenant);
         }
     }
 }

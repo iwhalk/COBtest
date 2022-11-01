@@ -18,7 +18,7 @@ namespace ApiGateway.Controllers
             _propertyService = propertyService;
         }
 
-        [HttpGet("Get")]
+        [HttpGet]
         public async Task<ActionResult> GetProperty()
         {
             var result = await _propertyService.GetPropertyAsync();
@@ -31,7 +31,7 @@ namespace ApiGateway.Controllers
             return BadRequest(result);
         }
 
-        [HttpPost("Post")]
+        [HttpPost]
         public async Task<ActionResult> PostProperty(Property property)
         {
             var result = await _propertyService.PostPropertyAsync(property);

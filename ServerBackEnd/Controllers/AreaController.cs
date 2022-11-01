@@ -17,7 +17,7 @@ namespace ApiGateway.Controllers
             _areaService = areaService;
         }
 
-        [HttpGet("Get")]
+        [HttpGet]
         public async Task<ActionResult> GetArea()
         {
             var result = await _areaService.GetAreaAsync();
@@ -30,7 +30,7 @@ namespace ApiGateway.Controllers
             return BadRequest(result);
         }
 
-        [HttpPost("Post")]
+        [HttpPost]
         public async Task<ActionResult> PostArea(Area area)
         {
             var result = await _areaService.PostAreaAsync(area);

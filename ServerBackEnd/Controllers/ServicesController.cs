@@ -17,7 +17,7 @@ namespace ApiGateway.Controllers
             _services = services;
         }
 
-        [HttpGet("Get")]
+        [HttpGet]
         public async Task<ActionResult> GetServicesType()
         {
             var result = await _services.GetServicesAsync();
@@ -30,7 +30,7 @@ namespace ApiGateway.Controllers
             return BadRequest(result);
         }
 
-        [HttpPost("Post")]
+        [HttpPost]
         public async Task<ActionResult> PostServices(Service service)
         {
             var result = await _services.PostServicesAsync(service);

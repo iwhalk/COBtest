@@ -12,12 +12,12 @@ namespace TestingFrontEnd.Services
         }
         public async Task<List<Service>> GetServicesAsync()
         {
-            return await _repository.GetAsync<List<Service>>("api/Services/Get");
+            return await _repository.GetAsync<List<Service>>("api/Services");
         }
 
         public async Task<Service> PostServicesAsync(Service service)
         {
-            return await _repository.PostAsync<Service>("api/Services/Post", service);
+            return await _repository.PostAsync<Service>("api/Services", service);
         }
     }
 }

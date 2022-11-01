@@ -9,31 +9,31 @@ namespace ApiGateway.Controllers
     [Route("api/[controller]")]
     [Authorize]
     [ApiController]
-    public class LessorController : ControllerBase
+    public class FeaturesController : ControllerBase
     {
-        private readonly ILessorService _lessorService;
-        public LessorController(ILessorService lessorService)
+        private readonly IFeaturesService _featuresService;
+        public FeaturesController(IFeaturesService featuresService)
         {
-            _lessorService = lessorService;
+            _featuresService = featuresService;
         }
 
         [HttpGet]
-        public async Task<ActionResult> GetLessor()
+        public async Task<ActionResult> GetFeatures()
         {
-            var result = await _lessorService.GetLessorAsync();
+            var result = await _featuresService.GetFeaturesAsync();
 
             if (result.Succeeded)
             {
                 return Ok(result);
             }
 
-            return BadRequest(result);  
+            return BadRequest(result);
         }
 
         [HttpPost]
-        public async Task<ActionResult> PostLessor(Lessor lessor)
+        public async Task<ActionResult> PostFeatures(Feature feature)
         {
-            var result = await _lessorService.PostLessorAsync(lessor);
+            var result = await _featuresService.PostFeaturesAsync(feature);
 
             if (result.Succeeded)
             {

@@ -13,12 +13,12 @@ namespace TestingFrontEnd.Services
 
         public async Task<List<PropertyType>> GetPropertyTypeAsync()
         {
-            return await _repository.GetAsync<List<PropertyType>>("api/PropertyType/Get");
+            return await _repository.GetAsync<List<PropertyType>>("api/PropertyType");
         }
 
         public async Task<PropertyType> PostPropertyTypeAsync(PropertyType propertyType)
         {
-            return await _repository.PostAsync<PropertyType>("api/PropertyType/Post", propertyType);
+            return await _repository.PostAsync<PropertyType>("api/PropertyType", propertyType);
         }
     }
 }

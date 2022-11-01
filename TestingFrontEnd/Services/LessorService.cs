@@ -13,11 +13,11 @@ namespace TestingFrontEnd.Services
 
         public async Task<List<Lessor>> GetLessorAsync()
         {
-            return await _repository.GetAsync<List<Lessor>>("api/Lessor/Get");
+            return await _repository.GetAsync<List<Lessor>>("api/Lessor");
         }
         public async Task<Lessor> PostLessorAsync(Lessor lessor)
         {
-            return await _repository.PostAsync<Lessor>("api/Lessor/Post", lessor);
+            return await _repository.PostAsync<Lessor>("api/Lessor", lessor);
         }
     }
 }
