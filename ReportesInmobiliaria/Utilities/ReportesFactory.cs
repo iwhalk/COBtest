@@ -125,7 +125,7 @@ namespace ReportesInmobiliaria.Utilities
             headerFrame = section.AddTextFrame();
             headerFrame.Width = "10.0cm";
             headerFrame.Left = ShapePosition.Center;
-            headerFrame.RelativeHorizontal = RelativeHorizontal.Page;
+            headerFrame.RelativeHorizontal = RelativeHorizontal.Margin;
             headerFrame.Top = "2.70cm";
             headerFrame.RelativeVertical = RelativeVertical.Page;
 
