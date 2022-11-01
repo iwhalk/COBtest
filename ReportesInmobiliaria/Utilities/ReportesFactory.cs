@@ -67,6 +67,8 @@ namespace ReportesInmobiliaria.Utilities
             DefineStyles();
             CreateLayout(reporte);
 
+            CrearReporteArrendadores(reporte as ReporteArrendadores);
+
             PdfDocumentRenderer pdfRenderer = new(true)
             {
                 Document = document
@@ -110,6 +112,97 @@ namespace ReportesInmobiliaria.Utilities
             style.ParagraphFormat.TabStops.AddTabStop("16cm", TabAlignment.Right);
         }
 
+        void CrearReporteArrendadores(ReporteArrendadores? reporteArrendadores)
+        {
+            section.PageSetup.Orientation = Orientation.Landscape;
+
+            headerFrame = section.AddTextFrame();
+            headerFrame.Width = "10.0cm";
+            headerFrame.Left = ShapePosition.Center;
+            headerFrame.RelativeHorizontal = RelativeHorizontal.Page;
+            headerFrame.Top = "2.70cm";
+            headerFrame.RelativeVertical = RelativeVertical.Page;
+
+            // Create the text frame for the data parameters
+            dataParametersFrame = section.AddTextFrame();
+            dataParametersFrame.Height = "2.0cm";
+            dataParametersFrame.Width = "7.0cm";
+            dataParametersFrame.Left = ShapePosition.Left;
+            dataParametersFrame.RelativeHorizontal = RelativeHorizontal.Margin;
+            dataParametersFrame.Top = "4.0cm";
+            dataParametersFrame.RelativeVertical = RelativeVertical.Page;
+
+            // Create the text frame for the data values
+            dataValuesFrame = section.AddTextFrame();
+            dataValuesFrame.Width = "7.0cm";
+            dataValuesFrame.Left = "6.5cm";
+            dataValuesFrame.RelativeHorizontal = RelativeHorizontal.Page;
+            dataValuesFrame.Top = "4.0cm";
+            dataValuesFrame.RelativeVertical = RelativeVertical.Page;
+
+            // Put header in header frame
+            Paragraph paragraph = headerFrame.AddParagraph("REPORTE ARRENDADORES");//Titulo
+            paragraph.Format.Font.Name = "Calibri";
+            paragraph.Format.Font.Size = 13;
+            paragraph.Format.Font.Bold = true;
+            paragraph.Format.Alignment = ParagraphAlignment.Center;
+
+            // Put parameters in data Frame
+            paragraph = dataParametersFrame.AddParagraph();
+            paragraph.Format.Font.Bold = true;
+            paragraph.AddText("Fecha de generaciòn: ");
+            paragraph.AddLineBreak();
+            paragraph.AddText("Total de Arrendatarios: ");
+
+            // Put values in data Frame
+            paragraph = dataValuesFrame.AddParagraph();
+            paragraph.AddText(reporteArrendadores.FechaGeneracion.ToString("dd/MM/yyyy hh:mm tt") ?? "");
+            paragraph.AddLineBreak();
+            paragraph.AddText(reporteArrendadores.Arrendadores.Count().ToString() ?? "");
+
+            // Add the data separation field
+            paragraph = section.AddParagraph();
+            paragraph.Format.SpaceBefore = "2.0cm";
+            paragraph.Format.Font.Size = 10;
+            paragraph.Style = "Reference";
+            paragraph.AddFormattedText("", TextFormat.Bold);
+
+            // Create the item table
+            table = section.AddTable();
+            table.Style = "Table";
+            table.Borders.Color = TableBorder;
+            table.Borders.Width = 0.5;
+            table.Rows.LeftIndent = 0;
+            table.Rows.Alignment = RowAlignment.Center;
+
+            // Before you can add a row, you must define the columns
+            Column column = table.AddColumn("5cm");
+            column.Format.Alignment = ParagraphAlignment.Center;
+
+            column = table.AddColumn("5cm");
+            column.Format.Alignment = ParagraphAlignment.Center;
+
+            column = table.AddColumn("7cm");
+            column.Format.Alignment = ParagraphAlignment.Center;
+
+            column = table.AddColumn("4cm");
+            column.Format.Alignment = ParagraphAlignment.Center;
+
+            // Create the header of the table
+            Row row = table.AddRow();
+            row.HeadingFormat = true;
+            row.Format.Alignment = ParagraphAlignment.Center;
+            row.Format.Font.Bold = true;
+            row.Format.Font.Size = 10;
+            row.Shading.Color = TableColor;
+            row.Cells[0].AddParagraph("Nombre");
+            row.Cells[1].AddParagraph("RFC");
+            row.Cells[2].AddParagraph("Direccìón");
+            row.Cells[3].AddParagraph("Telefono");
+
+            FillGenericContent(reporteArrendadores.Arrendadores);
+        }
+
         void CreateLayout<T>(T reporte)
         {
             // Each MigraDoc document needs at least one section.
@@ -118,7 +211,7 @@ namespace ReportesInmobiliaria.Utilities
             // Create footer
             Paragraph footer = section.Footers.Primary.AddParagraph();
             footer.AddLineBreak();
-            footer.AddText("D.R.© Ferrocarril Mexicano S.A. de C.V., Bosque de Ciruelos no. 99, Col. Bosques de las Lomas, México D.F. C.P. 11700");
+            footer.AddText("El footer");
             footer.AddLineBreak();
             footer.AddText("Pagina ");
             footer.AddPageField();
@@ -128,14 +221,14 @@ namespace ReportesInmobiliaria.Utilities
             footer.Format.Alignment = ParagraphAlignment.Center;
 
             // Put a logo in the header
-                Image image = section.Headers.Primary.AddImage(Path.Combine(Environment.CurrentDirectory, @"Imagenes\", "ferromex.png"));
-                image.Height = "0.75cm"; image.Width = "5.25cm";
-                image.LockAspectRatio = true;
-                image.RelativeVertical = RelativeVertical.Margin;
-                image.RelativeHorizontal = RelativeHorizontal.Margin;
-                image.Top = ShapePosition.Top;
-                image.Left = ShapePosition.Right;
-                image.WrapFormat.Style = WrapStyle.Through;
+            //Image image = section.Headers.Primary.AddImage(Path.Combine(Environment.CurrentDirectory, @"Imagenes\", "ferromex.png"));
+            //image.Height = "0.75cm"; image.Width = "5.25cm";
+            //image.LockAspectRatio = true;
+            //image.RelativeVertical = RelativeVertical.Margin;
+            //image.RelativeHorizontal = RelativeHorizontal.Margin;
+            //image.Top = ShapePosition.Top;
+            //image.Left = ShapePosition.Right;
+            //image.WrapFormat.Style = WrapStyle.Through;
         }
 
         /// <summary>
@@ -143,7 +236,7 @@ namespace ReportesInmobiliaria.Utilities
         /// </summary>
 
 
-        void FillGenericContent<T>(List<T> value, int fontSize = 6)
+        void FillGenericContent<T>(List<T> value, int fontSize = 8)
         {
             foreach (var item in value)
             {
