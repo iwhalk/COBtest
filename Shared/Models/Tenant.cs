@@ -8,9 +8,13 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Shared.Models
 {
-    [Table("Tenant")]
     public partial class Tenant
     {
+        public Tenant()
+        {
+            ReceptionCertificates = new HashSet<ReceptionCertificate>();
+        }
+
         [Key]
         [Column("ID_Tenant")]
         public int IdTenant { get; set; }
@@ -41,9 +45,14 @@ namespace Shared.Models
         public string Delegation { get; set; }
         [Column("CP")]
         public int Cp { get; set; }
-        public int PhoneNumber { get; set; }
+        [Required]
+        [StringLength(50)]
+        public string PhoneNumber { get; set; }
         [Required]
         [StringLength(50)]
         public string EmailAddress { get; set; }
+
+        [InverseProperty("IdTenantNavigation")]
+        public virtual ICollection<ReceptionCertificate> ReceptionCertificates { get; set; }
     }
 }
