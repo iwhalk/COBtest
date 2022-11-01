@@ -53,5 +53,5 @@ jobs:
         with:
           app-name: 'ProyectoInmobiliaria'
           slot-name: 'Production'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_FDC96B186C754871A3787C771BC8591C }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_20D803AD15D64922B2EEBCF6FA0683E0 }}
           package: .
