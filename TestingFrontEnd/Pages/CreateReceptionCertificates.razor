@@ -64,7 +64,7 @@
                             <input class="ml-2 rounded-lg" type="text" />
                         </div>
                         <div>
-                            <button class="bg-blue-300 rounded-lg h-6 w-full">Existente</button>
+                            <button @onclick="ChangeOpenModalProperty" class="bg-blue-300 rounded-lg h-6 w-full">Existente</button>
                         </div>
                     </div>
                 </div>
@@ -72,6 +72,7 @@
             </div>
             <ModalLessorOrTenant OnClick="ChangeOpenModalLessor" ShowModal="@ShowModalLessor" TitleModal="Arrendarores"></ModalLessorOrTenant>
             <ModalLessorOrTenant OnClick="ChangeOpenModalTenant" ShowModal="@ShowModalTenant" TitleModal="Arrendatarios"></ModalLessorOrTenant>
+            <ModalProperty OnClick="ChangeOpenModalProperty" ShowModal="@ShowModalProperty"></ModalProperty>
         </div>
     </div>
 </body>
