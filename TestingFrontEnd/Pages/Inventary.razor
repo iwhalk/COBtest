@@ -8,7 +8,7 @@
         <LeftListActas></LeftListActas>
         <LeftListActas></LeftListActas>
         </div>
-        <div id="ContenedorElementos" class="mt-24 mb-2 flex justify-around relative border-1 border-black rounded-lg p-2 -ml-2 mr-6 w-full">
+        <div id="ContenedorElementos" class="mt-24 mb-12 flex justify-around relative border-1 border-black rounded-lg p-2 -ml-2 mr-6 w-full">
 
             <div id="ComponteInputs" class="flex p-2">
                 <div class="flex">  
@@ -45,17 +45,9 @@
                 </div>
             </div>
 
-            <div id="ComponenteCambiableEstado" class="flex absolute bottom-72 left-20">
-                <div id="ColumBotonesEstado1" class="mx-6 flex flex-col">
-                    <button class="py-2 my-4 w-48 border rounded-lg text-white shadow-xl" style="background-color: #6AA7B7;">Mal Estado</button>                 
-                </div>
-                <div id="ColumBotonesEstado2" class="mx-6 flex flex-col">
-                    <button class="py-2 my-4 w-48 border rounded-lg text-white shadow-xl" style="background-color: #6AA7B7;">Estado Regular</button>                 
-                </div>
-                <div id="ColumBotonesEstado3" class="mx-6 flex flex-col">
-                    <button class="py-2 my-4 w-48 border rounded-lg text-white shadow-xl" style="background-color: #6AA7B7;">Buen Estado</button>             
-                </div>                
-            </div>
+            <DynamicComponentInventory></DynamicComponentInventory>
+            @* <ColorsInventory></ColorsInventory> *@
+            @* <StateInventory></StateInventory> *@
 
         </div>
     </div>
