@@ -8,23 +8,16 @@
             <LeftListActas OnClick="ChangeOpenModalRooms" OpenModalGauges="ChangeOpenModalGauges" OpenModalKeys="ChangeOpenModalKeys" TypeList="Habitaciones"></LeftListActas>
             <LeftListActas OnClick="ChangeOpenModalComponents" TypeList="Componentes"></LeftListActas>
         </div>
-        <div id="ContenedorElementos" class="mt-24 mb-2 flex justify-around relative border-1 border-black rounded-lg p-2 -ml-2 mr-6 w-full">
+        <div id="ContenedorElementos" class="my-12 flex justify-around relative border-1 border-black rounded-lg p-2 -ml-2 mr-6 w-full" style="height: 42rem">
             <div id="ComponteInputs" class="flex p-2">
                 <div class="flex">
                     <div class="flex">
                         <div class="flex flex-col">
-                            <label for="" class="text-blue-900 mt-2">Material</label>
-                            <label for="" class="text-blue-900 mt-4">Color</label>
-                            <label for="" class="text-blue-900 mt-4">Estado General</label>
-                            <label for="" class="text-blue-900 mt-3">Canitdad</label>
-                            <label for="" class="text-blue-900 mt-3">Superficie m2</label>
-                        </div>
-                        <div class="flex flex-col">
-                            <button @onclick="@(() => ChangeButtonsShow("Material"))" class="border-2 bg-slate-100 ml-5 w-3/6 flex justify-end my-2 h-7 w-24">@MaterialSelect</button>
-                            <button @onclick="@(() => ChangeButtonsShow("Color"))" class="border-2 bg-slate-100 ml-5 w-3/6 flex justify-end my-2 h-7 w-24">@ColorSelect</button>
-                            <button @onclick="@(() => ChangeButtonsShow("EstadoGeneral"))" class="border-2 bg-slate-100 ml-5 w-3/6 flex justify-end my-2 h-7 w-24">@StatusSelect</button>
-                            <button @onclick="@(() => ChangeButtonsShow(""))"><input type="number" class="border-2 bg-slate-100 ml-5 w-3/6 flex justify-end my-2"></button>
-                            <button @onclick="@(() => ChangeButtonsShow(""))"><input type="number" class="border-2 bg-slate-100 ml-5 w-3/6 flex justify-end my-2"></button>
+                            <span class="flex my-2"><label for="" class="text-blue-900 w-32">Material</label><button @onclick="@(() => ChangeButtonsShow("Material"))" class="border-2 bg-slate-100 ml-5 w-3/6 flex justify-end h-7 w-24">@MaterialSelect</button></span>
+                            <span class="flex my-2"><label for="" class="text-blue-900 w-32">Color</label><button @onclick="@(() => ChangeButtonsShow("Color"))" class="border-2 bg-slate-100 ml-5 w-3/6 flex justify-end h-7 w-24">@ColorSelect</button></span>
+                            <span class="flex my-2"><label for="" class="text-blue-900 w-32">Estado General</label><button @onclick="@(() => ChangeButtonsShow("EstadoGeneral"))" class="border-2 bg-slate-100 ml-5 w-3/6 flex justify-end h-7 w-24">@StatusSelect</button></span>
+                            <span class="flex my-2"><label for="" class="text-blue-900 w-32">Canitdad</label><button @onclick="@(() => ChangeButtonsShow(""))"><input type="number" class="border-2 bg-slate-100 ml-5 w-3/6 flex justify-end"></button></span>
+                            <span class="flex my-2"><label for="" class="text-blue-900 w-32">Superficie m2</label><button @onclick="@(() => ChangeButtonsShow(""))"><input type="number" class="border-2 bg-slate-100 ml-5 w-3/6 flex justify-end"></button></span>
                         </div>
                     </div>
                     <div class="mx-5">
