@@ -20,9 +20,9 @@
                             <label for="" class="text-blue-900 mt-3">Superficie m2</label>
                         </div>
                         <div class="flex flex-col">
-                            <input type="text" class="border-2 bg-slate-100 ml-5 w-3/6 flex justify-end my-2">
-                            <input type="text" class="border-2 bg-slate-100 ml-5 w-3/6 flex justify-end my-2">
-                            <input type="text" class="border-2 bg-slate-100 ml-5 w-3/6 flex justify-end my-2">
+                            <button @onclick="@(() => ChangeButtonsShow("Material"))" class="border-2 bg-slate-100 ml-5 w-3/6 flex justify-end my-2 h-7 w-24"></button>
+                            <button @onclick="@(() => ChangeButtonsShow("Color"))" class="border-2 bg-slate-100 ml-5 w-3/6 flex justify-end my-2 h-7 w-24"></button>
+                            <button @onclick="@(() => ChangeButtonsShow("EstadoGeneral"))" class="border-2 bg-slate-100 ml-5 w-3/6 flex justify-end my-2 h-7 w-24"></button>
                             <input type="number" class="border-2 bg-slate-100 ml-5 w-3/6 flex justify-end my-2">
                             <input type="number" class="border-2 bg-slate-100 ml-5 w-3/6 flex justify-end my-2">
                         </div>
@@ -33,6 +33,30 @@
                 </div>
             </div>
 
+            @if(TypeButtonsInventory == "Material" && MaterialSelect != "")
+            {
+                <DynamicComponentInventory></DynamicComponentInventory>
+            }
+            @if(TypeButtonsInventory == "Color" && ColorSelect != "")
+            {
+                <ColorsInventory></ColorsInventory>
+            }
+            @if(TypeButtonsInventory == "EstadoGeneral" && StatusSelect != "")
+            {
+                <div id="ComponenteCambiableEstado" class="flex absolute bottom-72 left-20">
+                    <div id="ColumBotonesEstado1" class="mx-6 flex flex-col">
+                        <button class="py-2 my-4 w-48 border rounded-lg text-white shadow-xl" style="background-color: #6AA7B7;">Mal Estado</button>
+                    </div>
+                    <div id="ColumBotonesEstado2" class="mx-6 flex flex-col">
+                        <button class="py-2 my-4 w-48 border rounded-lg text-white shadow-xl" style="background-color: #6AA7B7;">Estado Regular</button>
+                    </div>
+                    <div id="ColumBotonesEstado3" class="mx-6 flex flex-col">
+                        <button class="py-2 my-4 w-48 border rounded-lg text-white shadow-xl" style="background-color: #6AA7B7;">Buen Estado</button>
+                    </div>
+                </div>
+            }
+
+    
             <div id="ComponenteRecuadros" class="p-2">
                 <div>
                     <label for="" class="text-center text-xl text-blue-900 font-semibold mb-2">Oberservaciones</label>
@@ -42,20 +66,7 @@
                     <label for="" class="text-center text-xl text-blue-900 font-semibold mb-2">Fotografias</label>
                     <input type="text" class="border-2 bg-slate-100 ml-5 w-96 h-48 flex justify-end">
                 </div>
-            </div>
-
-            <div id="ComponenteCambiableEstado" class="flex absolute bottom-72 left-20">
-                <div id="ColumBotonesEstado1" class="mx-6 flex flex-col">
-                    <button class="py-2 my-4 w-48 border rounded-lg text-white shadow-xl" style="background-color: #6AA7B7;">Mal Estado</button>
-                </div>
-                <div id="ColumBotonesEstado2" class="mx-6 flex flex-col">
-                    <button class="py-2 my-4 w-48 border rounded-lg text-white shadow-xl" style="background-color: #6AA7B7;">Estado Regular</button>
-                </div>
-                <div id="ColumBotonesEstado3" class="mx-6 flex flex-col">
-                    <button class="py-2 my-4 w-48 border rounded-lg text-white shadow-xl" style="background-color: #6AA7B7;">Buen Estado</button>
-                </div>
-            </div>
-
+            </div>           
         </div>
     </div>
     <div id="Botones" class="flex justify-center -my-5">
