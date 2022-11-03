@@ -1,9 +1,10 @@
 ﻿<environment include="Development">
     <script src="~/Identity/lib/jquery-validation/dist/jquery.validate.js"></script>
     <script src="~/Identity/lib/jquery-validation/dist/jquery.validate.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.min.js"></script>
-    <script href="~/css/styles.css" rel="stylesheet"></script>
-    <script rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css"></script>
+    @* <script src="https://cdn.tailwindcss.com"></script> *@
+    <script src="~/lib/bootstrap/dist/js/bootstrap.min.js"></script>    
+    <link href="~/lib/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet" />
+    <link href="~/css/styles.css" rel="stylesheet" />    
 </environment>
 <environment exclude="Development">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.17.0/jquery.validate.min.js"
@@ -19,6 +20,6 @@
             integrity="sha384-R3vNCHsZ+A2Lo3d5A6XNP7fdQkeswQWTIPfiYwSpEP3YV079R+93YzTeZRah7f/F">
     </script>
     <script src="~/Identity/lib/bootstrap/dist/js/bootstrap.min.js"></script>
-    <script href="~/css/styles.css" rel="stylesheet"></script>
+    <link href="~/Identity/css/site.css" rel="stylesheet" />
     <script rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css"></script>
 </environment>

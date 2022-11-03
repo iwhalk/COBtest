@@ -47,10 +47,13 @@
          "ObjectType": 0
       },
       {
+<<<<<<< HEAD
          "Name": "[dbo].[Modules]",
          "ObjectType": 0
       },
       {
+=======
+>>>>>>> e166a1ddf59215f8734d10d20796add5eeacdf53
          "Name": "[dbo].[Properties]",
          "ObjectType": 0
       },
