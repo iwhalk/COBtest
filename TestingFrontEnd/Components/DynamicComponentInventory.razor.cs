@@ -1,9 +1,10 @@
-using Microsoft.AspNetCore.Components;
+﻿using Microsoft.AspNetCore.Components;
 
-namespace Shared.Components
+namespace TestingFrontEnd.Components
 {
     public partial class DynamicComponentInventory : ComponentBase
     {
-
+        [Parameter]
+        public EventCallback<string> OnClick { get; set; }
     }
 }

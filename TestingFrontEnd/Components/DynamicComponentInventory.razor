@@ -1,16 +1,16 @@
-<div id="ComponenteCambiable" class="flex absolute bottom-20 left-20">
+﻿<div id="ComponenteCambiable" class="flex absolute bottom-20 left-20">
     <div id="ColumBotones1" class="mx-6 flex flex-col">
-        <button class="py-2 my-4 w-48 border rounded-lg text-white shadow-xl" style="background-color: #6AA7B7;">Céramica</button>
-        <button class="py-2 my-4 w-48 border rounded-lg text-white shadow-xl" style="background-color: #6AA7B7;">Porcelanato</button>
-        <button class="py-2 my-4 w-48 border rounded-lg text-white shadow-xl" style="background-color: #6AA7B7;">Madera</button>
+        <button @onclick="@(() => OnClick.InvokeAsync("Ceramica"))" class="py-2 my-4 w-48 border rounded-lg text-white shadow-xl" style="background-color: #6AA7B7;">Céramica</button>
+        <button @onclick="@(() => OnClick.InvokeAsync("Porcelana"))" class="py-2 my-4 w-48 border rounded-lg text-white shadow-xl" style="background-color: #6AA7B7;">Porcelanato</button>
+        <button @onclick="@(() => OnClick.InvokeAsync("Madera"))" class="py-2 my-4 w-48 border rounded-lg text-white shadow-xl" style="background-color: #6AA7B7;">Madera</button>
     </div>
     <div id="ColumBotones2" class="mx-6 flex flex-col">
-        <button class="py-2 my-4 w-48 border rounded-lg text-white shadow-xl" style="background-color: #6AA7B7;">Piedra Natural</button>
-        <button class="py-2 my-4 w-48 border rounded-lg text-white shadow-xl" style="background-color: #6AA7B7;">Laminado</button>
-        <button class="py-2 my-4 w-48 border rounded-lg text-white shadow-xl" style="background-color: #6AA7B7;">Vinilico</button>
+        <button @onclick="@(() => OnClick.InvokeAsync("Piedra Natural"))" class="py-2 my-4 w-48 border rounded-lg text-white shadow-xl" style="background-color: #6AA7B7;">Piedra Natural</button>
+        <button @onclick="@(() => OnClick.InvokeAsync("Laminado"))" class="py-2 my-4 w-48 border rounded-lg text-white shadow-xl" style="background-color: #6AA7B7;">Laminado</button>
+        <button @onclick="@(() => OnClick.InvokeAsync("Vinilico"))" class="py-2 my-4 w-48 border rounded-lg text-white shadow-xl" style="background-color: #6AA7B7;">Vinilico</button>
     </div>
     <div id="ColumBotones3" class="mx-6 flex flex-col">
-        <button class="py-2 my-4 w-48 border rounded-lg text-white shadow-xl" style="background-color: #6AA7B7;">Concreto</button>
-        <button class="py-2 my-4 w-48 border rounded-lg text-white shadow-xl" style="background-color: #6AA7B7;">Mármol</button>
+        <button @onclick="@(() => OnClick.InvokeAsync("Concreto"))" class="py-2 my-4 w-48 border rounded-lg text-white shadow-xl" style="background-color: #6AA7B7;">Concreto</button>
+        <button @onclick="@(() => OnClick.InvokeAsync("Marmol"))" class="py-2 my-4 w-48 border rounded-lg text-white shadow-xl" style="background-color: #6AA7B7;">Mármol</button>
     </div>
 </div>

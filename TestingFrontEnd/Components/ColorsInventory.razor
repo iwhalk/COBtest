@@ -1,64 +1,64 @@
-<div id="ComponenteCambiableColores" class="flex absolute bottom-20 left-20">
-                <div id="ColumBotonesColores1" class="mx-6 flex flex-col">
-                    <button class="py-2 my-4 w-48 border rounded-lg text-blue-900 bg-slate-100 shadow-xl flex justify-center">
-                        <g class="flex">
-                            <svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 120 120">
-                                <circle cx="60" cy="60" r="50"  fill="Red" />
-                            </svg>
-                            <label for="" class="mt-1 mx-2">Rojo</label>
-                        </g>
-                    </button>
-                    <button class="py-2 my-4 w-48 border rounded-lg text-blue-900 bg-slate-100 shadow-xl flex justify-center">
-                        <g class="flex">
-                            <svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 120 120">
-                                <circle cx="60" cy="60" r="50"  fill="Green" />
-                            </svg>
-                            <label for="" class="mt-1 mx-2">Verde</label>
-                        </g>
-                    </button>
-                    <button class="py-2 my-4 w-48 border rounded-lg text-blue-900 bg-slate-100 shadow-xl flex justify-center">
-                        <g class="flex">
-                            <svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 120 120">
-                                <circle cx="60" cy="60" r="50"  fill="Blue" />
-                            </svg>
-                            <label for="" class="mt-1 mx-2">Azul</label>
-                        </g>
-                    </button>                    
-                </div>
-                <div id="ColumBotonesColores2" class="mx-6 flex flex-col">
-                    <button class="py-2 my-4 w-48 border rounded-lg text-blue-900 bg-slate-100 shadow-xl flex justify-center">
-                        <g class="flex">
-                            <svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 120 120">
-                                <circle cx="60" cy="60" r="50"  fill="Black" />
-                            </svg>
-                            <label for="" class="mt-1 mx-2">Negro</label>
-                        </g>
-                    </button>
-                    <button class="py-2 my-4 w-48 border rounded-lg text-blue-900 bg-slate-100 shadow-xl flex justify-center">
-                        <g class="flex">
-                            <svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 120 120">
-                                <circle cx="60" cy="60" r="50"  fill="White" />
-                            </svg>
-                            <label for="" class="mt-1 mx-2">Blanco</label>
-                        </g>
-                    </button>
-                    <button class="py-2 my-4 w-48 border rounded-lg text-blue-900 bg-slate-100 shadow-xl flex justify-center">
-                        <g class="flex">
-                            <svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 120 120">
-                                <circle cx="60" cy="60" r="50"  fill="Brown" />
-                            </svg>
-                            <label for="" class="mt-1 mx-2">Café</label>
-                        </g>
-                    </button>                    
-                </div>
-                <div id="ColumBotonesColores3" class="mx-6 flex flex-col">
-                    <button class="py-2 my-4 w-48 border rounded-lg text-blue-900 bg-slate-100 shadow-xl flex justify-center">
-                        <g class="flex">
-                            <svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 120 120">
-                                <circle cx="60" cy="60" r="50"  fill="Gray" />
-                            </svg>
-                            <label for="" class="mt-1 mx-2">Gris</label>
-                        </g>
-                    </button>             
-                </div>                
-            </div>
+﻿<div id="ComponenteCambiableColores" class="flex absolute bottom-20 left-20">
+    <div id="ColumBotonesColores1" class="mx-6 flex flex-col">
+        <button @onclick="@(() => OnClick.InvokeAsync("Rojo"))" class="py-2 my-4 w-48 border rounded-lg text-blue-900 bg-slate-100 shadow-xl flex justify-center">
+            <g class="flex">
+                <svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 120 120">
+                    <circle cx="60" cy="60" r="50" fill="Red" />
+                </svg>
+                <label for="" class="mt-1 mx-2">Rojo</label>
+            </g>
+        </button>
+        <button @onclick="@(() => OnClick.InvokeAsync("Verde"))" class="py-2 my-4 w-48 border rounded-lg text-blue-900 bg-slate-100 shadow-xl flex justify-center">
+            <g class="flex">
+                <svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 120 120">
+                    <circle cx="60" cy="60" r="50" fill="Green" />
+                </svg>
+                <label for="" class="mt-1 mx-2">Verde</label>
+            </g>
+        </button>
+        <button @onclick="@(() => OnClick.InvokeAsync("Azul"))" class="py-2 my-4 w-48 border rounded-lg text-blue-900 bg-slate-100 shadow-xl flex justify-center">
+            <g class="flex">
+                <svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 120 120">
+                    <circle cx="60" cy="60" r="50" fill="Blue" />
+                </svg>
+                <label for="" class="mt-1 mx-2">Azul</label>
+            </g>
+        </button>
+    </div>
+    <div id="ColumBotonesColores2" class="mx-6 flex flex-col">
+        <button @onclick="@(() => OnClick.InvokeAsync("Negro"))" class="py-2 my-4 w-48 border rounded-lg text-blue-900 bg-slate-100 shadow-xl flex justify-center">
+            <g class="flex">
+                <svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 120 120">
+                    <circle cx="60" cy="60" r="50" fill="Black" />
+                </svg>
+                <label for="" class="mt-1 mx-2">Negro</label>
+            </g>
+        </button>
+        <button @onclick="@(() => OnClick.InvokeAsync("Blanco"))" class="py-2 my-4 w-48 border rounded-lg text-blue-900 bg-slate-100 shadow-xl flex justify-center">
+            <g class="flex">
+                <svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 120 120">
+                    <circle cx="60" cy="60" r="50" fill="White" />
+                </svg>
+                <label for="" class="mt-1 mx-2">Blanco</label>
+            </g>
+        </button>
+        <button @onclick="@(() => OnClick.InvokeAsync("Cafe"))" class="py-2 my-4 w-48 border rounded-lg text-blue-900 bg-slate-100 shadow-xl flex justify-center">
+            <g class="flex">
+                <svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 120 120">
+                    <circle cx="60" cy="60" r="50" fill="Brown" />
+                </svg>
+                <label for="" class="mt-1 mx-2">Café</label>
+            </g>
+        </button>
+    </div>
+    <div id="ColumBotonesColores3" class="mx-6 flex flex-col">
+        <button @onclick="@(() => OnClick.InvokeAsync("Gris"))" class="py-2 my-4 w-48 border rounded-lg text-blue-900 bg-slate-100 shadow-xl flex justify-center">
+            <g class="flex">
+                <svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 120 120">
+                    <circle cx="60" cy="60" r="50" fill="Gray" />
+                </svg>
+                <label for="" class="mt-1 mx-2">Gris</label>
+            </g>
+        </button>
+    </div>
+</div>

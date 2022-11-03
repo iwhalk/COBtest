@@ -20,38 +20,38 @@
                             <label for="" class="text-blue-900 mt-3">Superficie m2</label>
                         </div>
                         <div class="flex flex-col">
-                            <button @onclick="@(() => ChangeButtonsShow("Material"))" class="border-2 bg-slate-100 ml-5 w-3/6 flex justify-end my-2 h-7 w-24"></button>
-                            <button @onclick="@(() => ChangeButtonsShow("Color"))" class="border-2 bg-slate-100 ml-5 w-3/6 flex justify-end my-2 h-7 w-24"></button>
-                            <button @onclick="@(() => ChangeButtonsShow("EstadoGeneral"))" class="border-2 bg-slate-100 ml-5 w-3/6 flex justify-end my-2 h-7 w-24"></button>
-                            <input type="number" class="border-2 bg-slate-100 ml-5 w-3/6 flex justify-end my-2">
-                            <input type="number" class="border-2 bg-slate-100 ml-5 w-3/6 flex justify-end my-2">
+                            <button @onclick="@(() => ChangeButtonsShow("Material"))" class="border-2 bg-slate-100 ml-5 w-3/6 flex justify-end my-2 h-7 w-24">@MaterialSelect</button>
+                            <button @onclick="@(() => ChangeButtonsShow("Color"))" class="border-2 bg-slate-100 ml-5 w-3/6 flex justify-end my-2 h-7 w-24">@ColorSelect</button>
+                            <button @onclick="@(() => ChangeButtonsShow("EstadoGeneral"))" class="border-2 bg-slate-100 ml-5 w-3/6 flex justify-end my-2 h-7 w-24">@StatusSelect</button>
+                            <button @onclick="@(() => ChangeButtonsShow(""))"><input type="number" class="border-2 bg-slate-100 ml-5 w-3/6 flex justify-end my-2"></button>
+                            <button @onclick="@(() => ChangeButtonsShow(""))"><input type="number" class="border-2 bg-slate-100 ml-5 w-3/6 flex justify-end my-2"></button>
                         </div>
                     </div>
                     <div class="mx-5">
-                        <li class="py-2 flex text-blue-900">Copiar Valores<input type="checkbox" class="border-2 w-1/4"></li>
+                        <li class="py-2 flex text-blue-900">Copiar Valores<input @onclick="ChangeOpenModalCopyValues" type="checkbox" class="border-2 w-1/4"></li>
                     </div>
                 </div>
             </div>
 
-            @if(TypeButtonsInventory == "Material" && MaterialSelect != "")
+            @if(TypeButtonsInventory == "Material" && MaterialSelect == "")
             {
-                <DynamicComponentInventory></DynamicComponentInventory>
+                <DynamicComponentInventory OnClick="SetMaterial"></DynamicComponentInventory>
             }
-            @if(TypeButtonsInventory == "Color" && ColorSelect != "")
+            @if(TypeButtonsInventory == "Color" && ColorSelect == "")
             {
-                <ColorsInventory></ColorsInventory>
+                <ColorsInventory OnClick="SetColor"></ColorsInventory>
             }
-            @if(TypeButtonsInventory == "EstadoGeneral" && StatusSelect != "")
+            @if(TypeButtonsInventory == "EstadoGeneral" && StatusSelect == "")
             {
                 <div id="ComponenteCambiableEstado" class="flex absolute bottom-72 left-20">
                     <div id="ColumBotonesEstado1" class="mx-6 flex flex-col">
-                        <button class="py-2 my-4 w-48 border rounded-lg text-white shadow-xl" style="background-color: #6AA7B7;">Mal Estado</button>
+                        <button @onclick="@(() => SetStatus("Mal Estado"))" class="py-2 my-4 w-48 border rounded-lg text-white shadow-xl" style="background-color: #6AA7B7;">Mal Estado</button>
                     </div>
                     <div id="ColumBotonesEstado2" class="mx-6 flex flex-col">
-                        <button class="py-2 my-4 w-48 border rounded-lg text-white shadow-xl" style="background-color: #6AA7B7;">Estado Regular</button>
+                        <button @onclick="@(() => SetStatus("Estado Regular"))" class="py-2 my-4 w-48 border rounded-lg text-white shadow-xl" style="background-color: #6AA7B7;">Estado Regular</button>
                     </div>
                     <div id="ColumBotonesEstado3" class="mx-6 flex flex-col">
-                        <button class="py-2 my-4 w-48 border rounded-lg text-white shadow-xl" style="background-color: #6AA7B7;">Buen Estado</button>
+                        <button @onclick="@(() => SetStatus("Buen Estado"))" class="py-2 my-4 w-48 border rounded-lg text-white shadow-xl" style="background-color: #6AA7B7;">Buen Estado</button>
                     </div>
                 </div>
             }
@@ -64,7 +64,7 @@
                 </div>
                 <div class="my-8">
                     <label for="" class="text-center text-xl text-blue-900 font-semibold mb-2">Fotografias</label>
-                    <input type="text" class="border-2 bg-slate-100 ml-5 w-96 h-48 flex justify-end">
+                    <input type="file" class="border-2 bg-slate-100 ml-5 w-96 h-48 flex justify-end">
                 </div>
             </div>           
         </div>
@@ -75,6 +75,7 @@
     </div>
     <ModalRoomsOrComponents OnClick="ChangeOpenModalRooms" TitleTable="Habitaciones" ShowModal="@ShowModalRooms"></ModalRoomsOrComponents>
     <ModalRoomsOrComponents OnClick="ChangeOpenModalComponents" TitleTable="Componentes" ShowModal="@ShowModalComponents"></ModalRoomsOrComponents>
+    <ModalRoomsOrComponents OnClick="ChangeOpenModalCopyValues" TitleTable="Habitaciones" ShowModal="@ShowModalCopyValues"></ModalRoomsOrComponents>
 </body>
 
 <style>

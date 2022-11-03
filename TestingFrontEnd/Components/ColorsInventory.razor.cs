@@ -1,12 +1,10 @@
-using Microsoft.AspNetCore.Components;
+﻿using Microsoft.AspNetCore.Components;
 
-namespace Shared.Components
+namespace TestingFrontEnd.Components
 {
     public partial class ColorsInventory : ComponentBase
     {
-        public ColorsInventory()
-        {
-
-        }
+        [Parameter]
+        public EventCallback<string> OnClick { get; set; }
     }
 }
