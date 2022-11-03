@@ -1,0 +1,40 @@
+﻿@if (ShowModal)
+{
+    <div class="fixed inset-0 overflow-y-auto">
+        <div class="flex mx-auto items-end justify-center text-center sm:items-center sm:p-0">
+            <div class="mx-auto bg-white h-[600px] md:max-w-2xl sm:max-w-sm mt-20 rounded-lg border border-grey-300 drop-shadow-lg border-2">
+                <div class="relative">
+                    <button @onclick="@(() => OnClick.InvokeAsync())" type="button" class="absolute top-3 right-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-red-600 rounded-full border border-2 ">
+                        <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
+                    </button>
+                </div>
+                <div class="text-center text-gray-400 text-xl pt-3">Lista de @TitleModal</div>
+                <div class="mx-auto w-96 text-center my-10 px-3 pr-2 mt-5">
+                    <table class="w-full overflow flex text-sm">
+                        <tr class="bg-[#2B286F] text-white text-sm h-10">
+                            <th class="w-24">Elemento</th>
+                            <th class="w-64">Cantidad</th>
+                        </tr>
+                        <tr class="m-10 border h-10">
+                            <td class="p-2">Agua m3</td>
+                            <td class="pl-3 pr-3"><input class="w-full" type="number" /></td>
+                        </tr>
+                        <tr class="m-10 border h-10">
+                            <td class="p-2">Agua m3</td>
+                            <td class="pl-3 pr-3"><input class="w-full" type="number" /></td>
+                        </tr>
+                        <tr class="m-10 border h-10">
+                            <td class="p-2">Agua m3</td>
+                            <td class="pl-3 pr-3"><input class="w-full" type="number" /></td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="my-8">
+                    <label for="" class="text-center text-xl text-blue-900 font-semibold">Fotografias</label>
+                    <input type="file" bg-transparent class="border-2 bg-slate-100 mx-auto ml-5 w-80 h-40 flex justify-end">
+                </div>
+                <button class="py-2  w-48 border rounded-lg text-white text-xl shadow-xl" style="background-color: #2B286F;">Agregar</button>
+            </div>
+        </div>
+    </div>
+}
