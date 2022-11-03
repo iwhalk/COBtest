@@ -93,7 +93,7 @@ builder.Services.AddProblemDetails(setup =>
     .AddProblemDetailsConventions()
 .AddJsonOptions(x => x.JsonSerializerOptions.DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull);
 
-builder.Services.AddHttpClient("Reportes", client => client.BaseAddress = new Uri("https://localhost:7293/"));
+builder.Services.AddHttpClient("Reportes", client => client.BaseAddress = new Uri("http://localhost:7293/"));
 
 builder.Services.AddCors();
 

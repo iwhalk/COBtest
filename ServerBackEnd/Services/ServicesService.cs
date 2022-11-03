@@ -7,19 +7,19 @@ namespace ApiGateway.Services
 {
     public class ServicesService : GenericProxy, IServicesService
     {
-        public ServicesService(IHttpContextAccessor? httpContextAccessor, IHttpClientFactory httpClientFactory) : base(httpContextAccessor, httpClientFactory, "ReportesInmobiliaria")
+        public ServicesService(IHttpContextAccessor? httpContextAccessor, IHttpClientFactory httpClientFactory) : base(httpContextAccessor, httpClientFactory, "Reportes")
         {
 
         }
 
         public async Task<ApiResponse<List<Service>>> GetServicesAsync()
         {
-            return await GetAsync<List<Service>>(path: "service");
+            return await GetAsync<List<Service>>(path: "Services");
         }
 
         public async Task<ApiResponse<Service>> PostServicesAsync(Service service)
         {
-            return await PostAsync<Service>(service, path: "service");
+            return await PostAsync<Service>(service, path: "Services");
         }
     }
 }

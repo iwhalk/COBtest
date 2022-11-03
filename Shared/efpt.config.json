@@ -1,13 +1,13 @@
 ﻿{
    "CodeGenerationMode": 2,
-   "ContextClassName": "InmobiliariaDbContext",
+   "ContextClassName": "prosisdb_3Context",
    "ContextNamespace": null,
    "DefaultDacpacSchema": null,
    "FilterSchemas": false,
    "IncludeConnectionString": false,
    "ModelNamespace": null,
-   "OutputContextPath": "Data",
-   "OutputPath": "Models",
+   "OutputContextPath": null,
+   "OutputPath": null,
    "PreserveCasingWithRegex": true,
    "ProjectRootNamespace": "Shared",
    "Schemas": null,
@@ -15,62 +15,7 @@
    "SelectedToBeGenerated": 0,
    "Tables": [
       {
-         "Name": "[dbo].[Areas]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[dbo].[AspNetUsers]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[dbo].[Blobs]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[dbo].[BlobsInventories]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[dbo].[Descriptions]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[dbo].[Features]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[dbo].[Inventories]",
-         "ObjectType": 0
-      },
-      {
          "Name": "[dbo].[Lessors]",
-         "ObjectType": 0
-      },
-      {
-<<<<<<< HEAD
-         "Name": "[dbo].[Modules]",
-         "ObjectType": 0
-      },
-      {
-=======
->>>>>>> e166a1ddf59215f8734d10d20796add5eeacdf53
-         "Name": "[dbo].[Properties]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[dbo].[PropertyTypes]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[dbo].[ReceptionCertificates]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[dbo].[Services]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[dbo].[Tenants]",
          "ObjectType": 0
       }
    ],
@@ -78,10 +23,10 @@
    "UseBoolPropertiesWithoutDefaultSql": false,
    "UseDatabaseNames": false,
    "UseDbContextSplitting": false,
-   "UseFluentApiOnly": false,
+   "UseFluentApiOnly": true,
    "UseHandleBars": false,
    "UseHierarchyId": false,
-   "UseInflector": true,
+   "UseInflector": false,
    "UseLegacyPluralizer": false,
    "UseManyToManyEntity": false,
    "UseNoConstructor": false,
