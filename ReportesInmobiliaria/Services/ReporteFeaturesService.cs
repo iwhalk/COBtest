@@ -48,7 +48,7 @@ namespace ReportesInmobiliaria.Services
                 {
                     //Nombre = nombreCompleto != " " ? nombreCompleto : "",
                     nombre = feature.FeatureName ?? "",
-                    idService = feature.IdService
+                    idService = feature.IdService.ToString()
                 });
             }
             return list;

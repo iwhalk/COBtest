@@ -79,7 +79,10 @@ builder.Services.AddScoped<ITenantService, TenantService>();
 builder.Services.AddScoped<IInventoryService, InventoryService>();
 builder.Services.AddScoped<IServicesService, ServicesService>();
 builder.Services.AddScoped<IDescriptionService, DescriptionService>();
+builder.Services.AddScoped<IAreasService, AreasService>();
+builder.Services.AddScoped<IFeaturesService, FeaturesService>();
 builder.Services.AddScoped<IReportesService, ReportesService>();
+builder.Services.AddScoped<IReporteFeaturesService, ReporteFeaturesService>();
 builder.Services.AddScoped<ReportesFactory>();
 
 builder.Services.AddCors();
@@ -429,6 +432,90 @@ app.MapPut("/Properties", async (Property property, IPropertiesService _properti
 .Produces<HttpValidationProblemDetails>(StatusCodes.Status500InternalServerError, "application/problem+json");
 #endregion
 
+#region Areas
+app.MapGet("/Areas", async (IAreasService _areasService, ILogger<Program> _logger) =>
+{
+    try
+    {
+        var areas = await _areasService.GetAreasAsync();
+        return Results.Ok(areas);
+    }
+    catch (Exception e)
+    {
+        _logger.LogError(e, e.Message);
+        if (e.GetType() == typeof(ValidationException))
+            return Results.Problem(e.Message, statusCode: 400);
+        return Results.Problem(e.Message);
+    }
+})
+.WithName("GetAreas")
+.Produces<IResult>(StatusCodes.Status200OK, "application/pdf")
+.Produces<HttpValidationProblemDetails>(StatusCodes.Status400BadRequest, "application/problem+json")
+.Produces<HttpValidationProblemDetails>(StatusCodes.Status500InternalServerError, "application/problem+json");
+
+app.MapPost("/Areas", async (Area area, IAreasService _areasService, ILogger<Program> _logger) =>
+{
+    try
+    {
+        var res = await _areasService.CreateAreaAsync(area);
+        return Results.Ok(res);
+    }
+    catch (Exception e)
+    {
+        if (e.GetType() == typeof(ValidationException))
+            return Results.Problem(e.Message, statusCode: 400);
+        return Results.Problem(e.Message);
+    }
+})
+.WithName("CreateArea")
+.Produces<IResult>(StatusCodes.Status200OK, "application/pdf")
+.Produces<HttpValidationProblemDetails>(StatusCodes.Status400BadRequest, "application/problem+json")
+.Produces<HttpValidationProblemDetails>(StatusCodes.Status500InternalServerError, "application/problem+json");
+#endregion Areas
+
+#region Features
+app.MapGet("/Features", async (IFeaturesService _featuresService, ILogger<Program> _logger) =>
+{
+    try
+    {
+        var features = await _featuresService.GetFeaturesAsync();
+        return Results.Ok(features);
+    }
+    catch (Exception e)
+    {
+        _logger.LogError(e, e.Message);
+        if (e.GetType() == typeof(ValidationException))
+            return Results.Problem(e.Message, statusCode: 400);
+        return Results.Problem(e.Message);
+    }
+
+})
+.WithName("GetFeatures")
+.Produces<IResult>(StatusCodes.Status200OK, "application/pdf")
+.Produces<HttpValidationProblemDetails>(StatusCodes.Status400BadRequest, "application/problem+json")
+.Produces<HttpValidationProblemDetails>(StatusCodes.Status500InternalServerError, "application/problem+json");
+
+app.MapPost("/Features", async (Feature feature, IFeaturesService _featuresService, ILogger<Program> _logger) =>
+{
+    try
+    {
+        var res = await _featuresService.CreateFeatureAsync(feature);
+        return Results.Ok(res);
+    }
+    catch (Exception e)
+    {
+        _logger.LogError(e, e.Message);
+        if (e.GetType() == typeof(ValidationException))
+            return Results.Problem(e.Message, statusCode: 400);
+        return Results.Problem(e.Message);
+    }
+})
+.WithName("CreateFeature")
+.Produces<IResult>(StatusCodes.Status200OK, "application/pdf")
+.Produces<HttpValidationProblemDetails>(StatusCodes.Status400BadRequest, "application/problem+json")
+.Produces<HttpValidationProblemDetails>(StatusCodes.Status500InternalServerError, "application/problem+json");
+#endregion Features
+
 #region ReportesPDF
 app.MapGet("/ReporteArrendores", async (int? id,IReportesService _reportesService,ILogger<Program> _logger) =>
 {
@@ -454,28 +541,28 @@ app.MapGet("/ReporteArrendores", async (int? id,IReportesService _reportesServic
 .Produces<HttpValidationProblemDetails>(StatusCodes.Status500InternalServerError, "application/problem+json");
 //.AllowAnonymous();
 
-//app.MapGet("/ReporteFeatures", async (int? id, IReportesService _reportesService, ILogger<Program> _logger) =>
-//{
-//    try
+app.MapGet("/ReporteFeatures", async (int? id, IReporteFeaturesService _reportesService, ILogger<Program> _logger) =>
+{
+    try
 
-//    {
-//        var newModule = await _reportesService.GetReporteArrendadores(id);
-//        if (newModule == null) return Results.NoContent();
-//        //System.IO.File.WriteAllBytes("ReporteTransaccionesCrucesTotales.pdf", newModule);
-//        return Results.File(newModule, "application/pdf");
-//    }
-//    catch (Exception e)
-//    {
-//        _logger.LogError(e, e.Message);
-//        if (e.GetType() == typeof(ValidationException))
-//            return Results.Problem(e.Message, statusCode: 400);
-//        return Results.Problem(e.Message);
-//    }
-//})
-//.WithName("GetReporteArrendadores")
-//.Produces<IResult>(StatusCodes.Status200OK, "application/pdf")
-//.Produces<HttpValidationProblemDetails>(StatusCodes.Status400BadRequest, "application/problem+json")
-//.Produces<HttpValidationProblemDetails>(StatusCodes.Status500InternalServerError, "application/problem+json");
+    {
+        var newModule = await _reportesService.GetReporteFeatures(id);
+        if (newModule == null) return Results.NoContent();
+        //System.IO.File.WriteAllBytes("ReporteTransaccionesCrucesTotales.pdf", newModule);
+        return Results.File(newModule, "application/pdf");
+    }
+    catch (Exception e)
+    {
+        _logger.LogError(e, e.Message);
+        if (e.GetType() == typeof(ValidationException))
+            return Results.Problem(e.Message, statusCode: 400);
+        return Results.Problem(e.Message);
+    }
+})
+.WithName("GetReporteFeatures")
+.Produces<IResult>(StatusCodes.Status200OK, "application/pdf")
+.Produces<HttpValidationProblemDetails>(StatusCodes.Status400BadRequest, "application/problem+json")
+.Produces<HttpValidationProblemDetails>(StatusCodes.Status500InternalServerError, "application/problem+json");
 
 #endregion
 
