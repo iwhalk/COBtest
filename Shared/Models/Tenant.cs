@@ -44,7 +44,7 @@ namespace Shared.Models
         [Unicode(false)]
         public string Delegation { get; set; }
         [Column("CP")]
-        public int Cp { get; set; }
+        public string Cp { get; set; }
         [Required]
         [StringLength(50)]
         public string PhoneNumber { get; set; }

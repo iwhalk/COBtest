@@ -7,6 +7,17 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Components\**" />
+    <Compile Remove="Models\**" />
+    <Content Remove="Components\**" />
+    <Content Remove="Models\**" />
+    <EmbeddedResource Remove="Components\**" />
+    <EmbeddedResource Remove="Models\**" />
+    <None Remove="Components\**" />
+    <None Remove="Models\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="6.0.10" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="6.0.10" PrivateAssets="all" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Authentication" Version="6.0.10" />
@@ -28,6 +39,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Components\" />
     <Folder Include="Models\" />
     <Folder Include="Services\" />
   </ItemGroup>
