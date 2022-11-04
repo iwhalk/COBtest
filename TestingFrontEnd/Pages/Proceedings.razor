@@ -2,8 +2,8 @@
 @attribute [Authorize]
 <PageTitle>Actas</PageTitle>
 
-<body class="flex flex-column min-h-screen bg-[url('/assets/img/fondocasa.png')] imgfondo">
-    <div id="ContenedorActas">
+<body>
+    <div id="ContenedorActas"  class="flex flex-column min-h-screen bg-[url('/assets/img/fondocasa.png')] imgfondo">
         
         <div id="TituloActas" class="flex justify-center">
             <label for="" class="text-4xl text-blue-900 font-semibold my-8">Acta Entrega Recepción de Inmueble Histórico</label>
@@ -48,7 +48,7 @@
         </div>
         
         <div id="Actas" class="flex justify-around mt-4">
-            <div class="relative min-h-100vh">            
+            <div class="relative" style="height: 35rem">            
                 <table>
                 <thead>
                     <tr>
@@ -144,8 +144,8 @@
                 </tbody>
                 </table>
                 <div class="absolute bottom-0 left-0 right-0 flex justify-center">
-                <span class="flex">
-                    <button class="py-2 my-4 mx-2 rounded-lg text-blue-900 bg-slate-100 shadow-xl flex justify-center">
+                <span class="flex border-3 rounded-lg bg-slate-100">
+                    <button class="py-2 my-1 mx-2 rounded-lg text-blue-900 flex justify-center">
                         <g class="flex font-semibold">
                             <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-arrow-left-circle-fill self-center pr-1" viewBox="0 0 16 16">
                                 <path d="M8 0a8 8 0 1 0 0 16A8 8 0 0 0 8 0zm3.5 7.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5z"/>
@@ -153,27 +153,27 @@
                             Primera
                         </g>
                     </button>
-                    <button class="py-2 my-4 mx-2 rounded-lg text-blue-900 bg-slate-100 shadow-xl flex justify-center">
+                    <button class="py-2 my-1 mx-2 rounded-lg text-blue-900 flex justify-center">
                         <g class="flex">
                             Anterior
                         </g>
                     </button>
-                    <button class="py-2 my-4 mx-2 w-12 h-12 rounded-lg text-blue-900 border-2 border-blue-900 text-blue-900 shadow-xl flex justify-center" style="background-color: #E3F2F6;">
+                    <button class="py-2 my-1 mx-2 w-12 h-12 rounded-lg text-blue-900 border-2 border-blue-900 text-blue-900 flex justify-center" style="background-color: #E3F2F6;">
                         <g class="flex">
                             1
                         </g>
                     </button>
-                    <button class="py-2 my-4 mx-2 w-12 h-12 rounded-lg text-blue-900 border-2 border-blue-900 text-blue-900 shadow-xl flex justify-center">
+                    <button class="py-2 my-1 mx-2 w-12 h-12 rounded-lg text-blue-900 border-2 border-blue-900 text-blue-900 flex justify-center">
                         <g class="flex">
                             2
                         </g>
                     </button>
-                    <button class="py-2 my-4 mx-2 rounded-lg text-blue-900 bg-slate-100 shadow-xl flex justify-center">
+                    <button class="py-2 my-1 mx-2 rounded-lg text-blue-900 flex justify-center">
                         <g class="flex">
                             Siguiente
                         </g>
                     </button>
-                    <button class="py-2 my-4 mx-2 rounded-lg text-blue-900 bg-slate-100 shadow-xl flex justify-center">
+                    <button class="py-2 my-1 mx-2 rounded-lg text-blue-900 flex justify-center">
                         <g class="flex font-semibold">
                             Primera
                             <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-arrow-right-circle-fill self-center pl-1" viewBox="0 0 16 16">
@@ -185,7 +185,6 @@
                 </div>
             </div>
         </div>
-    </div>   
     </div>
 </body>
 
