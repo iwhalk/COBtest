@@ -29,7 +29,7 @@ builder.RootComponents.Add<HeadOutlet>("head::after");
 
 
 builder.Services.AddHttpClient("ApiGateway")
-    .ConfigureHttpClient(client => client.BaseAddress = new Uri(builder.HostEnvironment.BaseAddress))
+    .ConfigureHttpClient(client => client.BaseAddress = new Uri("https://localhost:7140"))
     .AddHttpMessageHandler<BaseAddressAuthorizationMessageHandler>();
 builder.Services.AddSingleton(serviceProvider => (IJSInProcessRuntime)serviceProvider.GetRequiredService<IJSRuntime>());
 
@@ -58,7 +58,7 @@ builder.Services.AddScoped(provider =>
 builder.Services.AddOidcAuthentication(options =>
 {
     options.ProviderOptions.ClientId = client;
-    options.ProviderOptions.Authority = builder.HostEnvironment.BaseAddress;
+    options.ProviderOptions.Authority = "https://localhost:7140/";
     options.ProviderOptions.ResponseType = "code";
 
     // Note: response_mode=fragment is the best option for a SPA. Unfortunately, the Blazor WASM
@@ -67,7 +67,7 @@ builder.Services.AddOidcAuthentication(options =>
     // For more information about this bug, visit https://github.com/dotnet/aspnetcore/issues/28344.
     //
     options.ProviderOptions.ResponseMode = "query";
-    options.AuthenticationPaths.RemoteRegisterPath = $"{builder.HostEnvironment.BaseAddress}/Identity/Account/Register";
+    options.AuthenticationPaths.RemoteRegisterPath = $"https://localhost:7140/Identity/Account/Register";
 
     // Add the "roles" (OpenIddictConstants.Scopes.Roles) scope and the "role" (OpenIddictConstants.Claims.Role) claim
     // (the same ones used in the Startup class of the Server) in order for the roles to be validated.
