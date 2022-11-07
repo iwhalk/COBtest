@@ -16,9 +16,9 @@
     </svg>
     </a>
 }
-
 @if (TypeIcon == "Historico")
 {
+    <a href="/ReceptionCertificates/Historical">
     <svg xmlns="http://www.w3.org/2000/svg" width="403" height="407" viewBox="0 0 403 407" class="scale-50 md:scale-75 xl:scale-100">
         <g id="Grupo_336" data-name="Grupo 336" transform="translate(24829 19704)">
             <g id="Grupo_335" data-name="Grupo 335">
@@ -36,6 +36,7 @@
             <path id="Trazado_123" data-name="Trazado 123" d="M29.808,0,0,33.751" transform="matrix(0.996, -0.087, 0.087, 0.996, -24587.977, -19453.631)" fill="none" stroke="#2a6983" stroke-width="4"></path>
         </g>
     </svg>
+    </a>
 }
 @if (TypeIcon == "CreacionActa")
 {    
@@ -53,9 +54,9 @@
         </g>
     </svg>    
 }
-
-@if (TypeIcon == "HistoricoActa")
+@if (TypeIcon == "ActasExistentes")
 {
+    <a href="/ReceptionCertificates/Pending">
     <svg xmlns="http://www.w3.org/2000/svg" width="403" height="407" viewBox="0 0 403 407" class="scale-50 md:scale-75 xl:scale-100">
         <g id="Grupo_336" data-name="Grupo 336" transform="translate(24829 19704)">
             <g id="Grupo_335" data-name="Grupo 335">
@@ -73,8 +74,8 @@
             <path id="Trazado_123" data-name="Trazado 123" d="M29.808,0,0,33.751" transform="matrix(0.996, -0.087, 0.087, 0.996, -24587.977, -19453.631)" fill="none" stroke="#2a6983" stroke-width="4"></path>
         </g>
     </svg>
+    </a>
 }
-
 @if(TypeIcon == "Entrada")
 {
     <a href="ReceptionCertificates/Create" class="">
@@ -89,7 +90,6 @@
         </svg>
     </a>
 }
-
 @if(TypeIcon == "Salida")                
 {
     <a class="">
