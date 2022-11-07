@@ -1,0 +1,21 @@
+﻿@page "/PruebasGateway"
+
+<h3>PruebasGateway</h3>
+
+@if (ListArea != null)
+{
+    @foreach (var item in ListArea)
+    {
+        <h4>@item.AreaName</h4>
+    }
+
+    @if (Area != null)
+    {
+        <h4>@Area.AreaName</h4>
+    }
+}
+else
+{
+    <p>Valio burguer</p>
+}
+
