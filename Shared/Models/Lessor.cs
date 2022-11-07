@@ -2,9 +2,6 @@
 #nullable disable
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using Microsoft.EntityFrameworkCore;
 
 namespace Shared.Models
 {
@@ -15,44 +12,17 @@ namespace Shared.Models
             Properties = new HashSet<Property>();
         }
 
-        [Key]
-        [Column("ID_Lessor")]
         public int IdLessor { get; set; }
-        [Required]
-        [StringLength(30)]
-        [Unicode(false)]
         public string Name { get; set; }
-        [Required]
-        [StringLength(30)]
-        [Unicode(false)]
         public string LastName { get; set; }
-        [Required]
-        [Column("RFC")]
-        [StringLength(20)]
-        [Unicode(false)]
         public string Rfc { get; set; }
-        [Required]
-        [StringLength(50)]
-        [Unicode(false)]
         public string Street { get; set; }
-        [Required]
-        [StringLength(30)]
-        [Unicode(false)]
         public string Colony { get; set; }
-        [Required]
-        [StringLength(30)]
-        [Unicode(false)]
         public string Delegation { get; set; }
-        [Column("CP")]
         public string Cp { get; set; }
-        [Required]
-        [StringLength(50)]
         public string PhoneNumber { get; set; }
-        [Required]
-        [StringLength(50)]
         public string EmailAddress { get; set; }
 
-        [InverseProperty("IdLessorNavigation")]
         public virtual ICollection<Property> Properties { get; set; }
     }
 }

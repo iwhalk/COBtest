@@ -542,12 +542,12 @@ app.MapGet("/ReporteArrendores", async (int? id,IReportesService _reportesServic
 .Produces<HttpValidationProblemDetails>(StatusCodes.Status500InternalServerError, "application/problem+json");
 //.AllowAnonymous();
 
-app.MapGet("/ReporteActaEntrega", async (int idProperty, int idTenant, int idContrato, int idUser, IReporteActaEntregaService _reportesService, ILogger<Program> _logger) =>
+app.MapGet("/ReporteActaEntrega", async (int idProperty, int idTenant, string idContrato, IReporteActaEntregaService _reportesService, ILogger<Program> _logger) =>
 {
     try
 
     {
-        var newModule = await _reportesService.GetActaEntrega(idProperty, idTenant, idContrato, idUser);
+        var newModule = await _reportesService.GetActaEntrega(idProperty, idTenant, idContrato);
         if (newModule == null) return Results.NoContent();
         //System.IO.File.WriteAllBytes("ReporteTransaccionesCrucesTotales.pdf", newModule);
         return Results.File(newModule, "application/pdf");

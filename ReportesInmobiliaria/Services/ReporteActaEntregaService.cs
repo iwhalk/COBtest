@@ -11,20 +11,23 @@ namespace ReportesInmobiliaria.Services
         private readonly InmobiliariaDbContext _dbContext;
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly ReportesFactory _reportesFactory;
+        private readonly InmobiliariaDbContextProcedures _dbContextProcedure;
 
-        public ReporteActaEntregaService(InmobiliariaDbContext dbContext, IHttpContextAccessor httpContextAccessor, ReportesFactory reportesFactory)
+        public ReporteActaEntregaService(InmobiliariaDbContext dbContext, IHttpContextAccessor httpContextAccessor, ReportesFactory reportesFactory, InmobiliariaDbContextProcedures dbContextProcedure)
         {
             _dbContext = dbContext;
             _httpContextAccessor = httpContextAccessor;
             _reportesFactory = reportesFactory;
+            _dbContextProcedure = dbContextProcedure;
         }
 
-        public async Task<byte[]> GetActaEntrega(int idProperty, int idTenant, int idContrato, int idUser)
+        public async Task<byte[]> GetActaEntrega(int idProperty, int idTenant, string idContrato)
         {
+            var result = _dbContextProcedure.SP_GET_AERIAsync(1);
             Property propertyLocal = _dbContext.Properties.FirstOrDefault(x => x.IdProperty == idProperty);
             Lessor lessor = _dbContext.Lessors.FirstOrDefault(x => x.IdLessor == propertyLocal.IdLessor);
             Tenant tenant = _dbContext.Tenants.FirstOrDefault(x => x.IdTenant == idTenant);
-            ReceptionCertificate contrato = _dbContext.ReceptionCertificates.FirstOrDefault(x => x.IdReceptionCertificate == idContrato);
+            //ReceptionCertificate contrato = _dbContext.ReceptionCertificates.FirstOrDefault(x => x.IdReceptionCertificate == idContrato);
             ReporteActaEntrega reporteActaEntrega = new()
             {
                 generationDate = DateTime.Now,
@@ -32,7 +35,7 @@ namespace ReportesInmobiliaria.Services
                 lessor = $"{lessor.Name} {lessor.LastName}",
                 tenant = $"{tenant.Name} {tenant.LastName}",
                 inventories = await GetInventoriesAsync(idProperty),
-                numeroDeContrato = contrato
+                numeroDeContrato = idContrato
             };
             return _reportesFactory.CrearPdf(reporteActaEntrega);
         }
