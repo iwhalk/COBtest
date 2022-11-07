@@ -1,0 +1,150 @@
+@page "/Proceedings"
+@attribute [Authorize]
+<PageTitle>Actas</PageTitle>
+
+<body>
+    <div id="ContenedorActas"  class="flex flex-column min-h-screen bg-[url('/assets/img/fondocasa.png')] imgfondo">
+        
+        <div id="TituloActas" class="flex justify-center">
+            <label for="" class="text-4xl text-blue-900 font-semibold my-8">Acta Entrega Recepción de Inmueble Histórico</label>
+        </div>
+
+        <div id="DatosInputs" class="flex justify-between mx-2 mb-2 px-4 pt-2 pb-4 rounded-lg" style="background-color: #E3F2F6;">
+            <span class="flex flex-col justify-center">
+                <label for="" class="mb-1 text-3xl text-center text-cyan-700">Fechas</label>
+                <div>
+                    <input type="date" class="px-2 mx-2 py-1 border-1 border-black rounded-lg">
+                    <input type="date" class="px-2 mx-2 py-1 border-1 border-black rounded-lg">
+                </div>
+            </span>
+            <span class="flex flex-col items-center">
+                <label for="" class="mb-1 text-3xl text-cyan-700">Tipo de Acta</label>
+                <select name="" class="px-2 py-1 border-1 border-black rounded-lg w-36 flex justify-center"></select>
+            </span>
+            <span class="flex flex-col items-center">
+                <label for="" class="mb-1 text-3xl text-cyan-700">Tipo de Inmueble</label>
+                <select name="" class="px-2 py-1 border-1 border-black rounded-lg w-36"></select>
+            </span>
+            <span class="flex flex-col items-center">
+                <label for="" class="mb-1 text-3xl text-cyan-700">No. Habitaciones</label>
+                <input type="number" class="px-2 py-1 border-1 border-black rounded-lg w-36">
+            </span>
+            <span class="flex flex-col items-center">
+                <label for="" class="mb-1 text-3xl text-cyan-700">Arrendador</label>
+                <select name="" class="px-2 py-1 border-1 border-black rounded-lg w-36"></select>
+            </span>
+            <span class="flex flex-col items-center">
+                <label for="" class="mb-1 text-3xl text-cyan-700">Arrendatario</label>
+                <select name="" class="px-2 py-1 border-1 border-black rounded-lg w-36"></select>
+            </span>
+            <span class="flex flex-col items-center">
+                <label for="" class="mb-1 text-3xl text-cyan-700">Ciudad</label>
+                <select name="" class="px-2 py-1 border-1 border-black rounded-lg w-36"></select>
+            </span>
+            <span class="flex flex-col items-center">
+                <label for="" class="mb-1 text-3xl text-cyan-700">Agente</label>
+                <select name="" class="px-2 py-1 border-1 border-black rounded-lg w-36"></select>
+            </span>
+        </div>
+        
+        <div id="Actas" class="flex justify-around mt-4">
+            <div class="relative" style="height: 35rem">            
+                <table>
+                <thead>
+                    <tr>
+                        <th class="py-2 px-12 text-center mb-1 text-3xl text-center text-cyan-700 font-normal">
+                        </th>
+                        <th class="py-2 px-12 text-center mb-1 text-3xl text-center text-cyan-700 font-normal" style="background-color: #E3F2F6;">
+                            Fecha
+                        </th>
+                        <th class="py-2 px-12 text-center mb-1 text-3xl text-center text-cyan-700 font-normal" style="background-color: #E3F2F6;">
+                            Acta
+                        </th>
+                        <th class="py-2 px-12 text-center mb-1 text-3xl text-center text-cyan-700 font-normal" style="background-color: #E3F2F6;">
+                            Inmueble
+                        </th>
+                        <th class="py-2 px-12 text-center mb-1 text-3xl text-center text-cyan-700 font-normal" style="background-color: #E3F2F6;">
+                            Habitaciones
+                        </th>
+                        <th class="py-2 px-12 text-center mb-1 text-3xl text-center text-cyan-700 font-normal" style="background-color: #E3F2F6;">
+                            Arrendador
+                        </th>
+                        <th class="py-2 px-12 text-center mb-1 text-3xl text-center text-cyan-700 font-normal" style="background-color: #E3F2F6;">
+                            Arrendatario
+                        </th>
+                        <th class="py-2 px-12 text-center mb-1 text-3xl text-center text-cyan-700 font-normal" style="background-color: #E3F2F6;">
+                            Ciudad
+                        </th>
+                        <th class="py-2 px-12 text-center mb-1 text-3xl text-center text-cyan-700 font-normal" style="background-color: #E3F2F6;">
+                            Agente
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="py-2 text-center text-2xl">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" class="bi bi-lock-fill" viewBox="0 0 16 16">
+                                <path d="M8 1a2 2 0 0 1 2 2v4H6V3a2 2 0 0 1 2-2zm3 6V3a3 3 0 0 0-6 0v4a2 2 0 0 0-2 2v5a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2z"/>
+                            </svg>
+                        </td>
+                        <td class="py-2 text-center text-2xl">17/07/2022</td>
+                        <td class="py-2 text-center text-2xl">Entrada</td>
+                        <td class="py-2 text-center text-2xl">Departamento</td>
+                        <td class="py-2 text-center text-2xl">5</td>
+                        <td class="py-2 text-center text-2xl">Eduardo Molina</td>
+                        <td class="py-2 text-center text-2xl">Esteban Estrada</td>
+                        <td class="py-2 text-center text-2xl">CDMX</td>
+                        <td class="py-2 text-center text-2xl">Carlos Mejia</td>
+                    </tr>
+                    <tr>
+                        <td class="py-2 text-center text-2xl">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" class="bi bi-lock-fill" viewBox="0 0 16 16">
+                                <path d="M8 1a2 2 0 0 1 2 2v4H6V3a2 2 0 0 1 2-2zm3 6V3a3 3 0 0 0-6 0v4a2 2 0 0 0-2 2v5a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2z"/>
+                            </svg>
+                        </td>
+                        <td class="py-2 text-center text-2xl">24/07/2022</td>
+                        <td class="py-2 text-center text-2xl">Salida</td>
+                        <td class="py-2 text-center text-2xl">Casa</td>
+                        <td class="py-2 text-center text-2xl">5</td>
+                        <td class="py-2 text-center text-2xl">Javier Gomez</td>
+                        <td class="py-2 text-center text-2xl">Erick Estrada</td>
+                        <td class="py-2 text-center text-2xl">CDMX</td>
+                        <td class="py-2 text-center text-2xl">Fabian Cruz</td>
+                    </tr>
+                    <tr>
+                        <td class="py-2 text-center text-2xl">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" class="bi bi-lock-fill" viewBox="0 0 16 16">
+                                <path d="M8 1a2 2 0 0 1 2 2v4H6V3a2 2 0 0 1 2-2zm3 6V3a3 3 0 0 0-6 0v4a2 2 0 0 0-2 2v5a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2z"/>
+                            </svg>
+                        </td>
+                        <td class="py-2 text-center text-2xl">01/04/2022</td>
+                        <td class="py-2 text-center text-2xl">Entrada</td>
+                        <td class="py-2 text-center text-2xl">Departamento</td>
+                        <td class="py-2 text-center text-2xl">3</td>
+                        <td class="py-2 text-center text-2xl">Samuel Gomez</td>
+                        <td class="py-2 text-center text-2xl">Alberto Cruz</td>
+                        <td class="py-2 text-center text-2xl">CDMX</td>
+                        <td class="py-2 text-center text-2xl">Kevin Arias</td>
+                    </tr>
+                    <tr>
+                        <td class="py-2 text-center text-2xl">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" class="bi bi-lock-fill" viewBox="0 0 16 16">
+                                <path d="M8 1a2 2 0 0 1 2 2v4H6V3a2 2 0 0 1 2-2zm3 6V3a3 3 0 0 0-6 0v4a2 2 0 0 0-2 2v5a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2z"/>
+                            </svg>
+                        </td>
+                        <td class="py-2 text-center text-2xl">01/01/2022</td>
+                        <td class="py-2 text-center text-2xl">Entrada</td>
+                        <td class="py-2 text-center text-2xl">Departamento</td>
+                        <td class="py-2 text-center text-2xl">4</td>
+                        <td class="py-2 text-center text-2xl">Juan Castro</td>
+                        <td class="py-2 text-center text-2xl">Jose Madero</td>
+                        <td class="py-2 text-center text-2xl">CDMX</td>
+                        <td class="py-2 text-center text-2xl">Julio Lopez</td>
+                    </tr>
+                </tbody>
+                </table>
+                <PagesProceedings></PagesProceedings>
+            </div>
+        </div>
+    </div>
+</body>
