@@ -1,16 +1,19 @@
 ﻿@if (ShowModal)
 {
-    <div class="fixed inset-0 overflow-y-auto">
-        <div class="flex min-h-full mx-auto items-end justify-center text-center sm:items-center sm:p-0">
-            <div class="relative mx-auto md:max-w-2xl sm:max-w-sm bg-white h-64 rounded-lg border border-grey-300 drop-shadow-lg border-2">           
-                <div class="static flex justify-center pt-8">
-                    <h1 class="text-center text-gray-400 text-xl">Envio Exitoso</h1>
-                </div>
-                <div class="static flex justify-center pt-8 w-96">
-                    <h1 class="text-center text-gray-400 text-xl">El Acta AERI-136170722 se envió por correo</h1>
-                </div>
-                <div class="static flex justify-center pt-8">
-                    <a href="/"><button class="py-2  w-48 border rounded-lg text-white text-xl shadow-xl" style="background-color: #2B286F;">Agregar</button></a>
+    <div class="relative z-10" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+        <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"></div>
+        <div class="fixed inset-0 z-10 overflow-y-auto">
+            <div class="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
+                <div class="relative mx-auto md:max-w-2xl sm:max-w-sm bg-white h-64 rounded-lg border border-grey-300 drop-shadow-lg border-2">
+                    <div class="static flex justify-center pt-8">
+                        <h1 class="text-center text-gray-400 text-xl">Envio Exitoso</h1>
+                    </div>
+                    <div class="static flex justify-center pt-8 w-96">
+                        <h1 class="text-center text-gray-400 text-xl">El Acta AERI-136170722 se envió por correo</h1>
+                    </div>
+                    <div class="static flex justify-center pt-8">
+                        <a href="/"><button class="py-2  w-48 border rounded-lg text-white text-xl shadow-xl" style="background-color: #2B286F;">Agregar</button></a>
+                    </div>
                 </div>
             </div>
         </div>
