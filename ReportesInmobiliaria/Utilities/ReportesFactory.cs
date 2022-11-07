@@ -1,4 +1,5 @@
-﻿using MigraDoc;
+﻿using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using MigraDoc;
 using MigraDocCore.DocumentObjectModel;
 using MigraDocCore.DocumentObjectModel.Shapes;
 using MigraDocCore.DocumentObjectModel.Tables;
@@ -10,6 +11,8 @@ using MigraDocCore.Rendering;
 using Shared.Models;
 using System.Globalization;
 using System.Text;
+using Column = MigraDocCore.DocumentObjectModel.Tables.Column;
+using Table = MigraDocCore.DocumentObjectModel.Tables.Table;
 
 namespace ReportesInmobiliaria.Utilities
 {
@@ -30,7 +33,8 @@ namespace ReportesInmobiliaria.Utilities
         /// <summary>
         /// The text frame of the MigraDoc document that contains the address.
         /// </summary>
-        TextFrame dataParametersFrame;
+        TextFrame dataParametersFrameLeft;
+        TextFrame dataParametersFrameRight;
         TextFrame headerFrame;
         TextFrame dataValuesFrame;
         TextFrame dataParametersFrameFecha;
@@ -72,7 +76,7 @@ namespace ReportesInmobiliaria.Utilities
             CreateLayout(reporte);
 
             //CrearReporteArrendadores(reporte as ReporteArrendadores);
-            CrearReporte(reporte as ReporteFeatures);
+            CrearReporte(reporte as ReporteActaEntrega);
 
             PdfDocumentRenderer pdfRenderer = new(true)
             {
@@ -118,9 +122,9 @@ namespace ReportesInmobiliaria.Utilities
         }
 
         //void CrearReporteArrendadores(ReporteArrendadores? reporteArrendadores)
-        void CrearReporte(ReporteFeatures? reporteFeatures)
+        void CrearReporte(ReporteActaEntrega? reporteActaEntrega)
         {
-            section.PageSetup.Orientation = Orientation.Landscape;
+            section.PageSetup.Orientation = Orientation.Portrait;
 
             headerFrame = section.AddTextFrame();
             headerFrame.Width = "10.0cm";
@@ -130,47 +134,74 @@ namespace ReportesInmobiliaria.Utilities
             headerFrame.RelativeVertical = RelativeVertical.Page;
 
             // Create the text frame for the data parameters
-            dataParametersFrame = section.AddTextFrame();
-            dataParametersFrame.Height = "2.0cm";
-            dataParametersFrame.Width = "7.0cm";
-            dataParametersFrame.Left = ShapePosition.Left;
-            dataParametersFrame.RelativeHorizontal = RelativeHorizontal.Margin;
-            dataParametersFrame.Top = "4.0cm";
-            dataParametersFrame.RelativeVertical = RelativeVertical.Page;
+            dataParametersFrameLeft = section.AddTextFrame();
+            dataParametersFrameLeft.Height = "2.0cm";
+            dataParametersFrameLeft.Width = "7.0cm";
+            dataParametersFrameLeft.Left = ShapePosition.Left;
+            dataParametersFrameLeft.RelativeHorizontal = RelativeHorizontal.Margin;
+            dataParametersFrameLeft.Top = "4.0cm";
+            dataParametersFrameLeft.RelativeVertical = RelativeVertical.Page;
+
+            dataParametersFrameRight = section.AddTextFrame();
+            dataParametersFrameRight.Height = "2.0cm";
+            dataParametersFrameRight.Width = "7.0cm";
+            dataParametersFrameRight.Left = ShapePosition.Right;
+            dataParametersFrameRight.RelativeHorizontal = RelativeHorizontal.Margin;
+            dataParametersFrameRight.Top = "4.0cm";
+            dataParametersFrameRight.RelativeVertical = RelativeVertical.Page;
 
             // Create the text frame for the data values
             dataValuesFrame = section.AddTextFrame();
             dataValuesFrame.Width = "7.0cm";
-            dataValuesFrame.Left = "3.5cm";
+            dataValuesFrame.Left = "2.5cm";//"3.5cm"
             dataValuesFrame.RelativeHorizontal = RelativeHorizontal.Margin;
             dataValuesFrame.Top = "4.0cm";
             dataValuesFrame.RelativeVertical = RelativeVertical.Page;
 
             // Put header in header frame
-            Paragraph paragraph = headerFrame.AddParagraph("REPORTE FEATURES");//Titulo
+            Paragraph paragraph = headerFrame.AddParagraph("Acta Entrega Recepción de Inmueble");//Titulo
             paragraph.Format.Font.Name = "Calibri";
             paragraph.Format.Font.Size = 13;
             paragraph.Format.Font.Bold = true;
             paragraph.Format.Alignment = ParagraphAlignment.Center;
 
             // Put parameters in data Frame
-            paragraph = dataParametersFrame.AddParagraph();
+            paragraph = dataParametersFrameLeft.AddParagraph();
             paragraph.Format.Font.Bold = true;
-            paragraph.AddText("Fecha de generaciòn: ");
+            paragraph.AddText("No. Contrato: ");
             paragraph.AddLineBreak();
-            paragraph.AddText("Total de Features: ");
+            paragraph.AddText("Dirección: ");
+            paragraph.AddLineBreak();
+            paragraph.AddText("Arrendador: ");
+            paragraph.AddLineBreak();
+            paragraph.AddText("Arrendatario: ");
+            paragraph.AddLineBreak();
+            paragraph.AddText("Agente: ");
+
+            paragraph = dataParametersFrameRight.AddParagraph();
+            paragraph.Format.Font.Bold = true;
+            paragraph.AddText("Fecha y Hora: ");
+            paragraph.AddLineBreak();
+            paragraph.AddText("Tipo de Inmueble: ");
+            paragraph.AddLineBreak();
+            paragraph.AddText("Habitaciones: ");
 
             // Put values in data Frame
             paragraph = dataValuesFrame.AddParagraph();
             //paragraph.AddText(reporteArrendadores.FechaGeneracion.ToString("dd/MM/yyyy hh:mm tt") ?? "");
-            paragraph.AddText(reporteFeatures.generationDate.ToString("dd/MM/yyyy hh:mm tt") ?? "");
+            paragraph.AddText(reporteActaEntrega.numeroDeContrato);
             paragraph.AddLineBreak();
+            string address = reporteActaEntrega.property.Street + ", " + reporteActaEntrega.property.Colony + ", " + reporteActaEntrega.property.Delegation;
+            paragraph.AddText(address);
+            paragraph.AddLineBreak();
+            paragraph.AddText(reporteActaEntrega.lessor);
+            paragraph.AddLineBreak();
+            paragraph.AddText(reporteActaEntrega.tenant);
             //paragraph.AddText(reporteArrendadores.Arrendadores.Count().ToString() ?? "");
-            paragraph.AddText(reporteFeatures.caracteristicas.Count().ToString() ?? "");
 
             // Add the data separation field
             paragraph = section.AddParagraph();
-            paragraph.Format.SpaceBefore = "2.0cm";
+            paragraph.Format.SpaceBefore = "4.0cm";//"2.0cm"
             paragraph.Format.Font.Size = 10;
             paragraph.Style = "Reference";
             paragraph.AddFormattedText("", TextFormat.Bold);
@@ -184,17 +215,23 @@ namespace ReportesInmobiliaria.Utilities
             table.Rows.Alignment = RowAlignment.Center;
 
             // Before you can add a row, you must define the columns
-            Column column = table.AddColumn("5cm");
+            Column column = table.AddColumn("3cm");
             column.Format.Alignment = ParagraphAlignment.Center;
 
-            column = table.AddColumn("5cm");
+            column = table.AddColumn("3cm");
             column.Format.Alignment = ParagraphAlignment.Center;
 
-            //column = table.AddColumn("7cm");
-            //column.Format.Alignment = ParagraphAlignment.Center;
+            column = table.AddColumn("3cm");
+            column.Format.Alignment = ParagraphAlignment.Center;
 
-            //column = table.AddColumn("4cm");
-            //column.Format.Alignment = ParagraphAlignment.Center;
+            column = table.AddColumn("3cm");
+            column.Format.Alignment = ParagraphAlignment.Center;
+
+            column = table.AddColumn("3cm");
+            column.Format.Alignment = ParagraphAlignment.Center;
+
+            column = table.AddColumn("3cm");
+            column.Format.Alignment = ParagraphAlignment.Center;
 
             // Create the header of the table
             Row row = table.AddRow();
@@ -203,13 +240,14 @@ namespace ReportesInmobiliaria.Utilities
             row.Format.Font.Bold = true;
             row.Format.Font.Size = 10;
             row.Shading.Color = TableColor;
-            row.Cells[0].AddParagraph("Nombre");
-            row.Cells[1].AddParagraph("idService");
-            //row.Cells[2].AddParagraph("Direccìón");
-            //row.Cells[3].AddParagraph("Telefono");
+            row.Cells[0].AddParagraph("Area");
+            row.Cells[1].AddParagraph("Service");
+            row.Cells[2].AddParagraph("Feature");
+            row.Cells[3].AddParagraph("Description");
+            row.Cells[4].AddParagraph("Note");
+            row.Cells[5].AddParagraph("Observation");
 
-            //FillGenericContent(reporteArrendadores.Arrendadores);
-            FillGenericContent(reporteFeatures.caracteristicas);
+            FillGenericContent(reporteActaEntrega.inventories);
         }
 
         void CreateLayout<T>(T reporte)
@@ -220,7 +258,7 @@ namespace ReportesInmobiliaria.Utilities
             // Create footer
             Paragraph footer = section.Footers.Primary.AddParagraph();
             footer.AddLineBreak();
-            footer.AddText("El footer");
+            footer.AddText("SOF2245");
             footer.AddLineBreak();
             footer.AddText("Pagina ");
             footer.AddPageField();
