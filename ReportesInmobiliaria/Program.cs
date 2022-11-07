@@ -83,6 +83,7 @@ builder.Services.AddScoped<IAreasService, AreasService>();
 builder.Services.AddScoped<IFeaturesService, FeaturesService>();
 builder.Services.AddScoped<IReportesService, ReportesService>();
 builder.Services.AddScoped<IReporteFeaturesService, ReporteFeaturesService>();
+builder.Services.AddScoped<IBlobService, BlobService>();
 builder.Services.AddScoped<ReportesFactory>();
 
 builder.Services.AddCors();
@@ -561,6 +562,108 @@ app.MapGet("/ReporteFeatures", async (int? id, IReporteFeaturesService _reportes
 })
 .WithName("GetReporteFeatures")
 .Produces<IResult>(StatusCodes.Status200OK, "application/pdf")
+.Produces<HttpValidationProblemDetails>(StatusCodes.Status400BadRequest, "application/problem+json")
+.Produces<HttpValidationProblemDetails>(StatusCodes.Status500InternalServerError, "application/problem+json");
+
+#endregion
+
+# region Blob
+
+app.MapGet("/Blobs", async (IBlobService _blobService) =>
+{
+    var blobs = await _blobService.GetBlobAsync();
+    if (blobs == null) return Results.NoContent();
+    return Results.Ok(blobs);
+})
+.WithName("GetBlobAsync")
+.Produces<IResult>(StatusCodes.Status200OK)
+.Produces<HttpValidationProblemDetails>(StatusCodes.Status400BadRequest, "application/problem+json")
+.Produces<HttpValidationProblemDetails>(StatusCodes.Status500InternalServerError, "application/problem+json");
+
+app.MapPost("/Blobs", async (Blob blob, IBlobService _blobService) =>
+{
+    try
+    {
+        var res = await _blobService.CreateBlobAsync(blob);
+        return Results.Ok(res);
+    }
+    catch (Exception e)
+    {
+        if (e.GetType() == typeof(ValidationException))
+            return Results.Problem(e.Message, statusCode: 400);
+        return Results.Problem(e.Message);
+    }
+})
+.WithName("CreateBlobAsync")
+.Produces<IResult>(StatusCodes.Status200OK)
+.Produces<HttpValidationProblemDetails>(StatusCodes.Status400BadRequest, "application/problem+json")
+.Produces<HttpValidationProblemDetails>(StatusCodes.Status500InternalServerError, "application/problem+json");
+
+app.MapPut("/Blobs", async (Blob blob, IBlobService _blobService) =>
+{
+    try
+    {
+        var res = await _blobService.UpdateBlobAsync(blob);
+        return Results.Ok(res);
+    }
+    catch (Exception e)
+    {
+        if (e.GetType() == typeof(ValidationException))
+            return Results.Problem(e.Message, statusCode: 400);
+        return Results.Problem(e.Message);
+    }
+})
+.WithName("UpdateBlobAsync")
+.Produces<IResult>(StatusCodes.Status200OK)
+.Produces<HttpValidationProblemDetails>(StatusCodes.Status400BadRequest, "application/problem+json")
+.Produces<HttpValidationProblemDetails>(StatusCodes.Status500InternalServerError, "application/problem+json");
+
+app.MapGet("/BlobInventory", async (IBlobService _blobService) =>
+{
+    var blobs = await _blobService.GetBlobInventoryAsync();
+    if (blobs == null) return Results.NoContent();
+    return Results.Ok(blobs);
+})
+.WithName("GetBlobInventoryAsync")
+.Produces<IResult>(StatusCodes.Status200OK)
+.Produces<HttpValidationProblemDetails>(StatusCodes.Status400BadRequest, "application/problem+json")
+.Produces<HttpValidationProblemDetails>(StatusCodes.Status500InternalServerError, "application/problem+json");
+
+app.MapPost("/BlobInventory", async (BlobsInventory blobsInventory, IBlobService _blobService) =>
+{
+    try
+    {
+        var res = await _blobService.CreateBlobInventoryAsync(blobsInventory);
+        return Results.Ok(res);
+    }
+    catch (Exception e)
+    {
+        if (e.GetType() == typeof(ValidationException))
+            return Results.Problem(e.Message, statusCode: 400);
+        return Results.Problem(e.Message);
+    }
+})
+.WithName("CreateBlobInventoryAsync")
+.Produces<IResult>(StatusCodes.Status200OK)
+.Produces<HttpValidationProblemDetails>(StatusCodes.Status400BadRequest, "application/problem+json")
+.Produces<HttpValidationProblemDetails>(StatusCodes.Status500InternalServerError, "application/problem+json");
+
+app.MapPut("/BlobInventory", async (BlobsInventory blobsInventory, IBlobService _blobService) =>
+{
+    try
+    {
+        var res = await _blobService.UpdateBlobInventoryAsync(blobsInventory);
+        return Results.Ok(res);
+    }
+    catch (Exception e)
+    {
+        if (e.GetType() == typeof(ValidationException))
+            return Results.Problem(e.Message, statusCode: 400);
+        return Results.Problem(e.Message);
+    }
+})
+.WithName("UpdateBlobInventoryAsync")
+.Produces<IResult>(StatusCodes.Status200OK)
 .Produces<HttpValidationProblemDetails>(StatusCodes.Status400BadRequest, "application/problem+json")
 .Produces<HttpValidationProblemDetails>(StatusCodes.Status500InternalServerError, "application/problem+json");
 
