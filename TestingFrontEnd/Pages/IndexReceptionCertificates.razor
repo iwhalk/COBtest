@@ -1,5 +1,6 @@
 ﻿@page "/IndexReceptionCertificates"
 
+<Navbar></Navbar>
 <body>    
     <div id="ContenedorHome" class="bg-[url('/assets/img/fondocasa.png')] imgfondo">    
         <div class="flex justify-center py-6">
@@ -12,7 +13,8 @@
             <div class="flex justify-center py-20">
                 <ButtonLink TypeIcon="ActasExistentes"></ButtonLink>
             </div>
-        </div>        
-        <ModalTypeReceptionCertificates OnClick="ChangeOpenModal" ShowModal="@OpenModal"></ModalTypeReceptionCertificates>
+        </div>                
+        <ModalTypeReceptionCertificates OnClick="ChangeOpenModal" ShowModal="@OpenModal"></ModalTypeReceptionCertificates>        
     </div>
 </body>
+<Footer></Footer>
