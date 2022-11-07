@@ -67,7 +67,7 @@ builder.Services.AddOidcAuthentication(options =>
     // For more information about this bug, visit https://github.com/dotnet/aspnetcore/issues/28344.
     //
     options.ProviderOptions.ResponseMode = "query";
-    options.AuthenticationPaths.RemoteRegisterPath = $"https://localhost:7140/Identity/Account/Register";
+    options.AuthenticationPaths.RemoteRegisterPath = $"{builder.HostEnvironment.BaseAddress}/Identity/Account/Register";
 
     // Add the "roles" (OpenIddictConstants.Scopes.Roles) scope and the "role" (OpenIddictConstants.Claims.Role) claim
     // (the same ones used in the Startup class of the Server) in order for the roles to be validated.
