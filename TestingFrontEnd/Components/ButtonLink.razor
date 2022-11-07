@@ -16,9 +16,9 @@
     </svg>
     </a>
 }
-
 @if (TypeIcon == "Historico")
 {
+    <a href="/ReceptionCertificates/Historical">
     <svg xmlns="http://www.w3.org/2000/svg" width="403" height="407" viewBox="0 0 403 407" class="scale-50 md:scale-75 xl:scale-100">
         <g id="Grupo_336" data-name="Grupo 336" transform="translate(24829 19704)">
             <g id="Grupo_335" data-name="Grupo 335">
@@ -36,6 +36,7 @@
             <path id="Trazado_123" data-name="Trazado 123" d="M29.808,0,0,33.751" transform="matrix(0.996, -0.087, 0.087, 0.996, -24587.977, -19453.631)" fill="none" stroke="#2a6983" stroke-width="4"></path>
         </g>
     </svg>
+    </a>
 }
 @if (TypeIcon == "CreacionActa")
 {    
@@ -53,15 +54,15 @@
         </g>
     </svg>    
 }
-
-@if (TypeIcon == "HistoricoActa")
+@if (TypeIcon == "ActasExistentes")
 {
+    <a href="/ReceptionCertificates/Pending">
     <svg xmlns="http://www.w3.org/2000/svg" width="403" height="407" viewBox="0 0 403 407" class="scale-50 md:scale-75 xl:scale-100">
         <g id="Grupo_336" data-name="Grupo 336" transform="translate(24829 19704)">
             <g id="Grupo_335" data-name="Grupo 335">
                 <g id="Grupo_334" data-name="Grupo 334" transform="translate(-24829 -19704)">
                     <ellipse id="Elipse_3" data-name="Elipse 3" cx="201.5" cy="203.5" rx="201.5" ry="203.5" fill="#e3f2f6" />
-                    <text id="Historico" transform="translate(134 334)" fill="#707070" font-size="35" font-family="Helvetica"><tspan x="0" y="0">Historico Actas</tspan></text>
+                    <text id="Historico" transform="translate(134 334)" fill="#707070" font-size="35" font-family="Helvetica"><tspan x="0" y="0">Existentes</tspan></text>
                 </g>
             </g>
             <path id="Icon_metro-files-empty" data-name="Icon metro-files-empty" d="M142.394,61.871a150.618,150.618,0,0,0-14.08-16.737,148.33,148.33,0,0,0-16.1-14.635c-8.33-6.349-12.37-7.083-14.685-7.083H38.092a13.2,13.2,0,0,0-12.921,13.43V160.4a13.2,13.2,0,0,0,12.921,13.43h98.2a13.2,13.2,0,0,0,12.921-13.43V77.134c0-2.406-.706-6.606-6.815-15.264ZM121.005,52.73a144.865,144.865,0,0,1,11.722,13.66H107.863V40.547A142.794,142.794,0,0,1,121.005,52.73ZM138.872,160.4a2.672,2.672,0,0,1-2.584,2.686h-98.2a2.672,2.672,0,0,1-2.584-2.686V36.845a2.672,2.672,0,0,1,2.584-2.686H97.527v37.6a5.273,5.273,0,0,0,5.168,5.372h36.177ZM91.539,9.012c-8.33-6.349-12.37-7.083-14.685-7.083H17.419A13.2,13.2,0,0,0,4.5,15.358V138.911A13.334,13.334,0,0,0,14.835,152.07V15.358a2.672,2.672,0,0,1,2.584-2.686H96.053c-1.558-1.33-3.073-2.562-4.514-3.66Z" transform="translate(-24704.354 -19588.379)" fill="none" stroke="#2a6983" stroke-width="6" />
@@ -73,12 +74,12 @@
             <path id="Trazado_123" data-name="Trazado 123" d="M29.808,0,0,33.751" transform="matrix(0.996, -0.087, 0.087, 0.996, -24587.977, -19453.631)" fill="none" stroke="#2a6983" stroke-width="4"></path>
         </g>
     </svg>
+    </a>
 }
-
 @if(TypeIcon == "Entrada")
 {
-    <a href="ReceptionCertificates/Create">
-        <svg xmlns="http://www.w3.org/2000/svg" width="437" height="399" viewBox="0 0 437 399">
+    <a href="ReceptionCertificates/Create" class="">
+        <svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" viewBox="0 0 437 399">
             <g id="Grupo_335" data-name="Grupo 335" transform="translate(24789 17186)">
                 <g id="Grupo_334" data-name="Grupo 334" transform="translate(-25051 -17445)" opacity="0.66">
                     <ellipse id="Elipse_3" data-name="Elipse 3" cx="218.5" cy="199.5" rx="218.5" ry="199.5" transform="translate(262 259)" fill="#e3f2f6" />
@@ -89,10 +90,10 @@
         </svg>
     </a>
 }
-
 @if(TypeIcon == "Salida")                
 {
-    <svg xmlns="http://www.w3.org/2000/svg" width="437" height="399" viewBox="0 0 437 399">
+    <a class="">
+    <svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" viewBox="0 0 437 399">
         <g id="Grupo_335" data-name="Grupo 335" transform="translate(24613 17130)">
             <g id="Grupo_334" data-name="Grupo 334" transform="translate(-24875 -17389)" opacity="0.66">
                 <ellipse id="Elipse_3" data-name="Elipse 3" cx="218.5" cy="199.5" rx="218.5" ry="199.5" transform="translate(262 259)" fill="#e3f2f6" />
@@ -101,4 +102,5 @@
             <path id="Icon_metro-exit" data-name="Icon metro-exit" d="M150.6,146.759V117.793H88.923V88.827H150.6V59.861l37.008,43.449Zm-12.336-14.483v57.932H76.587v43.449L2.571,190.209V1.928h135.7V74.344H125.931V16.411H27.243L76.587,45.377V175.726h49.344V132.276Z" transform="translate(-24489.59 -17048.293)" fill="none" stroke="#2a6983" stroke-width="8" />
         </g>
     </svg>
+    </a>
 }

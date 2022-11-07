@@ -6,6 +6,17 @@
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
+  <!--<ItemGroup>
+    <Compile Remove="Components\**" />
+    <Compile Remove="Models\**" />
+    <Content Remove="Components\**" />
+    <Content Remove="Models\**" />
+    <EmbeddedResource Remove="Components\**" />
+    <EmbeddedResource Remove="Models\**" />
+    <None Remove="Components\**" />
+    <None Remove="Models\**" />
+  </ItemGroup>-->
+
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="6.0.10" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="6.0.10" PrivateAssets="all" />
@@ -24,12 +35,13 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Shared\Shared.csproj" />
+    <Folder Include="Components\" />
+    <Folder Include="Models\" />
+    <Folder Include="Services\" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Models\" />
-    <Folder Include="Services\" />
+    <ProjectReference Include="..\Shared\Shared.csproj" />
   </ItemGroup>
 
 </Project>

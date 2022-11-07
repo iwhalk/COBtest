@@ -27,6 +27,7 @@ namespace Shared.Data
         public virtual DbSet<Feature> Features { get; set; }
         public virtual DbSet<Inventory> Inventories { get; set; }
         public virtual DbSet<Lessor> Lessors { get; set; }
+        public virtual DbSet<Module> Modules { get; set; }
         public virtual DbSet<Property> Properties { get; set; }
         public virtual DbSet<PropertyType> PropertyTypes { get; set; }
         public virtual DbSet<ReceptionCertificate> ReceptionCertificates { get; set; }
