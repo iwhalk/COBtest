@@ -12,9 +12,7 @@ using System.Text.RegularExpressions;
 using ReportesInmobiliaria.Interfaces;
 using ReportesInmobiliaria.Services;
 using ReportesInmobiliaria.Utilities;
-using Shared.Data;
-using Shared.Models;
-
+using SixLabors.Fonts.Tables.AdvancedTypographic;
 
 var builder = WebApplication.CreateBuilder(args);
 var connectionString = "Server=prosisdev.database.windows.net;Database=prosisdb_3;User=PROSIS_DEVELOPER;Password=PR0515_D3ev3l0p3r;MultipleActiveResultSets=true";
@@ -599,10 +597,11 @@ app.MapPost("/Blobs", async (Blob blob, IBlobService _blobService) =>
 .Produces<HttpValidationProblemDetails>(StatusCodes.Status400BadRequest, "application/problem+json")
 .Produces<HttpValidationProblemDetails>(StatusCodes.Status500InternalServerError, "application/problem+json");
 
-app.MapPut("/Blobs", async (Blob blob, IBlobService _blobService) =>
+app.MapPut("/Blobs/{id}", async (int id, Blob blob, IBlobService _blobService) =>
 {
     try
     {
+        if (id != blob.IdBlobs) return Results.BadRequest();
         var res = await _blobService.UpdateBlobAsync(blob);
         return Results.Ok(res);
     }
@@ -615,6 +614,29 @@ app.MapPut("/Blobs", async (Blob blob, IBlobService _blobService) =>
 })
 .WithName("UpdateBlobAsync")
 .Produces<IResult>(StatusCodes.Status200OK)
+.Produces<HttpValidationProblemDetails>(StatusCodes.Status400BadRequest, "application/problem+json")
+.Produces<HttpValidationProblemDetails>(StatusCodes.Status500InternalServerError, "application/problem+json");
+
+app.MapDelete("/Blob/{id}",
+    async (int id, IBlobService _blobService) =>
+    {
+        try
+        {
+            var res = await _blobService.DeleteBlobAsync(id);
+            if (res) return Results.NoContent();
+            return Results.BadRequest();
+        }
+        catch (Exception e)
+        {
+            if (e.GetType() == typeof(ValidationException))
+                return Results.Problem(e.Message, statusCode: 400);
+            return Results.Problem(e.Message);
+
+        }
+    })
+.WithName("DeleteBlobAsync")
+.Produces(StatusCodes.Status204NoContent)
+.Produces(StatusCodes.Status400BadRequest)
 .Produces<HttpValidationProblemDetails>(StatusCodes.Status400BadRequest, "application/problem+json")
 .Produces<HttpValidationProblemDetails>(StatusCodes.Status500InternalServerError, "application/problem+json");
 
@@ -648,10 +670,11 @@ app.MapPost("/BlobInventory", async (BlobsInventory blobsInventory, IBlobService
 .Produces<HttpValidationProblemDetails>(StatusCodes.Status400BadRequest, "application/problem+json")
 .Produces<HttpValidationProblemDetails>(StatusCodes.Status500InternalServerError, "application/problem+json");
 
-app.MapPut("/BlobInventory", async (BlobsInventory blobsInventory, IBlobService _blobService) =>
+app.MapPut("/BlobInventory/{id}", async (int id, BlobsInventory blobsInventory, IBlobService _blobService) =>
 {
     try
     {
+        if (id != blobsInventory.IdBlobsInventory) return Results.BadRequest();
         var res = await _blobService.UpdateBlobInventoryAsync(blobsInventory);
         return Results.Ok(res);
     }
@@ -664,6 +687,29 @@ app.MapPut("/BlobInventory", async (BlobsInventory blobsInventory, IBlobService 
 })
 .WithName("UpdateBlobInventoryAsync")
 .Produces<IResult>(StatusCodes.Status200OK)
+.Produces<HttpValidationProblemDetails>(StatusCodes.Status400BadRequest, "application/problem+json")
+.Produces<HttpValidationProblemDetails>(StatusCodes.Status500InternalServerError, "application/problem+json");
+
+app.MapDelete("/BlobInventory/{id}",
+    async (int id, IBlobService _blobService) =>
+    {
+        try
+        {
+            var res = await _blobService.DeleteBlobInventoryAsync(id);
+            if (res) return Results.NoContent();
+            return Results.BadRequest();
+        }
+        catch (Exception e)
+        {
+            if (e.GetType() == typeof(ValidationException))
+                return Results.Problem(e.Message, statusCode: 400);
+            return Results.Problem(e.Message);
+
+        }
+    })
+.WithName("DeleteBlobInventoryAsync")
+.Produces(StatusCodes.Status204NoContent)
+.Produces(StatusCodes.Status400BadRequest)
 .Produces<HttpValidationProblemDetails>(StatusCodes.Status400BadRequest, "application/problem+json")
 .Produces<HttpValidationProblemDetails>(StatusCodes.Status500InternalServerError, "application/problem+json");
 
