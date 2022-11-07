@@ -1,0 +1,54 @@
+﻿@page "/ReceptionCertificates/Inventory"
+@attribute [Authorize]
+<PageTitle>Inventario</PageTitle>
+
+<body class="flex flex-column min-h-screen bg-[url('/assets/img/fondocasa.png')] imgfondo">
+    <div id="ContenedorInventario" class="flex">
+        <div id="ListActas" class="flex ml-4" >
+            <LeftListActas OnClick="ChangeOpenModalRooms" OpenModalGauges="ChangeOpenModalGauges" OpenModalKeys="ChangeOpenModalKeys" TypeList="Habitaciones"></LeftListActas>            
+        </div>
+        <div id="ListActas" class="flex">        
+            <LeftListActas OnClick="ChangeOpenModalComponents" TypeList="Componentes"></LeftListActas>
+        </div>
+        <div id="ContenedorElementos" class="my-12 flex justify-around relative border-1 border-black rounded-lg p-2 -ml-2 mr-6 w-full" style="height: 40rem">
+            <div id="ComponteInputs" class="flex p-2">
+                <div class="flex">
+                    <div class="flex">
+                        <div class="flex flex-col">
+                            <span class="flex my-2"><label for="" class="text-blue-900 w-32">Material</label><button @onclick="@(() => ChangeButtonsShow("Material"))" class="border-2 bg-slate-100 ml-5 w-3/6 flex justify-end h-7 w-24">@MaterialSelect</button></span>
+                            <span class="flex my-2"><label for="" class="text-blue-900 w-32">Color</label><button @onclick="@(() => ChangeButtonsShow("Color"))" class="border-2 bg-slate-100 ml-5 w-3/6 flex justify-end h-7 w-24">@ColorSelect</button></span>
+                            <span class="flex my-2"><label for="" class="text-blue-900 w-32">Estado General</label><button @onclick="@(() => ChangeButtonsShow("EstadoGeneral"))" class="border-2 bg-slate-100 ml-5 w-3/6 flex justify-end h-7 w-24">@StatusSelect</button></span>
+                            <span class="flex my-2"><label for="" class="text-blue-900 w-32">Canitdad</label><button @onclick="@(() => ChangeButtonsShow(""))"><input type="number" class="border-2 bg-slate-100 ml-5 w-3/6 flex justify-end"></button></span>
+                            <span class="flex my-2"><label for="" class="text-blue-900 w-32">Superficie m2</label><button @onclick="@(() => ChangeButtonsShow(""))"><input type="number" class="border-2 bg-slate-100 ml-5 w-3/6 flex justify-end"></button></span>
+                        </div>
+                    </div>
+                    <div class="mx-5">
+                        <li class="py-2 flex text-blue-900">Copiar Valores<input @onclick="ChangeOpenModalCopyValues" type="checkbox" class="border-2 w-1/4"></li>
+                    </div>
+                </div>
+            </div>            
+            @if(TypeButtonsInventory == "Material" && MaterialSelect == "")
+            {
+                <DynamicComponentInventory OnClick="SetMaterial"></DynamicComponentInventory>
+            }
+            @if(TypeButtonsInventory == "Color" && ColorSelect == "")
+            {
+                <ColorsInventory OnClick="SetColor"></ColorsInventory>
+            }
+            @if(TypeButtonsInventory == "EstadoGeneral" && StatusSelect == "")
+            {
+                <StatusInventory OnClick="SetStatus"></StatusInventory>
+            }
+            <BoxesInventory></BoxesInventory>         
+        </div>
+    </div>
+    <div id="Botones" class="flex justify-center -my-5">
+        <button class="py-2 my-4 w-48 border rounded-lg text-white text-xl shadow-xl" style="background-color: #2B286F;">Guardar</button>
+        <a href="/Signatures"><button class="py-2 my-4 w-48 border rounded-lg text-white text-xl shadow-xl" style="background-color: #2B286F;">Generar Acta</button></a>
+    </div>
+    <ModalRoomsOrComponents OnClick="ChangeOpenModalRooms" TitleTable="Habitaciones" ShowModal="@ShowModalRooms"></ModalRoomsOrComponents>
+    <ModalRoomsOrComponents OnClick="ChangeOpenModalComponents" TitleTable="Componentes" ShowModal="@ShowModalComponents"></ModalRoomsOrComponents>
+    <ModalRoomsOrComponents OnClick="ChangeOpenModalCopyValues" TitleTable="Habitaciones" ShowModal="@ShowModalCopyValues"></ModalRoomsOrComponents>
+    <ModalGaugesOrKeys OnClick="ChangeOpenModalGauges" TitleModal="Medidores" ShowModal="@ShowModalGauges"></ModalGaugesOrKeys>
+    <ModalGaugesOrKeys OnClick="ChangeOpenModalKeys" TitleModal="Llaves" ShowModal="@ShowModalkeys"></ModalGaugesOrKeys>
+</body>

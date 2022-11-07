@@ -25,92 +25,8 @@
                     </div>
                 </div>
             </div>
-            <div class="bg-[#2B286F] mx-auto h-40 md:m-3 sm:m-1 text-center text-sm-center md:text-md text-white">
-                <h1 class="text-xl mb-2">Arrendatario</h1>
-                <div class="flex inline grid grid-cols-3  place-items-center">
-                    <div>
-                        <div class="flex inline mb-3">
-                            <label>Nombre</label>
-                            <input class="ml-2 rounded-lg" type="text" />
-                        </div>
-                        <div class="flex inline mb-3">
-                            <label>Apellido</label>
-                            <input class="ml-2 rounded-lg" type="text" />
-                        </div>
-                        <div class="flex inline">
-                            <label>RFC</label>
-                            <input class="ml-2 rounded-lg" type="text" />
-                        </div>
-                    </div>
-                    <div>
-                        <div class="flex inline mb-3">
-                            <label>Calle y Numero</label>
-                            <input class="ml-2 rounded-lg" type="date" />
-                        </div>
-                        <div class="flex inline mb-3">
-                            <label>Colonia</label>
-                            <input class="ml-2 rounded-lg" type="text" />
-                        </div>
-                        <div class="flex inline">
-                            <label>Apellido</label>
-                            <input class="ml-2 rounded-lg" type="text" />
-                        </div>
-                    </div>
-                    <div>
-                        <div class="flex inline mb-3">
-                            <label>C.P</label>
-                            <input class="ml-2 rounded-lg" type="text" />
-                        </div>
-                        <div class="flex inline">
-                            <label>Telefono</label>
-                            <input class="ml-2 rounded-lg" type="text" />
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="bg-[#2B286F] mx-auto h-40 md:m-3 sm:m-1 text-center text-sm-center md:text-md text-white">
-                <h1 class="text-xl mb-2">Arrendador</h1>
-                <div class="flex inline grid grid-cols-3  place-items-center">
-                    <div>
-                        <div class="flex inline mb-3">
-                            <label>Nombre</label>
-                            <input class="ml-2 rounded-lg" type="text" />
-                        </div>
-                        <div class="flex inline mb-3">
-                            <label>Apellido</label>
-                            <input class="ml-2 rounded-lg" type="text" />
-                        </div>
-                        <div class="flex inline">
-                            <label>RFC</label>
-                            <input class="ml-2 rounded-lg" type="text" />
-                        </div>
-                    </div>
-                    <div>
-                        <div class="flex inline mb-3">
-                            <label>Calle y Numero</label>
-                            <input class="ml-2 rounded-lg" type="date" />
-                        </div>
-                        <div class="flex inline mb-3">
-                            <label>Colonia</label>
-                            <input class="ml-2 rounded-lg" type="text" />
-                        </div>
-                        <div class="flex inline">
-                            <label>Apellido</label>
-                            <input class="ml-2 rounded-lg" type="text" />
-                        </div>
-                    </div>
-                    <div>
-                        <div class="flex inline mb-3">
-                            <label>C.P</label>
-                            <input class="ml-2 rounded-lg" type="text" />
-                        </div>
-                        <div class="flex inline">
-                            <label>Telefono</label>
-                            <input class="ml-2 rounded-lg" type="text" />
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <FormLessorOrTenant OnClick="ChangeOpenModalLessor" TitleForm="Arrendador"></FormLessorOrTenant>
+            <FormLessorOrTenant OnClick="ChangeOpenModalTenant" TitleForm="Arrendatario"></FormLessorOrTenant>
             <div class="bg-[#2B286F] mx-auto h-44 md:m-3 sm:m-1 text-center text-sm-center md:text-md text-white">
                 <h1 class="text-xl mb-2">Propiedad</h1>
                 <div class="flex inline grid grid-cols-3  place-items-center">
@@ -147,10 +63,16 @@
                             <label>Tamaño m2</label>
                             <input class="ml-2 rounded-lg" type="text" />
                         </div>
+                        <div>
+                            <button @onclick="ChangeOpenModalProperty" class="bg-blue-300 rounded-lg h-6 w-full">Existente</button>
+                        </div>
                     </div>
                 </div>
-                <button class="bg-[#2B286F] text-white mt-10 rounded-lg h-10 w-20">Siguiente</button>
+                <a href="/ReceptionCertificates/Inventory"><button class="bg-[#2B286F] text-white mt-10 rounded-lg h-10 w-20">Siguiente</button></a>
             </div>
+            <ModalLessorOrTenant OnClick="ChangeOpenModalLessor" ShowModal="@ShowModalLessor" TitleModal="Arrendarores"></ModalLessorOrTenant>
+            <ModalLessorOrTenant OnClick="ChangeOpenModalTenant" ShowModal="@ShowModalTenant" TitleModal="Arrendatarios"></ModalLessorOrTenant>
+            <ModalProperty OnClick="ChangeOpenModalProperty" ShowModal="@ShowModalProperty"></ModalProperty>
         </div>
     </div>
 </body>
