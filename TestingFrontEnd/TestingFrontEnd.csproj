@@ -6,7 +6,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
-  <ItemGroup>
+  <!--<ItemGroup>
     <Compile Remove="Components\**" />
     <Compile Remove="Models\**" />
     <Content Remove="Components\**" />
@@ -15,7 +15,7 @@
     <EmbeddedResource Remove="Models\**" />
     <None Remove="Components\**" />
     <None Remove="Models\**" />
-  </ItemGroup>
+  </ItemGroup>-->
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="6.0.10" />
