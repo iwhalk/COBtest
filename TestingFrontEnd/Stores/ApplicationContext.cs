@@ -1,4 +1,4 @@
-﻿namespace TestingFrontEnd.Stores
+﻿namespace FrontEnd.Stores
 {
     public class ApplicationContext
     {

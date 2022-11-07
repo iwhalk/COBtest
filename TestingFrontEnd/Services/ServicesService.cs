@@ -1,7 +1,7 @@
 ﻿using Shared.Models;
-using TestingFrontEnd.Interfaces;
+using FrontEnd.Interfaces;
 
-namespace TestingFrontEnd.Services
+namespace FrontEnd.Services
 {
     public class ServicesService : IServicesService
     {

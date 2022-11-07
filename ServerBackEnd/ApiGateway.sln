@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ApiGateway", "ApiGateway.cs
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Shared", "..\Shared\Shared.csproj", "{73CC8FCD-DFB1-439D-8CA4-448343008407}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestingFrontEnd", "..\TestingFrontEnd\TestingFrontEnd.csproj", "{5DA77404-C68C-4517-A21D-D2BF7FC1866B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FrontEnd", "..\TestingFrontEnd\FrontEnd.csproj", "{5DA77404-C68C-4517-A21D-D2BF7FC1866B}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ReportesInmobiliaria", "..\ReportesInmobiliaria\ReportesInmobiliaria.csproj", "{9C84DE40-910A-4412-9CF1-92278871309F}"
 EndProject
