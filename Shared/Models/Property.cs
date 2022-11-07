@@ -36,7 +36,9 @@ namespace Shared.Models
         [StringLength(30)]
         [Unicode(false)]
         public string Delegation { get; set; }
+        [Required]
         [Column("CP")]
+        [StringLength(10)]
         public string Cp { get; set; }
         public int NumberOfRooms { get; set; }
         [Column(TypeName = "decimal(18, 0)")]
