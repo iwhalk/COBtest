@@ -93,7 +93,7 @@ builder.Services.AddProblemDetails(setup =>
     .AddProblemDetailsConventions()
 .AddJsonOptions(x => x.JsonSerializerOptions.DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull);
 
-builder.Services.AddHttpClient("Reportes", client => client.BaseAddress = new Uri("https://localhost:7293/"));
+builder.Services.AddHttpClient("Reportes", client => client.BaseAddress = new Uri("http://localhost:7293/"));
 
 builder.Services.AddCors();
 
@@ -268,6 +268,16 @@ builder.Services.AddMediatR(Assembly.Load("ApiGateway"));
 
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
+
+builder.Services.AddScoped<ILessorService, LessorService>();
+builder.Services.AddScoped<ITenantService, TenantService>();
+builder.Services.AddScoped<IPropertyService, PropertyService>();
+builder.Services.AddScoped<IPropertyTypeService, PropertyTypeService>();
+builder.Services.AddScoped<IServicesService, ServicesService>();
+builder.Services.AddScoped<IAreaService, AreaService>();
+builder.Services.AddScoped<IFeaturesService, FeaturesService>();
+builder.Services.AddScoped<IDescriptionService, DescriptionService>();
+builder.Services.AddScoped<IInventoryService, InventoryService>();
 
 var app = builder.Build();
 
