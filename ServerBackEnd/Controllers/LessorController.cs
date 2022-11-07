@@ -7,7 +7,7 @@ using Shared.Models;
 namespace ApiGateway.Controllers
 {
     [Route("api/[controller]")]
-    //[Authorize]
+    [Authorize]
     [ApiController]
     public class LessorController : ControllerBase
     {

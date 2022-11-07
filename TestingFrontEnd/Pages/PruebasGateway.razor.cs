@@ -17,14 +17,14 @@ namespace TestingFrontEnd.Pages
 
         Area ejem = new Area()
         {
-            AreaName = "PruebaCarlos"
+            AreaName = "PruebaBaseAddress"
         };
 
         protected override async Task OnInitializedAsync()
         {
             ListArea = await _areaService.GetAreaAsync();
 
-            Area = await _areaService.PostAreaAsync(ejem);
+            Area = await _areaService.PostAreaAsync(ejem);            
         }
     }
 }

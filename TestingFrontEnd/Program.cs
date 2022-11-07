@@ -29,7 +29,7 @@ builder.RootComponents.Add<HeadOutlet>("head::after");
 
 
 builder.Services.AddHttpClient("ApiGateway")
-    .ConfigureHttpClient(client => client.BaseAddress = new Uri("https://localhost:7140"))
+    .ConfigureHttpClient(client => client.BaseAddress = new Uri(builder.HostEnvironment.BaseAddress))
     .AddHttpMessageHandler<BaseAddressAuthorizationMessageHandler>();
 builder.Services.AddSingleton(serviceProvider => (IJSInProcessRuntime)serviceProvider.GetRequiredService<IJSRuntime>());
 
@@ -58,7 +58,7 @@ builder.Services.AddScoped(provider =>
 builder.Services.AddOidcAuthentication(options =>
 {
     options.ProviderOptions.ClientId = client;
-    options.ProviderOptions.Authority = "https://localhost:7140/";
+    options.ProviderOptions.Authority = builder.HostEnvironment.BaseAddress;
     options.ProviderOptions.ResponseType = "code";
 
     // Note: response_mode=fragment is the best option for a SPA. Unfortunately, the Blazor WASM
