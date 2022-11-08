@@ -9,6 +9,10 @@ namespace TestingFrontEnd.Components.Lessors
         public EventCallback OpenModalLessor { get; set; }
         [Parameter]
         public Lessor? lessor { get; set; }
-
+        
+        public void HandlePost()
+        {
+            Console.Write("Hello");
+        }
     }
 }
