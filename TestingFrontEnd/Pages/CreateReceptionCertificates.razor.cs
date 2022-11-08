@@ -9,7 +9,7 @@ namespace TestingFrontEnd.Pages
         public bool ShowModalTenant { get; set; } = false;
         public bool ShowModalProperty { get; set; } = false;
 
-        public Lessor? lessor { get; set; }
+        public Lessor? NewLessor { get; set; } = new Lessor();
 
         public void ChangeOpenModalLessor() => ShowModalLessor = ShowModalLessor ? false : true;
         public void ChangeOpenModalTenant() => ShowModalTenant = ShowModalTenant ? false : true;

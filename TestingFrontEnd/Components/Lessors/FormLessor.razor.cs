@@ -8,7 +8,7 @@ namespace TestingFrontEnd.Components.Lessors
         [Parameter]
         public EventCallback OpenModalLessor { get; set; }
         [Parameter]
-        public Lessor? lessor { get; set; }
+        public Lessor? CurrentLessor { get; set; }
         
         public void HandlePost()
         {
