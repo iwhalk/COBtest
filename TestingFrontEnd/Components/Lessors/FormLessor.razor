@@ -4,39 +4,39 @@
         <div>
             <div class="flex inline mb-3">
                 <label class="w-20 text-left">Nombre</label>
-                <input class="w-44 ml-2 rounded-lg text-black" type="text" />
+                <input @bind-value="lessor.Name" class="w-44 ml-2 rounded-lg text-black" type="text" />    
             </div>
             <div class="flex inline mb-3">
                 <label class="w-20 text-left">Apellido</label>
-                <input class="w-44 ml-2 rounded-lg text-black" type="text" />
+                <input @bind-value="lessor.LastName" class="w-44 ml-2 rounded-lg text-black" type="text" />
             </div>
             <div class="flex inline">
                 <label class="w-20 text-left">RFC</label>
-                <input class="w-44 ml-2 rounded-lg text-black" type="text" />
+                <input @bind-value="lessor.Rfc" class="w-44 ml-2 rounded-lg text-black" type="text" />
             </div>
         </div>
         <div>
             <div class="flex inline mb-3">
                 <label class="w-28 text-left">Calle y Numero</label>
-                <input class="w-36 ml-2 rounded-lg text-black" type="date" />
+                <input @bind-value="lessor.Street" class="w-36 ml-2 rounded-lg text-black" type="text" />
             </div>
             <div class="flex inline mb-3">
                 <label class="w-20 text-left">Colonia</label>
-                <input class="w-44 ml-2 rounded-lg text-black" type="text" />
+                <input @bind-value="lessor.Colony" class="w-44 ml-2 rounded-lg text-black" type="text" />
             </div>
             <div class="flex inline">
-                <label class="w-20 text-left">Apellido</label>
-                <input class="w-44 ml-2 rounded-lg text-black" type="text" />
+                <label class="w-20 text-left">Delegacion</label>
+                <input @bind-value="lessor.Delegation" class="w-44 ml-2 rounded-lg text-black" type="text" />
             </div>
         </div>
         <div>
             <div class="flex inline mb-3">
                 <label class="w-20 text-left">C.P</label>
-                <input class="w-44 ml-2 rounded-lg text-black" type="text" />
+                <input @bind-value="lessor.Cp" class="w-44 ml-2 rounded-lg text-black" type="text" />
             </div>
             <div class="flex inline mb-3">
                 <label class="w-20 text-left">Telefono</label>
-                <input class="w-44 ml-2 rounded-lg text-black" type="text" />
+                <input @bind-value="lessor.PhoneNumber" class="w-44 ml-2 rounded-lg text-black" type="text" />
             </div>
             <div>
                 <button @onclick="@(() => OpenModalLessor.InvokeAsync())" class="bg-blue-300 rounded-lg h-6 w-full">Existente</button>
