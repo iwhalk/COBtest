@@ -27,8 +27,7 @@ namespace ApiGateway.Areas.Identity.Pages.Account
         {
             _signInManager = signInManager;
             _logger = logger;
-        }
-        [BindProperty]
+        }        ]
         public bool ShowPassword { get; set; }
 
         /// <summary>
@@ -137,11 +136,8 @@ namespace ApiGateway.Areas.Identity.Pages.Account
                     return Page();
                 }
             }
-
             // If we got this far, something failed, redisplay form
             return Page();
-        }
-
-        
+        }        
     }
 }
