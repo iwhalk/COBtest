@@ -142,6 +142,8 @@ namespace ApiGateway.Areas.Identity.Pages.Account
             return Page();
         }
 
-        
+        public void mostrarContra(object sender, EventArgs e){
+            
+        }
     }
 }
