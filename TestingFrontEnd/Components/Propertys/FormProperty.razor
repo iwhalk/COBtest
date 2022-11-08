@@ -1,0 +1,42 @@
+﻿<div class="bg-[#2B286F] mx-auto h-44 md:m-3 sm:m-1 text-center text-sm-center md:text-md text-white">
+    <h1 class="text-xl mb-2">Propiedad</h1>
+    <div class="flex inline grid grid-cols-3  place-items-center">
+        <div>
+            <div class="flex inline mb-3">
+                <label class="w-28 text-left">Calle y Numero</label>
+                <input class="w-36 ml-2 rounded-lg text-black" type="date" />
+            </div>
+            <div class="flex inline mb-3">
+                <label class="w-28 text-left">Colonia</label>
+                <input class="w-36 ml-2 rounded-lg text-black " type="text" />
+            </div>
+            <div class="flex inline">
+                <label class="w-28 text-left">Delegacion</label>
+                <input class="w-36 ml-2 rounded-lg text-black" type="text" />
+            </div>
+        </div>
+        <div>
+            <div class="flex inline mb-3">
+                <label class="w-32 text-left">C.P</label>
+                <input class="w-32 ml-2 rounded-lg text-black" type="text" />
+            </div>
+            <div class="flex inline mb-3">
+                <label class="w-32 text-left">Tipo de Inmueble</label>
+                <input class="w-32 ml-2 rounded-lg text-black" type="text" />
+            </div>
+            <div class="flex inline">
+                <label class="w-32 text-left">No Habitaciones</label>
+                <input class="w-32 ml-2 rounded-lg text-black" type="number" />
+            </div>
+        </div>
+        <div>
+            <div class="flex inline mb-3">
+                <label class="w-24 text-left">Tamaño m2</label>
+                <input class="w-40 ml-2 rounded-lg text-black" type="number" />
+            </div>
+            <div>
+                <button @onclick="@(() => OpenModalProperty.InvokeAsync())" class="bg-blue-300 rounded-lg h-6 w-full">Existente</button>
+            </div>
+        </div>
+    </div>    
+</div>

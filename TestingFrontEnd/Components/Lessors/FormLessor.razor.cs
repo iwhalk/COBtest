@@ -1,8 +1,9 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Shared.Models;
+
 namespace TestingFrontEnd.Components.Lessors
 {
-    public partial class Form : ComponentBase
+    public partial class FormLessor : ComponentBase
     {
         [Parameter]
         public EventCallback OpenModalLessor { get; set; }

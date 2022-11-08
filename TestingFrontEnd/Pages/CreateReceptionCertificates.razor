@@ -25,51 +25,11 @@
                     </div>
                 </div>
             </div>
-            <Form OpenModalLessor="ChangeOpenModalLessor"></Form>
-            @*<FormLessorOrTenant OnClick="ChangeOpenModalLessor" TitleForm="Arrendador"></FormLessorOrTenant>*@
-            <FormLessorOrTenant OnClick="ChangeOpenModalTenant" TitleForm="Arrendatario"></FormLessorOrTenant>
-            <div class="bg-[#2B286F] mx-auto h-44 md:m-3 sm:m-1 text-center text-sm-center md:text-md text-white">
-                <h1 class="text-xl mb-2">Propiedad</h1>
-                <div class="flex inline grid grid-cols-3  place-items-center">
-                    <div>
-                        <div class="flex inline mb-3">
-                            <label class="w-28 text-left">Calle y Numero</label>
-                            <input class="w-36 ml-2 rounded-lg text-black" type="date" />
-                        </div>
-                        <div class="flex inline mb-3">
-                            <label class="w-28 text-left">Colonia</label>
-                            <input class="w-36 ml-2 rounded-lg text-black " type="text" />
-                        </div>
-                        <div class="flex inline">
-                            <label class="w-28 text-left">Delegacion</label>
-                            <input class="w-36 ml-2 rounded-lg text-black" type="text" />
-                        </div>
-                    </div>
-                    <div>
-                        <div class="flex inline mb-3">
-                            <label class="w-32 text-left">C.P</label>
-                            <input class="w-32 ml-2 rounded-lg text-black" type="text" />
-                        </div>
-                        <div class="flex inline mb-3">
-                            <label class="w-32 text-left">Tipo de Inmueble</label>
-                            <input class="w-32 ml-2 rounded-lg text-black" type="text" />
-                        </div>
-                        <div class="flex inline">
-                            <label class="w-32 text-left">No Habitaciones</label>
-                            <input class="w-32 ml-2 rounded-lg text-black" type="number" />
-                        </div>
-                    </div>
-                    <div>
-                        <div class="flex inline mb-3">
-                            <label class="w-24 text-left">Tamaño m2</label>
-                            <input class="w-40 ml-2 rounded-lg text-black" type="number" />
-                        </div>
-                        <div>
-                            <button @onclick="ChangeOpenModalProperty" class="bg-blue-300 rounded-lg h-6 w-full">Existente</button>
-                        </div>
-                    </div>
-                </div>
-                <a href="/ReceptionCertificates/Inventory"><button class="bg-[#2B286F] text-white mt-10 rounded-lg h-10 w-20">Siguiente</button></a>
+            <FormLessor OpenModalLessor="ChangeOpenModalLessor"></FormLessor>
+            <FormTenant OpenModalTenant="ChangeOpenModalTenant"></FormTenant>                      
+            <FormProperty OpenModalProperty="ChangeOpenModalProperty"></FormProperty>
+            <div class="flex inline grid grid-cols-1  place-items-center">
+                <a href="/ReceptionCertificates/Inventory"><button class="bg-[#2B286F] text-white mt-10 rounded-lg h-10 w-20">Siguiente</button></a>            
             </div>
             <ModalLessorOrTenant OnClick="ChangeOpenModalLessor" ShowModal="@ShowModalLessor" TitleModal="Arrendarores"></ModalLessorOrTenant>
             <ModalLessorOrTenant OnClick="ChangeOpenModalTenant" ShowModal="@ShowModalTenant" TitleModal="Arrendatarios"></ModalLessorOrTenant>
