@@ -23,6 +23,7 @@ namespace TestingFrontEnd.Services
                 if (response != null)
                 {
                     _context.Property = response;
+                    return _context.Property;
                 }
             }
 

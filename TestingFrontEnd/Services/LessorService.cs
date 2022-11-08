@@ -23,6 +23,7 @@ namespace TestingFrontEnd.Services
                 if (response != null)
                 {
                     _context.Lessor = response;
+                    return _context.Lessor;
                 }
             }
 

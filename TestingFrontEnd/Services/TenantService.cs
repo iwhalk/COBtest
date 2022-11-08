@@ -23,6 +23,7 @@ namespace TestingFrontEnd.Services
                 if (response != null)
                 {
                     _context.Tenant = response;
+                    return _context.Tenant;
                 }
             }
 
