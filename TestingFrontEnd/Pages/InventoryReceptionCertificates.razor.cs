@@ -1,9 +1,25 @@
 ﻿using Microsoft.AspNetCore.Components;
+using Shared;
+using Shared.Models;
+using TestingFrontEnd.Interfaces;
+using TestingFrontEnd.Services;
+using TestingFrontEnd.Stores;
 
 namespace TestingFrontEnd.Pages
 {
     public partial class InventoryReceptionCertificates : ComponentBase
     {
+        private readonly ApplicationContext _context;
+        private readonly IInventoryService _inventoryService;
+        private readonly IServicesService _servicesService;
+
+        public InventoryReceptionCertificates(ApplicationContext context, IInventoryService inventoryService, IServicesService servicesService)
+        {
+            _context = context;
+            _inventoryService = inventoryService;   
+            _servicesService = servicesService;
+        }
+
         public string MaterialSelect { get; set; } = "";
         public string ColorSelect { get; set; } = "";
         public string StatusSelect { get; set; } = "";
@@ -16,6 +32,9 @@ namespace TestingFrontEnd.Pages
         public bool ShowModalGauges { get; set; } = false;
         public bool ShowModalkeys { get; set; } = false;
         public string TypeButtonsInventory { get; set; } = "";
+
+        private List<Inventory> inventories { get; set; }
+        private List<Service> services { get; set; }
 
         public void ChangeOpenModalRooms() => ShowModalRooms = ShowModalRooms ? false : true;
         public void ChangeOpenModalComponents() => ShowModalComponents = ShowModalComponents ? false : true;
@@ -38,5 +57,11 @@ namespace TestingFrontEnd.Pages
         public void SetColor(string newColor) => ColorSelect = newColor;
         public void SetMaterial(string newMaterial) => MaterialSelect = newMaterial;
         public void SetStatus(string newStatus) => StatusSelect = newStatus;
+
+        protected override async Task OnInitializedAsync()
+        {
+            inventories = await _inventoryService.GetInventoryAsync();
+            services = await _servicesService.GetServicesAsync();
+        }
     }
 }

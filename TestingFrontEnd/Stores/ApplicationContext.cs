@@ -10,6 +10,8 @@ namespace TestingFrontEnd.Stores
         private List<Tenant> tenantList;
         private List<Lessor> lessorList;
         private List<Property> propertiesList;
+        private List<Inventory> inventoriesList;
+        private List<Service> serviceList;
 
         public int Counter
         {
@@ -45,6 +47,24 @@ namespace TestingFrontEnd.Stores
             set
             {
                 propertiesList = value;
+                NotifyStateChanged();
+            }
+        }
+        public List<Inventory> Inventory
+        {
+            get => inventoriesList;
+            set
+            {
+                inventoriesList = value;
+                NotifyStateChanged();
+            }
+        }
+        public List<Service> Service
+        {
+            get => serviceList;
+            set
+            {
+                serviceList = value;
                 NotifyStateChanged();
             }
         }
