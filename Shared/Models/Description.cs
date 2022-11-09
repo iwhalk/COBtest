@@ -2,9 +2,6 @@
 #nullable disable
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using Microsoft.EntityFrameworkCore;
 
 namespace Shared.Models
 {
@@ -15,20 +12,11 @@ namespace Shared.Models
             Inventories = new HashSet<Inventory>();
         }
 
-        [Key]
-        [Column("ID_Description")]
         public int IdDescription { get; set; }
-        [Required]
-        [StringLength(30)]
-        [Unicode(false)]
         public string DescriptionName { get; set; }
-        [Column("ID_Feature")]
         public int IdFeature { get; set; }
 
-        [ForeignKey("IdFeature")]
-        [InverseProperty("Descriptions")]
         public virtual Feature IdFeatureNavigation { get; set; }
-        [InverseProperty("IdDescriptionNavigation")]
         public virtual ICollection<Inventory> Inventories { get; set; }
     }
 }
