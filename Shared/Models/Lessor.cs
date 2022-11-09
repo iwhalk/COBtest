@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.EntityFrameworkCore;
 using Shared.Models;
 
-namespace SharedTest.Models
+namespace SharedLibrary.Models
 {
     public partial class Lessor
     {

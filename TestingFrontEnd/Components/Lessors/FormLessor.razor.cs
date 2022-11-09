@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Components;
-using SharedTest.Models;
+using SharedLibrary.Models;
 
 namespace TestingFrontEnd.Components.Lessors
 {
@@ -12,7 +12,11 @@ namespace TestingFrontEnd.Components.Lessors
         
         public void HandlePost()
         {
-            Console.Write("Hello");
+
+            var l = new Lessor();
+            l.Street = "'";
+
+            
         }
     }
 }

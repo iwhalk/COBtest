@@ -1,58 +1,73 @@
 ﻿<div class="bg-[#2B286F] mx-auto h-40 md:m-3 sm:m-1 text-center text-sm-center md:text-md text-white">
     <h1 class="text-xl mb-2">Arrendador</h1>    
-        <EditForm Model="@CurrentLessor" OnSubmit="HandlePost">
+    <EditForm Model="@CurrentLessor" OnSubmit="@HandlePost">
         <DataAnnotationsValidator />
         <div class="flex inline grid grid-cols-3  place-items-center">
             <div>
                 <div class="flex inline mb-3">
-                    <label class="w-20 text-left">Nombre</label>                    
-                    <InputText @bind-Value="CurrentLessor.Name" class="w-44 ml-2 rounded-lg text-black"/>                    
-                    <ValidationMessage For="@(() => CurrentLessor.Name)" />
+                    <label class="w-20 text-left">Nombre</label>      
+                    <div>
+                        <InputText @bind-Value="CurrentLessor.Name" class="w-44 ml-2 rounded-lg text-black"/>                    
+                        <div class="text-xs"><ValidationMessage class="text-xs" For="@(() => CurrentLessor.Name)" /></div>
+                    </div>
                 </div>
                 <div class="flex inline mb-3">
                     <label class="w-20 text-left">Apellido</label>
-                    <InputText @bind-Value="CurrentLessor.LastName" class="w-44 ml-2 rounded-lg text-black"/>
-                    <ValidationMessage For="@(() => CurrentLessor.LastName)" />
+                    <div>
+                        <InputText @bind-Value="CurrentLessor.LastName" class="w-44 ml-2 rounded-lg text-black"/>
+                        <div class="text-xs"><ValidationMessage For="@(() => CurrentLessor.LastName)" /></div>
+                    </div>
                 </div>
                 <div class="flex inline">
                     <label class="w-20 text-left">RFC</label>
-                    <InputText @bind-Value="CurrentLessor.Rfc" class="w-44 ml-2 rounded-lg text-black"/>
-                    <ValidationMessage For="@(() => CurrentLessor.Rfc)" />
+                    <div>
+                        <InputText @bind-Value="CurrentLessor.Rfc" class="w-44 ml-2 rounded-lg text-black"/>
+                        <div class="text-xs"><ValidationMessage class="text-xs" For="@(() => CurrentLessor.Rfc)" /></div>
+                    </div>
                 </div>
             </div>
             <div>
                 <div class="flex inline mb-3">
                     <label class="w-28 text-left">Calle y Numero</label>
-                    <InputText @bind-Value="CurrentLessor.Street" class="w-36 ml-2 rounded-lg text-black"/>
-                    <ValidationMessage For="@(() => CurrentLessor.Street)" />
+                    <div>
+                        <InputText @bind-Value="CurrentLessor.Street" class="w-36 ml-2 rounded-lg text-black"/>
+                        <div class="text-xs"><ValidationMessage class="text-xs" For="@(() => CurrentLessor.Street)" /></div>
+                    </div>
                 </div>
                 <div class="flex inline mb-3">
                     <label class="w-20 text-left">Colonia</label>
-                    <InputText @bind-Value="CurrentLessor.Colony" class="w-44 ml-2 rounded-lg text-black"/>
-                    <ValidationMessage For="@(() => CurrentLessor.Colony)" />
+                    <div>
+                        <InputText @bind-Value="CurrentLessor.Colony" class="w-44 ml-2 rounded-lg text-black"/>
+                        <div class="text-xs"><ValidationMessage class="text-xs" For="@(() => CurrentLessor.Colony)" /></div>
+                    </div>
                 </div>
                 <div class="flex inline">
                     <label class="w-20 text-left">Delegacion</label>
-                    <InputText @bind-Value="CurrentLessor.Delegation" class="w-44 ml-2 rounded-lg text-black"/>
-                    <ValidationMessage For="@(() => CurrentLessor.Delegation)" />
+                    <div>                        
+                        <InputText @bind-Value="CurrentLessor.Delegation" class="w-44 ml-2 rounded-lg text-black"/>
+                        <div class="text-xs"><ValidationMessage class="text-xs" For="@(() => CurrentLessor.Delegation)" /></div>
+                    </div>
                 </div>
-        </div>
-        <div>
-            <div class="flex inline mb-3">
-                <label class="w-20 text-left">C.P</label>
-                    <InputText @bind-Value="CurrentLessor.Cp" class="w-44 ml-2 rounded-lg text-black"/>
-                <ValidationMessage For="@(() => CurrentLessor.Cp)" />
-            </div>
-            <div class="flex inline mb-3">
-                <label class="w-20 text-left">Telefono</label>
-                    <InputText @bind-Value="CurrentLessor.PhoneNumber" class="w-44 ml-2 rounded-lg text-black"/>
-                <ValidationMessage For="@(() => CurrentLessor.PhoneNumber)" />
             </div>
             <div>
-                <button @onclick="@(() => OpenModalLessor.InvokeAsync())" class="bg-blue-300 rounded-lg h-6 w-full">Existente</button>
-                <button  type="submit" class="bg-blue-300 rounded-lg h-6 w-full">TEST</button>
+                <div class="flex inline mb-3">
+                    <label class="w-20 text-left">C.P</label>
+                    <div>
+                        <InputText @bind-Value="CurrentLessor.Cp" class="w-44 ml-2 rounded-lg text-black"/>
+                        <div class="text-xs"><ValidationMessage class="text-xs" For="@(() => CurrentLessor.Cp)" /></div>
+                    </div>
+                </div>
+                <div class="flex inline mb-3">
+                    <label class="w-20 text-left">Telefono</label>
+                    <div>
+                        <InputText @bind-Value="CurrentLessor.PhoneNumber" class="w-44 ml-2 rounded-lg text-black"/>
+                        <div class="text-xs"><ValidationMessage class="text-xs" For="@(() => CurrentLessor.PhoneNumber)" /></div>
+                    </div>
+                </div>
+                <div>
+                    <button @onclick="@(() => OpenModalLessor.InvokeAsync())" class="bg-blue-300 rounded-lg h-6 w-full">Existente</button>                     
+                </div>
             </div>
-        </div>
         </div> 
-        </EditForm>       
+    </EditForm>       
 </div>

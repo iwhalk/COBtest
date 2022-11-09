@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Shared.Models;
-using SharedTest.Models;
+using SharedLibrary.Models;
 
 namespace Shared.Data
 {

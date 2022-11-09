@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Components;
-using SharedTest.Models;
+using SharedLibrary.Models;
 
 namespace TestingFrontEnd.Pages
 {
