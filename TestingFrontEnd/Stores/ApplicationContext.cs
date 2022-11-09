@@ -12,6 +12,10 @@ namespace TestingFrontEnd.Stores
         private List<Property> propertiesList;
         private List<Inventory> inventoriesList;
         private List<Service> serviceList;
+        private List<Area> areasList;
+        private List<Description> descriptionsList;
+        private List<Feature> featuresList;
+        private List<PropertyType> propertyTypesList;    
 
         public int Counter
         {
@@ -65,6 +69,42 @@ namespace TestingFrontEnd.Stores
             set
             {
                 serviceList = value;
+                NotifyStateChanged();
+            }
+        }
+        public List<Area> Area
+        {
+            get => areasList;
+            set
+            {
+                areasList = value;
+                NotifyStateChanged();
+            }
+        }
+        public List<Description> Description
+        {
+            get => descriptionsList;
+            set
+            {
+                descriptionsList = value;
+                NotifyStateChanged();
+            }
+        }
+        public List<Feature> Feature
+        {
+            get => featuresList;
+            set
+            {
+                featuresList = value;
+                NotifyStateChanged();
+            }
+        }
+        public List<PropertyType> PropertyType
+        {
+            get => propertyTypesList;
+            set
+            {
+                propertyTypesList = value;
                 NotifyStateChanged();
             }
         }
