@@ -3,30 +3,30 @@
 <body class="flex flex-column min-h-screen bg-[url('/assets/img/fondocasa.png')] imgfondo">
     <div id="ContenedorHome" class="my-auto">       
         <div class="mx-auto max-w-screen-xl bg-transparent pt-2 md:p-5 sm:p-1">
-            <div class="bg-[#2B286F] mx-auto h-32 md:m-3 sm:m-1 text-center text-sm-center md:text-md text-white">
+            <div class="bg-[#2B286F] mx-auto lg:h-32 md:m-3 sm:m-1 text-center text-sm-center md:text-md text-white">
                 <h1 class="text-xl mb-2">Informacion general</h1>
-                <div class="flex inline grid grid-cols-2  place-items-center">
+                <div class="flex flex-col lg:inline lg:grid lg:grid-cols-2  place-items-center">
                     <div>
-                        <div class="flex inline mb-3">
+                        <div class="flex inline my-3 lg:mb-3">
                             <label class="w-52 text-left">Fecha y Hora de Realizacion</label>
                             <input class="w-52 ml-2 rounded-lg text-black" type="date" />
                         </div>
-                        <div class="flex inline">
+                        <div class="flex inline my-3">
                             <label class="w-52 text-left">Realizado por</label>
                             <input class="w-52 ml-2 rounded-lg text-black" type="text" />
                         </div>
                     </div>
                     <div>
                         <div class="flex inline">
-                            <label class="w-24">No Contrato</label>
+                            <label class="w-52 text-left">No Contrato</label>
                             <input class="w-52 ml-2 rounded-lg text-black" type="text" />
                         </div>
                     </div>
                 </div>
             </div>
-            <FormLessorOrTenant OnClick="ChangeOpenModalLessor" TitleForm="Arrendador"></FormLessorOrTenant>
-            <FormLessorOrTenant OnClick="ChangeOpenModalTenant" TitleForm="Arrendatario"></FormLessorOrTenant>
-            <div class="bg-[#2B286F] mx-auto h-44 md:m-3 sm:m-1 text-center text-sm-center md:text-md text-white">
+            <div class="hidden"><FormLessorOrTenant OnClick="ChangeOpenModalLessor" TitleForm="Arrendador"></FormLessorOrTenant></div>
+            <div class="hidden"><FormLessorOrTenant OnClick="ChangeOpenModalTenant" TitleForm="Arrendatario"></FormLessorOrTenant></div>
+            <div class="hidden bg-[#2B286F] mx-auto h-44 md:m-3 sm:m-1 text-center text-sm-center md:text-md text-white">
                 <h1 class="text-xl mb-2">Propiedad</h1>
                 <div class="flex inline grid grid-cols-3  place-items-center">
                     <div>
