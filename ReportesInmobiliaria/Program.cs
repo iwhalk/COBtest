@@ -569,7 +569,7 @@ app.MapGet("/ReporteFeatures", async (int? id, IReporteFeaturesService _reportes
 
 #region ReceptionCertificates
 
-app.MapGet("/ReceptionCertificate", async (string? day, string? week, string? month, string? propertyType, string? numberOfRooms, string? lessor, string? tenant, string? delegation, string? agent, IReceptionCertificates _receptionCertificates,AuxiliaryMethods _auxiliaryMethods , ILogger<Program> _logger) =>
+app.MapGet("/ReceptionCertificate", async (string? day, string? week, string? month, int? propertyType, int? numberOfRooms, int? lessor, int? tenant, string? delegation, string? agent, IReceptionCertificates _receptionCertificates,AuxiliaryMethods _auxiliaryMethods , ILogger<Program> _logger) =>
 {
     try
     {
