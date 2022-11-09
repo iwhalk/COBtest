@@ -3,7 +3,8 @@
 <PageTitle>Firmas</PageTitle>
 
 <body class="flex flex-column min-h-screen bg-[url('/assets/img/fondocasa.png')] imgfondo">
-    <div id="ContenedorInventario" class="flex mt-14">
+    <div class="my-auto">
+    <div id="ContenedorInventario" class="flex">
         <div id="ListActas" class="flex ml-4">
             <LeftListActas TypeList="Habitaciones"></LeftListActas>
         </div>
@@ -16,11 +17,11 @@
                     </div>
                 </div>
                 <div id="RecuadroObservaciones" class="mt-12 ml-8 flex">
-                    <div class="mr-20">
+                    <div class="flex flex-col mr-20">
                         <label for="" class="text-start text-xl text-blue-900 font-semibold mb-2">Firma Arrendatario</label>
                         <input type="text" class="border-2 bg-slate-100 h-48" style="width: 42rem">
                     </div>
-                    <div class="ml-20">
+                    <div class="flex flex-col ml-20">
                         <label for="" class="text-start text-xl text-blue-900 font-semibold mb-2">Firma Arrendedor/Agente</label>
                         <input type="text" class="border-2 bg-slate-100 h-48" style="width: 42rem">
                     </div>
@@ -28,11 +29,12 @@
             </div>
         </div>
     </div>
-    <div id="Botones" class="flex justify-center -my-5">
+    <div id="Botones" class="flex justify-center -my-14">
         <button class="py-2 my-4 w-48 border rounded-lg text-white text-xl shadow-xl" style="background-color: #2B286F;">Previsualizar</button>
         <button class="py-2 my-4 w-48 border rounded-lg text-white text-xl shadow-xl" style="background-color: #2B286F;">Guardar</button>
         <a href="/Emails"><button class="py-2 my-4 w-48 border rounded-lg text-white text-xl shadow-xl" style="background-color: #2B286F;">Firmar</button></a>
-    </div>    
+    </div> 
+    </div>   
 </body>
 <Navbar></Navbar>
 <Footer></Footer>
