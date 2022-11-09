@@ -27,7 +27,7 @@ namespace ApiGateway.Areas.Identity.Pages.Account
         {
             _signInManager = signInManager;
             _logger = logger;
-        }        ]
+        }        
         public bool ShowPassword { get; set; }
 
         /// <summary>
@@ -138,6 +138,10 @@ namespace ApiGateway.Areas.Identity.Pages.Account
             }
             // If we got this far, something failed, redisplay form
             return Page();
-        }        
+        }
+
+        public void mostrarContra(object sender, EventArgs e){
+            
+        }
     }
 }
