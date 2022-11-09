@@ -1,12 +1,10 @@
-using Microsoft.AspNetCore.Components;
+﻿using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
-namespace Shared.Components
+namespace TestingFrontEnd.Components
 {
     public partial class BurguerComponent : ComponentBase
-    {
-        public int MyProperty { get; set; }
+    {        
         public SignOutSessionStateManager SignOutManager { get; set; }
         public NavigationManager Navigation { get; set; }
         public BurguerComponent(SignOutSessionStateManager _SignOutManager, NavigationManager _Navigation)
