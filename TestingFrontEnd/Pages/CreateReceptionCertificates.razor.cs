@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Components;
-using Shared.Models;
+using SharedTest.Models;
 
 namespace TestingFrontEnd.Pages
 {
@@ -8,7 +8,6 @@ namespace TestingFrontEnd.Pages
         public bool ShowModalLessor { get; set; } = false;
         public bool ShowModalTenant { get; set; } = false;
         public bool ShowModalProperty { get; set; } = false;
-
         public Lessor? NewLessor { get; set; } = new Lessor();
 
         public void ChangeOpenModalLessor() => ShowModalLessor = ShowModalLessor ? false : true;

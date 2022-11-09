@@ -1,5 +1,6 @@
 ﻿using Shared;
 using Shared.Models;
+using SharedTest.Models;
 
 namespace ApiGateway.Interfaces
 {

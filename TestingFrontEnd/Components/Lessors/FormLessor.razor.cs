@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Components;
-using Shared.Models;
+using SharedTest.Models;
 
 namespace TestingFrontEnd.Components.Lessors
 {
