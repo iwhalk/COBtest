@@ -273,13 +273,13 @@ namespace ApiGateway.Controllers
         public async Task<IActionResult> LogoutPost()
         {
             await _signInManager.SignOutAsync();
-
-            return SignOut(
-                authenticationSchemes: OpenIddictServerAspNetCoreDefaults.AuthenticationScheme,
-                properties: new AuthenticationProperties
-                {
-                    RedirectUri = "/"
-                });
+            return Redirect("/");
+            //return SignOut(
+            //    authenticationSchemes: OpenIddictServerAspNetCoreDefaults.AuthenticationScheme,
+            //    properties: new AuthenticationProperties
+            //    {
+            //        RedirectUri = "/"
+            //    });
         }
 
         /// <summary>
