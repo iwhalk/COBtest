@@ -5,8 +5,8 @@
         <div class="flex inline grid grid-cols-3  place-items-center">
             <div>
                 <div class="flex inline mb-3">
-                    <label class="w-20 text-left">Nombre</label>
-                    <InputText @bind-Value="CurrentLessor.Name" class="w-44 ml-2 rounded-lg text-black"/>
+                    <label class="w-20 text-left">Nombre</label>                    
+                    <InputText @bind-Value="CurrentLessor.Name" class="w-44 ml-2 rounded-lg text-black"/>                    
                     <ValidationMessage For="@(() => CurrentLessor.Name)" />
                 </div>
                 <div class="flex inline mb-3">
@@ -23,7 +23,7 @@
             <div>
                 <div class="flex inline mb-3">
                     <label class="w-28 text-left">Calle y Numero</label>
-                    <InputText @bind-value="CurrentLessor.Street" class="w-36 ml-2 rounded-lg text-black"/>
+                    <InputText @bind-Value="CurrentLessor.Street" class="w-36 ml-2 rounded-lg text-black"/>
                     <ValidationMessage For="@(() => CurrentLessor.Street)" />
                 </div>
                 <div class="flex inline mb-3">
@@ -50,7 +50,7 @@
             </div>
             <div>
                 <button @onclick="@(() => OpenModalLessor.InvokeAsync())" class="bg-blue-300 rounded-lg h-6 w-full">Existente</button>
-                <button @onclick="HandlePost" type="submit" class="bg-blue-300 rounded-lg h-6 w-full">TEST</button>
+                <button  type="submit" class="bg-blue-300 rounded-lg h-6 w-full">TEST</button>
             </div>
         </div>
         </div> 
