@@ -1,7 +1,7 @@
-﻿using TestingFrontEnd.Interfaces;
+﻿using FrontEnd.Interfaces;
 using Shared.Models;
 
-namespace TestingFrontEnd.Services
+namespace FrontEnd.Services
 {
     public class LessorService : ILessorService
     {

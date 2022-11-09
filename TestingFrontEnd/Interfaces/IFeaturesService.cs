@@ -1,6 +1,6 @@
 ﻿using Shared.Models;
 
-namespace TestingFrontEnd.Interfaces
+namespace FrontEnd.Interfaces
 {
     public interface IFeaturesService
     {

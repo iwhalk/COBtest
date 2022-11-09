@@ -12,6 +12,7 @@ namespace Shared.Models
             ReceptionCertificates = new HashSet<ReceptionCertificate>();
         }
 
+        [Key]
         public string Id { get; set; }
         public string UserName { get; set; }
         public string NormalizedUserName { get; set; }
@@ -33,6 +34,7 @@ namespace Shared.Models
         public string LastName { get; set; }
         public bool? Active { get; set; }
 
+        [InverseProperty("IdAgentNavigation")]
         public virtual ICollection<ReceptionCertificate> ReceptionCertificates { get; set; }
     }
 }

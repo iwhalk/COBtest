@@ -19,6 +19,9 @@ namespace Shared.Models
         public string Street { get; set; }
         public string Colony { get; set; }
         public string Delegation { get; set; }
+        [Required]
+        [Column("CP")]
+        [StringLength(10)]
         public string Cp { get; set; }
         public int NumberOfRooms { get; set; }
         public decimal Size { get; set; }

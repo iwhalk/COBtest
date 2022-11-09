@@ -1,4 +1,4 @@
-﻿namespace TestingFrontEnd.Interfaces
+﻿namespace FrontEnd.Interfaces
 {
     public interface IGenericRepository
     {
