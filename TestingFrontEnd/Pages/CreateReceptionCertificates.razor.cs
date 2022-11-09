@@ -1,17 +1,46 @@
-﻿using Microsoft.AspNetCore.Components;
+
+using Microsoft.AspNetCore.Components;
 using SharedLibrary.Models;
+using Shared.Models;
+using TestingFrontEnd.Interfaces;
+using TestingFrontEnd.Stores;
+
 
 namespace TestingFrontEnd.Pages
 {
     public partial class CreateReceptionCertificates : ComponentBase
     {
+        private readonly ApplicationContext _context;
+        private readonly ITenantService _tenantService;
+        private readonly ILessorService _lessorService;
+        private readonly IPropertyService _propertyService;
+
+        public CreateReceptionCertificates(ApplicationContext context, ITenantService tenantService, IPropertyService propertyService, ILessorService lessorService)
+        {
+            _context = context;
+            _tenantService = tenantService;
+            _lessorService = lessorService;
+            _propertyService = propertyService;
+        }
+
         public bool ShowModalLessor { get; set; } = false;
         public bool ShowModalTenant { get; set; } = false;
         public bool ShowModalProperty { get; set; } = false;
-        public Lessor? NewLessor { get; set; } = new Lessor { Name= "Luis", LastName = "EMiliano", EmailAddress = "luis@gmail.com", Cp = "14100", Colony = "Pedregal de Sn Nicolas", Delegation = "Tlalpan", PhoneNumber = "5556441051", Rfc = "3234235234", Street = "Sisal"};
+        public Lessor? NewLessor { get; set; } = new Lessor();
+
+        private List<Tenant> tenants { get; set; }
+        public List<Lessor> lessors { get; set; }
+        private List<Property> properties { get; set; }
 
         public void ChangeOpenModalLessor() => ShowModalLessor = ShowModalLessor ? false : true;
         public void ChangeOpenModalTenant() => ShowModalTenant = ShowModalTenant ? false : true;
         public void ChangeOpenModalProperty() => ShowModalProperty = ShowModalProperty ? false : true;
+
+        protected override async Task OnInitializedAsync()
+        {
+            tenants = await _tenantService.GetTenantAsync();        
+            lessors = await _lessorService.GetLessorAsync();
+            properties = await _propertyService.GetPropertyAsync();
+        }
     }
 }

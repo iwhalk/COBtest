@@ -1,30 +1,23 @@
 ﻿using Microsoft.AspNetCore.Components;
-using Shared.Models;
+using SharedLibrary.Models;
 using TestingFrontEnd.Interfaces;
 
 namespace TestingFrontEnd.Pages
 {
     public partial class PruebasGateway : ComponentBase
     {
-        private readonly IAreaService _areaService;
-        public PruebasGateway(IAreaService areaService)
+        private readonly ILessorService _lessorService;
+        public PruebasGateway(ILessorService lessorService)
         {
-            _areaService = areaService;
+            _lessorService = lessorService;
         }
 
-        private List<Area> ListArea { get; set; }
-        private Area Area { get; set; }
-
-        Area ejem = new Area()
-        {
-            AreaName = "PruebaBaseAddress"
-        };
+        private List<Lessor> ListArea { get; set; }
 
         protected override async Task OnInitializedAsync()
         {
-            ListArea = await _areaService.GetAreaAsync();
-
-            Area = await _areaService.PostAreaAsync(ejem);            
+            Console.WriteLine("si llego aca");
+            ListArea = await _lessorService.GetLessorAsync();            
         }
     }
 }

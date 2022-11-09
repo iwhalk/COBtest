@@ -31,9 +31,9 @@
             <div class="flex inline grid grid-cols-1  place-items-center">
                 <a href="/ReceptionCertificates/Inventory"><button class="bg-[#2B286F] text-white mt-10 rounded-lg h-10 w-20">Siguiente</button></a>            
             </div>
-            <ModalLessorOrTenant OnClick="ChangeOpenModalLessor" ShowModal="@ShowModalLessor" TitleModal="Arrendarores"></ModalLessorOrTenant>
+            <ModalLessorOrTenant OnClick="ChangeOpenModalLessor" ShowModal="@ShowModalLessor" TitleModal="Arrendarores" Lessors="@lessors"></ModalLessorOrTenant>
             <ModalLessorOrTenant OnClick="ChangeOpenModalTenant" ShowModal="@ShowModalTenant" TitleModal="Arrendatarios"></ModalLessorOrTenant>
-            <ModalProperty OnClick="ChangeOpenModalProperty" ShowModal="@ShowModalProperty"></ModalProperty>
+            <ModalProperty OnClick="ChangeOpenModalProperty" ShowModal="@ShowModalProperty"></ModalProperty>            
         </div>
     </div>
 </body>

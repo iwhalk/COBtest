@@ -14,6 +14,7 @@ using ReportesInmobiliaria.Services;
 using ReportesInmobiliaria.Utilities;
 using Shared.Data;
 using Shared.Models;
+using SharedLibrary.Models;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -136,7 +137,7 @@ app.MapGet("/Lessor",
 .Produces<HttpValidationProblemDetails>(StatusCodes.Status400BadRequest, "application/problem+json")
 .Produces<HttpValidationProblemDetails>(StatusCodes.Status500InternalServerError, "application/problem+json");
 
-app.MapPost("/Lessor", async (Shared.Models.Lessor lessor, ILessorService _lessorService) =>
+app.MapPost("/Lessor", async (Lessor lessor, ILessorService _lessorService) =>
 {
     try
     {

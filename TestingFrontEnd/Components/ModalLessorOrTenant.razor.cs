@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Components;
+using SharedLibrary.Models;
 
 namespace TestingFrontEnd.Components
 {
@@ -10,5 +11,9 @@ namespace TestingFrontEnd.Components
         public bool ShowModal { get; set; }
         [Parameter]
         public EventCallback OnClick { get; set; }
+        [Parameter]
+        public List<Lessor> Lessors { get; set; } = new List<Lessor>();
+        [Parameter]
+        public List<Lessor> Tenants { get; set; } = new List<Lessor>();
     }
 }

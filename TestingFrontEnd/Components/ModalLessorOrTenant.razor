@@ -1,4 +1,4 @@
-﻿@if (ShowModal)
+﻿@if(ShowModal)
 {
     <div class="relative z-10" aria-labelledby="modal-title" role="dialog" aria-modal="true">
         <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"></div>
@@ -12,7 +12,7 @@
                     </div>
                     <div class="text-center text-gray-400 text-xl pt-7">Lista de @TitleModal</div>
                     <div class="mx-auto text-center pt-5 px-3 pr-2">
-                        <table class="w-full overflow flex text-sm">
+                        <table class="w-full overflow flex text-sm block">
                             <tr class="bg-[#2B286F] text-white text-sm h-10">
                                 <th></th>
                                 <th>Nombre</th>
@@ -21,30 +21,62 @@
                                 <th>Email</th>
                                 <th>Telefono</th>
                             </tr>
-                            <tr class="m-10 border h-10">
+                            <tr>                              
+                                 <td class="p-2"><input type="checkbox" /></td>
+                                <td class="p-2">@Lessors[0].Name</td>
+                                <td class="p-2">@Lessors[0].Street</td>
+                                <td class="p-2">@Lessors[0].Rfc</td>
+                                <td class="p-2">@Lessors[0].EmailAddress</td>
+                                <td class="p-2">@Lessors[0].PhoneNumber</td>                                
+                            </tr>
+                            <tr>
                                 <td class="p-2"><input type="checkbox" /></td>
-                                <td class="p-2">Alfreds Futterkiste</td>
-                                <td class="p-2">Calle Sisal 380</td>
-                                <td class="p-2">ETLIGUJ39849</td>
-                                <td class="p-2">chuleta@gmail.com</td>
-                                <td class="p-2">55 10 12 34 59</td>
+                                <td class="p-2">Lessors[1].Name</td>
+                                <td class="p-2">Lessors[1].Street</td>
+                                <td class="p-2">Lessors[1].Rfc</td>
+                                <td class="p-2">Lessors[1].EmailAddress</td>
+                                <td class="p-2">Lessors[1].PhoneNumber</td>
+                            </tr>
+                            <tr>
+                                <td class="p-2"><input type="checkbox" /></td>
+                                <td class="p-2">Lessors[2].Name</td>
+                                <td class="p-2">Lessors[2].Street</td>
+                                <td class="p-2">Lessors[2].Rfc</td>
+                                <td class="p-2">Lessors[2].EmailAddress</td>
+                                <td class="p-2">Lessors[2].PhoneNumber</td>
+                            </tr>
+                            <tr>
+                                <td class="p-2"><input type="checkbox" /></td>
+                                <td class="p-2">Lessors[3].Name</td>
+                                <td class="p-2">Lessors[3].Street</td>
+                                <td class="p-2">Lessors[3].Rfc</td>
+                                <td class="p-2">Lessors[3].EmailAddress</td>
+                                <td class="p-2">Lessors[3].PhoneNumber</td>
+                            </tr>
+                          @*  <tr class="m-10 border h-10">
+                                <td class="p-2"><input type="checkbox" /></td>
+                                <td class="p-2">lessor.Namesdklhjfsdklafjsdklfjsdklfjsdklfjsdfklsdjklfsdjfjsdklf</td>
+                                <td class="p-2">lessor.Namesdklhjfsdklafjsdklfjsdklfjsdklfjsdfklsdjklfsdjfjsdklf</td>
+                                <td class="p-2">lessor.Namesdklhjfsdklafjsdklfjsdklfjsdklfjsdfklsdjklfsdjfjsdklf</td>
+                                <td class="p-2">lessor.Namesdklhjfsdklafjsdklfjsdklfjsdklfjsdfklsdjklfsdjfjsdklf</td>
+                                <td class="p-2">lessor.Namesdklhjfsdklafjsdklfjsdklfjsdklfjsdfklsdjklfsdjfjsdklf</td>
                             </tr>
                             <tr class="m-10 border h-10">
                                 <td class="p-2"><input type="checkbox" /></td>
-                                <td class="p-2">Alfreds Futterkiste</td>
-                                <td class="p-2">Calle Sisal 380</td>
-                                <td class="p-2">ETLIGUJ39849</td>
-                                <td class="p-2">chuleta@gmail.com</td>
-                                <td class="p-2">55 10 12 34 59</td>
+                                <td class="p-2">lessor.Namesdklhjfsdklafjsdklfjsdklfjsdklfjsdfklsdjklfsdjfjsdklf</td>
+                                <td class="p-2">lessor.Namesdklhjfsdklafjsdklfjsdklfjsdklfjsdfklsdjklfsdjfjsdklf</td>
+                                <td class="p-2">lessor.Namesdklhjfsdklafjsdklfjsdklfjsdklfjsdfklsdjklfsdjfjsdklf</td>
+                                <td class="p-2">lessor.Namesdklhjfsdklafjsdklfjsdklfjsdklfjsdfklsdjklfsdjfjsdklf</td>
+                                <td class="p-2">lessor.Namesdklhjfsdklafjsdklfjsdklfjsdklfjsdfklsdjklfsdjfjsdklf</td>
                             </tr>
                             <tr class="m-10 border h-10">
                                 <td class="p-2"><input type="checkbox" /></td>
-                                <td class="p-2">Alfreds Futterkiste</td>
-                                <td class="p-2">Calle Sisal 380</td>
-                                <td class="p-2">ETLIGUJ39849</td>
-                                <td class="p-2">chuleta@gmail.com</td>
-                                <td class="p-2">55 10 12 34 59</td>
-                            </tr>
+                                <td class="p-2">lessor.Namesdklhjfsdklafjsdklfjsdklfjsdklfjsdfklsdjklfsdjfjsdklf</td>
+                                <td class="p-2">lessor.Namesdklhjfsdklafjsdklfjsdklfjsdklfjsdfklsdjklfsdjfjsdklf</td>
+                                <td class="p-2">lessor.Namesdklhjfsdklafjsdklfjsdklfjsdklfjsdfklsdjklfsdjfjsdklf</td>
+                                <td class="p-2">lessor.Namesdklhjfsdklafjsdklfjsdklfjsdklfjsdfklsdjklfsdjfjsdklf</td>
+                                <td class="p-2">lessor.Namesdklhjfsdklafjsdklfjsdklfjsdklfjsdfklsdjklfsdjfjsdklf</td>
+                            </tr>  *@             
                         </table>
                     </div>
                 </div>
