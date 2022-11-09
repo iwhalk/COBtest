@@ -569,7 +569,7 @@ app.MapGet("/ReporteFeatures", async (int? id, IReporteFeaturesService _reportes
 
 #region ReceptionCertificates
 
-app.MapGet("/ReceptionCertificate", async (string? day, string? week, string? month, int? propertyType, int? numberOfRooms, int? lessor, int? tenant, string? delegation, string? agent, IReceptionCertificates _receptionCertificates,AuxiliaryMethods _auxiliaryMethods , ILogger<Program> _logger) =>
+app.MapGet("/ReceptionCertificate", async (string? day, string? week, string? month, int? propertyType, int? numberOfRooms, int? lessor, int? tenant, string? delegation, string? agent, int? currentPage, int? rowNumber, IReceptionCertificates _receptionCertificates,AuxiliaryMethods _auxiliaryMethods , ILogger<Program> _logger) =>
 {
     try
     {
@@ -611,8 +611,12 @@ app.MapGet("/ReceptionCertificate", async (string? day, string? week, string? mo
 
         var dates = _auxiliaryMethods.ObtenerFechas(day, month, week);
 
-        var features = await _receptionCertificates.GetReceptionCertificatesAsync(dates, propertyType, numberOfRooms, lessor, tenant, delegation, agent);
-        return Results.Ok(features);
+        var actas = await _receptionCertificates.GetReceptionCertificatesAsync(dates, propertyType, numberOfRooms, lessor, tenant, delegation, agent);
+        if (currentPage != null && rowNumber != null)
+        {
+            actas = actas.Skip((int)((currentPage - 1) * rowNumber)).Take((int)rowNumber).ToList();
+        }
+            return Results.Ok(actas);
     }
     catch (Exception e)
     {
