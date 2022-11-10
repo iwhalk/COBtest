@@ -2,6 +2,9 @@
 #nullable disable
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore;
 
 namespace Shared.Models
 {
@@ -12,11 +15,20 @@ namespace Shared.Models
             Descriptions = new HashSet<Description>();
         }
 
+        [Key]
+        [Column("ID_Feature")]
         public int IdFeature { get; set; }
+        [Required]
+        [StringLength(30)]
+        [Unicode(false)]
         public string FeatureName { get; set; }
+        [Column("ID_Service")]
         public int IdService { get; set; }
 
+        [ForeignKey("IdService")]
+        [InverseProperty("Features")]
         public virtual Service IdServiceNavigation { get; set; }
+        [InverseProperty("IdFeatureNavigation")]
         public virtual ICollection<Description> Descriptions { get; set; }
     }
 }

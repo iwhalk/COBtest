@@ -2,18 +2,32 @@
 #nullable disable
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore;
 
 namespace Shared.Models
 {
     public partial class BlobsInventory
     {
+        [Key]
+        [Column("ID_BlobsInventory")]
         public int IdBlobsInventory { get; set; }
+        [Column("ID_Property")]
         public int IdProperty { get; set; }
+        [Column("ID_Inventory")]
         public int IdInventory { get; set; }
+        [Column("ID_Blobs")]
         public int IdBlobs { get; set; }
 
+        [ForeignKey("IdBlobs")]
+        [InverseProperty("BlobsInventories")]
         public virtual Blob IdBlobsNavigation { get; set; }
+        [ForeignKey("IdInventory")]
+        [InverseProperty("BlobsInventories")]
         public virtual Inventory IdInventoryNavigation { get; set; }
+        [ForeignKey("IdProperty")]
+        [InverseProperty("BlobsInventories")]
         public virtual Property IdPropertyNavigation { get; set; }
     }
 }
