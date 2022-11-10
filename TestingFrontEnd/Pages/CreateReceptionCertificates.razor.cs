@@ -1,15 +1,15 @@
-
+using FrontEnd.Stores;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Components;
-using Shared.Models;
 using SharedLibrary.Models;
-using TestingFrontEnd.Components.Lessors;
-using TestingFrontEnd.Components.Propertys;
-using TestingFrontEnd.Components.Tenants;
-using TestingFrontEnd.Interfaces;
-using TestingFrontEnd.Stores;
+using FrontEnd.Interfaces;
+using FrontEnd.Components.Propertys;
+using FrontEnd.Components.Tenants;
+using FrontEnd.Components.Lessors;
+using SharedLibrary.Models;
+using Shared.Models;
 
-
-namespace TestingFrontEnd.Pages
+namespace FrontEnd.Pages
 {
     public partial class CreateReceptionCertificates : ComponentBase
     {
@@ -35,6 +35,7 @@ namespace TestingFrontEnd.Pages
         public List<Lessor> lessors { get; set; }
         private List<Tenant> tenants { get; set; }
         private List<Property> properties { get; set; }
+        public int MyProperty { get; set; }
 
         public void ChangeOpenModalLessor() => ShowModalLessor = ShowModalLessor ? false : true;
         public void ChangeOpenModalTenant() => ShowModalTenant = ShowModalTenant ? false : true;
@@ -66,33 +67,40 @@ namespace TestingFrontEnd.Pages
         }
         public async void HandlePostCreateCertificates()
         {
+            MyProperty = 1000;
             if (formLessor.LessorEditContext.Validate() && formTenant.TenantEditContext.Validate() && formProperty.PropertyEditContext.Validate())
             {
-
-
-
-                if (CurrentLessor.IdLessor == 0)
+                try
                 {
-                    //Crear nuewvo lessor                    
-                    await _lessorService.PostLessorAsync(CurrentLessor);
-                    await _lessorService.GetLessorAsync();                    
+                    MyProperty = 10;
+                    if (CurrentLessor.IdLessor == 0)
+                    {
+                        //Crear nuewvo lessor                    
+                        await _lessorService.PostLessorAsync(CurrentLessor);
+                        await _lessorService.GetLessorAsync();
+                    }
+                    if (CurrentProperty.IdProperty == 0)
+                    {
+                        //Crear nuevo property con idLessor                    
+                        CurrentProperty.IdLessor = CurrentLessor.IdLessor;
+                        await _propertyService.PostPropertyAsync(CurrentProperty);
+                        await _propertyService.GetPropertyAsync();
+                    }
+                    if (CurrentTenant.IdTenant == 0)
+                    {
+                        //Crear nuevo tenant                    
+                        await _tenantService.PostTenantAsync(CurrentTenant);
+                        await _tenantService.GetTenantAsync();
+                    }
+                    NewCreateReceptionCertificate.IdTenant = CurrentTenant.IdTenant;
+                    NewCreateReceptionCertificate.IdProperty = CurrentProperty.IdProperty;
                 }
-                if (CurrentProperty.IdProperty == 0)
+                catch(Exception ex)
                 {
-                    //Crear nuevo property con idLessor                    
-                    CurrentProperty.IdLessor = CurrentLessor.IdLessor;
-                    await _propertyService.PostPropertyAsync(CurrentProperty);
-                    await _propertyService.GetPropertyAsync();                    
+                    Console.WriteLine(ex.Message);
                 }
-                if (CurrentTenant.IdTenant == 0)
-                {
-                    //Crear nuevo tenant                    
-                    await _tenantService.PostTenantAsync(CurrentTenant);
-                    await _tenantService.GetTenantAsync();                    
-                }
-                NewCreateReceptionCertificate.IdTenant = CurrentTenant.IdTenant;
-                NewCreateReceptionCertificate.IdProperty = CurrentProperty.IdProperty;
-            }            
+            }
+            
         }
         protected override async Task OnInitializedAsync()
         {

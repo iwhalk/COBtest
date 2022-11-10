@@ -2,7 +2,7 @@
 using Microsoft.Fast.Components.FluentUI.DesignTokens;
 using SharedLibrary.Models;
 
-namespace TestingFrontEnd.Components.Lessors
+namespace FrontEnd.Components.Lessors
 {
     public partial class ModalLessor : ComponentBase
     {

@@ -2,19 +2,19 @@ using System;
 using System.Net.Http;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
-using TestingFrontEnd;
+using FrontEnd;
 using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
 using Microsoft.Extensions.DependencyInjection;
 using TanvirArjel.Blazor.DependencyInjection;
 using Microsoft.Fast.Components.FluentUI;
-using TestingFrontEnd.Stores;
-//using TestingFrontEnd.Services;
-using TestingFrontEnd.Interfaces;
+//using FrontEnd.Services;
 using Microsoft.JSInterop;
-using TestingFrontEnd.Repositories;
 using System.Security.Cryptography.X509Certificates;
 using Microsoft.AspNetCore.Components;
-using TestingFrontEnd.Services;
+using FrontEnd.Services;
+using FrontEnd.Stores;
+using FrontEnd.Repositories;
+using FrontEnd.Interfaces;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 var client = "blazor-client";
@@ -47,6 +47,7 @@ builder.Services.AddScoped<IServicesService, ServicesService>();
 builder.Services.AddScoped<IAreaService, AreaService>();
 builder.Services.AddScoped<IFeaturesService, FeaturesService>();
 builder.Services.AddScoped<IDescriptionService, DescriptionService>();
+builder.Services.AddScoped<IInventoryService, InventoryService>();
 
 
 // Supply HttpClient instances that include access tokens when making requests to the server project.

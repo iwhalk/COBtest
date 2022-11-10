@@ -12,9 +12,10 @@ using System.Text.RegularExpressions;
 using ReportesInmobiliaria.Interfaces;
 using ReportesInmobiliaria.Services;
 using ReportesInmobiliaria.Utilities;
-using Shared.Data;
-using Shared.Models;
+using SixLabors.Fonts.Tables.AdvancedTypographic;
 using SharedLibrary.Models;
+using System.DirectoryServices.ActiveDirectory;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -84,6 +85,9 @@ builder.Services.AddScoped<IAreasService, AreasService>();
 builder.Services.AddScoped<IFeaturesService, FeaturesService>();
 builder.Services.AddScoped<IReportesService, ReportesService>();
 builder.Services.AddScoped<IReporteFeaturesService, ReporteFeaturesService>();
+builder.Services.AddScoped<IBlobService, BlobService>();
+builder.Services.AddScoped<IReceptionCertificates, ReceptionCertificatesService>();
+builder.Services.AddScoped<AuxiliaryMethods>();
 builder.Services.AddScoped<ReportesFactory>();
 
 builder.Services.AddCors();
@@ -394,7 +398,7 @@ app.MapGet("/Properties", async (IPropertiesService _propertiesService) =>
 .Produces<HttpValidationProblemDetails>(StatusCodes.Status400BadRequest, "application/problem+json")
 .Produces<HttpValidationProblemDetails>(StatusCodes.Status500InternalServerError, "application/problem+json");
 
-app.MapPost("/Properties", async (Property property, IPropertiesService _propertiesService) =>
+app.MapPost("/Properties", async (SharedLibrary.Models.Property property, IPropertiesService _propertiesService) =>
 {
     try
     {
@@ -413,7 +417,7 @@ app.MapPost("/Properties", async (Property property, IPropertiesService _propert
 .Produces<HttpValidationProblemDetails>(StatusCodes.Status400BadRequest, "application/problem+json")
 .Produces<HttpValidationProblemDetails>(StatusCodes.Status500InternalServerError, "application/problem+json");
 
-app.MapPut("/Properties", async (Property property, IPropertiesService _propertiesService) =>
+app.MapPut("/Properties", async (SharedLibrary.Models.Property property, IPropertiesService _propertiesService) =>
 {
     try
     {
@@ -567,5 +571,242 @@ app.MapGet("/ReporteFeatures", async (int? id, IReporteFeaturesService _reportes
 
 #endregion
 
+# region Blob
+
+app.MapGet("/Blobs", async (IBlobService _blobService) =>
+{
+    var blobs = await _blobService.GetBlobAsync();
+    if (blobs == null) return Results.NoContent();
+    return Results.Ok(blobs);
+})
+.WithName("GetBlobAsync")
+.Produces<IResult>(StatusCodes.Status200OK)
+.Produces<HttpValidationProblemDetails>(StatusCodes.Status400BadRequest, "application/problem+json")
+.Produces<HttpValidationProblemDetails>(StatusCodes.Status500InternalServerError, "application/problem+json");
+
+app.MapPost("/Blobs", async (Blob blob, IBlobService _blobService) =>
+{
+    try
+    {
+        var res = await _blobService.CreateBlobAsync(blob);
+        return Results.Ok(res);
+    }
+    catch (Exception e)
+    {
+        if (e.GetType() == typeof(ValidationException))
+            return Results.Problem(e.Message, statusCode: 400);
+        return Results.Problem(e.Message);
+    }
+})
+.WithName("CreateBlobAsync")
+.Produces<IResult>(StatusCodes.Status200OK)
+.Produces<HttpValidationProblemDetails>(StatusCodes.Status400BadRequest, "application/problem+json")
+.Produces<HttpValidationProblemDetails>(StatusCodes.Status500InternalServerError, "application/problem+json");
+
+app.MapPut("/Blobs/{id}", async (int id, Blob blob, IBlobService _blobService) =>
+{
+    try
+    {
+        if (id != blob.IdBlobs) return Results.BadRequest();
+        var res = await _blobService.UpdateBlobAsync(blob);
+        return Results.Ok(res);
+    }
+    catch (Exception e)
+    {
+        if (e.GetType() == typeof(ValidationException))
+            return Results.Problem(e.Message, statusCode: 400);
+        return Results.Problem(e.Message);
+    }
+})
+.WithName("UpdateBlobAsync")
+.Produces<IResult>(StatusCodes.Status200OK)
+.Produces<HttpValidationProblemDetails>(StatusCodes.Status400BadRequest, "application/problem+json")
+.Produces<HttpValidationProblemDetails>(StatusCodes.Status500InternalServerError, "application/problem+json");
+
+app.MapDelete("/Blob/{id}",
+    async (int id, IBlobService _blobService) =>
+    {
+        try
+        {
+            var res = await _blobService.DeleteBlobAsync(id);
+            if (res) return Results.NoContent();
+            return Results.BadRequest();
+        }
+        catch (Exception e)
+        {
+            if (e.GetType() == typeof(ValidationException))
+                return Results.Problem(e.Message, statusCode: 400);
+            return Results.Problem(e.Message);
+
+        }
+    })
+.WithName("DeleteBlobAsync")
+.Produces(StatusCodes.Status204NoContent)
+.Produces(StatusCodes.Status400BadRequest)
+.Produces<HttpValidationProblemDetails>(StatusCodes.Status400BadRequest, "application/problem+json")
+.Produces<HttpValidationProblemDetails>(StatusCodes.Status500InternalServerError, "application/problem+json");
+
+app.MapGet("/BlobInventory", async (IBlobService _blobService) =>
+{
+    var blobs = await _blobService.GetBlobInventoryAsync();
+    if (blobs == null) return Results.NoContent();
+    return Results.Ok(blobs);
+})
+.WithName("GetBlobInventoryAsync")
+.Produces<IResult>(StatusCodes.Status200OK)
+.Produces<HttpValidationProblemDetails>(StatusCodes.Status400BadRequest, "application/problem+json")
+.Produces<HttpValidationProblemDetails>(StatusCodes.Status500InternalServerError, "application/problem+json");
+
+app.MapPost("/BlobInventory", async (BlobsInventory blobsInventory, IBlobService _blobService) =>
+{
+    try
+    {
+        var res = await _blobService.CreateBlobInventoryAsync(blobsInventory);
+        return Results.Ok(res);
+    }
+    catch (Exception e)
+    {
+        if (e.GetType() == typeof(ValidationException))
+            return Results.Problem(e.Message, statusCode: 400);
+        return Results.Problem(e.Message);
+    }
+})
+.WithName("CreateBlobInventoryAsync")
+.Produces<IResult>(StatusCodes.Status200OK)
+.Produces<HttpValidationProblemDetails>(StatusCodes.Status400BadRequest, "application/problem+json")
+.Produces<HttpValidationProblemDetails>(StatusCodes.Status500InternalServerError, "application/problem+json");
+
+app.MapPut("/BlobInventory/{id}", async (int id, BlobsInventory blobsInventory, IBlobService _blobService) =>
+{
+    try
+    {
+        if (id != blobsInventory.IdBlobsInventory) return Results.BadRequest();
+        var res = await _blobService.UpdateBlobInventoryAsync(blobsInventory);
+        return Results.Ok(res);
+    }
+    catch (Exception e)
+    {
+        if (e.GetType() == typeof(ValidationException))
+            return Results.Problem(e.Message, statusCode: 400);
+        return Results.Problem(e.Message);
+    }
+})
+.WithName("UpdateBlobInventoryAsync")
+.Produces<IResult>(StatusCodes.Status200OK)
+.Produces<HttpValidationProblemDetails>(StatusCodes.Status400BadRequest, "application/problem+json")
+.Produces<HttpValidationProblemDetails>(StatusCodes.Status500InternalServerError, "application/problem+json");
+
+app.MapDelete("/BlobInventory/{id}",
+    async (int id, IBlobService _blobService) =>
+    {
+        try
+        {
+            var res = await _blobService.DeleteBlobInventoryAsync(id);
+            if (res) return Results.NoContent();
+            return Results.BadRequest();
+        }
+        catch (Exception e)
+        {
+            if (e.GetType() == typeof(ValidationException))
+                return Results.Problem(e.Message, statusCode: 400);
+            return Results.Problem(e.Message);
+
+        }
+    })
+.WithName("DeleteBlobInventoryAsync")
+.Produces(StatusCodes.Status204NoContent)
+.Produces(StatusCodes.Status400BadRequest)
+.Produces<HttpValidationProblemDetails>(StatusCodes.Status400BadRequest, "application/problem+json")
+.Produces<HttpValidationProblemDetails>(StatusCodes.Status500InternalServerError, "application/problem+json");
+
+#endregion
+
+#region ReceptionCertificates
+
+app.MapGet("/ReceptionCertificate", async (string? day, string? week, string? month, int? propertyType, int? numberOfRooms, int? lessor, int? tenant, string? delegation, string? agent, int? currentPage, int? rowNumber, IReceptionCertificates _receptionCertificates,AuxiliaryMethods _auxiliaryMethods , ILogger<Program> _logger) =>
+{
+    try
+    {
+        day = GetNullableString(day);
+        month = GetNullableString(month);
+        week = GetNullableString(week);
+        string patternDia = @"(19|20)\d\d[-/.](0[1-9]|1[012])[-/.](0[1-9]|[1][0-9]|[2][0-9]|3[01])";
+
+        if (day != null)
+        {
+            if (Regex.IsMatch(day, patternDia) == false)
+            {
+                return Results.Problem("El dia se encuentra en un formato incorrecto", statusCode: 400);
+            }
+        }
+
+        string patternMes = @"(19|20)\d\d[-/.](0[1-9]|1[012])";
+
+        if (month != null)
+        {
+            if (Regex.IsMatch(month, patternMes) == false)
+            {
+                return Results.Problem("El mes se encuentra en un formato incorrecto", statusCode: 400);
+            }
+        }
+
+        string patternSemana = @"(19|20)\d\d[-/.](W0[1-9]|W1[0-9]|W2[0-9]|W3[0-9]|W4[0-9]|W5[0-3])";
+
+        if (week != null)
+        {
+            if (Regex.IsMatch(week, patternSemana) == false)
+            {
+                return Results.Problem("La semana se encuentra en un formato incorrecto", statusCode: 400);
+            }
+        }
+
+        if ((day != null && week != null) || (day != null && month != null) || (month != null && week != null))
+            return Results.Problem("Mas de una fecha ingresada", statusCode: 400);
+
+        var dates = _auxiliaryMethods.ObtenerFechas(day, month, week);
+
+        var actas = await _receptionCertificates.GetReceptionCertificatesAsync(dates, propertyType, numberOfRooms, lessor, tenant, delegation, agent);
+        if (currentPage != null && rowNumber != null)
+        {
+            actas = actas.Skip((int)((currentPage - 1) * rowNumber)).Take((int)rowNumber).ToList();
+        }
+            return Results.Ok(actas);
+    }
+    catch (Exception e)
+    {
+        _logger.LogError(e, e.Message);
+        if (e.GetType() == typeof(ValidationException))
+            return Results.Problem(e.Message, statusCode: 400);
+        return Results.Problem(e.Message);
+    }
+
+})
+.WithName("GetReceptionCertificatesAsync")
+.Produces<IResult>(StatusCodes.Status200OK, "application/pdf")
+.Produces<HttpValidationProblemDetails>(StatusCodes.Status400BadRequest, "application/problem+json")
+.Produces<HttpValidationProblemDetails>(StatusCodes.Status500InternalServerError, "application/problem+json");
+
+app.MapPost("/ReceptionCertificate", async (ReceptionCertificate receptionCertificate, IReceptionCertificates _receptionCertificates, ILogger<Program> _logger) =>
+{
+    try
+    {
+        var res = await _receptionCertificates.CreateReceptionCertificateAsync(receptionCertificate);
+        return Results.Ok(res);
+    }
+    catch (Exception e)
+    {
+        _logger.LogError(e, e.Message);
+        if (e.GetType() == typeof(ValidationException))
+            return Results.Problem(e.Message, statusCode: 400);
+        return Results.Problem(e.Message);
+    }
+})
+.WithName("CreateReceptionCertificateAsync")
+.Produces<IResult>(StatusCodes.Status200OK, "application/pdf")
+.Produces<HttpValidationProblemDetails>(StatusCodes.Status400BadRequest, "application/problem+json")
+.Produces<HttpValidationProblemDetails>(StatusCodes.Status500InternalServerError, "application/problem+json");
+
+#endregion
+static string? GetNullableString(string? value) => !string.IsNullOrWhiteSpace(value) && value.ToUpper().Contains("NULL") ? null : value;
 #endregion
 app.Run();

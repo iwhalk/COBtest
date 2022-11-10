@@ -8,7 +8,7 @@
     }
   },
   "profiles": {
-    "TestingFrontEnd": {
+    "FrontEnd": {
       "commandName": "Project",
       "dotnetRunMessages": true,
       "launchBrowser": true,

@@ -2,7 +2,7 @@
 using Shared.Models;
 using SharedLibrary.Models;
 
-namespace TestingFrontEnd.Components.Tenants
+namespace FrontEnd.Components.Tenants
 {
     public partial class ModalTenant : ComponentBase
     {

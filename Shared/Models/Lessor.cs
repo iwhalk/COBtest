@@ -45,7 +45,9 @@ namespace SharedLibrary.Models
         [StringLength(30)]
         [Unicode(false)]
         public string Delegation { get; set; }
+        [Required]
         [Column("CP")]
+        [StringLength(10)]
         public string Cp { get; set; }
         [Required]
         [StringLength(50)]

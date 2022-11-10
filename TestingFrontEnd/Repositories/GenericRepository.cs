@@ -1,10 +1,10 @@
 ﻿using Shared;
 using System.Net.Http.Json;
 using System.Text.Json.Serialization;
-using TestingFrontEnd.Interfaces;
-using TestingFrontEnd.Stores;
+using FrontEnd.Stores;
+using FrontEnd.Interfaces;
 
-namespace TestingFrontEnd.Repositories
+namespace FrontEnd.Repositories
 {
     public class GenericRepository : IGenericRepository
     {

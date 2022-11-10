@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Components.Forms;
 using Shared.Models;
 using SharedLibrary.Models;
 
-namespace TestingFrontEnd.Components.Tenants
+namespace FrontEnd.Components.Tenants
 {
     public partial class FormTenant : ComponentBase
     {

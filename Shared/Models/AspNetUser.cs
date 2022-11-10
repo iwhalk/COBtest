@@ -10,6 +10,11 @@ namespace Shared.Models
 {
     public partial class AspNetUser
     {
+        public AspNetUser()
+        {
+            ReceptionCertificates = new HashSet<ReceptionCertificate>();
+        }
+
         [Key]
         public string Id { get; set; }
         [StringLength(256)]
@@ -38,5 +43,8 @@ namespace Shared.Models
         [StringLength(50)]
         public string LastName { get; set; }
         public bool? Active { get; set; }
+
+        [InverseProperty("IdAgentNavigation")]
+        public virtual ICollection<ReceptionCertificate> ReceptionCertificates { get; set; }
     }
 }

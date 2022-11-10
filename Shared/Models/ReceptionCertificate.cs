@@ -24,23 +24,27 @@ namespace Shared.Models
         [StringLength(30)]
         [Unicode(false)]
         public string ContractNumber { get; set; }
-        [Required]
         [StringLength(150)]
         [Unicode(false)]
         public string Observation { get; set; }
-        [Required]
         [StringLength(200)]
         [Unicode(false)]
         public string ApprovarPathLessor { get; set; }
-        [Required]
         [StringLength(200)]
         [Unicode(false)]
         public string ApprovalPathTenant { get; set; }
-        [Required]
         [StringLength(200)]
         [Unicode(false)]
         public string Stamp { get; set; }
+        [Column("ID_Agent")]
+        [StringLength(450)]
+        public string IdAgent { get; set; }
+        [Column("ID_TypeRecord")]
+        public int IdTypeRecord { get; set; }
 
+        [ForeignKey("IdAgent")]
+        [InverseProperty("ReceptionCertificates")]
+        public virtual AspNetUser IdAgentNavigation { get; set; }
         [ForeignKey("IdProperty")]
         [InverseProperty("ReceptionCertificates")]
         public virtual Property IdPropertyNavigation { get; set; }

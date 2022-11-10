@@ -1,8 +1,9 @@
-﻿using Shared.Models;
-using TestingFrontEnd.Interfaces;
-using TestingFrontEnd.Stores;
+﻿using FrontEnd.Stores;
+using Shared.Models;
+﻿using FrontEnd.Interfaces;
+using Shared.Models;
 
-namespace TestingFrontEnd.Services
+namespace FrontEnd.Services
 {
     public class ServicesService : IServicesService
     {
@@ -31,7 +32,7 @@ namespace TestingFrontEnd.Services
 
         public async Task<Service> PostServicesAsync(Service service)
         {
-            return await _repository.PostAsync<Service>("api/Services", service);
+            return await _repository.PostAsync("api/Services", service);
         }
     }
 }

@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Components.Forms;
 using SharedLibrary.Models;
 
-namespace TestingFrontEnd.Components.Propertys
+namespace FrontEnd.Components.Propertys
 {
     public partial class FormProperty : ComponentBase
     {

@@ -1,8 +1,8 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿using FrontEnd.Interfaces;
+using Microsoft.AspNetCore.Components;
 using SharedLibrary.Models;
-using TestingFrontEnd.Interfaces;
 
-namespace TestingFrontEnd.Pages
+namespace FrontEnd.Pages
 {
     public partial class PruebasGateway : ComponentBase
     {

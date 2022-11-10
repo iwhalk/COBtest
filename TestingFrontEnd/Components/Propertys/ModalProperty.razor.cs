@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Components;
 using SharedLibrary.Models;
 
-namespace TestingFrontEnd.Components.Propertys
+namespace FrontEnd.Components.Propertys
 {
     public partial class ModalProperty : ComponentBase
     {

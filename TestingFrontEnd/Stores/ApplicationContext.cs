@@ -1,7 +1,7 @@
 ﻿using Shared.Models;
 using SharedLibrary.Models;
 
-namespace TestingFrontEnd.Stores
+namespace FrontEnd.Stores
 {
     public class ApplicationContext
     {
@@ -15,7 +15,11 @@ namespace TestingFrontEnd.Stores
         private Tenant tenant;
         private Lessor lessor;
         private Property property;
-        
+        private List<Area> areasList;
+        private List<Description> descriptionsList;
+        private List<Feature> featuresList;
+        private List<PropertyType> propertyTypesList;
+
         public Tenant CurrentTenant
         {
             get => tenant;
@@ -85,6 +89,42 @@ namespace TestingFrontEnd.Stores
             set
             {
                 serviceList = value;
+                NotifyStateChanged();
+            }
+        }
+        public List<Area> Area
+        {
+            get => areasList;
+            set
+            {
+                areasList = value;
+                NotifyStateChanged();
+            }
+        }
+        public List<Description> Description
+        {
+            get => descriptionsList;
+            set
+            {
+                descriptionsList = value;
+                NotifyStateChanged();
+            }
+        }
+        public List<Feature> Feature
+        {
+            get => featuresList;
+            set
+            {
+                featuresList = value;
+                NotifyStateChanged();
+            }
+        }
+        public List<PropertyType> PropertyType
+        {
+            get => propertyTypesList;
+            set
+            {
+                propertyTypesList = value;
                 NotifyStateChanged();
             }
         }

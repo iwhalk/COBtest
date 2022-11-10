@@ -156,6 +156,11 @@ namespace Shared.Data
                 entity.HasKey(e => e.IdReceptionCertificate)
                     .HasName("PK__Actas__4EE6FB68E33B8ACA");
 
+                entity.HasOne(d => d.IdAgentNavigation)
+                    .WithMany(p => p.ReceptionCertificates)
+                    .HasForeignKey(d => d.IdAgent)
+                    .HasConstraintName("FK_ReceptionCertificates_ID_Agent");
+
                 entity.HasOne(d => d.IdPropertyNavigation)
                     .WithMany(p => p.ReceptionCertificates)
                     .HasForeignKey(d => d.IdProperty)

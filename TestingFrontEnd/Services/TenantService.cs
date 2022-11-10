@@ -1,9 +1,8 @@
-﻿using Shared.Models;
+using FrontEnd.Stores;
 using SharedLibrary.Models;
-using TestingFrontEnd.Interfaces;
-using TestingFrontEnd.Stores;
+using FrontEnd.Interfaces;
 
-namespace TestingFrontEnd.Services
+namespace FrontEnd.Services
 {
     public class TenantService : ITenantService
     {
