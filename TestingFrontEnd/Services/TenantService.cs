@@ -1,6 +1,6 @@
 ﻿using FrontEnd.Stores;
 using Shared.Models;
-using TestingFrontEnd.Interfaces;
+using FrontEnd.Interfaces;
 
 namespace FrontEnd.Services
 {

@@ -1,16 +1,11 @@
-﻿<<<<<<< HEAD
-using Shared.Models;
+﻿using Shared.Models;
 
 namespace FrontEnd.Stores
-=======
-﻿namespace FrontEnd.Stores
->>>>>>> GatewayInmobiliaria
 {
     public class ApplicationContext
     {
         public event Action OnChange;
         private int counter;
-<<<<<<< HEAD
         private string errorMessage;
         private List<Tenant> tenantList;
         private List<Lessor> lessorList;
@@ -22,9 +17,6 @@ namespace FrontEnd.Stores
         private List<Feature> featuresList;
         private List<PropertyType> propertyTypesList;
 
-=======
-        private string errorMessage;
->>>>>>> GatewayInmobiliaria
         public int Counter
         {
             get => counter;

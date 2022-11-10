@@ -1,11 +1,7 @@
-﻿<<<<<<< HEAD
-using FrontEnd.Stores;
-using Shared.Models;
-using TestingFrontEnd.Interfaces;
-=======
 ﻿using FrontEnd.Interfaces;
 using Shared.Models;
->>>>>>> GatewayInmobiliaria
+using FrontEnd.Interfaces;
+using FrontEnd.Stores;
 
 namespace FrontEnd.Services
 {

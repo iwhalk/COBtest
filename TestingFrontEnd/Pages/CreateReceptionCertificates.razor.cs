@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Components;
 using Shared.Models;
-using TestingFrontEnd.Interfaces;
+using FrontEnd.Interfaces;
 
 namespace FrontEnd.Pages
 {

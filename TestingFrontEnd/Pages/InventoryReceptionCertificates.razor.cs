@@ -2,8 +2,8 @@
 using Microsoft.AspNetCore.Components;
 using Shared;
 using Shared.Models;
-using TestingFrontEnd.Interfaces;
-using TestingFrontEnd.Services;
+using FrontEnd.Interfaces;
+using FrontEnd.Services;
 
 namespace FrontEnd.Pages
 {
