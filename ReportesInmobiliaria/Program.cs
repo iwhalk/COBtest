@@ -181,7 +181,7 @@ app.MapGet("/Tenant",
 .Produces<HttpValidationProblemDetails>(StatusCodes.Status400BadRequest, "application/problem+json")
 .Produces<HttpValidationProblemDetails>(StatusCodes.Status500InternalServerError, "application/problem+json");
 
-app.MapPost("/Tenant", async (Shared.Models.Tenant tenant, ITenantService _tenantService) =>
+app.MapPost("/Tenant", async (Tenant tenant, ITenantService _tenantService) =>
 {
     try
     {

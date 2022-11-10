@@ -9,14 +9,14 @@ namespace TestingFrontEnd.Components.Lessors
         public EventCallback OpenModalLessor { get; set; }
         [Parameter]
         public Lessor? CurrentLessor { get; set; }
-        
+        [Parameter]
+        public bool IsFormLessorExit { get; set; }
+
         public void HandlePost()
         {
 
             var l = new Lessor();
-            l.Street = "'";
-
-            
+            l.Street = "'";            
         }
     }
 }
