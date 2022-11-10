@@ -1,74 +1,74 @@
 ﻿@page "/ReceptionCertificates/Create"
 @attribute [Authorize]
 <body class="flex flex-column min-h-screen bg-[url('/assets/img/fondocasa.png')] imgfondo">
-    <div id="ContenedorHome" class="my-auto">       
-        <div class="mx-auto max-w-screen-xl bg-transparent pt-2 md:p-5 sm:p-1">
-            <div class="bg-[#2B286F] mx-auto lg:h-32 md:m-3 sm:m-1 text-center text-sm-center md:text-md text-white">
+    <div id="ContenedorHome" class="my-20 lg:my-auto">       
+        <div class="mx-auto max-w-screen-xl bg-transparent p-4 md:p-5 sm:p-1">
+            <div class="bg-[#2B286F] mx-auto lg:h-36 md:m-3 sm:m-1 text-center text-sm-center md:text-md text-white pt-2 pb-3 rounded-lg lg:rounded-none my-4 ">
                 <h1 class="text-xl mb-2">Informacion general</h1>
-                <div class="flex flex-col lg:inline lg:grid lg:grid-cols-2  place-items-center">
+                <div class="flex flex-col lg:grid lg:grid-cols-2  place-items-center">
                     <div>
-                        <div class="flex inline my-3 lg:mb-3">
-                            <label class="w-52 text-left">Fecha y Hora de Realizacion</label>
-                            <input class="w-52 ml-2 rounded-lg text-black" type="date" />
+                        <div class="flex my-3 lg:mb-3">
+                            <label class="w-44 lg:w-52 text-left text-sm lg:text-md">Fecha y Hora de Realizacion</label>
+                            <input class="w-36 lg:w-52 ml-2 px-2 rounded-lg text-black" type="date" />
                         </div>
-                        <div class="flex inline my-3">
-                            <label class="w-52 text-left">Realizado por</label>
-                            <input class="w-52 ml-2 rounded-lg text-black" type="text" />
+                        <div class="flex my-3">
+                            <label class="w-44 lg:w-52 text-left text-sm lg:text-md">Realizado por</label>
+                            <input class="w-36 lg:w-52 ml-2 px-2 rounded-lg text-black" type="text" />
                         </div>
                     </div>
                     <div>
-                        <div class="flex inline">
-                            <label class="w-52 text-left">No Contrato</label>
-                            <input class="w-52 ml-2 rounded-lg text-black" type="text" />
+                        <div class="flex ">
+                            <label class="w-44 lg:w-52 text-left text-sm lg:text-md">No Contrato</label>
+                            <input class="w-36 lg:w-52 ml-2 px-2 rounded-lg text-black" type="text" />
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="hidden"><FormLessorOrTenant OnClick="ChangeOpenModalLessor" TitleForm="Arrendador"></FormLessorOrTenant></div>
-            <div class="hidden"><FormLessorOrTenant OnClick="ChangeOpenModalTenant" TitleForm="Arrendatario"></FormLessorOrTenant></div>
-            <div class="hidden bg-[#2B286F] mx-auto h-44 md:m-3 sm:m-1 text-center text-sm-center md:text-md text-white">
+            <div class="my-4"><FormLessorOrTenant OnClick="ChangeOpenModalLessor" TitleForm="Arrendador"></FormLessorOrTenant></div>
+            <div class="my-4"><FormLessorOrTenant OnClick="ChangeOpenModalTenant" TitleForm="Arrendatario"></FormLessorOrTenant></div>
+            <div class="bg-[#2B286F] mx-auto lg:h-44 md:m-3 sm:m-1 text-center text-sm-center md:text-md text-white pt-2 pb-3 rounded-lg lg:rounded-none my-4">
                 <h1 class="text-xl mb-2">Propiedad</h1>
-                <div class="flex inline grid grid-cols-3  place-items-center">
+                <div class="flex flex-col lg:grid lg:grid-cols-3  place-items-center">
                     <div>
-                        <div class="flex inline mb-3">
-                            <label class="w-28 text-left">Calle y Numero</label>
-                            <input class="w-36 ml-2 rounded-lg text-black" type="date" />
+                        <div class="flex my-2 lg:mb-3">
+                            <label class="w-44 lg:w-28 text-left text-sm lg:text-md">Calle y Numero</label>
+                            <input class="w-36 lg:w-36 ml-2 px-2 rounded-lg text-black" type="date" />
                         </div>
-                        <div class="flex inline mb-3">
-                            <label class="w-28 text-left">Colonia</label>
-                            <input class="w-36 ml-2 rounded-lg text-black " type="text" />
+                        <div class="flex my-2 lg:mb-3">
+                            <label class="w-44 lg:w-28 text-left text-sm lg:text-md">Colonia</label>
+                            <input class="w-36 lg:w-36 ml-2 px-2 rounded-lg text-black " type="text" />
                         </div>
-                        <div class="flex inline">
-                            <label class="w-28 text-left">Delegacion</label>
-                            <input class="w-36 ml-2 rounded-lg text-black" type="text" />
+                        <div class="flex my-2">
+                            <label class="w-44 lg:w-28 text-left text-sm lg:text-md">Delegacion</label>
+                            <input class="w-36 lg:w-36 ml-2 px-2 rounded-lg text-black" type="text" />
                         </div>
                     </div>
                     <div>
-                        <div class="flex inline mb-3">
-                            <label class="w-32 text-left">C.P</label>
-                            <input class="w-32 ml-2 rounded-lg text-black" type="text" />
+                        <div class="flex mb-2 lg:mb-3">
+                            <label class="w-44 lg:w-32 text-left text-sm lg:text-md">C.P</label>
+                            <input class="w-36 lg:w-32 ml-2 px-2 rounded-lg text-black" type="text" />
                         </div>
-                        <div class="flex inline mb-3">
-                            <label class="w-32 text-left">Tipo de Inmueble</label>
-                            <input class="w-32 ml-2 rounded-lg text-black" type="text" />
+                        <div class="flex my-2 lg:mb-3">
+                            <label class="w-44 lg:w-32 text-left text-sm lg:text-md">Tipo de Inmueble</label>
+                            <input class="w-36 lg:w-32 ml-2 px-2 rounded-lg text-black" type="text" />
                         </div>
-                        <div class="flex inline">
-                            <label class="w-32 text-left">No Habitaciones</label>
-                            <input class="w-32 ml-2 rounded-lg text-black" type="number" />
+                        <div class="flex my-2">
+                            <label class="w-44 lg:w-32 text-left text-sm lg:text-md">No Habitaciones</label>
+                            <input class="w-36 lg:w-32 ml-2 px-2 rounded-lg text-black" type="number" />
                         </div>
                     </div>
                     <div>
-                        <div class="flex inline mb-3">
-                            <label class="w-24 text-left">Tamaño m2</label>
-                            <input class="w-40 ml-2 rounded-lg text-black" type="number" />
+                        <div class="flex mb-2 lg:mb-3">
+                            <label class="w-44 lg:w-24 text-left text-sm lg:text-md">Tamaño m2</label>
+                            <input class="w-36 lg:w-40 ml-2 px-2 rounded-lg text-black" type="number" />
                         </div>
                         <div>
-                            <button @onclick="ChangeOpenModalProperty" class="bg-blue-300 rounded-lg h-6 w-full">Existente</button>
+                            <button @onclick="ChangeOpenModalProperty" class="bg-blue-300 mt-4 rounded-lg h-6 w-24 lg:w-full">Existente</button>
                         </div>
                     </div>
                 </div>
-                <a href="/ReceptionCertificates/Inventory"><button class="bg-[#2B286F] text-white mt-10 rounded-lg h-10 w-20">Siguiente</button></a>
             </div>
+                <div class="flex justify-center"><a href="/ReceptionCertificates/Inventory"><button class="bg-[#2B286F] text-white rounded-lg h-10 w-20">Siguiente</button></a></div>
             <ModalLessorOrTenant OnClick="ChangeOpenModalLessor" ShowModal="@ShowModalLessor" TitleModal="Arrendarores"></ModalLessorOrTenant>
             <ModalLessorOrTenant OnClick="ChangeOpenModalTenant" ShowModal="@ShowModalTenant" TitleModal="Arrendatarios"></ModalLessorOrTenant>
             <ModalProperty OnClick="ChangeOpenModalProperty" ShowModal="@ShowModalProperty"></ModalProperty>
