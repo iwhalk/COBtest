@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ReportesInmobiliaria.Interfaces;
-using Shared.Data;
-using Shared.Models;
+using SharedLibrary.Data;
+using SharedLibrary.Models;
 using System.DirectoryServices.ActiveDirectory;
 
 namespace ReportesInmobiliaria.Services

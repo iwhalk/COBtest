@@ -1,9 +1,10 @@
 ﻿using FrontEnd.Stores;
 using Microsoft.AspNetCore.Components;
-using Shared;
-using Shared.Models;
+using SharedLibrary;
+using SharedLibrary.Models;
 using FrontEnd.Interfaces;
 using FrontEnd.Services;
+using FrontEnd.Components;
 
 namespace FrontEnd.Pages
 {
@@ -12,13 +13,17 @@ namespace FrontEnd.Pages
         private readonly ApplicationContext _context;
         private readonly IInventoryService _inventoryService;
         private readonly IServicesService _servicesService;
+        private readonly IAreaService _areaService;
 
-        public InventoryReceptionCertificates(ApplicationContext context, IInventoryService inventoryService, IServicesService servicesService)
+        public InventoryReceptionCertificates(ApplicationContext context, IInventoryService inventoryService, IServicesService servicesService, IAreaService areaService)
         {
             _context = context;
-            _inventoryService = inventoryService;   
+            _inventoryService = inventoryService;
             _servicesService = servicesService;
+            _areaService = areaService;
         }
+
+        private ModalAreas modalAreas;
 
         public string MaterialSelect { get; set; } = "";
         public string ColorSelect { get; set; } = "";
@@ -35,6 +40,7 @@ namespace FrontEnd.Pages
 
         private List<Inventory> inventories { get; set; }
         private List<Service> services { get; set; }
+        public List<Area> AreasList { get; set; } = new();
 
         public void ChangeOpenModalRooms() => ShowModalRooms = ShowModalRooms ? false : true;
         public void ChangeOpenModalComponents() => ShowModalComponents = ShowModalComponents ? false : true;
@@ -62,6 +68,10 @@ namespace FrontEnd.Pages
         {
             inventories = await _inventoryService.GetInventoryAsync();
             services = await _servicesService.GetServicesAsync();
+        }
+        public void AgregarAreas()
+        {
+            AreasList = modalAreas.SelectedValues;
         }
     }
 }

@@ -9,7 +9,7 @@
    "OutputContextPath": "Data",
    "OutputPath": "Models",
    "PreserveCasingWithRegex": true,
-   "ProjectRootNamespace": "Shared",
+   "ProjectRootNamespace": "SharedLibrary",
    "Schemas": null,
    "SelectedHandlebarsLanguage": 0,
    "SelectedToBeGenerated": 0,

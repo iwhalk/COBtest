@@ -3,7 +3,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Shared
+namespace SharedLibrary
 {
     public partial class Lessors
     {

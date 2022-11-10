@@ -6,7 +6,7 @@
 <body class="flex flex-column min-h-screen bg-[url('/assets/img/fondocasa.png')] imgfondo">
     <div class="flex inline-flex">
         <div id="ListActas" class="flex ml-4" style="height: 48rem">
-            <LeftListActas OnClick="ChangeOpenModalRooms" OpenModalGauges="ChangeOpenModalGauges" OpenModalKeys="ChangeOpenModalKeys" TypeList="Habitaciones"></LeftListActas>
+            <ListAreas Areas="@AreasList" OnClick="ChangeOpenModalRooms" OpenModalGauges="ChangeOpenModalGauges" OpenModalKeys="ChangeOpenModalKeys" TypeList="Habitaciones"></ListAreas>
         </div>
         <div class="pt-9">
             <div class="flex w-full">
@@ -51,7 +51,9 @@
         <button class="py-2 w-48 border rounded-lg text-white text-xl shadow-xl" style="background-color: #2B286F;">Guardar</button>
         <a href="/Signatures"><button class="py-2 w-48 border rounded-lg text-white text-xl shadow-xl" style="background-color: #2B286F;">Generar Acta</button></a>
     </div>
-    <ModalRoomsOrComponents OnClick="ChangeOpenModalRooms" TitleTable="Habitaciones" ShowModal="@ShowModalRooms"></ModalRoomsOrComponents>
+
+    <ModalAreas @ref="modalAreas" OnClick="ChangeOpenModalRooms" AgregarOnClick="AgregarAreas" TitleTable="Habitaciones" ShowModal="@ShowModalRooms"></ModalAreas>
+
     <ModalRoomsOrComponents OnClick="ChangeOpenModalComponents" TitleTable="Componentes" ShowModal="@ShowModalComponents"></ModalRoomsOrComponents>
     <ModalRoomsOrComponents OnClick="ChangeOpenModalCopyValues" TitleTable="Habitaciones" ShowModal="@ShowModalCopyValues"></ModalRoomsOrComponents>
     <ModalGaugesOrKeys OnClick="ChangeOpenModalGauges" TitleModal="Medidores" ShowModal="@ShowModalGauges"></ModalGaugesOrKeys>
