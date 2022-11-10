@@ -1,4 +1,5 @@
 ﻿using Shared.Models;
+using SharedLibrary.Models;
 
 namespace TestingFrontEnd.Interfaces
 {

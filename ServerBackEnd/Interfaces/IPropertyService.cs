@@ -1,5 +1,6 @@
 ﻿using Shared.Models;
 using Shared;
+using SharedLibrary.Models;
 
 namespace ApiGateway.Interfaces
 {

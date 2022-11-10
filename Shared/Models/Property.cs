@@ -5,9 +5,10 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
+using Shared.Models;
 using SharedLibrary.Models;
 
-namespace Shared.Models
+namespace SharedLibrary.Models
 {
     public partial class Property
     {
