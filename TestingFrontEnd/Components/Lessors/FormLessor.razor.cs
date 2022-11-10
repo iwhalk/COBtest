@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Forms;
 using SharedLibrary.Models;
 
 namespace TestingFrontEnd.Components.Lessors
@@ -12,11 +13,7 @@ namespace TestingFrontEnd.Components.Lessors
         [Parameter]
         public bool IsFormLessorExit { get; set; }
 
-        public void HandlePost()
-        {
+        public EditContext LessorEditContext { get; set; }
 
-            var l = new Lessor();
-            l.Street = "'";            
-        }
     }
 }

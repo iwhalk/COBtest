@@ -1,6 +1,10 @@
 
 using Microsoft.AspNetCore.Components;
+using Shared.Models;
 using SharedLibrary.Models;
+using TestingFrontEnd.Components.Lessors;
+using TestingFrontEnd.Components.Propertys;
+using TestingFrontEnd.Components.Tenants;
 using TestingFrontEnd.Interfaces;
 using TestingFrontEnd.Stores;
 
@@ -32,35 +36,63 @@ namespace TestingFrontEnd.Pages
         private List<Tenant> tenants { get; set; }
         private List<Property> properties { get; set; }
 
-        public bool IsFormLessorExit { get; set; } = false;
-        public bool IsFormTenantExit { get; set; } = false;
-        public bool IsFormPropertyExit { get; set; } = false;
-
         public void ChangeOpenModalLessor() => ShowModalLessor = ShowModalLessor ? false : true;
         public void ChangeOpenModalTenant() => ShowModalTenant = ShowModalTenant ? false : true;
         public void ChangeOpenModalProperty() => ShowModalProperty = ShowModalProperty ? false : true;
 
+        public ReceptionCertificate NewCreateReceptionCertificate { get; set; } = new ReceptionCertificate();
+
+        public FormLessor formLessor;
+        public FormTenant formTenant;
+        public FormProperty formProperty;
+
         public void SetLessorForm(int IdLessor)
         {
-            CurrentLessor = lessors.Find(x => x.IdLessor == IdLessor);
-            IsFormLessorExit = true;
+            CurrentLessor = lessors.Find(x => x.IdLessor == IdLessor);            
             ShowModalLessor = false;
             _context.CurrentLessor = CurrentLessor;
         }
-
         public void SetTenantForm(int IdTenant)
         {
-            CurrentTenant = tenants.Find(x => x.IdTenant == IdTenant);
-            IsFormTenantExit = true;
+            CurrentTenant = tenants.Find(x => x.IdTenant == IdTenant);            
             ShowModalTenant = false;
             _context.CurrentTenant = CurrentTenant;
         }
         public void SetPropertyForm(int IdProperty)
         {
-            CurrentProperty = properties.Find(x => x.IdProperty == IdProperty);            
-            IsFormPropertyExit = true;
+            CurrentProperty = properties.Find(x => x.IdProperty == IdProperty);                        
             ShowModalProperty = false;
             _context.CurrentPropertys = CurrentProperty;
+        }
+        public async void HandlePostCreateCertificates()
+        {
+            if (formLessor.LessorEditContext.Validate() && formTenant.TenantEditContext.Validate() && formProperty.PropertyEditContext.Validate())
+            {
+
+
+
+                if (CurrentLessor.IdLessor == 0)
+                {
+                    //Crear nuewvo lessor                    
+                    await _lessorService.PostLessorAsync(CurrentLessor);
+                    await _lessorService.GetLessorAsync();                    
+                }
+                if (CurrentProperty.IdProperty == 0)
+                {
+                    //Crear nuevo property con idLessor                    
+                    CurrentProperty.IdLessor = CurrentLessor.IdLessor;
+                    await _propertyService.PostPropertyAsync(CurrentProperty);
+                    await _propertyService.GetPropertyAsync();                    
+                }
+                if (CurrentTenant.IdTenant == 0)
+                {
+                    //Crear nuevo tenant                    
+                    await _tenantService.PostTenantAsync(CurrentTenant);
+                    await _tenantService.GetTenantAsync();                    
+                }
+                NewCreateReceptionCertificate.IdTenant = CurrentTenant.IdTenant;
+                NewCreateReceptionCertificate.IdProperty = CurrentProperty.IdProperty;
+            }            
         }
         protected override async Task OnInitializedAsync()
         {
@@ -68,6 +100,5 @@ namespace TestingFrontEnd.Pages
             lessors = await _lessorService.GetLessorAsync();
             properties = await _propertyService.GetPropertyAsync();
         }
-
     }
 }

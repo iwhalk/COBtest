@@ -6,15 +6,20 @@
         <div class="mx-auto max-w-screen-xl bg-transparent pt-2 md:p-5 sm:p-1">
             <div class="bg-[#2B286F] mx-auto h-32 md:m-3 sm:m-1 text-center text-sm-center md:text-md text-white">
                 <h1 class="text-xl mb-2">Informacion general</h1>
+                <EditForm Model="@NewCreateReceptionCertificate" OnSubmit="HandlePostCreateCertificates">
+                <DataAnnotationsValidator />
                 <div class="flex inline grid grid-cols-2  place-items-center">
                     <div>
                         <div class="flex inline mb-3">
                             <label class="w-52 text-left">Fecha y Hora de Realizacion</label>
-                            <input class="w-52 ml-2 rounded-lg text-black" type="date" />
+                            <div>
+                                <InputDate @bind-Value="NewCreateReceptionCertificate.CreationDate" class="w-44 ml-2 rounded-lg text-black" />
+                                <div class="text-xs"><ValidationMessage class="text-xs" For="@(() => NewCreateReceptionCertificate.CreationDate)" /></div>
+                            </div>
                         </div>
                         <div class="flex inline">
                             <label class="w-52 text-left">Realizado por</label>
-                            <input class="w-52 ml-2 rounded-lg text-black" type="text" />
+                             <input class="w-52 ml-2 rounded-lg text-black" type="text" />
                         </div>
                     </div>
                     <div>
@@ -24,12 +29,14 @@
                         </div>
                     </div>
                 </div>
+                </EditForm>
             </div>
-            <FormLessor OpenModalLessor="ChangeOpenModalLessor" CurrentLessor="CurrentLessor" IsFormLessorExit="IsFormLessorExit"></FormLessor>
-            <FormTenant OpenModalTenant="ChangeOpenModalTenant" CurrentTenant="CurrentTenant" IsFormTenantExit="IsFormTenantExit"></FormTenant>
-            <FormProperty OpenModalProperty="ChangeOpenModalProperty" CurrentProperty="CurrentProperty" IsFormPropertyExit="IsFormPropertyExit"></FormProperty>
+            <FormLessor OpenModalLessor="ChangeOpenModalLessor" CurrentLessor="CurrentLessor" IsFormLessorExit="CurrentLessor.IdLessor == 0 ? false : true"></FormLessor>
+            <FormTenant OpenModalTenant="ChangeOpenModalTenant" CurrentTenant="CurrentTenant" IsFormTenantExit="CurrentTenant.IdTenant == 0 ? false : true"></FormTenant>
+            <FormProperty OpenModalProperty="ChangeOpenModalProperty" CurrentProperty="CurrentProperty" IsFormPropertyExit="CurrentProperty.IdProperty == 0 ? false : true"></FormProperty>
             <div class="flex inline grid grid-cols-1  place-items-center">
-                <a href="/ReceptionCertificates/Inventory"><button class="bg-[#2B286F] text-white mt-10 rounded-lg h-10 w-20">Siguiente</button></a>            
+                @*<a href="/ReceptionCertificates/Inventory"><button class="bg-[#2B286F] text-white mt-10 rounded-lg h-10 w-20">Siguiente</button></a>*@         
+                <button class="bg-[#2B286F] text-white mt-10 rounded-lg h-10 w-20">Siguiente</button>
             </div>
             @if (ShowModalLessor)
             {

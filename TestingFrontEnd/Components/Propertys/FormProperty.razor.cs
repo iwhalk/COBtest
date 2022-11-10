@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Forms;
 using SharedLibrary.Models;
 
 namespace TestingFrontEnd.Components.Propertys
@@ -13,11 +14,6 @@ namespace TestingFrontEnd.Components.Propertys
         [Parameter]
         public bool IsFormPropertyExit { get; set; }
 
-        public void HandlePost()
-        {
-
-            var l = new Property();
-            l.Street = "'";
-        }
+        public EditContext PropertyEditContext { get; set; }
     }
 }
