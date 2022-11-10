@@ -7,7 +7,7 @@ using Shared.Models;
 namespace ApiGateway.Controllers
 {
     [Route("api/[controller]")]
-    [Authorize]
+    //[Authorize]
     [ApiController]
     public class PropertyTypeController : ControllerBase
     {
@@ -34,6 +34,19 @@ namespace ApiGateway.Controllers
         public async Task<ActionResult> PostPropertyType(PropertyType propertyType)
         {
             var result = await _typeService.PostPropertyTypeAsync(propertyType);
+
+            if (result.Succeeded)
+            {
+                return Ok(result);
+            }
+
+            return BadRequest(result);
+        }
+
+        [HttpPut]
+        public async Task<ActionResult> PutPropertyType(PropertyType propertyType)
+        {
+            var result = await _typeService.PutPropertyTypeAsync(propertyType);
 
             if (result.Succeeded)
             {
