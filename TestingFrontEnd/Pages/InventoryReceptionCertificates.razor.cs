@@ -14,16 +14,26 @@ namespace FrontEnd.Pages
         private readonly IInventoryService _inventoryService;
         private readonly IServicesService _servicesService;
         private readonly IAreaService _areaService;
+        private readonly IFeaturesService _featuresService;
+        private readonly IDescriptionService _descriptionService;
 
-        public InventoryReceptionCertificates(ApplicationContext context, IInventoryService inventoryService, IServicesService servicesService, IAreaService areaService)
+        public InventoryReceptionCertificates(ApplicationContext context,
+                                              IInventoryService inventoryService,
+                                              IServicesService servicesService,
+                                              IAreaService areaService,
+                                              IFeaturesService featuresService,
+                                              IDescriptionService descriptionService)
         {
             _context = context;
             _inventoryService = inventoryService;
             _servicesService = servicesService;
             _areaService = areaService;
+            _featuresService = featuresService;
+            _descriptionService = descriptionService;
         }
 
         private ModalAreas modalAreas;
+        private ModalServices modalServices;
 
         public string MaterialSelect { get; set; } = "";
         public string ColorSelect { get; set; } = "";
@@ -39,8 +49,10 @@ namespace FrontEnd.Pages
         public string TypeButtonsInventory { get; set; } = "";
 
         private List<Inventory> inventories { get; set; }
-        private List<Service> services { get; set; }
+        private List<Service> ServicesList { get; set; } = new();
         public List<Area> AreasList { get; set; } = new();
+        public List<Feature> FeaturesList { get; set; } = new();
+        public List<Description> DescriptionsList { get; set; } = new();
 
         public void ChangeOpenModalRooms() => ShowModalRooms = ShowModalRooms ? false : true;
         public void ChangeOpenModalComponents() => ShowModalComponents = ShowModalComponents ? false : true;
@@ -59,6 +71,10 @@ namespace FrontEnd.Pages
             if (newButtonsShow == "EstadoGeneral")
                 StatusSelect = "";
         }
+        public async void ChangeDescriptionButtons(int IdFeature)
+        {
+            DescriptionsList = (await _descriptionService.GetDescriptionAsync())?.Where(x => x.IdFeature == IdFeature)?.ToList();
+        }
 
         public void SetColor(string newColor) => ColorSelect = newColor;
         public void SetMaterial(string newMaterial) => MaterialSelect = newMaterial;
@@ -67,11 +83,16 @@ namespace FrontEnd.Pages
         protected override async Task OnInitializedAsync()
         {
             inventories = await _inventoryService.GetInventoryAsync();
-            services = await _servicesService.GetServicesAsync();
+            FeaturesList = (await _featuresService.GetFeaturesAsync())?.Where(x => x.IdService == 1)?.ToList();
+
         }
         public void AgregarAreas()
         {
             AreasList = modalAreas.SelectedValues;
+        }
+        public void AgregarServicios()
+        {
+            ServicesList = modalServices.SelectedValues;
         }
     }
 }

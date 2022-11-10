@@ -3,7 +3,7 @@
     <div class="relative z-10" aria-labelledby="modal-title" role="dialog" aria-modal="true">
         <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"></div>
         <div class="fixed inset-0 z-10 overflow-y-auto">
-            <div class="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">      
+            <div class="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
                 <div class="mx-auto bg-white md:max-w-2xl sm:max-w-sm mt-20 h-96 rounded-lg border border-grey-300 drop-shadow-lg border-2">
                     <div class="relative">
                         <button @onclick="@(() => OnClick.InvokeAsync())" type="button" class="absolute top-3 right-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-red-600 rounded-full border border-2 ">
@@ -16,11 +16,11 @@
                                 <th class="w-10"></th>
                                 <th class="w-80">TitleTable</th>
                             </tr>
-                            @foreach (var area in Areas)
+                            @foreach (var service in Services)
                             {
                                 <tr class="m-10 border h-10">
-                                    <td class="p-2"><input type="checkbox" @onchange="eventArgs => { CheckboxClicked(area, eventArgs.Value); }" /></td>
-                                    <td class="p-2">@area?.AreaName</td>
+                                    <td class="p-2"><input type="checkbox" @onchange="eventArgs => { CheckboxClicked(service, eventArgs.Value); }" /></td>
+                                    <td class="p-2">@service?.ServiceName</td>
                                 </tr>
                             }
                         </table>

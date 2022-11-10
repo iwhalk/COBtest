@@ -37,4 +37,12 @@
     <ProjectReference Include="..\Shared\SharedLibrary.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <EditorConfigFiles Remove="C:\Users\ESTACION 3\Source\Repos\ApiGateway2\TestingFrontEnd\Components\.editorconfig" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="C:\Users\ESTACION 3\Source\Repos\ApiGateway2\TestingFrontEnd\Components\.editorconfig" />
+  </ItemGroup>
+
 </Project>
