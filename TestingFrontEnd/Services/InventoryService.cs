@@ -1,5 +1,5 @@
-﻿using Shared.Models;
-using FrontEnd.Interfaces;
+﻿using FrontEnd.Interfaces;
+using Shared.Models;
 
 namespace FrontEnd.Services
 {
@@ -18,7 +18,7 @@ namespace FrontEnd.Services
 
         public async Task<Inventory> PostInventoryAsync(Inventory inventory)
         {
-            return await _repository.PostAsync<Inventory>("api/Inventory", inventory);
+            return await _repository.PostAsync("api/Inventory", inventory);
         }
     }
 }

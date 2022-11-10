@@ -32,7 +32,7 @@ namespace FrontEnd.Pages
             if (newButtonsShow == "Color")
                 ColorSelect = "";
             if (newButtonsShow == "EstadoGeneral")
-                StatusSelect = "";            
+                StatusSelect = "";
         }
 
         public void SetColor(string newColor) => ColorSelect = newColor;

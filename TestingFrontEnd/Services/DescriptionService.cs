@@ -1,5 +1,5 @@
-﻿using Shared.Models;
-using FrontEnd.Interfaces;
+﻿using FrontEnd.Interfaces;
+using Shared.Models;
 
 namespace FrontEnd.Services
 {
@@ -17,7 +17,7 @@ namespace FrontEnd.Services
 
         public async Task<Description> PostDescriptionAsync(Description description)
         {
-            return await _repository.PostAsync<Description>("api/Description", description);
+            return await _repository.PostAsync("api/Description", description);
         }
     }
 }

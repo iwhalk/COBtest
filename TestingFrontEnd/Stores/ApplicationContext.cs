@@ -4,7 +4,7 @@
     {
         public event Action OnChange;
         private int counter;
-        private string errorMessage; 
+        private string errorMessage;
 
         public int Counter
         {

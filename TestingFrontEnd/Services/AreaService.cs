@@ -1,5 +1,5 @@
-﻿using Shared.Models;
-using FrontEnd.Interfaces;
+﻿using FrontEnd.Interfaces;
+using Shared.Models;
 
 namespace FrontEnd.Services
 {
@@ -18,7 +18,7 @@ namespace FrontEnd.Services
 
         public async Task<Area> PostAreaAsync(Area area)
         {
-            return await _repository.PostAsync<Area>("api/Area", area);
+            return await _repository.PostAsync("api/Area", area);
         }
     }
 }

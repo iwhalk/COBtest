@@ -17,7 +17,7 @@ namespace FrontEnd.Services
         }
         public async Task<Lessor> PostLessorAsync(Lessor lessor)
         {
-            return await _repository.PostAsync<Lessor>("api/Lessor", lessor);
+            return await _repository.PostAsync("api/Lessor", lessor);
         }
     }
 }

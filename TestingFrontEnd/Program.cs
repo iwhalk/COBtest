@@ -7,14 +7,14 @@ using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
 using Microsoft.Extensions.DependencyInjection;
 using TanvirArjel.Blazor.DependencyInjection;
 using Microsoft.Fast.Components.FluentUI;
-using FrontEnd.Stores;
 //using FrontEnd.Services;
-using FrontEnd.Interfaces;
 using Microsoft.JSInterop;
-using FrontEnd.Repositories;
 using System.Security.Cryptography.X509Certificates;
 using Microsoft.AspNetCore.Components;
 using FrontEnd.Services;
+using FrontEnd.Stores;
+using FrontEnd.Repositories;
+using FrontEnd.Interfaces;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 var client = "blazor-client";

@@ -1,6 +1,6 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿using FrontEnd.Interfaces;
+using Microsoft.AspNetCore.Components;
 using Shared.Models;
-using FrontEnd.Interfaces;
 
 namespace FrontEnd.Pages
 {
@@ -24,7 +24,7 @@ namespace FrontEnd.Pages
         {
             ListArea = await _areaService.GetAreaAsync();
 
-            Area = await _areaService.PostAreaAsync(ejem);            
+            Area = await _areaService.PostAreaAsync(ejem);
         }
     }
 }

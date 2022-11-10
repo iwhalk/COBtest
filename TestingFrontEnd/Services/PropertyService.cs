@@ -1,5 +1,5 @@
-﻿using Shared.Models;
-using FrontEnd.Interfaces;
+﻿using FrontEnd.Interfaces;
+using Shared.Models;
 
 namespace FrontEnd.Services
 {
@@ -17,7 +17,7 @@ namespace FrontEnd.Services
         }
         public async Task<Property> PostPropertyAsync(Property property)
         {
-            return await _repository.PostAsync<Property>("api/Property", property);
+            return await _repository.PostAsync("api/Property", property);
         }
     }
 }
