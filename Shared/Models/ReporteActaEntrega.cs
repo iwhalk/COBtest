@@ -2,12 +2,8 @@
 {
     public class ReporteActaEntrega
     {
-        public DateTime generationDate { get; set; }
-        public string lessor { get; set; }
-        public string tenant { get; set; }
-        public Property? property { get; set; }
-        public string numeroDeContrato { get; set; }
-        public List<InventoryToReports?> inventories { get; set; }
-        public AspNetUser user { get; set; }
+        public List<SP_GET_AERI_HEADERResult> header { get; set; }
+        public List<SP_GET_AERI_AREASResult> areas { get; set; }
+        public List<SP_GET_AERI_DELIVERABLESResult> deliverables { get; set; }
     }
 }

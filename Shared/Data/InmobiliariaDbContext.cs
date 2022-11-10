@@ -40,86 +40,18 @@ namespace Shared.Data
             {
                 entity.HasKey(e => e.IdArea)
                     .HasName("PK__Areas__42A5C44C0FE9F5F8");
-
-                entity.Property(e => e.IdArea).HasColumnName("ID_Area");
-
-                entity.Property(e => e.AreaName)
-                    .IsRequired()
-                    .HasMaxLength(20)
-                    .IsUnicode(false);
-            });
-
-            modelBuilder.Entity<AspNetUser>(entity =>
-            {
-                entity.Property(e => e.Email).HasMaxLength(256);
-
-                entity.Property(e => e.LastName).HasMaxLength(50);
-
-                entity.Property(e => e.Name).HasMaxLength(50);
-
-                entity.Property(e => e.NormalizedEmail).HasMaxLength(256);
-
-                entity.Property(e => e.NormalizedUserName).HasMaxLength(256);
-
-                entity.Property(e => e.RefreshTokenExpiryTime).HasColumnType("datetime");
-
-                entity.Property(e => e.UserName).HasMaxLength(256);
             });
 
             modelBuilder.Entity<Blob>(entity =>
             {
                 entity.HasKey(e => e.IdBlobs)
                     .HasName("PK__Blobs__DED4FFECA37A54E1");
-
-                entity.Property(e => e.IdBlobs).HasColumnName("ID_Blobs");
-
-                entity.Property(e => e.BlobSize)
-                    .IsRequired()
-                    .HasMaxLength(20)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.BlodName)
-                    .IsRequired()
-                    .HasMaxLength(20)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.BlodTypeId)
-                    .IsRequired()
-                    .HasMaxLength(20)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.ContainerName)
-                    .IsRequired()
-                    .HasMaxLength(20)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.ContentType)
-                    .IsRequired()
-                    .HasMaxLength(20)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.DateCreated).HasColumnType("datetime");
-
-                entity.Property(e => e.DateModified).HasColumnType("datetime");
-
-                entity.Property(e => e.Uri)
-                    .IsRequired()
-                    .HasMaxLength(50)
-                    .IsUnicode(false);
             });
 
             modelBuilder.Entity<BlobsInventory>(entity =>
             {
                 entity.HasKey(e => e.IdBlobsInventory)
                     .HasName("PK__BlobsInv__1A3C40D35F4BF0DF");
-
-                entity.Property(e => e.IdBlobsInventory).HasColumnName("ID_BlobsInventory");
-
-                entity.Property(e => e.IdBlobs).HasColumnName("ID_Blobs");
-
-                entity.Property(e => e.IdInventory).HasColumnName("ID_Inventory");
-
-                entity.Property(e => e.IdProperty).HasColumnName("ID_Property");
 
                 entity.HasOne(d => d.IdBlobsNavigation)
                     .WithMany(p => p.BlobsInventories)
@@ -145,15 +77,6 @@ namespace Shared.Data
                 entity.HasKey(e => e.IdDescription)
                     .HasName("PK__Descript__145EFCBCD37C2D36");
 
-                entity.Property(e => e.IdDescription).HasColumnName("ID_Description");
-
-                entity.Property(e => e.DescriptionName)
-                    .IsRequired()
-                    .HasMaxLength(30)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.IdFeature).HasColumnName("ID_Feature");
-
                 entity.HasOne(d => d.IdFeatureNavigation)
                     .WithMany(p => p.Descriptions)
                     .HasForeignKey(d => d.IdFeature)
@@ -166,15 +89,6 @@ namespace Shared.Data
                 entity.HasKey(e => e.IdFeature)
                     .HasName("PK__Features__F3A163F1C20C0900");
 
-                entity.Property(e => e.IdFeature).HasColumnName("ID_Feature");
-
-                entity.Property(e => e.FeatureName)
-                    .IsRequired()
-                    .HasMaxLength(30)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.IdService).HasColumnName("ID_Service");
-
                 entity.HasOne(d => d.IdServiceNavigation)
                     .WithMany(p => p.Features)
                     .HasForeignKey(d => d.IdService)
@@ -186,22 +100,6 @@ namespace Shared.Data
             {
                 entity.HasKey(e => e.IdInventory)
                     .HasName("PK__Inventor__2210F49E10265952");
-
-                entity.Property(e => e.IdInventory).HasColumnName("ID_Inventory");
-
-                entity.Property(e => e.IdArea).HasColumnName("ID_Area");
-
-                entity.Property(e => e.IdDescription).HasColumnName("ID_Description");
-
-                entity.Property(e => e.IdProperty).HasColumnName("ID_Property");
-
-                entity.Property(e => e.Note)
-                    .HasMaxLength(50)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.Observation)
-                    .HasMaxLength(150)
-                    .IsUnicode(false);
 
                 entity.HasOne(d => d.IdAreaNavigation)
                     .WithMany(p => p.Inventories)
@@ -226,108 +124,12 @@ namespace Shared.Data
             {
                 entity.HasKey(e => e.IdLessor)
                     .HasName("PK__Lessor__67381F3FD281D2EE");
-
-                entity.Property(e => e.IdLessor).HasColumnName("ID_Lessor");
-
-                entity.Property(e => e.Colony)
-                    .IsRequired()
-                    .HasMaxLength(30)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.Cp)
-                    .IsRequired()
-                    .HasMaxLength(10)
-                    .HasColumnName("CP");
-
-                entity.Property(e => e.Delegation)
-                    .IsRequired()
-                    .HasMaxLength(30)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.EmailAddress)
-                    .IsRequired()
-                    .HasMaxLength(50);
-
-                entity.Property(e => e.LastName)
-                    .IsRequired()
-                    .HasMaxLength(30)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.Name)
-                    .IsRequired()
-                    .HasMaxLength(30)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.PhoneNumber)
-                    .IsRequired()
-                    .HasMaxLength(50);
-
-                entity.Property(e => e.Rfc)
-                    .IsRequired()
-                    .HasMaxLength(20)
-                    .IsUnicode(false)
-                    .HasColumnName("RFC");
-
-                entity.Property(e => e.Street)
-                    .IsRequired()
-                    .HasMaxLength(50)
-                    .IsUnicode(false);
-            });
-
-            modelBuilder.Entity<Module>(entity =>
-            {
-                entity.Property(e => e.Id).HasColumnName("ID");
-
-                entity.Property(e => e.Image)
-                    .IsRequired()
-                    .HasMaxLength(50);
-
-                entity.Property(e => e.NameModule)
-                    .IsRequired()
-                    .HasMaxLength(50);
-
-                entity.Property(e => e.Route)
-                    .IsRequired()
-                    .HasMaxLength(50);
             });
 
             modelBuilder.Entity<Property>(entity =>
             {
                 entity.HasKey(e => e.IdProperty)
                     .HasName("PK__Property__4C63EAA07AD6FF59");
-
-                entity.Property(e => e.IdProperty).HasColumnName("ID_Property");
-
-                entity.Property(e => e.Colony)
-                    .IsRequired()
-                    .HasMaxLength(30)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.Cp)
-                    .IsRequired()
-                    .HasMaxLength(10)
-                    .HasColumnName("CP");
-
-                entity.Property(e => e.Delegation)
-                    .IsRequired()
-                    .HasMaxLength(30)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.IdLessor).HasColumnName("ID_Lessor");
-
-                entity.Property(e => e.IdPropertyType).HasColumnName("ID_PropertyType");
-
-                entity.Property(e => e.PropertyName)
-                    .IsRequired()
-                    .HasMaxLength(30)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.Size).HasColumnType("decimal(18, 0)");
-
-                entity.Property(e => e.Street)
-                    .IsRequired()
-                    .HasMaxLength(50)
-                    .IsUnicode(false);
 
                 entity.HasOne(d => d.IdLessorNavigation)
                     .WithMany(p => p.Properties)
@@ -346,52 +148,12 @@ namespace Shared.Data
             {
                 entity.HasKey(e => e.IdPropertyType)
                     .HasName("PK__Property__EC791A66ACFA202D");
-
-                entity.Property(e => e.IdPropertyType).HasColumnName("ID_PropertyType");
-
-                entity.Property(e => e.PropertyTypeName)
-                    .IsRequired()
-                    .HasMaxLength(30)
-                    .IsUnicode(false);
             });
 
             modelBuilder.Entity<ReceptionCertificate>(entity =>
             {
                 entity.HasKey(e => e.IdReceptionCertificate)
                     .HasName("PK__Actas__4EE6FB68E33B8ACA");
-
-                entity.Property(e => e.IdReceptionCertificate).HasColumnName("ID_ReceptionCertificate");
-
-                entity.Property(e => e.ApprovalPathTenant)
-                    .HasMaxLength(200)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.ApprovarPathLessor)
-                    .HasMaxLength(200)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.ContractNumber)
-                    .IsRequired()
-                    .HasMaxLength(30)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.CreationDate).HasColumnType("datetime");
-
-                entity.Property(e => e.IdAgent)
-                    .HasMaxLength(450)
-                    .HasColumnName("ID_Agent");
-
-                entity.Property(e => e.IdProperty).HasColumnName("ID_Property");
-
-                entity.Property(e => e.IdTenant).HasColumnName("ID_Tenant");
-
-                entity.Property(e => e.Observation)
-                    .HasMaxLength(150)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.Stamp)
-                    .HasMaxLength(200)
-                    .IsUnicode(false);
 
                 entity.HasOne(d => d.IdAgentNavigation)
                     .WithMany(p => p.ReceptionCertificates)
@@ -415,65 +177,12 @@ namespace Shared.Data
             {
                 entity.HasKey(e => e.IdService)
                     .HasName("PK__Services__8C3D4AEFF7ABC97F");
-
-                entity.Property(e => e.IdService).HasColumnName("ID_Service");
-
-                entity.Property(e => e.ServiceName)
-                    .IsRequired()
-                    .HasMaxLength(50)
-                    .IsUnicode(false);
             });
 
             modelBuilder.Entity<Tenant>(entity =>
             {
                 entity.HasKey(e => e.IdTenant)
                     .HasName("PK__Tenant__609A42186A15AA67");
-
-                entity.Property(e => e.IdTenant).HasColumnName("ID_Tenant");
-
-                entity.Property(e => e.Colony)
-                    .IsRequired()
-                    .HasMaxLength(30)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.Cp)
-                    .IsRequired()
-                    .HasMaxLength(10)
-                    .HasColumnName("CP");
-
-                entity.Property(e => e.Delegation)
-                    .IsRequired()
-                    .HasMaxLength(30)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.EmailAddress)
-                    .IsRequired()
-                    .HasMaxLength(50);
-
-                entity.Property(e => e.LastName)
-                    .IsRequired()
-                    .HasMaxLength(30)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.Name)
-                    .IsRequired()
-                    .HasMaxLength(30)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.PhoneNumber)
-                    .IsRequired()
-                    .HasMaxLength(50);
-
-                entity.Property(e => e.Rfc)
-                    .IsRequired()
-                    .HasMaxLength(20)
-                    .IsUnicode(false)
-                    .HasColumnName("RFC");
-
-                entity.Property(e => e.Street)
-                    .IsRequired()
-                    .HasMaxLength(50)
-                    .IsUnicode(false);
             });
 
             OnModelCreatingGeneratedProcedures(modelBuilder);
