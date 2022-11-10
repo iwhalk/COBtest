@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Components;
 
-namespace Shared.Components
+namespace FrontEnd.Components
 {
     public partial class BoxesInventory : ComponentBase
     {

@@ -1,8 +1,8 @@
-﻿using TestingFrontEnd.Interfaces;
+﻿using FrontEnd.Interfaces;
+using FrontEnd.Stores;
 using Shared.Models;
-using TestingFrontEnd.Stores;
 
-namespace TestingFrontEnd.Services
+namespace FrontEnd.Services
 {
     public class LessorService : ILessorService
     {
@@ -31,7 +31,7 @@ namespace TestingFrontEnd.Services
         }
         public async Task<Lessor> PostLessorAsync(Lessor lessor)
         {
-            return await _repository.PostAsync<Lessor>("api/Lessor", lessor);
+            return await _repository.PostAsync("api/Lessor", lessor);
         }
     }
 }

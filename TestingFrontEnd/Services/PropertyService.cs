@@ -1,8 +1,13 @@
-﻿using Shared.Models;
+﻿<<<<<<< HEAD
+using FrontEnd.Stores;
+using Shared.Models;
 using TestingFrontEnd.Interfaces;
-using TestingFrontEnd.Stores;
+=======
+﻿using FrontEnd.Interfaces;
+using Shared.Models;
+>>>>>>> GatewayInmobiliaria
 
-namespace TestingFrontEnd.Services
+namespace FrontEnd.Services
 {
     public class PropertyService : IPropertyService
     {
@@ -31,7 +36,7 @@ namespace TestingFrontEnd.Services
         }
         public async Task<Property> PostPropertyAsync(Property property)
         {
-            return await _repository.PostAsync<Property>("api/Property", property);
+            return await _repository.PostAsync("api/Property", property);
         }
     }
 }

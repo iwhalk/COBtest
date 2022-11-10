@@ -1,9 +1,9 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿using FrontEnd.Stores;
+using Microsoft.AspNetCore.Components;
 using Shared.Models;
 using TestingFrontEnd.Interfaces;
-using TestingFrontEnd.Stores;
 
-namespace TestingFrontEnd.Pages
+namespace FrontEnd.Pages
 {
     public partial class Signatures : ComponentBase
     {
@@ -29,7 +29,7 @@ namespace TestingFrontEnd.Pages
             _areaService = areaService;
             _descriptionService = descriptionService;
             _featuresService = featuresService;
-            _propertyTypeService = propertyTypeService; 
+            _propertyTypeService = propertyTypeService;
         }
 
         private List<Tenant> tenants { get; set; }
@@ -37,7 +37,7 @@ namespace TestingFrontEnd.Pages
         private List<Property> properties { get; set; }
         private List<Inventory> inventories { get; set; }
         private List<Service> services { get; set; }
-        private List<Area> areas{ get; set; }
+        private List<Area> areas { get; set; }
         private List<Description> descriptions { get; set; }
         private List<Feature> features { get; set; }
         private List<PropertyType> propertyTypes { get; set; }

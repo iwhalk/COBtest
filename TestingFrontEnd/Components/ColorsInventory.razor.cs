@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Components;
 
-namespace TestingFrontEnd.Components
+namespace FrontEnd.Components
 {
     public partial class ColorsInventory : ComponentBase
     {

@@ -1,9 +1,9 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿using FrontEnd.Stores;
+using Microsoft.AspNetCore.Components;
 using Shared.Models;
 using TestingFrontEnd.Interfaces;
-using TestingFrontEnd.Stores;
 
-namespace TestingFrontEnd.Pages
+namespace FrontEnd.Pages
 {
     public partial class ReceptionCertificatesPending : ComponentBase
     {

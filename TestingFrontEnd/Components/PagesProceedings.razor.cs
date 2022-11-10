@@ -2,9 +2,9 @@ using Microsoft.AspNetCore.Components;
 
 namespace FrontEnd.Components
 {
-    public partial class Footer : ComponentBase
+    public partial class PagesProceedings : ComponentBase
     {
-        public Footer()
+        public PagesProceedings()
         {
 
         }

@@ -1,10 +1,10 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using FrontEnd.Stores;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Components;
 using Shared.Models;
 using TestingFrontEnd.Interfaces;
-using TestingFrontEnd.Stores;
 
-namespace TestingFrontEnd.Pages
+namespace FrontEnd.Pages
 {
     public partial class CreateReceptionCertificates : ComponentBase
     {

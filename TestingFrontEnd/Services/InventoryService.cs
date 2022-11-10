@@ -1,8 +1,8 @@
-﻿using Shared.Models;
+﻿using FrontEnd.Stores;
+using Shared.Models;
 using TestingFrontEnd.Interfaces;
-using TestingFrontEnd.Stores;
 
-namespace TestingFrontEnd.Services
+namespace FrontEnd.Services
 {
     public class InventoryService : IInventoryService
     {

@@ -1,11 +1,11 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿using FrontEnd.Stores;
+using Microsoft.AspNetCore.Components;
 using Shared;
 using Shared.Models;
 using TestingFrontEnd.Interfaces;
 using TestingFrontEnd.Services;
-using TestingFrontEnd.Stores;
 
-namespace TestingFrontEnd.Pages
+namespace FrontEnd.Pages
 {
     public partial class InventoryReceptionCertificates : ComponentBase
     {
@@ -51,7 +51,7 @@ namespace TestingFrontEnd.Pages
             if (newButtonsShow == "Color")
                 ColorSelect = "";
             if (newButtonsShow == "EstadoGeneral")
-                StatusSelect = "";            
+                StatusSelect = "";
         }
 
         public void SetColor(string newColor) => ColorSelect = newColor;

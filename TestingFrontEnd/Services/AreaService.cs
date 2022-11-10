@@ -1,8 +1,13 @@
-﻿using Shared.Models;
+﻿<<<<<<< HEAD
+using FrontEnd.Stores;
+using Shared.Models;
 using TestingFrontEnd.Interfaces;
-using TestingFrontEnd.Stores;
+=======
+﻿using FrontEnd.Interfaces;
+using Shared.Models;
+>>>>>>> GatewayInmobiliaria
 
-namespace TestingFrontEnd.Services
+namespace FrontEnd.Services
 {
     public class AreaService : IAreaService
     {
@@ -32,7 +37,7 @@ namespace TestingFrontEnd.Services
 
         public async Task<Area> PostAreaAsync(Area area)
         {
-            return await _repository.PostAsync<Area>("api/Area", area);
+            return await _repository.PostAsync("api/Area", area);
         }
     }
 }

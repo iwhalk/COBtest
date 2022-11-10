@@ -1,12 +1,17 @@
-﻿using Shared.Models;
+﻿<<<<<<< HEAD
+using Shared.Models;
 
-namespace TestingFrontEnd.Stores
+namespace FrontEnd.Stores
+=======
+﻿namespace FrontEnd.Stores
+>>>>>>> GatewayInmobiliaria
 {
     public class ApplicationContext
     {
         public event Action OnChange;
         private int counter;
-        private string errorMessage; 
+<<<<<<< HEAD
+        private string errorMessage;
         private List<Tenant> tenantList;
         private List<Lessor> lessorList;
         private List<Property> propertiesList;
@@ -15,8 +20,11 @@ namespace TestingFrontEnd.Stores
         private List<Area> areasList;
         private List<Description> descriptionsList;
         private List<Feature> featuresList;
-        private List<PropertyType> propertyTypesList;    
+        private List<PropertyType> propertyTypesList;
 
+=======
+        private string errorMessage;
+>>>>>>> GatewayInmobiliaria
         public int Counter
         {
             get => counter;

@@ -1,8 +1,13 @@
-﻿using Shared.Models;
+﻿<<<<<<< HEAD
+using FrontEnd.Stores;
+using Shared.Models;
 using TestingFrontEnd.Interfaces;
-using TestingFrontEnd.Stores;
+=======
+﻿using FrontEnd.Interfaces;
+using Shared.Models;
+>>>>>>> GatewayInmobiliaria
 
-namespace TestingFrontEnd.Services
+namespace FrontEnd.Services
 {
     public class DescriptionService : IDescriptionService
     {
@@ -31,7 +36,7 @@ namespace TestingFrontEnd.Services
 
         public async Task<Description> PostDescriptionAsync(Description description)
         {
-            return await _repository.PostAsync<Description>("api/Description", description);
+            return await _repository.PostAsync("api/Description", description);
         }
     }
 }
