@@ -23,30 +23,49 @@ namespace Shared.Models
         [StringLength(30)]
         [Unicode(false)]
         public string ContractNumber { get; set; }
-        [StringLength(150)]
         [Unicode(false)]
-        public string Observation { get; set; }
         [StringLength(200)]
+        [Required]
         [Unicode(false)]
-        public string ApprovarPathLessor { get; set; }
-        [StringLength(200)]
-        [Unicode(false)]
-        public string ApprovalPathTenant { get; set; }
-        [StringLength(200)]
-        [Unicode(false)]
-        public string Stamp { get; set; }
+        public string IdAgent { get; set; }
+        public int IdTypeRecord { get; set; }
         [Column("ID_Agent")]
         [StringLength(450)]
         public string IdAgent { get; set; }
-
+        [Unicode(false)]
         [ForeignKey("IdAgent")]
         [InverseProperty("ReceptionCertificates")]
         public virtual AspNetUser IdAgentNavigation { get; set; }
         [ForeignKey("IdProperty")]
         [InverseProperty("ReceptionCertificates")]
-        public virtual Property IdPropertyNavigation { get; set; }
+        public virtual AspNetUser IdAgentNavigation { get; set; }
+        public int IdTypeRecord { get; set; }
+        [StringLength(450)]
+        [ForeignKey("IdProperty")]
+        [InverseProperty("ReceptionCertificates")]
+        public virtual AspNetUser IdAgentNavigation { get; set; }
         [ForeignKey("IdTenant")]
         [InverseProperty("ReceptionCertificates")]
+        [ForeignKey("IdProperty")]
+        [InverseProperty("ReceptionCertificates")]
+        public virtual AspNetUser IdAgentNavigation { get; set; }
+        [InverseProperty("ReceptionCertificates")]
+        public virtual AspNetUser IdAgentNavigation { get; set; }
+        [ForeignKey("IdProperty")]
+        [InverseProperty("ReceptionCertificates")]
+        [InverseProperty("ReceptionCertificates")]
+        public virtual AspNetUser IdAgentNavigation { get; set; }
+        [ForeignKey("IdProperty")]
+        [InverseProperty("ReceptionCertificates")]
+        [InverseProperty("ReceptionCertificates")]
+        public virtual AspNetUser IdAgentNavigation { get; set; }
+        [ForeignKey("IdProperty")]
+        [InverseProperty("ReceptionCertificates")]
+        public string Stamp { get; set; }
+
+        [ForeignKey("IdProperty")]
+        [InverseProperty("ReceptionCertificates")]
+        public virtual Property IdPropertyNavigation { get; set; }
         public virtual Tenant IdTenantNavigation { get; set; }
     }
 }

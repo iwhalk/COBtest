@@ -2,25 +2,14 @@
 #nullable disable
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using Microsoft.EntityFrameworkCore;
 
 namespace Shared.Models
 {
     public partial class Module
     {
-        [Key]
-        [Column("ID")]
         public int Id { get; set; }
-        [Required]
-        [StringLength(50)]
         public string NameModule { get; set; }
-        [Required]
-        [StringLength(50)]
         public string Image { get; set; }
-        [Required]
-        [StringLength(50)]
         public string Route { get; set; }
     }
 }
