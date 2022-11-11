@@ -297,6 +297,9 @@ namespace ReportesInmobiliaria.Utilities
                 Image image = section.AddImage(ImageSource.FromFile(Environment.CurrentDirectory + @"\Imagenes\house.jpg"));
                 image.Height = "3.0cm"; image.Width = "3.0cm";
                 image.Left = ShapePosition.Center;
+                Image image2 = section.AddImage(ImageSource.FromFile(Environment.CurrentDirectory + @"\Imagenes\apartment1.jpg"));
+                image2.Height = "3.0cm"; image.Width = "3.0cm";
+                image2.Left = ShapePosition.Left;
             }
 
             document.LastSection.AddPageBreak();
