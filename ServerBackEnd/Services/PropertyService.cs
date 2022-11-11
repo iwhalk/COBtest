@@ -1,7 +1,6 @@
 ﻿using ApiGateway.Interfaces;
 using ApiGateway.Proxies;
 using Shared;
-using Shared.Models;
 using SharedLibrary.Models;
 using System.Reflection.Metadata;
 

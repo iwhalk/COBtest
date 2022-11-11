@@ -1,6 +1,7 @@
 ﻿using FrontEnd.Interfaces;
 using FrontEnd.Stores;
 using Shared.Models;
+using SharedLibrary.Models;
 
 namespace FrontEnd.Services
 {
@@ -33,7 +34,7 @@ namespace FrontEnd.Services
 
         public async Task<ReceptionCertificate> PostReceptionCertificatesAsync(ReceptionCertificate receptionCertificate)
         {
-            return await _repository.PostAsync("api/Description", receptionCertificate);
+            return await _repository.PostAsync("api/ReceptionCertificates", receptionCertificate);
         }
     }
 }

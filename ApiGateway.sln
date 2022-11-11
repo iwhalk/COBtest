@@ -5,7 +5,7 @@ VisualStudioVersion = 17.1.32328.378
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ApiGateway", "ServerBackEnd\ApiGateway.csproj", "{E56DBEC9-3E8A-47C0-9C11-2867FBB0DA8F}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Shared", "Shared\Shared.csproj", "{73CC8FCD-DFB1-439D-8CA4-448343008407}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SharedLibrary", "Shared\SharedLibrary.csproj", "{73CC8FCD-DFB1-439D-8CA4-448343008407}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ReportesInmobiliaria", "ReportesInmobiliaria\ReportesInmobiliaria.csproj", "{9C84DE40-910A-4412-9CF1-92278871309F}"
 EndProject
