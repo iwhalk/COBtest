@@ -10,7 +10,7 @@ namespace FrontEnd.Components.Tenants
         [Parameter]
         public EventCallback OpenModalTenant { get; set; }
         [Parameter]
-        public Tenant? CurrentTenant { get; set; } = new Tenant();
+        public Tenant? CurrentTenant { get; set; }
         [Parameter]
         public bool IsFormTenantExit { get; set; }
         public EditContext TenantEditContext;

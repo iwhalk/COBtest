@@ -64,13 +64,16 @@ namespace FrontEnd.Pages
         {
             CurrentProperty = properties.Find(x => x.IdProperty == IdProperty);                        
             ShowModalProperty = false;
-            _context.CurrentPropertys = CurrentProperty;
+            _context.CurrentPropertys = CurrentProperty;            
         }
         public async void HandlePostCreateCertificates()
         {
             MyProperty = 1000;
-            if (formLessor.LessorEditContext.Validate() && formTenant.TenantEditContext.Validate() && formProperty.PropertyEditContext.Validate())
-            {
+            var lessorValid = formLessor.LessorEditContext.Validate();
+            var tenantValid = formTenant.TenantEditContext.Validate();
+            var propertyValid = formProperty.PropertyEditContext.Validate();            
+            //if (lessorValid && tenantValid && propertyValid)
+            //{
                 try
                 {
                     MyProperty = 10;
@@ -95,12 +98,14 @@ namespace FrontEnd.Pages
                     }
                     NewCreateReceptionCertificate.IdTenant = CurrentTenant.IdTenant;
                     NewCreateReceptionCertificate.IdProperty = CurrentProperty.IdProperty;
+                    NewCreateReceptionCertificate.ContractNumber = "0001";
+                    NewCreateReceptionCertificate.IdAgent = 
                 }
                 catch(Exception ex)
                 {
                     Console.WriteLine(ex.Message);
                 }
-            }
+            //}
             
         }
         protected override async Task OnInitializedAsync()

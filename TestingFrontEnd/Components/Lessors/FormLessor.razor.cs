@@ -9,7 +9,7 @@ namespace FrontEnd.Components.Lessors
         [Parameter]
         public EventCallback OpenModalLessor { get; set; }
         [Parameter]
-        public Lessor? CurrentLessor { get; set; } = new Lessor();
+        public Lessor? CurrentLessor { get; set; }
         [Parameter]
         public bool IsFormLessorExit { get; set; }
 

@@ -10,7 +10,7 @@ namespace FrontEnd.Components.Propertys
         [Parameter]
         public EventCallback OpenModalProperty { get; set; }
         [Parameter]
-        public Property? CurrentProperty { get; set; } = new Property();
+        public Property? CurrentProperty { get; set; }
         [Parameter]
         public bool IsFormPropertyExit { get; set; }
         public EditContext PropertyEditContext;
