@@ -45,7 +45,7 @@ namespace ApiGateway.Controllers
             if (ModelState.IsValid)
             {
                 var result = await _mediator.Send(createCommand);
-                if (!result.Succeeded) 
+                if (!result.Succeeded)
                 {
                     return BadRequest(result.Errors);
                 }
@@ -134,17 +134,13 @@ namespace ApiGateway.Controllers
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> Find(string? id = null, string? email = null, string? userName = null)
         {
-            if (!string.IsNullOrEmpty(id) || !string.IsNullOrEmpty(email) || !string.IsNullOrEmpty(userName))
+            UserFindCommand findCommand = new() { Id = id, Email = email, Username = userName };
+            var result = await _mediator.Send(findCommand);
+            if (!result.Succeeded)
             {
-                UserFindCommand findCommand = new() { Id = id, Email = email, Username = userName };
-                var result = await _mediator.Send(findCommand);
-                if (!result.Succeeded)
-                {
-                    return NotFound();
-                }
-                return Ok(result);
+                return NotFound();
             }
-            return BadRequest();
+            return Ok(result);
         }
 
         [HttpPost("token")]

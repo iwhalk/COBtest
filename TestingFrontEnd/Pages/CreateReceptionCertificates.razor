@@ -1,9 +1,16 @@
 ﻿@page "/ReceptionCertificates/Create"
 @attribute [Authorize]
+<<<<<<< HEAD
 <Navbar></Navbar>
 <body class="flex flex-column min-h-screen bg-[url('/assets/img/fondocasa.png')] imgfondo">    
     <div id="ContenedorHome" class="my-20 lg:mb-auto lg:mt-16">           
         <div class="mx-auto max-w-screen-xl bg-transparent p-4 md:p-5 sm:p-1">
+=======
+
+<body>    
+    <div id="ContenedorHome" class="bg-[url('/assets/img/fondocasa.png')] imgfondo">       
+        <div class="mx-auto max-w-screen-xl bg-transparent pt-2 md:p-5 sm:p-1">
+>>>>>>> 9ed208109d7944e36ff59f02303118045420bb48
             @*<EditForm Model="@NewCreateReceptionCertificate" OnSubmit="HandlePostCreateCertificates">*@
             @*<DataAnnotationsValidator />*@
             <div class="bg-[#2B286F] mx-auto lg:h-36 md:m-3 sm:m-1 text-center text-sm-center md:text-md text-white pt-2 pb-3 rounded-lg lg:rounded-none my-2 ">
@@ -109,5 +116,5 @@
         </div>
     </div>
 </body>
-<Navbar></Navbar>
+@*<Navbar></Navbar>*@
 <Footer></Footer>

@@ -19,15 +19,17 @@ namespace FrontEnd.Pages
         private readonly ITenantService _tenantService;
         private readonly ILessorService _lessorService;
         private readonly IPropertyService _propertyService;
+        private readonly IReceptionCertificateService _receptionCertificateService;
         [CascadingParameter]
         private Task<AuthenticationState> authenticationStateTask { get; set; }
 
-        public CreateReceptionCertificates(ApplicationContext context, ITenantService tenantService, IPropertyService propertyService, ILessorService lessorService)
+        public CreateReceptionCertificates(ApplicationContext context, ITenantService tenantService, IPropertyService propertyService, ILessorService lessorService, IReceptionCertificateService receptionCertificateService)
         {
             _context = context;
             _tenantService = tenantService;
             _lessorService = lessorService;
             _propertyService = propertyService;
+            _receptionCertificateService = receptionCertificateService;
         }
 
         public bool ShowModalLessor { get; set; } = false;
@@ -107,9 +109,10 @@ namespace FrontEnd.Pages
                     NewCreateReceptionCertificate.IdTenant = CurrentTenant.IdTenant;
                     NewCreateReceptionCertificate.IdProperty = CurrentProperty.IdProperty;
                     NewCreateReceptionCertificate.ContractNumber = "0001";
-                    NewCreateReceptionCertificate.IdAgent = authUser.User.Identity.Name;
+                    NewCreateReceptionCertificate.IdTypeRecord = 1;
+                    NewCreateReceptionCertificate.IdAgent = "1e6d90d6-32b5-43af-bc6a-0b43678462ec";                    
+                    _receptionCertificateService.PostReceptionCertificatesAsync(NewCreateReceptionCertificate);
                     MyProperty = 99999;
-
                 }
                 catch (Exception ex)
                 {

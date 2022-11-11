@@ -5,6 +5,7 @@ using System.Security.Claims;
 using Microsoft.EntityFrameworkCore;
 using Shared.Models;
 using System.Diagnostics;
+using SharedLibrary.Models;
 
 namespace ReportesInmobiliaria.Services
 {
