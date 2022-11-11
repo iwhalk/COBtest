@@ -9,11 +9,15 @@ namespace FrontEnd.Components.Lessors
         [Parameter]
         public EventCallback OpenModalLessor { get; set; }
         [Parameter]
-        public Lessor? CurrentLessor { get; set; }
+        public Lessor? CurrentLessor { get; set; } = new Lessor();
         [Parameter]
         public bool IsFormLessorExit { get; set; }
 
-        public EditContext LessorEditContext { get; set; }
+        public EditContext LessorEditContext;
 
+        protected override void OnInitialized()
+        {
+            LessorEditContext = new EditContext(CurrentLessor);
+        }
     }
 }

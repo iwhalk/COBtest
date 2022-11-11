@@ -10,10 +10,13 @@ namespace FrontEnd.Components.Tenants
         [Parameter]
         public EventCallback OpenModalTenant { get; set; }
         [Parameter]
-        public Tenant? CurrentTenant { get; set; }
+        public Tenant? CurrentTenant { get; set; } = new Tenant();
         [Parameter]
         public bool IsFormTenantExit { get; set; }
-
-        public EditContext TenantEditContext { get; set; }
+        public EditContext TenantEditContext;
+        protected override void OnInitialized()
+        {
+            TenantEditContext = new EditContext(CurrentTenant);
+        }
     }
 }
