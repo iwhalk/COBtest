@@ -1,4 +1,4 @@
-﻿<div id="ContenedorActas"  class="flex flex-column min-h-screen bg-[url('/assets/img/fondocasa.png')] imgfondo">
+﻿<div id="ContenedorActas" class="flex flex-column min-h-screen bg-[url('/assets/img/fondocasa.png')] imgfondo">
     <div id="TituloActas" class="flex justify-center">
         <label for="" class="text-4xl text-blue-900 font-semibold my-8">Acta Entrega Recepción de Inmueble Histórico</label>
     </div>
@@ -40,152 +40,101 @@
         </span>
     </div>
     <div id="Actas" class="flex justify-around mt-4">
-        <div class="relative" style="height: 35rem">            
+        <div class="relative" style="height: 35rem">
             <table>
-            <thead>
-                <tr>
-                    <th class="py-2 px-12 text-center mb-1 text-3xl text-center text-cyan-700 font-normal">
-                    </th>
-                    <th class="py-2 px-12 text-center mb-1 text-3xl text-center text-cyan-700 font-normal" style="background-color: #E3F2F6;">
-                        Fecha
-                    </th>
-                    <th class="py-2 px-12 text-center mb-1 text-3xl text-center text-cyan-700 font-normal" style="background-color: #E3F2F6;">
-                        Acta
-                    </th>
-                    <th class="py-2 px-12 text-center mb-1 text-3xl text-center text-cyan-700 font-normal" style="background-color: #E3F2F6;">
-                        Inmueble
-                    </th>
-                    <th class="py-2 px-12 text-center mb-1 text-3xl text-center text-cyan-700 font-normal" style="background-color: #E3F2F6;">
-                        Habitaciones
-                    </th>
-                    <th class="py-2 px-12 text-center mb-1 text-3xl text-center text-cyan-700 font-normal" style="background-color: #E3F2F6;">
-                        Arrendador
-                    </th>
-                    <th class="py-2 px-12 text-center mb-1 text-3xl text-center text-cyan-700 font-normal" style="background-color: #E3F2F6;">
-                        Arrendatario
-                    </th>
-                    <th class="py-2 px-12 text-center mb-1 text-3xl text-center text-cyan-700 font-normal" style="background-color: #E3F2F6;">
-                        Ciudad
-                    </th>
-                    <th class="py-2 px-12 text-center mb-1 text-3xl text-center text-cyan-700 font-normal" style="background-color: #E3F2F6;">
-                        Agente
-                    </th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td class="py-2 text-center text-2xl">                            
-                        @if (TypeTableReception == "Historico")
-                        {
-                            <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" class="bi bi-lock-fill" viewBox="0 0 16 16">
-                                <path d="M8 1a2 2 0 0 1 2 2v4H6V3a2 2 0 0 1 2-2zm3 6V3a3 3 0 0 0-6 0v4a2 2 0 0 0-2 2v5a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2z"/>
-                            </svg>
-                        }
-                    </td>
-                    <td class="py-2 text-center text-2xl">17/07/2022</td>
-                    <td class="py-2 text-center text-2xl">Entrada</td>
-                    <td class="py-2 text-center text-2xl">Departamento</td>
-                    <td class="py-2 text-center text-2xl">5</td>
-                    <td class="py-2 text-center text-2xl">Eduardo Molina</td>
-                    <td class="py-2 text-center text-2xl">Esteban Estrada</td>
-                    <td class="py-2 text-center text-2xl">CDMX</td>
-                    <td class="py-2 text-center text-2xl">Carlos Mejia</td>
-                </tr>
-                <tr>
-                    <td class="py-2 text-center text-2xl">
-                        @if (TypeTableReception == "Historico")
-                        {
-                            <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" class="bi bi-lock-fill" viewBox="0 0 16 16">
-                                <path d="M8 1a2 2 0 0 1 2 2v4H6V3a2 2 0 0 1 2-2zm3 6V3a3 3 0 0 0-6 0v4a2 2 0 0 0-2 2v5a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2z" />
-                            </svg>
-                        }
-                    </td>
-                    <td class="py-2 text-center text-2xl">24/07/2022</td>
-                    <td class="py-2 text-center text-2xl">Salida</td>
-                    <td class="py-2 text-center text-2xl">Casa</td>
-                    <td class="py-2 text-center text-2xl">5</td>
-                    <td class="py-2 text-center text-2xl">Javier Gomez</td>
-                    <td class="py-2 text-center text-2xl">Erick Estrada</td>
-                    <td class="py-2 text-center text-2xl">CDMX</td>
-                    <td class="py-2 text-center text-2xl">Fabian Cruz</td>
-                </tr>
-                <tr>
-                    <td class="py-2 text-center text-2xl">
-                        @if (TypeTableReception == "Historico")
-                        {
-                            <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" class="bi bi-lock-fill" viewBox="0 0 16 16">
-                                <path d="M8 1a2 2 0 0 1 2 2v4H6V3a2 2 0 0 1 2-2zm3 6V3a3 3 0 0 0-6 0v4a2 2 0 0 0-2 2v5a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2z" />
-                            </svg>
-                        }
-                    </td>
-                    <td class="py-2 text-center text-2xl">01/04/2022</td>
-                    <td class="py-2 text-center text-2xl">Entrada</td>
-                    <td class="py-2 text-center text-2xl">Departamento</td>
-                    <td class="py-2 text-center text-2xl">3</td>
-                    <td class="py-2 text-center text-2xl">Samuel Gomez</td>
-                    <td class="py-2 text-center text-2xl">Alberto Cruz</td>
-                    <td class="py-2 text-center text-2xl">CDMX</td>
-                    <td class="py-2 text-center text-2xl">Kevin Arias</td>
-                </tr>
-                <tr>
-                    <td class="py-2 text-center text-2xl">
-                        @if (TypeTableReception == "Historico")
-                        {
-                            <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" class="bi bi-lock-fill" viewBox="0 0 16 16">
-                                <path d="M8 1a2 2 0 0 1 2 2v4H6V3a2 2 0 0 1 2-2zm3 6V3a3 3 0 0 0-6 0v4a2 2 0 0 0-2 2v5a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2z" />
-                            </svg>
-                        }
-                    </td>
-                    <td class="py-2 text-center text-2xl">01/01/2022</td>
-                    <td class="py-2 text-center text-2xl">Entrada</td>
-                    <td class="py-2 text-center text-2xl">Departamento</td>
-                    <td class="py-2 text-center text-2xl">4</td>
-                    <td class="py-2 text-center text-2xl">Juan Castro</td>
-                    <td class="py-2 text-center text-2xl">Jose Madero</td>
-                    <td class="py-2 text-center text-2xl">CDMX</td>
-                    <td class="py-2 text-center text-2xl">Julio Lopez</td>
-                </tr>
-            </tbody>
+                <thead>
+                    <tr>
+                        <th class="py-2 px-12 text-center mb-1 text-3xl text-center text-cyan-700 font-normal">
+                        </th>
+                        <th class="py-2 px-12 text-center mb-1 text-3xl text-center text-cyan-700 font-normal" style="background-color: #E3F2F6;">
+                            Fecha
+                        </th>
+                        <th class="py-2 px-12 text-center mb-1 text-3xl text-center text-cyan-700 font-normal" style="background-color: #E3F2F6;">
+                            Acta
+                        </th>
+                        <th class="py-2 px-12 text-center mb-1 text-3xl text-center text-cyan-700 font-normal" style="background-color: #E3F2F6;">
+                            Inmueble
+                        </th>
+                        <th class="py-2 px-12 text-center mb-1 text-3xl text-center text-cyan-700 font-normal" style="background-color: #E3F2F6;">
+                            Habitaciones
+                        </th>
+                        <th class="py-2 px-12 text-center mb-1 text-3xl text-center text-cyan-700 font-normal" style="background-color: #E3F2F6;">
+                            Arrendador
+                        </th>
+                        <th class="py-2 px-12 text-center mb-1 text-3xl text-center text-cyan-700 font-normal" style="background-color: #E3F2F6;">
+                            Arrendatario
+                        </th>
+                        <th class="py-2 px-12 text-center mb-1 text-3xl text-center text-cyan-700 font-normal" style="background-color: #E3F2F6;">
+                            Ciudad
+                        </th>
+                        <th class="py-2 px-12 text-center mb-1 text-3xl text-center text-cyan-700 font-normal" style="background-color: #E3F2F6;">
+                            Agente
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Actas)
+                    {
+                        <tr>
+                            <td class="py-2 text-center text-2xl">
+                                @if (TypeTableReception == "Historico")
+                                {
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" class="bi bi-lock-fill" viewBox="0 0 16 16">
+                                        <path d="M8 1a2 2 0 0 1 2 2v4H6V3a2 2 0 0 1 2-2zm3 6V3a3 3 0 0 0-6 0v4a2 2 0 0 0-2 2v5a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2z" />
+                                    </svg>
+                                }
+                            </td>
+                            <td class="py-2 text-center text-2xl">@item.Fecha</td>
+                            <td class="py-2 text-center text-2xl">@item.Acta</td>
+                            <td class="py-2 text-center text-2xl">@item.Inmueble</td>
+                            <td class="py-2 text-center text-2xl">@item.Habitaciones</td>
+                            <td class="py-2 text-center text-2xl">@item.Arrendador</td>
+                            <td class="py-2 text-center text-2xl">@item.Arrendatario</td>
+                            <td class="py-2 text-center text-2xl">@item.Delegacion</td>
+                            <td class="py-2 text-center text-2xl">@item.Agente</td>
+                        </tr>
+                    }
+                </tbody>
             </table>
             <div class="absolute bottom-0 left-0 right-0 flex justify-center">
-            <span class="flex border-3 rounded-lg bg-slate-100">
-                <button class="py-2 my-1 mx-2 rounded-lg text-blue-900 flex justify-center">
-                    <g class="flex font-semibold">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-arrow-left-circle-fill self-center pr-1" viewBox="0 0 16 16">
-                            <path d="M8 0a8 8 0 1 0 0 16A8 8 0 0 0 8 0zm3.5 7.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5z"/>
-                        </svg>
-                        Primera
-                    </g>
-                </button>
-                <button class="py-2 my-1 mx-2 rounded-lg text-blue-900 flex justify-center">
-                    <g class="flex">
-                        Anterior
-                    </g>
-                </button>
-                <button class="py-2 my-1 mx-2 w-12 h-12 rounded-lg text-blue-900 border-2 border-blue-900 text-blue-900 flex justify-center" style="background-color: #E3F2F6;">
-                    <g class="flex">
-                        1
-                    </g>
-                </button>
-                <button class="py-2 my-1 mx-2 w-12 h-12 rounded-lg text-blue-900 border-2 border-blue-900 text-blue-900 flex justify-center">
-                    <g class="flex">
-                        2
-                    </g>
-                </button>
-                <button class="py-2 my-1 mx-2 rounded-lg text-blue-900 flex justify-center">
-                    <g class="flex">
-                        Siguiente
-                    </g>
-                </button>
-                <button class="py-2 my-1 mx-2 rounded-lg text-blue-900 flex justify-center">
-                    <g class="flex font-semibold">
-                        Primera
-                        <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-arrow-right-circle-fill self-center pl-1" viewBox="0 0 16 16">
-                            <path d="M8 0a8 8 0 1 1 0 16A8 8 0 0 1 8 0zM4.5 7.5a.5.5 0 0 0 0 1h5.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5H4.5z"/>
-                        </svg>
-                    </g>
-                </button>
-            </span>
+                <span class="flex border-3 rounded-lg bg-slate-100">
+                    <button class="py-2 my-1 mx-2 rounded-lg text-blue-900 flex justify-center">
+                        <g class="flex font-semibold">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-arrow-left-circle-fill self-center pr-1" viewBox="0 0 16 16">
+                                <path d="M8 0a8 8 0 1 0 0 16A8 8 0 0 0 8 0zm3.5 7.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5z" />
+                            </svg>
+                            Primera
+                        </g>
+                    </button>
+                    <button class="py-2 my-1 mx-2 rounded-lg text-blue-900 flex justify-center">
+                        <g class="flex">
+                            Anterior
+                        </g>
+                    </button>
+                    <button class="py-2 my-1 mx-2 w-12 h-12 rounded-lg text-blue-900 border-2 border-blue-900 text-blue-900 flex justify-center" style="background-color: #E3F2F6;">
+                        <g class="flex">
+                            1
+                        </g>
+                    </button>
+                    <button class="py-2 my-1 mx-2 w-12 h-12 rounded-lg text-blue-900 border-2 border-blue-900 text-blue-900 flex justify-center">
+                        <g class="flex">
+                            2
+                        </g>
+                    </button>
+                    <button class="py-2 my-1 mx-2 rounded-lg text-blue-900 flex justify-center">
+                        <g class="flex">
+                            Siguiente
+                        </g>
+                    </button>
+                    <button class="py-2 my-1 mx-2 rounded-lg text-blue-900 flex justify-center">
+                        <g class="flex font-semibold">
+                            Primera
+                            <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-arrow-right-circle-fill self-center pl-1" viewBox="0 0 16 16">
+                                <path d="M8 0a8 8 0 1 1 0 16A8 8 0 0 1 8 0zM4.5 7.5a.5.5 0 0 0 0 1h5.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5H4.5z" />
+                            </svg>
+                        </g>
+                    </button>
+                </span>
             </div>
         </div>
     </div>

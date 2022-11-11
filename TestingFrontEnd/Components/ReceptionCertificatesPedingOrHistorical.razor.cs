@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Components;
+using Shared.Models;
 
 namespace FrontEnd.Components
 {
@@ -6,5 +7,7 @@ namespace FrontEnd.Components
     {
         [Parameter]
         public string TypeTableReception { get; set; } = "";
+        [Parameter]
+        public List<ActasRecepcion> Actas { get; set; }
     }
 }
