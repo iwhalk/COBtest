@@ -1,11 +1,3 @@
-﻿.imgfondo {
-    position: relative;
-    min-height: 100vh;
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-}
-
 @media screen and (max-width: 425px) {
     .ocultar{
         display:none;

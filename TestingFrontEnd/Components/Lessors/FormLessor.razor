@@ -1,80 +1,87 @@
-﻿<div class="bg-[#2B286F] mx-auto h-40 md:m-3 sm:m-1 text-center text-sm-center md:text-md text-white">
+﻿<div class="bg-[#2B286F] mx-auto lg:h-56 md:m-3 sm:m-1 text-center text-sm-center md:text-md text-white pt-2 pb-3 rounded-lg lg:rounded-none">
     <h1 class="text-xl mb-2">Arrendador</h1>    
     <EditForm EditContext="LessorEditContext">
         <DataAnnotationsValidator />        
-        <div class="flex inline grid grid-cols-3  place-items-center">
+        <div class="flex grid lg:grid-cols-3  place-items-center">
             <div>
-                <div class="flex inline mb-3">
-                    <label class="w-20 text-left">Nombre</label>      
+                <div class="flex my-2 lg:mb-3">
+                    <label class="w-44 lg:w-20 text-left text-sm lg:text-md">Nombre</label>      
                     <div>
-                        <InputText @bind-Value="CurrentLessor.Name" disabled="@IsFormLessorExit"  class="w-44 ml-2 rounded-lg text-black"/>                    
+                        <InputText @bind-Value="CurrentLessor.Name" disabled="@IsFormLessorExit"  class="w-36 lg:w-44 ml-2 px-2 rounded-lg text-black"/>                    
                         <div class="text-xs"><ValidationMessage class="text-xs" For="@(() => CurrentLessor.Name)" /></div>
                     </div>
                 </div>
-                <div class="flex inline mb-3">
-                    <label class="w-20 text-left">Apellido</label>
+                <div class="flex my-2 lg:mb-3">
+                    <label class="w-44 lg:w-20 text-left text-sm lg:text-md">Apellido</label>
                     <div>
-                        <InputText @bind-Value="CurrentLessor.LastName" disabled="@IsFormLessorExit" class="w-44 ml-2 rounded-lg text-black" />
+                        <InputText @bind-Value="CurrentLessor.LastName" disabled="@IsFormLessorExit" class="w-36 lg:w-44 ml-2 px-2 rounded-lg text-black" />
                         <div class="text-xs"><ValidationMessage For="@(() => CurrentLessor.LastName)" /></div>
                     </div>
                 </div>
-                <div class="flex inline">
-                    <label class="w-20 text-left">RFC</label>
+                <div class="flex my-2">
+                    <label class="w-44 lg:w-20 text-left text-sm lg:text-md">RFC</label>
                     <div>
-                        <InputText @bind-Value="CurrentLessor.Rfc" disabled="@IsFormLessorExit" class="w-44 ml-2 rounded-lg text-black"/>
+                        <InputText @bind-Value="CurrentLessor.Rfc" disabled="@IsFormLessorExit" class="w-36 lg:w-44 ml-2 px-2 rounded-lg text-black"/>
                         <div class="text-xs"><ValidationMessage class="text-xs" For="@(() => CurrentLessor.Rfc)" /></div>
                     </div>
                 </div>
             </div>
             <div>
-                <div class="flex inline mb-3">
-                    <label class="w-28 text-left">Calle y Numero</label>
+                <div class="flex mb-2 lg:mb-3">
+                    <label class="w-44 lg:w-28 text-left text-sm lg:text-md">Calle y Numero</label>
                     <div>
-                        <InputText @bind-Value="CurrentLessor.Street" disabled="@IsFormLessorExit" class="w-36 ml-2 rounded-lg text-black" />
+                        <InputText @bind-Value="CurrentLessor.Street" disabled="@IsFormLessorExit" class="w-36 lg:w-36 ml-2 px-2 rounded-lg text-black" />
                         <div class="text-xs"><ValidationMessage class="text-xs" For="@(() => CurrentLessor.Street)" /></div>
                     </div>
                 </div>
-                <div class="flex inline mb-3">
-                    <label class="w-20 text-left">Colonia</label>
+                <div class="flex my-2 lg:mb-3">
+                    <label class="w-44 lg:w-20 text-left text-sm lg:text-md">Colonia</label>
                     <div>
-                        <InputText @bind-Value="CurrentLessor.Colony" disabled="@IsFormLessorExit" class="w-44 ml-2 rounded-lg text-black" />
+                        <InputText @bind-Value="CurrentLessor.Colony" disabled="@IsFormLessorExit" class="w-36 lg:w-44 ml-2 px-2 rounded-lg text-black" />
                         <div class="text-xs"><ValidationMessage class="text-xs" For="@(() => CurrentLessor.Colony)" /></div>
                     </div>
                 </div>
-                <div class="flex inline">
-                    <label class="w-20 text-left">Delegacion</label>
+                <div class="flex my-2">
+                    <label class="w-44 lg:w-20 text-left text-sm lg:text-md">Delegacion</label>
                     <div>                        
-                        <InputText @bind-Value="CurrentLessor.Delegation" disabled="@IsFormLessorExit" class="w-44 ml-2 rounded-lg text-black" />
+                        <InputText @bind-Value="CurrentLessor.Delegation" disabled="@IsFormLessorExit" class="w-36 lg:w-44 ml-2 px-2 rounded-lg text-black" />
                         <div class="text-xs"><ValidationMessage class="text-xs" For="@(() => CurrentLessor.Delegation)" /></div>
                     </div>
                 </div>
             </div>
             <div>
-                <div class="flex inline mb-3">
-                    <label class="w-20 text-left">C.P</label>
+                <div class="flex mb-2 lg:mb-3">
+                    <label class="w-44 lg:w-20 text-left text-sm lg:text-md">C.P</label>
                     <div>
-                        <InputText @bind-Value="CurrentLessor.Cp" disabled="@IsFormLessorExit" class="w-44 ml-2 rounded-lg text-black" />
+                        <InputText @bind-Value="CurrentLessor.Cp" disabled="@IsFormLessorExit" class="w-36 lg:w-44 ml-2 px-2 rounded-lg text-black" />
                         <div class="text-xs"><ValidationMessage class="text-xs" For="@(() => CurrentLessor.Cp)" /></div>
                     </div>
                 </div>
-                <div class="flex inline mb-3">
-                    <label class="w-20 text-left">Telefono</label>
+                <div class="flex my-2 lg:mb-3">
+                    <label class="w-44 lg:w-20 text-left text-sm lg:text-md">Telefono</label>
                     <div>
-                        <InputText @bind-Value="CurrentLessor.PhoneNumber" disabled="@IsFormLessorExit" class="w-44 ml-2 rounded-lg text-black" />
+                        <InputText @bind-Value="CurrentLessor.PhoneNumber" disabled="@IsFormLessorExit" class="w-36 lg:w-44 ml-2 px-2 rounded-lg text-black" />
                         <div class="text-xs"><ValidationMessage class="text-xs" For="@(() => CurrentLessor.PhoneNumber)" /></div>
                     </div>
                 </div>
-                <div class="flex inline mb-3">
-                    <label class="w-20 text-left">Email</label>
+                <div class="flex my-2 lg:mb-3">
+                    <label class="w-44 lg:w-20 text-left text-sm lg:text-md">Email</label>
                     <div>
-                        <InputText @bind-Value="CurrentLessor.EmailAddress" disabled="@IsFormLessorExit" class="w-44 ml-2 rounded-lg text-black" />
+                        <InputText @bind-Value="CurrentLessor.EmailAddress" disabled="@IsFormLessorExit" class="w-36 lg:w-44 ml-2 px-2 rounded-lg text-black" />
                         <div class="text-xs"><ValidationMessage class="text-xs" For="@(() => CurrentLessor.EmailAddress)" /></div>
                     </div>
                 </div>
                 <div>
-                    <button @onclick="@(() => OpenModalLessor.InvokeAsync())" class="bg-blue-300 rounded-lg h-6 w-full">Existente</button>                     
+                    <button @onclick="@(() => OpenModalLessor.InvokeAsync())" class="bg-blue-300 mt-4 rounded-lg h-6 w-24 lg:w-full">Existente</button>                     
                 </div>
             </div>
         </div> 
+        <div class="flex justify-center pt-2">
+            <button class="mostrar">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-caret-up-fill" viewBox="0 0 16 16">
+                    <path d="m7.247 4.86-4.796 5.481c-.566.647-.106 1.659.753 1.659h9.592a1 1 0 0 0 .753-1.659l-4.796-5.48a1 1 0 0 0-1.506 0z"/>
+                </svg>
+            </button>
+        </div>
     </EditForm>       
 </div>
