@@ -1,32 +1,36 @@
 ﻿using Shared.Models;
+using SharedLibrary.Models;
 
 namespace FrontEnd.Stores
 {
     public class ApplicationContext
     {
-        public event Action OnChange;
-        private int counter;
-        private string errorMessage;
+        public event Action OnChange;        
+        private string errorMessage; 
         private List<Tenant> tenantList;
         private List<Lessor> lessorList;
         private List<Property> propertiesList;
         private List<Inventory> inventoriesList;
         private List<Service> serviceList;
+        private Tenant tenant;
+        private Lessor lessor;
+        private Property property;
         private List<Area> areasList;
         private List<Description> descriptionsList;
         private List<Feature> featuresList;
         private List<PropertyType> propertyTypesList;
         private List<ActasRecepcion> actasRecepcionsList;
-        public int Counter
+        public int Counter;
+
+        public Tenant CurrentTenant
         {
-            get => counter;
+            get => tenant;
             set
             {
-                counter = value;
+                tenant = value;
                 NotifyStateChanged();
             }
         }
-
         public List<Tenant> Tenant
         {
             get => tenantList;
@@ -36,12 +40,30 @@ namespace FrontEnd.Stores
                 NotifyStateChanged();
             }
         }
+        public Lessor CurrentLessor
+        {
+            get => lessor;
+            set
+            {
+                lessor = value;
+                NotifyStateChanged();
+            }
+        }
         public List<Lessor> Lessor
         {
             get => lessorList;
             set
             {
                 lessorList = value;
+                NotifyStateChanged();
+            }
+        }
+        public Property CurrentPropertys
+        {
+            get => property; 
+            set
+            {
+                property = value;
                 NotifyStateChanged();
             }
         }

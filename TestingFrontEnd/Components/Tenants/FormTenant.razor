@@ -1,0 +1,80 @@
+﻿<div class="bg-[#2B286F] mx-auto h-40 md:m-3 sm:m-1 text-center text-sm-center md:text-md text-white">
+    <h1 class="text-xl mb-2">Arrendador</h1>
+    <EditForm EditContext="TenantEditContext">
+        <DataAnnotationsValidator />
+        <div class="flex inline grid grid-cols-3  place-items-center">
+            <div>
+                <div class="flex inline mb-3">
+                    <label class="w-20 text-left">Nombre</label>
+                    <div>
+                        <InputText @bind-Value="CurrentTenant.Name" disabled="@IsFormTenantExit" class="w-44 ml-2 rounded-lg text-black" />
+                        <div class="text-xs"><ValidationMessage class="text-xs" For="@(() => CurrentTenant.Name)" /></div>
+                    </div>
+                </div>
+                <div class="flex inline mb-3">
+                    <label class="w-20 text-left">Apellido</label>
+                    <div>
+                        <InputText @bind-Value="CurrentTenant.LastName" disabled="@IsFormTenantExit" class="w-44 ml-2 rounded-lg text-black" />
+                        <div class="text-xs"><ValidationMessage For="@(() => CurrentTenant.LastName)" /></div>
+                    </div>
+                </div>
+                <div class="flex inline">
+                    <label class="w-20 text-left">RFC</label>
+                    <div>
+                        <InputText @bind-Value="CurrentTenant.Rfc" disabled="@IsFormTenantExit" class="w-44 ml-2 rounded-lg text-black" />
+                        <div class="text-xs"><ValidationMessage class="text-xs" For="@(() => CurrentTenant.Rfc)" /></div>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <div class="flex inline mb-3">
+                    <label class="w-28 text-left">Calle y Numero</label>
+                    <div>
+                        <InputText @bind-Value="CurrentTenant.Street" disabled="@IsFormTenantExit" class="w-36 ml-2 rounded-lg text-black" />
+                        <div class="text-xs"><ValidationMessage class="text-xs" For="@(() => CurrentTenant.Street)" /></div>
+                    </div>
+                </div>
+                <div class="flex inline mb-3">
+                    <label class="w-20 text-left">Colonia</label>
+                    <div>
+                        <InputText @bind-Value="CurrentTenant.Colony" disabled="@IsFormTenantExit" class="w-44 ml-2 rounded-lg text-black" />
+                        <div class="text-xs"><ValidationMessage class="text-xs" For="@(() => CurrentTenant.Colony)" /></div>
+                    </div>
+                </div>
+                <div class="flex inline">
+                    <label class="w-20 text-left">Delegacion</label>
+                    <div>
+                        <InputText @bind-Value="CurrentTenant.Delegation" disabled="@IsFormTenantExit" class="w-44 ml-2 rounded-lg text-black" />
+                        <div class="text-xs"><ValidationMessage class="text-xs" For="@(() => CurrentTenant.Delegation)" /></div>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <div class="flex inline mb-3">
+                    <label class="w-20 text-left">C.P</label>
+                    <div>
+                        <InputText @bind-Value="CurrentTenant.Cp" disabled="@IsFormTenantExit" class="w-44 ml-2 rounded-lg text-black" />
+                        <div class="text-xs"><ValidationMessage class="text-xs" For="@(() => CurrentTenant.Cp)" /></div>
+                    </div>
+                </div>
+                <div class="flex inline mb-3">
+                    <label class="w-20 text-left">Telefono</label>
+                    <div>
+                        <InputText @bind-Value="CurrentTenant.PhoneNumber" disabled="@IsFormTenantExit" class="w-44 ml-2 rounded-lg text-black" />
+                        <div class="text-xs"><ValidationMessage class="text-xs" For="@(() => CurrentTenant.PhoneNumber)" /></div>
+                    </div>
+                </div>
+                <div class="flex inline mb-3">
+                    <label class="w-20 text-left">Email</label>
+                    <div>
+                        <InputText @bind-Value="CurrentTenant.EmailAddress" disabled="@IsFormTenantExit" class="w-44 ml-2 rounded-lg text-black" />
+                        <div class="text-xs"><ValidationMessage class="text-xs" For="@(() => CurrentTenant.EmailAddress)" /></div>
+                    </div>
+                </div>
+                <div>
+                    <button @onclick="@(() => OpenModalTenant.InvokeAsync())" class="bg-blue-300 rounded-lg h-6 w-full">Existente</button>
+                </div>
+            </div>
+        </div>
+    </EditForm>
+</div>

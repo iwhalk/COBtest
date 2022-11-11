@@ -2,6 +2,7 @@
 using ApiGateway.Proxies;
 using Shared;
 using Shared.Models;
+using SharedLibrary.Models;
 using System.Net.NetworkInformation;
 
 namespace ApiGateway.Services

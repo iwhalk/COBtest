@@ -3,6 +3,7 @@ using ApiGateway.Proxies;
 using Shared;
 using Shared.Models;
 using System.Reflection.Metadata;
+using SharedLibrary.Models;
 
 namespace ApiGateway.Services
 {

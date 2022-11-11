@@ -1,7 +1,7 @@
-﻿using FrontEnd.Stores;
-using Shared.Models;
+using FrontEnd.Stores;
 ﻿using FrontEnd.Interfaces;
-using Shared.Models;
+using SharedLibrary.Models;
+
 
 namespace FrontEnd.Services
 {

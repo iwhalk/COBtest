@@ -1,0 +1,80 @@
+﻿<div class="bg-[#2B286F] mx-auto h-40 md:m-3 sm:m-1 text-center text-sm-center md:text-md text-white">
+    <h1 class="text-xl mb-2">Arrendador</h1>    
+    <EditForm EditContext="LessorEditContext">
+        <DataAnnotationsValidator />        
+        <div class="flex inline grid grid-cols-3  place-items-center">
+            <div>
+                <div class="flex inline mb-3">
+                    <label class="w-20 text-left">Nombre</label>      
+                    <div>
+                        <InputText @bind-Value="CurrentLessor.Name" disabled="@IsFormLessorExit"  class="w-44 ml-2 rounded-lg text-black"/>                    
+                        <div class="text-xs"><ValidationMessage class="text-xs" For="@(() => CurrentLessor.Name)" /></div>
+                    </div>
+                </div>
+                <div class="flex inline mb-3">
+                    <label class="w-20 text-left">Apellido</label>
+                    <div>
+                        <InputText @bind-Value="CurrentLessor.LastName" disabled="@IsFormLessorExit" class="w-44 ml-2 rounded-lg text-black" />
+                        <div class="text-xs"><ValidationMessage For="@(() => CurrentLessor.LastName)" /></div>
+                    </div>
+                </div>
+                <div class="flex inline">
+                    <label class="w-20 text-left">RFC</label>
+                    <div>
+                        <InputText @bind-Value="CurrentLessor.Rfc" disabled="@IsFormLessorExit" class="w-44 ml-2 rounded-lg text-black"/>
+                        <div class="text-xs"><ValidationMessage class="text-xs" For="@(() => CurrentLessor.Rfc)" /></div>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <div class="flex inline mb-3">
+                    <label class="w-28 text-left">Calle y Numero</label>
+                    <div>
+                        <InputText @bind-Value="CurrentLessor.Street" disabled="@IsFormLessorExit" class="w-36 ml-2 rounded-lg text-black" />
+                        <div class="text-xs"><ValidationMessage class="text-xs" For="@(() => CurrentLessor.Street)" /></div>
+                    </div>
+                </div>
+                <div class="flex inline mb-3">
+                    <label class="w-20 text-left">Colonia</label>
+                    <div>
+                        <InputText @bind-Value="CurrentLessor.Colony" disabled="@IsFormLessorExit" class="w-44 ml-2 rounded-lg text-black" />
+                        <div class="text-xs"><ValidationMessage class="text-xs" For="@(() => CurrentLessor.Colony)" /></div>
+                    </div>
+                </div>
+                <div class="flex inline">
+                    <label class="w-20 text-left">Delegacion</label>
+                    <div>                        
+                        <InputText @bind-Value="CurrentLessor.Delegation" disabled="@IsFormLessorExit" class="w-44 ml-2 rounded-lg text-black" />
+                        <div class="text-xs"><ValidationMessage class="text-xs" For="@(() => CurrentLessor.Delegation)" /></div>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <div class="flex inline mb-3">
+                    <label class="w-20 text-left">C.P</label>
+                    <div>
+                        <InputText @bind-Value="CurrentLessor.Cp" disabled="@IsFormLessorExit" class="w-44 ml-2 rounded-lg text-black" />
+                        <div class="text-xs"><ValidationMessage class="text-xs" For="@(() => CurrentLessor.Cp)" /></div>
+                    </div>
+                </div>
+                <div class="flex inline mb-3">
+                    <label class="w-20 text-left">Telefono</label>
+                    <div>
+                        <InputText @bind-Value="CurrentLessor.PhoneNumber" disabled="@IsFormLessorExit" class="w-44 ml-2 rounded-lg text-black" />
+                        <div class="text-xs"><ValidationMessage class="text-xs" For="@(() => CurrentLessor.PhoneNumber)" /></div>
+                    </div>
+                </div>
+                <div class="flex inline mb-3">
+                    <label class="w-20 text-left">Email</label>
+                    <div>
+                        <InputText @bind-Value="CurrentLessor.EmailAddress" disabled="@IsFormLessorExit" class="w-44 ml-2 rounded-lg text-black" />
+                        <div class="text-xs"><ValidationMessage class="text-xs" For="@(() => CurrentLessor.EmailAddress)" /></div>
+                    </div>
+                </div>
+                <div>
+                    <button @onclick="@(() => OpenModalLessor.InvokeAsync())" class="bg-blue-300 rounded-lg h-6 w-full">Existente</button>                     
+                </div>
+            </div>
+        </div> 
+    </EditForm>       
+</div>

@@ -4,9 +4,8 @@ namespace FrontEnd.Components
 {
     public partial class Navbar : ComponentBase
     {
-        public Navbar()
-        {
+        public bool ShowBurguer { get; set; } = false;
+        public void ChageShowBurguer() => ShowBurguer = ShowBurguer ? false : true;
 
-        }
     }
 }

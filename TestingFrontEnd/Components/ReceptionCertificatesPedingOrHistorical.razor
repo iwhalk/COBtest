@@ -1,4 +1,4 @@
-﻿<div id="ContenedorActas" class="flex flex-column min-h-screen bg-[url('/assets/img/fondocasa.png')] imgfondo">
+<div id="ContenedorActas" class="flex flex-column min-h-screen bg-[url('/assets/img/fondocasa.png')] imgfondo">
     <div id="TituloActas" class="flex justify-center">
         <label for="" class="text-4xl text-blue-900 font-semibold my-8">Acta Entrega Recepción de Inmueble Histórico</label>
     </div>
@@ -16,7 +16,15 @@
         </span>
         <span class="flex flex-col items-center">
             <label for="" class="mb-1 text-3xl text-cyan-700">Tipo de Inmueble</label>
-            <select name="" class="px-2 py-1 border-1 border-black rounded-lg w-36"></select>
+            <select name="" class="px-2 py-1 border-1 border-black rounded-lg w-36">
+                @if (PropertyTypes is not null)
+                {
+                    @foreach (var item in PropertyTypes)
+                    {
+                        <option>@item.PropertyTypeName</option>
+                    }
+                }
+            </select>
         </span>
         <span class="flex flex-col items-center">
             <label for="" class="mb-1 text-3xl text-cyan-700">No. Habitaciones</label>
@@ -24,15 +32,48 @@
         </span>
         <span class="flex flex-col items-center">
             <label for="" class="mb-1 text-3xl text-cyan-700">Arrendador</label>
-            <select name="" class="px-2 py-1 border-1 border-black rounded-lg w-36"></select>
+            <select name="" class="px-2 py-1 border-1 border-black rounded-lg w-36">
+                @if (Lessors is not null)
+                {
+                    @foreach (var item in Lessors)
+                    {
+                        <option>@item.Name</option>
+                    }
+                }
+            </select>
         </span>
         <span class="flex flex-col items-center">
             <label for="" class="mb-1 text-3xl text-cyan-700">Arrendatario</label>
-            <select name="" class="px-2 py-1 border-1 border-black rounded-lg w-36"></select>
+            <select name="" class="px-2 py-1 border-1 border-black rounded-lg w-36">
+                @if (Tenants is not null)
+                {
+                    @foreach (var item in Tenants)
+                    {
+                        <option>@item.Name</option>
+                    }
+                }
+            </select>
         </span>
         <span class="flex flex-col items-center">
-            <label for="" class="mb-1 text-3xl text-cyan-700">Ciudad</label>
-            <select name="" class="px-2 py-1 border-1 border-black rounded-lg w-36"></select>
+            <label for="" class="mb-1 text-3xl text-cyan-700">Delegación</label>
+            <select name="" class="px-2 py-1 border-1 border-black rounded-lg w-36">
+                <option>Álvaro Obregón</option>
+                <option>Azcapotzalco</option>
+                <option>Benito Juárez</option>
+                <option>Coyoacán</option>
+                <option>Cuajimalpa de Morelos</option>
+                <option>Cuauhtémoc</option>
+                <option>Gustavo A. Madero</option>
+                <option>Iztacalco</option>
+                <option>Iztapalapa</option>
+                <option>Magdalena Contreras</option>
+                <option>Miguel Hidalgo</option>
+                <option>Milpa Alta</option>
+                <option>Tláhuac</option>
+                <option>Tlalpan</option>
+                <option>Venustiano Carranza</option>
+                <option>Xochimilco</option>
+            </select>
         </span>
         <span class="flex flex-col items-center">
             <label for="" class="mb-1 text-3xl text-cyan-700">Agente</label>
@@ -73,26 +114,29 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach (var item in Actas)
+                    @if (Actas is not null)
                     {
-                        <tr>
-                            <td class="py-2 text-center text-2xl">
-                                @if (TypeTableReception == "Historico")
-                                {
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" class="bi bi-lock-fill" viewBox="0 0 16 16">
-                                        <path d="M8 1a2 2 0 0 1 2 2v4H6V3a2 2 0 0 1 2-2zm3 6V3a3 3 0 0 0-6 0v4a2 2 0 0 0-2 2v5a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2z" />
-                                    </svg>
-                                }
-                            </td>
-                            <td class="py-2 text-center text-2xl">@item.Fecha</td>
-                            <td class="py-2 text-center text-2xl">@item.Acta</td>
-                            <td class="py-2 text-center text-2xl">@item.Inmueble</td>
-                            <td class="py-2 text-center text-2xl">@item.Habitaciones</td>
-                            <td class="py-2 text-center text-2xl">@item.Arrendador</td>
-                            <td class="py-2 text-center text-2xl">@item.Arrendatario</td>
-                            <td class="py-2 text-center text-2xl">@item.Delegacion</td>
-                            <td class="py-2 text-center text-2xl">@item.Agente</td>
-                        </tr>
+                        @foreach (var item in Actas)
+                        {
+                            <tr>
+                                <td class="py-2 text-center text-2xl">
+                                    @if (TypeTableReception == "Historico")
+                                    {
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" class="bi bi-lock-fill" viewBox="0 0 16 16">
+                                            <path d="M8 1a2 2 0 0 1 2 2v4H6V3a2 2 0 0 1 2-2zm3 6V3a3 3 0 0 0-6 0v4a2 2 0 0 0-2 2v5a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2z" />
+                                        </svg>
+                                    }
+                                </td>
+                                <td class="py-2 text-center text-2xl">@item.Fecha</td>
+                                <td class="py-2 text-center text-2xl">@item.Acta</td>
+                                <td class="py-2 text-center text-2xl">@item.Inmueble</td>
+                                <td class="py-2 text-center text-2xl">@item.Habitaciones</td>
+                                <td class="py-2 text-center text-2xl">@item.Arrendador</td>
+                                <td class="py-2 text-center text-2xl">@item.Arrendatario</td>
+                                <td class="py-2 text-center text-2xl">@item.Delegacion</td>
+                                <td class="py-2 text-center text-2xl">@item.Agente</td>
+                            </tr>
+                        }
                     }
                 </tbody>
             </table>
@@ -128,7 +172,7 @@
                     </button>
                     <button class="py-2 my-1 mx-2 rounded-lg text-blue-900 flex justify-center">
                         <g class="flex font-semibold">
-                            Primera
+                            Última
                             <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-arrow-right-circle-fill self-center pl-1" viewBox="0 0 16 16">
                                 <path d="M8 0a8 8 0 1 1 0 16A8 8 0 0 1 8 0zM4.5 7.5a.5.5 0 0 0 0 1h5.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5H4.5z" />
                             </svg>

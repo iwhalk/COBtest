@@ -4,76 +4,78 @@
 <body>    
     <div id="ContenedorHome" class="bg-[url('/assets/img/fondocasa.png')] imgfondo">       
         <div class="mx-auto max-w-screen-xl bg-transparent pt-2 md:p-5 sm:p-1">
+            @*<EditForm Model="@NewCreateReceptionCertificate" OnSubmit="HandlePostCreateCertificates">*@
+            @*<DataAnnotationsValidator />*@
             <div class="bg-[#2B286F] mx-auto h-32 md:m-3 sm:m-1 text-center text-sm-center md:text-md text-white">
-                <h1 class="text-xl mb-2">Informacion general</h1>
+                <h1 class="text-xl mb-2">Informacion general @MyProperty</h1>
+        
                 <div class="flex inline grid grid-cols-2  place-items-center">
                     <div>
                         <div class="flex inline mb-3">
                             <label class="w-52 text-left">Fecha y Hora de Realizacion</label>
-                            <input class="w-52 ml-2 rounded-lg text-black" type="date" />
+                            <input  class="w-52 ml-2 rounded-lg text-black" type="text" />
+                            @*<div>
+                                <InputDate @bind-Value="NewCreateReceptionCertificate.CreationDate" class="w-44 ml-2 rounded-lg text-black" />
+                                <div class="text-xs"><ValidationMessage class="text-xs" For="@(() => NewCreateReceptionCertificate.CreationDate)" /></div>
+                            </div>*@
                         </div>
                         <div class="flex inline">
                             <label class="w-52 text-left">Realizado por</label>
-                            <input class="w-52 ml-2 rounded-lg text-black" type="text" />
+                             <input class="w-52 ml-2 rounded-lg text-black" type="text" />
                         </div>
                     </div>
                     <div>
-                        <div class="flex inline">
-                            <label class="w-24">No Contrato</label>
-                            <input class="w-52 ml-2 rounded-lg text-black" type="text" />
+                        <div class="flex ">
+                            <label class="w-44 lg:w-52 text-left text-sm lg:text-md">No Contrato</label>
+                            <input class="w-36 lg:w-52 ml-2 px-2 rounded-lg text-black" type="text" />
                         </div>
                     </div>
-                </div>
+                </div>                
             </div>
-            <FormLessorOrTenant OnClick="ChangeOpenModalLessor" TitleForm="Arrendador"></FormLessorOrTenant>
-            <FormLessorOrTenant OnClick="ChangeOpenModalTenant" TitleForm="Arrendatario"></FormLessorOrTenant>
-            <div class="bg-[#2B286F] mx-auto h-44 md:m-3 sm:m-1 text-center text-sm-center md:text-md text-white">
-                <h1 class="text-xl mb-2">Propiedad</h1>
-                <div class="flex inline grid grid-cols-3  place-items-center">
-                    <div>
-                        <div class="flex inline mb-3">
-                            <label class="w-28 text-left">Calle y Numero</label>
-                            <input class="w-36 ml-2 rounded-lg text-black" type="date" />
-                        </div>
-                        <div class="flex inline mb-3">
-                            <label class="w-28 text-left">Colonia</label>
-                            <input class="w-36 ml-2 rounded-lg text-black " type="text" />
-                        </div>
-                        <div class="flex inline">
-                            <label class="w-28 text-left">Delegacion</label>
-                            <input class="w-36 ml-2 rounded-lg text-black" type="text" />
-                        </div>
-                    </div>
-                    <div>
-                        <div class="flex inline mb-3">
-                            <label class="w-32 text-left">C.P</label>
-                            <input class="w-32 ml-2 rounded-lg text-black" type="text" />
-                        </div>
-                        <div class="flex inline mb-3">
-                            <label class="w-32 text-left">Tipo de Inmueble</label>
-                            <input class="w-32 ml-2 rounded-lg text-black" type="text" />
-                        </div>
-                        <div class="flex inline">
-                            <label class="w-32 text-left">No Habitaciones</label>
-                            <input class="w-32 ml-2 rounded-lg text-black" type="number" />
-                        </div>
-                    </div>
-                    <div>
-                        <div class="flex inline mb-3">
-                            <label class="w-24 text-left">Tamaño m2</label>
-                            <input class="w-40 ml-2 rounded-lg text-black" type="number" />
-                        </div>
-                        <div>
-                            <button @onclick="ChangeOpenModalProperty" class="bg-blue-300 rounded-lg h-6 w-full">Existente</button>
-                        </div>
-                    </div>
-                </div>
-                <a href="/ReceptionCertificates/Inventory"><button class="bg-[#2B286F] text-white mt-10 rounded-lg h-10 w-20">Siguiente</button></a>
+            @if (lessorValid != null)
+            {
+                @foreach (var item in lessorValid)
+                {
+                    @item
+                }
+            }
+            @if (tenantValid != null)
+            {
+                @foreach (var item2 in tenantValid)
+                {
+                    @item2
+                }
+            }
+            @if (propertyValid != null)
+            {
+                @foreach (var item3 in propertyValid)
+                {
+                    @item3
+                }
+            }
+            <FormLessor @ref="formLessor" OpenModalLessor="ChangeOpenModalLessor" CurrentLessor="CurrentLessor" IsFormLessorExit="CurrentLessor.IdLessor == 0 ? false : true"></FormLessor>
+            <FormTenant @ref="formTenant" OpenModalTenant="ChangeOpenModalTenant" CurrentTenant="CurrentTenant" IsFormTenantExit="CurrentTenant.IdTenant == 0 ? false : true"></FormTenant>
+            <FormProperty @ref="formProperty" OpenModalProperty="ChangeOpenModalProperty" CurrentProperty="CurrentProperty" IsFormPropertyExit="CurrentProperty.IdProperty == 0 ? false : true"></FormProperty>
+
+            <div class="flex inline grid grid-cols-1  place-items-center">
+                @*<a href="/ReceptionCertificates/Inventory"><button class="bg-[#2B286F] text-white mt-10 rounded-lg h-10 w-20">Siguiente</button></a>*@         
+                <button @onclick="HandlePostCreateCertificates" type="submit" class="bg-[#2B286F] text-white mt-10 rounded-lg h-10 w-20">Siguiente</button>
             </div>
-            <ModalLessorOrTenant OnClick="ChangeOpenModalLessor" ShowModal="@ShowModalLessor" TitleModal="Arrendarores"></ModalLessorOrTenant>
-            <ModalLessorOrTenant OnClick="ChangeOpenModalTenant" ShowModal="@ShowModalTenant" TitleModal="Arrendatarios"></ModalLessorOrTenant>
-            <ModalProperty OnClick="ChangeOpenModalProperty" ShowModal="@ShowModalProperty"></ModalProperty>
+            @*</EditForm>*@
+            @if (ShowModalLessor)
+            {
+                <ModalLessor Lessors="lessors" SendIdLessor="SetLessorForm" CloseModalLessor="ChangeOpenModalLessor" ShowModal="ShowModalLessor"></ModalLessor>
+            }      
+            @if(ShowModalTenant)
+            {
+                <ModalTenant Tenants="tenants" SendIdTenant="SetTenantForm" CloseModalTenant="ChangeOpenModalTenant" ShowModal="ShowModalTenant"></ModalTenant>
+            }
+            @if(ShowModalProperty)
+            {
+                <ModalProperty Propertys="properties" SendIdProperty="SetPropertyForm" CloseModalProperty="ChangeOpenModalProperty" ShowModal="ShowModalProperty"></ModalProperty>
+            }
         </div>
     </div>
 </body>
+<Navbar></Navbar>
 <Footer></Footer>

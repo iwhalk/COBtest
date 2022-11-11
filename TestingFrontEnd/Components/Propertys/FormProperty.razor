@@ -1,0 +1,73 @@
+﻿<div class="bg-[#2B286F] mx-auto h-44 md:m-3 sm:m-1 text-center text-sm-center md:text-md text-white">
+    <h1 class="text-xl mb-2">Propiedad</h1>
+    <EditForm EditContext="PropertyEditContext">
+    <DataAnnotationsValidator />
+    <div class="flex inline grid grid-cols-3  place-items-center">
+        <div>
+            <div class="flex inline mb-3">
+                <label class="w-28 text-left">Calle y Numero</label>
+                <div>
+                    <InputText @bind-Value="CurrentProperty.Street" disabled="@IsFormPropertyExit" class="w-44 ml-2 rounded-lg text-black" />
+                    <div class="text-xs"><ValidationMessage class="text-xs" For="@(() => CurrentProperty.Street)" /></div>
+                </div>
+            </div>
+            <div class="flex inline mb-3">
+                <label class="w-28 text-left">Colonia</label>
+                    <div>
+                        <InputText @bind-Value="CurrentProperty.Colony" disabled="@IsFormPropertyExit" class="w-44 ml-2 rounded-lg text-black" />
+                        <div class="text-xs"><ValidationMessage class="text-xs" For="@(() => CurrentProperty.Colony)" /></div>
+                    </div>
+            </div>
+            <div class="flex inline">
+                <label class="w-28 text-left">Delegacion</label>
+                <div>
+                    <InputText @bind-Value="CurrentProperty.Delegation" disabled="@IsFormPropertyExit" class="w-44 ml-2 rounded-lg text-black" />
+                    <div class="text-xs"><ValidationMessage class="text-xs" For="@(() => CurrentProperty.Delegation)" /></div>
+                </div>
+            </div>
+        </div>
+        <div>
+            <div class="flex inline mb-3">
+                <label class="w-32 text-left">C.P</label>
+                <div>
+                    <InputText @bind-Value="CurrentProperty.Cp" disabled="@IsFormPropertyExit" class="w-44 ml-2 rounded-lg text-black" />
+                    <div class="text-xs"><ValidationMessage class="text-xs" For="@(() => CurrentProperty.Cp)" /></div>
+                </div>                
+            </div>
+            <div class="flex inline mb-3">
+                <label class="w-32 text-left">Tipo de Inmueble</label>
+                <div>
+                    <InputNumber @bind-Value="CurrentProperty.IdPropertyType" disabled="@IsFormPropertyExit" class="w-44 ml-2 rounded-lg text-black" />
+                    <div class="text-xs"><ValidationMessage class="text-xs" For="@(() => CurrentProperty.IdPropertyType)" /></div>
+                </div>                
+            </div>
+            <div class="flex inline">
+                <label class="w-32 text-left">No Habitaciones</label>
+                <div>
+                    <InputNumber @bind-Value="CurrentProperty.NumberOfRooms" disabled="@IsFormPropertyExit" class="w-44 ml-2 rounded-lg text-black" />
+                    <div class="text-xs"><ValidationMessage class="text-xs" For="@(() => CurrentProperty.NumberOfRooms)" /></div>
+                </div>                
+            </div>
+        </div>
+        <div>
+            <div class="flex inline mb-3">
+                <label class="w-24 text-left">Tamaño m2</label>
+                <div>
+                    <InputNumber @bind-Value="CurrentProperty.Size" disabled="@IsFormPropertyExit" class="w-44 ml-2 rounded-lg text-black" />
+                    <div class="text-xs"><ValidationMessage class="text-xs" For="@(() => CurrentProperty.Size)" /></div>
+                </div>                  
+            </div>
+            <div class="flex inline mb-3">
+                <label class="w-24 text-left">Nombre de la Propiedad</label>
+                <div>
+                    <InputText @bind-Value="CurrentProperty.PropertyName" disabled="@IsFormPropertyExit" class="w-44 ml-2 rounded-lg text-black" />
+                    <div class="text-xs"><ValidationMessage class="text-xs" For="@(() => CurrentProperty.PropertyName)" /></div>
+                </div>
+            </div>
+            <div>
+                <button @onclick="@(() => OpenModalProperty.InvokeAsync())" class="bg-blue-300 rounded-lg h-6 w-full">Existente</button>
+            </div>
+        </div>
+    </div>
+    </EditForm>
+</div>
