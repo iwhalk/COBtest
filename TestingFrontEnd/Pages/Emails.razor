@@ -2,8 +2,8 @@
 @attribute [Authorize]
 <PageTitle>Correos</PageTitle>
 
-<Navbar></Navbar>
 <body class="flex flex-column min-h-screen bg-[url('/assets/img/fondocasa.png')] imgfondo">
+    <div class="my-auto">
     <div id="ContenedorInventario" class="flex">
         <div id="ListActas" class="flex ml-4">
         <LeftListActas></LeftListActas>
@@ -23,11 +23,13 @@
             </div>            
         </div>
     </div>
-    <div id="Botones" class="flex justify-center -my-5">
+    <div id="Botones" class="flex justify-center -my-14">
         <button class="py-2 my-4 w-48 border rounded-lg text-white text-xl shadow-xl" style="background-color: #2B286F;">Previsualizar</button>
         <button class="py-2 my-4 w-48 border rounded-lg text-white text-xl shadow-xl" style="background-color: #2B286F;">Guardar</button>
         <button @onclick="ChangeOpenModalSend" class="py-2 my-4 w-48 border rounded-lg text-white text-xl shadow-xl" style="background-color: #2B286F;">Enviar</button>
     </div>   
     <ModalCreateReceptionCertificates ShowModal="@ShowModalSend"></ModalCreateReceptionCertificates>
+    </div>
 </body>
+<Navbar></Navbar>
 <Footer></Footer>
