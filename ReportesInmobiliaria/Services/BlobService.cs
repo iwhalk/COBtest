@@ -1,36 +1,72 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Azure.Storage.Blobs;
+using Azure.Storage.Blobs.Models;
+using Microsoft.EntityFrameworkCore;
 using ReportesInmobiliaria.Interfaces;
 using Shared.Data;
 using Shared.Models;
+using System.IO;
 
 namespace ReportesInmobiliaria.Services
 {
     public class BlobService : IBlobService
     {
         private readonly InmobiliariaDbContext _dbContext;
+        private readonly BlobServiceClient _blobServiceClient;
 
-        public BlobService(InmobiliariaDbContext dbContext)
+        public BlobService(InmobiliariaDbContext dbContext, BlobServiceClient blobServiceClient)
         {
             _dbContext = dbContext;
+            _blobServiceClient = blobServiceClient;
         }
 
-        public async Task<List<Blob>?> GetBlobAsync()
+        public async Task<BlobDownloadInfo> GetBlobAsync(int id)
         {
-            return await _dbContext.Blobs.ToListAsync();
+            var blob = await _dbContext.Blobs.FindAsync(id);
+
+            var blobContainerClient = _blobServiceClient.GetBlobContainerClient("inventario");
+            var blobClient = blobContainerClient.GetBlobClient(blob.BlodName);
+
+            var blobFile = await blobClient.DownloadAsync();
+            return blobFile;
         }
 
-        public async Task<Blob?> CreateBlobAsync(Blob blob)
+        public async Task<Blob?> CreateBlobAsync(string name, IFormFileCollection files)
         {
-            await _dbContext.Blobs.AddAsync(blob);
+            
             try
             {
+                var blobContainerClient = _blobServiceClient.GetBlobContainerClient("inventario");
+                var blobClient = blobContainerClient.GetBlobClient(name);
+
+                var newBlob = new Blob
+                {
+                    BlodName = name,
+                    Uri = blobClient.Uri.ToString(),
+                    BlobSize = files.FirstOrDefault().Length.ToString(),
+                    ContainerName = "Inventario",
+                    IsPrivate = false,
+                    BlodTypeId = "",
+                    ContentType = files.FirstOrDefault().ContentType,
+                    DateCreated = DateTime.Now,
+                    DateModified = DateTime.Now
+                };
+
+                var response = await blobClient.UploadAsync(
+                files.FirstOrDefault().OpenReadStream(),
+                new BlobHttpHeaders
+                {
+                    ContentType = files.FirstOrDefault().ContentType
+                });
+
+                await _dbContext.Blobs.AddAsync(newBlob);
                 await _dbContext.SaveChangesAsync();
+
+                return newBlob;
             }
             catch (DbUpdateConcurrencyException)
             {
                 throw;
-            }
-            return blob;
+            }            
         }
 
         public async Task<bool> UpdateBlobAsync(Blob blob)

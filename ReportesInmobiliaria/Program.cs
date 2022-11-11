@@ -12,9 +12,15 @@ using System.Text.RegularExpressions;
 using ReportesInmobiliaria.Interfaces;
 using ReportesInmobiliaria.Services;
 using ReportesInmobiliaria.Utilities;
+using Microsoft.AspNetCore.Http;
 using SixLabors.Fonts.Tables.AdvancedTypographic;
 using Shared;
 using System.DirectoryServices.ActiveDirectory;
+using Azure.Storage.Blobs;
+using System.Configuration;
+using System.Reflection.Metadata;
+using Microsoft.AspNetCore.Mvc;
+using Azure.Core;
 
 var builder = WebApplication.CreateBuilder(args);
 var connectionString = "Server=prosisdev.database.windows.net;Database=prosisdb_3;User=PROSIS_DEVELOPER;Password=PR0515_D3ev3l0p3r;MultipleActiveResultSets=true";
@@ -25,6 +31,8 @@ CultureInfo culture = CultureInfo.CreateSpecificCulture("en-US");
 
 Thread.CurrentThread.CurrentCulture = culture;
 Thread.CurrentThread.CurrentUICulture = culture;
+
+builder.Services.AddSingleton(x => new BlobServiceClient(builder.Configuration.GetConnectionString("AzureStorage")));
 
 // Add services to the container.
 builder.Services.AddDbContext<InmobiliariaDbContext>(options =>
@@ -53,13 +61,13 @@ builder.Services.AddAuthentication(options =>
         };
     });
 
-builder.Services.AddAuthentication();
-builder.Services.AddAuthorization(cfg =>
-{
-    cfg.FallbackPolicy = new AuthorizationPolicyBuilder()
-        .RequireAuthenticatedUser()
-        .Build();
-});
+//builder.Services.AddAuthentication();
+//builder.Services.AddAuthorization(cfg =>
+//{
+//    cfg.FallbackPolicy = new AuthorizationPolicyBuilder()
+//        .RequireAuthenticatedUser()
+//        .Build();
+//});
 
 builder.Services.AddLogging(loggingBuilder =>
 {
@@ -571,22 +579,25 @@ app.MapGet("/ReporteFeatures", async (int? id, IReporteFeaturesService _reportes
 
 # region Blob
 
-app.MapGet("/Blobs", async (IBlobService _blobService) =>
+app.MapGet("/Blobs", async (int id, IBlobService _blobService) =>
 {
-    var blobs = await _blobService.GetBlobAsync();
-    if (blobs == null) return Results.NoContent();
-    return Results.Ok(blobs);
+    var blobs = await _blobService.GetBlobAsync(id);
+    using MemoryStream ms = new MemoryStream();
+    blobs.Content.CopyTo(ms);
+    return Results.File(ms.ToArray(), blobs.ContentType);
 })
 .WithName("GetBlobAsync")
 .Produces<IResult>(StatusCodes.Status200OK)
 .Produces<HttpValidationProblemDetails>(StatusCodes.Status400BadRequest, "application/problem+json")
-.Produces<HttpValidationProblemDetails>(StatusCodes.Status500InternalServerError, "application/problem+json");
+.Produces<HttpValidationProblemDetails>(StatusCodes.Status500InternalServerError, "application/problem+json")
+.AllowAnonymous();
 
-app.MapPost("/Blobs", async (Blob blob, IBlobService _blobService) =>
+app.MapPost("/Blobs", async (string name, [FromForm(Name = "file")] HttpRequest request, IBlobService _blobService) =>
 {
     try
     {
-        var res = await _blobService.CreateBlobAsync(blob);
+        var file = request.Form.Files;
+        var res = await _blobService.CreateBlobAsync(name, file);
         return Results.Ok(res);
     }
     catch (Exception e)
@@ -599,9 +610,10 @@ app.MapPost("/Blobs", async (Blob blob, IBlobService _blobService) =>
 .WithName("CreateBlobAsync")
 .Produces<IResult>(StatusCodes.Status200OK)
 .Produces<HttpValidationProblemDetails>(StatusCodes.Status400BadRequest, "application/problem+json")
-.Produces<HttpValidationProblemDetails>(StatusCodes.Status500InternalServerError, "application/problem+json");
+.Produces<HttpValidationProblemDetails>(StatusCodes.Status500InternalServerError, "application/problem+json")
+.AllowAnonymous();
 
-app.MapPut("/Blobs/{id}", async (int id, Blob blob, IBlobService _blobService) =>
+app.MapPut("/Blobs/{id}", async (int id, Shared.Models.Blob blob, IBlobService _blobService) =>
 {
     try
     {
@@ -630,7 +642,7 @@ app.MapDelete("/Blob/{id}",
             if (res) return Results.NoContent();
             return Results.BadRequest();
         }
-        catch (Exception e)
+        catch (Exception e) 
         {
             if (e.GetType() == typeof(ValidationException))
                 return Results.Problem(e.Message, statusCode: 400);
@@ -721,49 +733,44 @@ app.MapDelete("/BlobInventory/{id}",
 
 #region ReceptionCertificates
 
-app.MapGet("/ReceptionCertificate", async (string? day, string? week, string? month, int? propertyType, int? numberOfRooms, int? lessor, int? tenant, string? delegation, string? agent, int? currentPage, int? rowNumber, IReceptionCertificates _receptionCertificates,AuxiliaryMethods _auxiliaryMethods , ILogger<Program> _logger) =>
+app.MapGet("/ReceptionCertificate", async (string? startDay, string? endDay, int? certificateType, int? propertyType, int? numberOfRooms, int? lessor, int? tenant, string? delegation, string? agent, int? currentPage, int? rowNumber, IReceptionCertificates _receptionCertificates,AuxiliaryMethods _auxiliaryMethods , ILogger<Program> _logger) =>
 {
     try
     {
-        day = GetNullableString(day);
-        month = GetNullableString(month);
-        week = GetNullableString(week);
+        startDay = GetNullableString(startDay);
+        endDay = GetNullableString(endDay);
+
         string patternDia = @"(19|20)\d\d[-/.](0[1-9]|1[012])[-/.](0[1-9]|[1][0-9]|[2][0-9]|3[01])";
 
-        if (day != null)
+        if (startDay != null)
         {
-            if (Regex.IsMatch(day, patternDia) == false)
+            if (Regex.IsMatch(startDay, patternDia) == false)
             {
                 return Results.Problem("El dia se encuentra en un formato incorrecto", statusCode: 400);
             }
         }
-
-        string patternMes = @"(19|20)\d\d[-/.](0[1-9]|1[012])";
-
-        if (month != null)
+        if (endDay != null)
         {
-            if (Regex.IsMatch(month, patternMes) == false)
+            if (Regex.IsMatch(startDay, endDay) == false)
             {
-                return Results.Problem("El mes se encuentra en un formato incorrecto", statusCode: 400);
+                return Results.Problem("El dia se encuentra en un formato incorrecto", statusCode: 400);
             }
         }
+        var dates = new Dates();
 
-        string patternSemana = @"(19|20)\d\d[-/.](W0[1-9]|W1[0-9]|W2[0-9]|W3[0-9]|W4[0-9]|W5[0-3])";
-
-        if (week != null)
+        if (startDay != null && endDay != null)
         {
-            if (Regex.IsMatch(week, patternSemana) == false)
+            TimeSpan ts = new TimeSpan(00, 00, 0);
+            dates = new Dates()
             {
-                return Results.Problem("La semana se encuentra en un formato incorrecto", statusCode: 400);
-            }
+                StartDate = DateTime.Parse(startDay).Date + ts,
+                EndDate = DateTime.Parse(endDay).Date.AddHours(23).AddMinutes(59)
+            };
         }
+        else
+            dates = null;
 
-        if ((day != null && week != null) || (day != null && month != null) || (month != null && week != null))
-            return Results.Problem("Mas de una fecha ingresada", statusCode: 400);
-
-        var dates = _auxiliaryMethods.ObtenerFechas(day, month, week);
-
-        var actas = await _receptionCertificates.GetReceptionCertificatesAsync(dates, propertyType, numberOfRooms, lessor, tenant, delegation, agent);
+        var actas = await _receptionCertificates.GetReceptionCertificatesAsync(dates, certificateType, propertyType, numberOfRooms, lessor, tenant, delegation, agent);
         if (currentPage != null && rowNumber != null)
         {
             actas = actas.Skip((int)((currentPage - 1) * rowNumber)).Take((int)rowNumber).ToList();
