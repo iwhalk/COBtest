@@ -9,18 +9,18 @@ namespace ApiGateway.Controllers
     [Route("api/[controller]")]
     [Authorize]
     [ApiController]
-    public class BlobsController : ControllerBase
+    public class BlobInventoryController : ControllerBase
     {
-        private readonly IBlobsService _blobService;
-        public BlobsController(IBlobsService blobsService)
+        private readonly IBlobInventoryService _blobInventoryService;
+        public BlobInventoryController(IBlobInventoryService blobInventoryService)
         {
-            _blobService = blobsService;
+            _blobInventoryService = blobInventoryService;
         }
 
         [HttpGet]
-        public async Task<ActionResult> GetBlob()
+        public async Task<ActionResult> GetBlobInventory()
         {
-            var result = await _blobService.GetBlobsAsync();
+            var result = await _blobInventoryService.GetBlobsInventoryAsync();
 
             if (result.Succeeded)
             {
@@ -31,9 +31,9 @@ namespace ApiGateway.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> PostBlob(Blob blob)
+        public async Task<ActionResult> PostBlobInventory(BlobsInventory blobs)
         {
-            var result = await _blobService.PostBlobAsync(blob);
+            var result = await _blobInventoryService.PostBlobInventoryAsync(blobs);
 
             if (result.Succeeded)
             {
@@ -44,9 +44,9 @@ namespace ApiGateway.Controllers
         }
 
         [HttpPut]
-        public async Task<ActionResult> PutBlob(Blob blob)
+        public async Task<ActionResult> PutBlobInventory(BlobsInventory blobs)
         {
-            var result = await _blobService.PutBlobAsync(blob);
+            var result = await _blobInventoryService.PutBlobInventoryAsync(blobs);
 
             if (result.Succeeded)
             {
@@ -57,9 +57,9 @@ namespace ApiGateway.Controllers
         }
 
         [HttpDelete("{idBlob}")]
-        public async Task<ActionResult> Delete(int idBlob)
+        public async Task<ActionResult> DeleteInventory(int idBlob)
         {
-            var result = await _blobService.DeleteBlobAsync(idBlob);
+            var result = await _blobInventoryService.DeleteBlobInventoryAsync(idBlob);
 
             if (result.Succeeded)
             {

@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace ApiGateway.Controllers
 {
     [Route("api/[controller]")]
-    //[Authorize]
+    [Authorize]
     [ApiController]
     public class ReportesController : ControllerBase
     {
