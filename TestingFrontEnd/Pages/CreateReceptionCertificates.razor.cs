@@ -9,6 +9,7 @@ using FrontEnd.Components.Lessors;
 using SharedLibrary.Models;
 using Shared.Models;
 using Microsoft.AspNetCore.Components.Forms;
+using Microsoft.AspNetCore.Components.Authorization;
 
 namespace FrontEnd.Pages
 {
@@ -18,6 +19,8 @@ namespace FrontEnd.Pages
         private readonly ITenantService _tenantService;
         private readonly ILessorService _lessorService;
         private readonly IPropertyService _propertyService;
+        [CascadingParameter]
+        private Task<AuthenticationState> authenticationStateTask { get; set; }
 
         public CreateReceptionCertificates(ApplicationContext context, ITenantService tenantService, IPropertyService propertyService, ILessorService lessorService)
         {
@@ -42,12 +45,15 @@ namespace FrontEnd.Pages
         public void ChangeOpenModalTenant() => ShowModalTenant = ShowModalTenant ? false : true;
         public void ChangeOpenModalProperty() => ShowModalProperty = ShowModalProperty ? false : true;
 
-        public ReceptionCertificate NewCreateReceptionCertificate { get; set; } = new ReceptionCertificate();
+        public ReceptionCertificate NewCreateReceptionCertificate { get; set; } = new ReceptionCertificate { CreationDate = DateTime.Now };
 
         public FormLessor formLessor;
         public FormTenant formTenant;
         public FormProperty formProperty;
 
+        public IEnumerable<string> lessorValid { get; set; }
+        public IEnumerable<string> tenantValid { get; set; }
+        public IEnumerable<string> propertyValid { get; set; }
         public void SetLessorForm(int IdLessor)
         {
             CurrentLessor = lessors.Find(x => x.IdLessor == IdLessor);            
@@ -69,9 +75,9 @@ namespace FrontEnd.Pages
         public async void HandlePostCreateCertificates()
         {
             MyProperty = 1000;
-            var lessorValid = formLessor.LessorEditContext.Validate();
-            var tenantValid = formTenant.TenantEditContext.Validate();
-            var propertyValid = formProperty.PropertyEditContext.Validate();            
+            lessorValid = formLessor.LessorEditContext.GetValidationMessages();
+            tenantValid = formTenant.TenantEditContext.GetValidationMessages();
+            propertyValid = formProperty.PropertyEditContext.GetValidationMessages();            
             //if (lessorValid && tenantValid && propertyValid)
             //{
                 try
@@ -96,17 +102,20 @@ namespace FrontEnd.Pages
                         await _tenantService.PostTenantAsync(CurrentTenant);
                         await _tenantService.GetTenantAsync();
                     }
+                    var authUser = await authenticationStateTask;                    
+
                     NewCreateReceptionCertificate.IdTenant = CurrentTenant.IdTenant;
                     NewCreateReceptionCertificate.IdProperty = CurrentProperty.IdProperty;
                     NewCreateReceptionCertificate.ContractNumber = "0001";
-                    NewCreateReceptionCertificate.IdAgent = 
+                    NewCreateReceptionCertificate.IdAgent = authUser.User.Identity.Name;
+                    MyProperty = 99999;
+
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
                     Console.WriteLine(ex.Message);
                 }
-            //}
-            
+            //}            
         }
         protected override async Task OnInitializedAsync()
         {
