@@ -12,9 +12,11 @@ namespace SharedLibrary.Models
     {
         public Property()
         {
+            AreaServices = new HashSet<AreaService>();
             BlobsInventories = new HashSet<BlobsInventory>();
             Inventories = new HashSet<Inventory>();
             ReceptionCertificates = new HashSet<ReceptionCertificate>();
+            IdAreas = new HashSet<Area>();
         }
 
         [Key]
@@ -56,10 +58,16 @@ namespace SharedLibrary.Models
         [InverseProperty("Properties")]
         public virtual PropertyType IdPropertyTypeNavigation { get; set; }
         [InverseProperty("IdPropertyNavigation")]
+        public virtual ICollection<AreaService> AreaServices { get; set; }
+        [InverseProperty("IdPropertyNavigation")]
         public virtual ICollection<BlobsInventory> BlobsInventories { get; set; }
         [InverseProperty("IdPropertyNavigation")]
         public virtual ICollection<Inventory> Inventories { get; set; }
         [InverseProperty("IdPropertyNavigation")]
         public virtual ICollection<ReceptionCertificate> ReceptionCertificates { get; set; }
+
+        [ForeignKey("IdProperty")]
+        [InverseProperty("IdProperties")]
+        public virtual ICollection<Area> IdAreas { get; set; }
     }
 }

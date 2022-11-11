@@ -19,6 +19,8 @@ namespace FrontEnd.Components
 
         [Parameter]
         public EventCallback OpenModalKeys { get; set; }
+        [Parameter]
+        public EventCallback<int> OnAreaClick { get; set; }
 
         protected override async Task OnInitializedAsync()
         {

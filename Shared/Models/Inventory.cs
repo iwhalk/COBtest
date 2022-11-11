@@ -22,6 +22,8 @@ namespace SharedLibrary.Models
         public int IdProperty { get; set; }
         [Column("ID_Area")]
         public int IdArea { get; set; }
+        [Column("ID_Service")]
+        public int? IdService { get; set; }
         [Column("ID_Description")]
         public int IdDescription { get; set; }
         [StringLength(50)]
@@ -40,6 +42,9 @@ namespace SharedLibrary.Models
         [ForeignKey("IdProperty")]
         [InverseProperty("Inventories")]
         public virtual Property IdPropertyNavigation { get; set; }
+        [ForeignKey("IdService")]
+        [InverseProperty("Inventories")]
+        public virtual Service IdServiceNavigation { get; set; }
         [InverseProperty("IdInventoryNavigation")]
         public virtual ICollection<BlobsInventory> BlobsInventories { get; set; }
     }

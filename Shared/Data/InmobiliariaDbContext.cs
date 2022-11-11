@@ -20,6 +20,7 @@ namespace SharedLibrary.Data
         }
 
         public virtual DbSet<Area> Areas { get; set; }
+        public virtual DbSet<AreaService> AreaServices { get; set; }
         public virtual DbSet<AspNetUser> AspNetUsers { get; set; }
         public virtual DbSet<Blob> Blobs { get; set; }
         public virtual DbSet<BlobsInventory> BlobsInventories { get; set; }
@@ -40,6 +41,29 @@ namespace SharedLibrary.Data
             {
                 entity.HasKey(e => e.IdArea)
                     .HasName("PK__Areas__42A5C44C0FE9F5F8");
+            });
+
+            modelBuilder.Entity<AreaService>(entity =>
+            {
+                entity.HasKey(e => new { e.IdArea, e.IdService, e.IdProperty });
+
+                entity.HasOne(d => d.IdAreaNavigation)
+                    .WithMany(p => p.AreaServices)
+                    .HasForeignKey(d => d.IdArea)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_AreaServices_Areas");
+
+                entity.HasOne(d => d.IdPropertyNavigation)
+                    .WithMany(p => p.AreaServices)
+                    .HasForeignKey(d => d.IdProperty)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_AreaServices_Properties");
+
+                entity.HasOne(d => d.IdServiceNavigation)
+                    .WithMany(p => p.AreaServices)
+                    .HasForeignKey(d => d.IdService)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_AreaServices_Services");
             });
 
             modelBuilder.Entity<Blob>(entity =>
@@ -118,6 +142,11 @@ namespace SharedLibrary.Data
                     .HasForeignKey(d => d.IdProperty)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_Inventory_ID_Property");
+
+                entity.HasOne(d => d.IdServiceNavigation)
+                    .WithMany(p => p.Inventories)
+                    .HasForeignKey(d => d.IdService)
+                    .HasConstraintName("FK_Inventories_Services");
             });
 
             modelBuilder.Entity<Lessor>(entity =>
@@ -142,6 +171,23 @@ namespace SharedLibrary.Data
                     .HasForeignKey(d => d.IdPropertyType)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_Property_ID_PropertyType");
+
+                entity.HasMany(d => d.IdAreas)
+                    .WithMany(p => p.IdProperties)
+                    .UsingEntity<Dictionary<string, object>>(
+                        "PropertyArea",
+                        l => l.HasOne<Area>().WithMany().HasForeignKey("IdArea").OnDelete(DeleteBehavior.ClientSetNull).HasConstraintName("FK_PropertyAreas_Areas"),
+                        r => r.HasOne<Property>().WithMany().HasForeignKey("IdProperty").OnDelete(DeleteBehavior.ClientSetNull).HasConstraintName("FK_PropertyAreas_Properties"),
+                        j =>
+                        {
+                            j.HasKey("IdProperty", "IdArea");
+
+                            j.ToTable("PropertyAreas");
+
+                            j.IndexerProperty<int>("IdProperty").HasColumnName("ID_Property");
+
+                            j.IndexerProperty<int>("IdArea").HasColumnName("ID_Area");
+                        });
             });
 
             modelBuilder.Entity<PropertyType>(entity =>
