@@ -18,8 +18,9 @@ namespace FrontEnd.Pages
         private readonly IDescriptionService _descriptionService;
         private readonly IFeaturesService _featuresService;
         private readonly IPropertyTypeService _propertyTypeService;
+        private readonly IReceptionCertificateService _reception;
 
-        public ReceptionCertificatesHistorical(ApplicationContext context, ITenantService tenantService, IPropertyService propertyService, ILessorService lessorService, IInventoryService inventoryService, IServicesService servicesService, IAreaService areaService, IDescriptionService descriptionService, IFeaturesService featuresService, IPropertyTypeService propertyTypeService)
+        public ReceptionCertificatesHistorical(ApplicationContext context, ITenantService tenantService, IPropertyService propertyService, ILessorService lessorService, IInventoryService inventoryService, IServicesService servicesService, IAreaService areaService, IDescriptionService descriptionService, IFeaturesService featuresService, IPropertyTypeService propertyTypeService, IReceptionCertificateService reception)
         {
             _context = context;
             _tenantService = tenantService;
@@ -31,6 +32,7 @@ namespace FrontEnd.Pages
             _descriptionService = descriptionService;
             _featuresService = featuresService;
             _propertyTypeService = propertyTypeService;
+            _reception = reception;
         }
 
         private List<Tenant> tenants { get; set; }
@@ -42,6 +44,7 @@ namespace FrontEnd.Pages
         private List<Description> descriptions { get; set; }
         private List<Feature> features { get; set; }
         private List<PropertyType> propertyTypes { get; set; }
+        private List<ActasRecepcion> actasRecepcions { get; set; }
 
         protected override async Task OnInitializedAsync()
         {
@@ -54,6 +57,7 @@ namespace FrontEnd.Pages
             descriptions = await _descriptionService.GetDescriptionAsync();
             features = await _featuresService.GetFeaturesAsync();
             propertyTypes = await _propertyTypeService.GetPropertyTypeAsync();
+            actasRecepcions = await _reception.GetReceptionCertificatesAsync(null, null, null, null, null, null, null, null, null, null, null);
         }
     }
 }

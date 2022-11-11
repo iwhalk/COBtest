@@ -19,6 +19,7 @@ namespace FrontEnd.Stores
         private List<Description> descriptionsList;
         private List<Feature> featuresList;
         private List<PropertyType> propertyTypesList;
+        private List<ActasRecepcion> actasRecepcionsList;
 
         public Tenant CurrentTenant
         {
@@ -125,6 +126,15 @@ namespace FrontEnd.Stores
             set
             {
                 propertyTypesList = value;
+                NotifyStateChanged();
+            }
+        }
+        public List<ActasRecepcion> ActasRecepcion
+        {
+            get => actasRecepcionsList;
+            set
+            {
+                actasRecepcionsList = value;
                 NotifyStateChanged();
             }
         }

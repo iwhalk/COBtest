@@ -21,5 +21,10 @@ namespace ApiGateway.Services
         {
             return await PostAsync<PropertyType>(propertyType, path: "PropertyTypes");
         }
+
+        public async Task<ApiResponse<PropertyType>> PutPropertyTypeAsync(PropertyType propertyType)
+        {
+            return await PutAsync<PropertyType>(propertyType.IdPropertyType, propertyType, path: "PropertyTypes");
+        }
     }
 }

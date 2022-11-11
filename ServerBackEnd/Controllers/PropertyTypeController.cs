@@ -42,5 +42,18 @@ namespace ApiGateway.Controllers
 
             return BadRequest(result);
         }
+
+        [HttpPut]
+        public async Task<ActionResult> PutPropertyType(PropertyType propertyType)
+        {
+            var result = await _typeService.PutPropertyTypeAsync(propertyType);
+
+            if (result.Succeeded)
+            {
+                return Ok(result);
+            }
+
+            return BadRequest(result);
+        }
     }
 }
