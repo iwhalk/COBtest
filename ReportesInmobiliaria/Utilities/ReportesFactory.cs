@@ -288,18 +288,34 @@ namespace ReportesInmobiliaria.Utilities
                 //A partir de la primera fila de elementos combina las celdas de la tercer columna
                 Row elementsRow = tableAreas.Rows[1];
                 elementsRow.Cells[2].MergeDown = tableAreas.Rows.Count - 2;
+
                 //Agrega un espacio y una imagen de la ruta especificada
                 paragraph = section.AddParagraph();
                 paragraph.Format.SpaceBefore = "0.6cm";
                 paragraph.Format.Font.Size = 11;
                 paragraph.Style = "Reference";
                 paragraph.AddFormattedText("Fotografías", TextFormat.Bold);
-                Image image = section.AddImage(ImageSource.FromFile(Environment.CurrentDirectory + @"\Imagenes\house.jpg"));
-                image.Height = "3.0cm"; image.Width = "3.0cm";
-                image.Left = ShapePosition.Center;
-                Image image2 = section.AddImage(ImageSource.FromFile(Environment.CurrentDirectory + @"\Imagenes\apartment1.jpg"));
-                image2.Height = "3.0cm"; image.Width = "3.0cm";
-                image2.Left = ShapePosition.Left;
+
+                Table tableImages = section.AddTable();
+                tableImages.Style = "Table";
+                tableImages.Rows.LeftIndent = 0;
+                tableImages.Rows.Alignment = RowAlignment.Center;
+                Column columnI = tableImages.AddColumn("5cm");
+                columnI.Format.Alignment = ParagraphAlignment.Center;
+                columnI = tableImages.AddColumn("5cm");
+                columnI.Format.Alignment = ParagraphAlignment.Center;
+                columnI = tableImages.AddColumn("5cm");
+                columnI.Format.Alignment = ParagraphAlignment.Center;
+                Row rowI = tableImages.AddRow();
+                rowI.Cells[0].Format.Alignment = ParagraphAlignment.Center;
+                rowI.Cells[0].VerticalAlignment = VerticalAlignment.Center;
+                rowI.Cells[0].AddParagraph().AddImage(ImageSource.FromFile(Environment.CurrentDirectory + @"\Imagenes\apartment1.jpg")).Width = "4.8cm";
+                rowI.Cells[1].Format.Alignment = ParagraphAlignment.Center;
+                rowI.Cells[1].VerticalAlignment = VerticalAlignment.Center;
+                rowI.Cells[1].AddParagraph().AddImage(ImageSource.FromFile(Environment.CurrentDirectory + @"\Imagenes\apartment2.jpg")).Width = "4.8cm";
+                rowI.Cells[2].Format.Alignment = ParagraphAlignment.Center;
+                rowI.Cells[2].VerticalAlignment = VerticalAlignment.Center;
+                rowI.Cells[2].AddParagraph().AddImage(ImageSource.FromFile(Environment.CurrentDirectory + @"\Imagenes\apartment3.jpg")).Width = "4.8cm";
             }
 
             document.LastSection.AddPageBreak();
@@ -346,9 +362,22 @@ namespace ReportesInmobiliaria.Utilities
                 paragraph.Format.Font.Size = 11;
                 paragraph.Style = "Reference";
                 paragraph.AddFormattedText("Fotografías", TextFormat.Bold);
-                Image image = section.AddImage(ImageSource.FromFile(Environment.CurrentDirectory + @"\Imagenes\key.jpg"));
-                image.Height = "2.5cm"; image.Width = "2.5cm";
-                image.Left = ShapePosition.Center;
+
+                Table tableImages = section.AddTable();
+                tableImages.Style = "Table";
+                tableImages.Rows.LeftIndent = 0;
+                tableImages.Rows.Alignment = RowAlignment.Center;
+                Column columnI = tableImages.AddColumn("5cm");
+                columnI.Format.Alignment = ParagraphAlignment.Center;
+                columnI = tableImages.AddColumn("5cm");
+                columnI.Format.Alignment = ParagraphAlignment.Center;
+                Row rowI = tableImages.AddRow();
+                rowI.Cells[0].Format.Alignment = ParagraphAlignment.Center;
+                rowI.Cells[0].VerticalAlignment = VerticalAlignment.Center;
+                rowI.Cells[0].AddParagraph().AddImage(ImageSource.FromFile(Environment.CurrentDirectory + @"\Imagenes\key.jpg")).Width = "4.2cm";
+                rowI.Cells[1].Format.Alignment = ParagraphAlignment.Center;
+                rowI.Cells[1].VerticalAlignment = VerticalAlignment.Center;
+                rowI.Cells[1].AddParagraph().AddImage(ImageSource.FromFile(Environment.CurrentDirectory + @"\Imagenes\medidor.jpg")).Width = "4.2cm";
             }            
 
             paragraph = section.AddParagraph();
