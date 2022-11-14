@@ -1,6 +1,4 @@
-﻿
-using SharedLibrary.Models;
-using Shared.Models;
+﻿using SharedLibrary.Models;
 
 namespace FrontEnd.Stores
 {

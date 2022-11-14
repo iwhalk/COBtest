@@ -1,9 +1,9 @@
-﻿using Shared.Data;
+﻿using SharedLibrary.Data;
 using ReportesInmobiliaria.Interfaces;
 using System.ComponentModel.DataAnnotations;
 using System.Security.Claims;
 using Microsoft.EntityFrameworkCore;
-using Shared.Models;
+using SharedLibrary.Models;
 using System.Diagnostics;
 using SharedLibrary.Models;
 using NuGet.Packaging.Signing;

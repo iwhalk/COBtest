@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Shared.Models
+namespace SharedLibrary.Models
 {
-     public class Dates
+    public class Dates
     {
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }

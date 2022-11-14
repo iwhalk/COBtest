@@ -4,10 +4,9 @@ using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Shared.Models;
 using SharedLibrary.Models;
 
-namespace Shared.Data
+namespace SharedLibrary.Data
 {
     public partial class InmobiliariaDbContext : DbContext
     {
@@ -41,6 +40,23 @@ namespace Shared.Data
             {
                 entity.HasKey(e => e.IdArea)
                     .HasName("PK__Areas__42A5C44C0FE9F5F8");
+
+                entity.HasMany(d => d.IdServices)
+                    .WithMany(p => p.IdAreas)
+                    .UsingEntity<Dictionary<string, object>>(
+                        "AreaService",
+                        l => l.HasOne<Service>().WithMany().HasForeignKey("IdService").OnDelete(DeleteBehavior.ClientSetNull).HasConstraintName("FK_AreaServices_Services"),
+                        r => r.HasOne<Area>().WithMany().HasForeignKey("IdArea").OnDelete(DeleteBehavior.ClientSetNull).HasConstraintName("FK_AreaServices_Areas"),
+                        j =>
+                        {
+                            j.HasKey("IdArea", "IdService");
+
+                            j.ToTable("AreaServices");
+
+                            j.IndexerProperty<int>("IdArea").HasColumnName("ID_Area");
+
+                            j.IndexerProperty<int>("IdService").HasColumnName("ID_Service");
+                        });
             });
 
             modelBuilder.Entity<Blob>(entity =>
@@ -143,6 +159,23 @@ namespace Shared.Data
                     .HasForeignKey(d => d.IdPropertyType)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_Property_ID_PropertyType");
+
+                entity.HasMany(d => d.IdAreas)
+                    .WithMany(p => p.IdProperties)
+                    .UsingEntity<Dictionary<string, object>>(
+                        "PropertyArea",
+                        l => l.HasOne<Area>().WithMany().HasForeignKey("IdArea").OnDelete(DeleteBehavior.ClientSetNull).HasConstraintName("FK_PropertyAreas_Areas"),
+                        r => r.HasOne<Property>().WithMany().HasForeignKey("IdProperty").OnDelete(DeleteBehavior.ClientSetNull).HasConstraintName("FK_PropertyAreas_Properties"),
+                        j =>
+                        {
+                            j.HasKey("IdProperty", "IdArea");
+
+                            j.ToTable("PropertyAreas");
+
+                            j.IndexerProperty<int>("IdProperty").HasColumnName("ID_Property");
+
+                            j.IndexerProperty<int>("IdArea").HasColumnName("ID_Area");
+                        });
             });
 
             modelBuilder.Entity<PropertyType>(entity =>

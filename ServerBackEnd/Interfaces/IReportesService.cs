@@ -1,4 +1,4 @@
-﻿using Shared;
+﻿using SharedLibrary;
 
 namespace ApiGateway.Interfaces
 {

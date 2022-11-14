@@ -1,8 +1,8 @@
-﻿using Shared;
-using System.Net.Http.Json;
+﻿using System.Net.Http.Json;
 using System.Text.Json.Serialization;
 using FrontEnd.Stores;
 using FrontEnd.Interfaces;
+using SharedLibrary;
 
 namespace FrontEnd.Repositories
 {

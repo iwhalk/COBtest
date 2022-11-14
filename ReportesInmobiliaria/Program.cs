@@ -2,8 +2,8 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
-using Shared.Data;
-using Shared.Models;
+using SharedLibrary.Data;
+using SharedLibrary.Models;
 using System.ComponentModel.DataAnnotations;
 using System.Globalization;
 using System.Security.Cryptography;
@@ -236,7 +236,7 @@ app.MapGet("/Inventory",
 .Produces<HttpValidationProblemDetails>(StatusCodes.Status400BadRequest, "application/problem+json")
 .Produces<HttpValidationProblemDetails>(StatusCodes.Status500InternalServerError, "application/problem+json");
 
-app.MapPost("/Inventory", async (Shared.Models.Inventory inventory, IInventoryService _inventoryService) =>
+app.MapPost("/Inventory", async (SharedLibrary.Models.Inventory inventory, IInventoryService _inventoryService) =>
 {
     try
     {
@@ -279,7 +279,7 @@ app.MapGet("/Services",
 .Produces<HttpValidationProblemDetails>(StatusCodes.Status400BadRequest, "application/problem+json")
 .Produces<HttpValidationProblemDetails>(StatusCodes.Status500InternalServerError, "application/problem+json");
 
-app.MapPost("/Services", async (Shared.Models.Service service, IServicesService _servicesService) =>
+app.MapPost("/Services", async (SharedLibrary.Models.Service service, IServicesService _servicesService) =>
 {
     try
     {
@@ -322,7 +322,7 @@ app.MapGet("/Descriptions",
 .Produces<HttpValidationProblemDetails>(StatusCodes.Status400BadRequest, "application/problem+json")
 .Produces<HttpValidationProblemDetails>(StatusCodes.Status500InternalServerError, "application/problem+json");
 
-app.MapPost("/Descriptions", async (Shared.Models.Description description, IDescriptionService _descriptionService) =>
+app.MapPost("/Descriptions", async (SharedLibrary.Models.Description description, IDescriptionService _descriptionService) =>
 {
     try
     {
@@ -584,6 +584,7 @@ app.MapGet("/ReporteFeatures", async (int? id, IReporteFeaturesService _reportes
 app.MapGet("/Blobs", async (int id, IBlobService _blobService) =>
 {
     var blobs = await _blobService.GetBlobAsync(id);
+    if (blobs == null) return Results.NoContent();
     using MemoryStream ms = new MemoryStream();
     blobs.Content.CopyTo(ms);
     return Results.File(ms.ToArray(), blobs.ContentType);
@@ -615,7 +616,7 @@ app.MapPost("/Blobs", async (string name, [FromForm(Name = "file")] HttpRequest 
 .Produces<HttpValidationProblemDetails>(StatusCodes.Status500InternalServerError, "application/problem+json")
 .AllowAnonymous();
 
-app.MapPut("/Blobs/{id}", async (int id, Shared.Models.Blob blob, IBlobService _blobService) =>
+app.MapPut("/Blobs/{id}", async (int id, SharedLibrary.Models.Blob blob, IBlobService _blobService) =>
 {
     try
     {
@@ -753,7 +754,7 @@ app.MapGet("/ReceptionCertificate", async (string? startDay, string? endDay, int
         }
         if (endDay != null)
         {
-            if (Regex.IsMatch(startDay, endDay) == false)
+            if (Regex.IsMatch(endDay, patternDia) == false)
             {
                 return Results.Problem("El dia se encuentra en un formato incorrecto", statusCode: 400);
             }

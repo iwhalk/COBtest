@@ -6,13 +6,14 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 
-namespace Shared.Models
+namespace SharedLibrary.Models
 {
     public partial class Service
     {
         public Service()
         {
             Features = new HashSet<Feature>();
+            IdAreas = new HashSet<Area>();
         }
 
         [Key]
@@ -25,5 +26,9 @@ namespace Shared.Models
 
         [InverseProperty("IdServiceNavigation")]
         public virtual ICollection<Feature> Features { get; set; }
+
+        [ForeignKey("IdService")]
+        [InverseProperty("IdServices")]
+        public virtual ICollection<Area> IdAreas { get; set; }
     }
 }

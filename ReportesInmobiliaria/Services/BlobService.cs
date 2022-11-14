@@ -2,8 +2,8 @@
 using Azure.Storage.Blobs.Models;
 using Microsoft.EntityFrameworkCore;
 using ReportesInmobiliaria.Interfaces;
-using Shared.Data;
-using Shared.Models;
+using SharedLibrary.Data;
+using SharedLibrary.Models;
 using System.IO;
 
 namespace ReportesInmobiliaria.Services
@@ -19,9 +19,10 @@ namespace ReportesInmobiliaria.Services
             _blobServiceClient = blobServiceClient;
         }
 
-        public async Task<BlobDownloadInfo> GetBlobAsync(int id)
+        public async Task<BlobDownloadInfo>? GetBlobAsync(int id)
         {
             var blob = await _dbContext.Blobs.FindAsync(id);
+            if (blob == null) return null;
 
             var blobContainerClient = _blobServiceClient.GetBlobContainerClient("inventario");
             var blobClient = blobContainerClient.GetBlobClient(blob.BlodName);

@@ -7,7 +7,6 @@ using FrontEnd.Components.Propertys;
 using FrontEnd.Components.Tenants;
 using FrontEnd.Components.Lessors;
 using SharedLibrary.Models;
-using Shared.Models;
 using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.Components.Authorization;
 

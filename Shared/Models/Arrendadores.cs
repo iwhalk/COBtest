@@ -1,5 +1,4 @@
-﻿
-namespace Shared.Models
+﻿namespace SharedLibrary.Models
 {
     public class ArrendadoresDetalle
     {
