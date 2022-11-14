@@ -46,9 +46,10 @@ namespace FrontEnd.Pages
         private ReceptionCertificate CurrentReceptionCertificate { get; set; }
         public string ImageBase64Lessor { get; set; }
         public string ImageBase64Tenant { get; set; }
-        public string Observacionbes { get; set; }
+        public string Observaciones { get; set; }
 
-        public SignaturesLessor signaturesLessorComponent = new SignaturesLessor(); 
+        public SignaturesLessor signaturesLessorComponent;
+        public SignaturesTenant signaturesTenantComponent;
 
         protected override async Task OnInitializedAsync()
         {
@@ -62,13 +63,15 @@ namespace FrontEnd.Pages
             features = await _featuresService.GetFeaturesAsync();
             propertyTypes = await _propertyTypeService.GetPropertyTypeAsync();
 
-            CurrentReceptionCertificate = _context.CurrentReceptionCertificate;
-
-            
+            CurrentReceptionCertificate = _context.CurrentReceptionCertificate;            
         }
-        public async void HandleInsertSignature()
+        public async void HandleInsertSignatures()
         {
-            await signaturesLessorComponent.ImageAsync();
+            ImageBase64Lessor = await signaturesLessorComponent._context.ToDataURLAsync();
+            ImageBase64Tenant = await signaturesTenantComponent._context.ToDataURLAsync();
+            CurrentReceptionCertificate.Observation = Observaciones;
+            CurrentReceptionCertificate.ApprovarPathLessor = ImageBase64Lessor;
+            CurrentReceptionCertificate.ApprovalPathTenant = ImageBase64Tenant;
 
         }
     }

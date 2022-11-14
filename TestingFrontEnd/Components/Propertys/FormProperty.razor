@@ -57,13 +57,6 @@
                     <div class="text-xs"><ValidationMessage class="text-xs" For="@(() => CurrentProperty.Size)" /></div>
                 </div>                  
             </div>
-            <div class="flex inline mb-3">
-                <label class="w-44 lg:w-24 text-left text-sm lg:text-md">Nombre de la Propiedad</label>
-                <div>
-                    <InputText @bind-Value="CurrentProperty.PropertyName" disabled="@IsFormPropertyExit" class="w-36 lg:w-40 ml-2 px-2 rounded-lg text-black" />
-                    <div class="text-xs"><ValidationMessage class="text-xs" For="@(() => CurrentProperty.PropertyName)" /></div>
-                </div>
-            </div>
         </div>
         <div>
             <div>
