@@ -1,7 +1,7 @@
 ﻿using ApiGateway.Interfaces;
 using ApiGateway.Proxies;
-using Shared;
-using Shared.Models;
+using SharedLibrary;
+using SharedLibrary.Models;
 using System.Reflection.Metadata;
 using static System.Reflection.Metadata.BlobBuilder;
 

@@ -7,7 +7,7 @@ using MigraDocCore.Rendering;
 //using MigraDoc.DocumentObjectModel.Shapes;
 //using MigraDoc.DocumentObjectModel.Tables;
 //using MigraDoc.Rendering;
-using Shared.Models;
+using SharedLibrary.Models;
 using System.Globalization;
 using System.Text;
 

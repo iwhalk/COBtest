@@ -2,8 +2,8 @@
 using Azure.Storage.Blobs.Models;
 using Microsoft.EntityFrameworkCore;
 using ReportesInmobiliaria.Interfaces;
-using Shared.Data;
-using Shared.Models;
+using SharedLibrary.Data;
+using SharedLibrary.Models;
 using System.IO;
 
 namespace ReportesInmobiliaria.Services

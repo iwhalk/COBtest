@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
-using Shared.Models;
 using SharedLibrary.Models;
 
 namespace FrontEnd.Components.Tenants

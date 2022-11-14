@@ -1,7 +1,6 @@
 ﻿using FrontEnd.Interfaces;
 using FrontEnd.Stores;
 using Microsoft.AspNetCore.Components;
-using Shared.Models;
 using SharedLibrary.Models;
 
 namespace FrontEnd.Pages

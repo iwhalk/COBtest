@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Components;
-using Shared.Models;
 using SharedLibrary.Models;
 
 namespace FrontEnd.Components.Tenants

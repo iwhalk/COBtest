@@ -93,7 +93,14 @@ builder.Services.AddProblemDetails(setup =>
     .AddProblemDetailsConventions()
 .AddJsonOptions(x => x.JsonSerializerOptions.DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull);
 
-builder.Services.AddHttpClient("Reportes", client => client.BaseAddress = new Uri("http://localhost:7293/"));
+if (builder.Environment.IsDevelopment())
+{
+    builder.Services.AddHttpClient("Reportes", client => client.BaseAddress = new Uri("http://localhost:7293/"));
+}
+else
+{
+    builder.Services.AddHttpClient("Reportes", client => client.BaseAddress = new Uri("https://reportesarisoft2245.azurewebsites.net"));
+}
 
 builder.Services.AddCors();
 

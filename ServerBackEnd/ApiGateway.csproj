@@ -46,7 +46,7 @@
 
   <ItemGroup>
     <Reference Include="ReportesData">
-      <HintPath>..\Shared\ReportesData.dll</HintPath>
+      <HintPath>..\SharedLibrary\ReportesData.dll</HintPath>
     </Reference>
   </ItemGroup>
 

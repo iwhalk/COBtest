@@ -5,8 +5,6 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
-using Shared.Models;
-using SharedLibrary.Models;
 
 namespace SharedLibrary.Models
 {
@@ -17,15 +15,12 @@ namespace SharedLibrary.Models
             BlobsInventories = new HashSet<BlobsInventory>();
             Inventories = new HashSet<Inventory>();
             ReceptionCertificates = new HashSet<ReceptionCertificate>();
+            IdAreas = new HashSet<Area>();
         }
 
         [Key]
         [Column("ID_Property")]
         public int IdProperty { get; set; }
-        [Required]
-        [StringLength(30)]
-        [Unicode(false)]
-        public string PropertyName { get; set; }
         [Required]
         [StringLength(50)]
         [Unicode(false)]
@@ -63,5 +58,9 @@ namespace SharedLibrary.Models
         public virtual ICollection<Inventory> Inventories { get; set; }
         [InverseProperty("IdPropertyNavigation")]
         public virtual ICollection<ReceptionCertificate> ReceptionCertificates { get; set; }
+
+        [ForeignKey("IdProperty")]
+        [InverseProperty("IdProperties")]
+        public virtual ICollection<Area> IdAreas { get; set; }
     }
 }

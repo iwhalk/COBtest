@@ -1,4 +1,4 @@
-﻿using Shared.Models;
+﻿using SharedLibrary.Models;
 using System.Globalization;
 
 namespace ReportesInmobiliaria.Utilities

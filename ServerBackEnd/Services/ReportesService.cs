@@ -1,6 +1,6 @@
 ﻿using ApiGateway.Interfaces;
 using ApiGateway.Proxies;
-using Shared;
+using SharedLibrary;
 
 namespace ApiGateway.Services
 {
