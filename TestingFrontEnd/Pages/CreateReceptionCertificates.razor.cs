@@ -60,19 +60,19 @@ namespace FrontEnd.Pages
         {
             CurrentLessor = lessors.Find(x => x.IdLessor == IdLessor);            
             ShowModalLessor = false;
-            _context.CurrentLessor = CurrentLessor;
+            _context.CurrentLessor = CurrentLessor ?? new Lessor();
         }
         public void SetTenantForm(int IdTenant)
         {
             CurrentTenant = tenants.Find(x => x.IdTenant == IdTenant);            
             ShowModalTenant = false;
-            _context.CurrentTenant = CurrentTenant;
+            _context.CurrentTenant = CurrentTenant ?? new Tenant();
         }
         public void SetPropertyForm(int IdProperty)
         {
             CurrentProperty = properties.Find(x => x.IdProperty == IdProperty);                        
             ShowModalProperty = false;
-            _context.CurrentPropertys = CurrentProperty;            
+            _context.CurrentPropertys = CurrentProperty ?? new Property();
         }
         public async void HandlePostCreateCertificates()
         {
