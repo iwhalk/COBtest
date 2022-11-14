@@ -14,23 +14,20 @@ namespace FrontEnd.Services
             _repository = repository;
             _context = context;
         }
-
         public async Task<List<Feature>> GetFeaturesAsync()
         {
-            if (_context.Feature == null)
+            if (_context.FeatureList == null)
             {
                 var response = await _repository.GetAsync<List<Feature>>("api/Features");
 
                 if (response != null)
                 {
-                    _context.Feature = response;
-                    return _context.Feature;
+                    _context.FeatureList = response;
+                    return _context.FeatureList;
                 }
             }
-
-            return _context.Feature;
+            return _context.FeatureList;
         }
-
         public async Task<Feature> PostFeaturesAsync(Feature feature)
         {
             return await _repository.PostAsync("api/Features", feature);

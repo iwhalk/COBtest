@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using Shared.Models;
 using System.Diagnostics;
 using SharedLibrary.Models;
+using NuGet.Packaging.Signing;
 
 namespace ReportesInmobiliaria.Services
 {
@@ -20,7 +21,7 @@ namespace ReportesInmobiliaria.Services
             _httpContextAccessor = httpContextAccessor;
         }
 
-        public async Task<List<ActasRecepcion?>> GetReceptionCertificatesAsync(Dates dates, int? propertyType, int? numberOfRooms, int? lessor, int? tenant, string? delegation, string? agent)
+        public async Task<List<ActasRecepcion?>> GetReceptionCertificatesAsync(Dates dates, int? certificateType, int? propertyType, int? numberOfRooms, int? lessor, int? tenant, string? delegation, string? agent)
         {
             IQueryable<AspNetUser> aspNetUsers = _dbContext.AspNetUsers;
             IQueryable<ReceptionCertificate> receptionCertificates = _dbContext.ReceptionCertificates
@@ -43,6 +44,8 @@ namespace ReportesInmobiliaria.Services
                 receptionCertificates = receptionCertificates.Where(x => x.IdPropertyNavigation.Delegation == delegation);
             if (agent != null)
                 receptionCertificates = receptionCertificates.Where(x => x.IdAgent == agent);
+            if (certificateType != null)
+                receptionCertificates = receptionCertificates.Where(x => x.IdTypeRecord == certificateType);
 
             var list = new List<ActasRecepcion>();
 

@@ -16,18 +16,18 @@ namespace FrontEnd.Services
         }
         public async Task<List<Service>> GetServicesAsync()
         {
-            if (_context.Service == null)
+            if (_context.ServiceList == null)
             {
                 var response = await _repository.GetAsync<List<Service>>("api/Services");
 
                 if (response != null)
                 {
-                    _context.Service = response;
-                    return _context.Service;
+                    _context.ServiceList = response;
+                    return _context.ServiceList;
                 }
             }
 
-            return _context.Service;
+            return _context.ServiceList;
         }
 
         public async Task<Service> PostServicesAsync(Service service)

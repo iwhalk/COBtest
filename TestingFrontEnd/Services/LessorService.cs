@@ -13,21 +13,19 @@ namespace FrontEnd.Services
             _context = context;
             _repository = repository;
         }
-
         public async Task<List<Lessor>> GetLessorAsync()
         {
-            if (_context.Lessor == null)
+            if (_context.LessorList == null)
             {
                 var response = await _repository.GetAsync<List<Lessor>>("api/Lessor");
 
                 if (response != null)
                 {
-                    _context.Lessor = response;
-                    return _context.Lessor;
+                    _context.LessorList = response;
+                    return _context.LessorList;
                 }
             }
-
-            return _context.Lessor;
+            return _context.LessorList;
         }
         public async Task<Lessor> PostLessorAsync(Lessor lessor)
         {
