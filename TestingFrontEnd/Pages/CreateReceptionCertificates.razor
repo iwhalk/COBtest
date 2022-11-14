@@ -3,17 +3,20 @@
 <body class="flex flex-column min-h-screen bg-[url('/assets/img/fondocasa.png')] imgfondo">   
     <div id="ContenedorHome" class="my-auto">       
         <div class="mx-auto max-w-screen-xl bg-transparent pt-2 md:p-5 sm:p-1">
-            <EditForm Model="@NewCreateReceptionCertificate" OnSubmit="HandlePostCreateCertificates">
-            <DataAnnotationsValidator />
+            @*<EditForm Model="@NewCreateReceptionCertificate" OnSubmit="HandlePostCreateCertificates">*@
+            @*<DataAnnotationsValidator />*@
             <div class="bg-[#2B286F] mx-auto lg:h-36 md:m-3 sm:m-1 text-center text-sm-center md:text-md text-white pt-2 pb-3 rounded-lg lg:rounded-none my-2 ">
+                <h1 class="text-xl mb-2">Informacion general</h1>
+        
                 <div class="flex flex-col lg:grid lg:grid-cols-2  place-items-center">
                     <div>
                         <div class="flex my-3 lg:mb-3">
-                            <label class="w-44 lg:w-52 text-left text-sm lg:text-md">Fecha y Hora de Realizacion</label>                            
-                            <div>
+                            <label class="w-44 lg:w-52 text-left text-sm lg:text-md">Fecha y Hora de Realizacion</label>
+                            <input class="w-36 lg:w-52 ml-2 px-2 rounded-lg text-black" type="date" />
+                            @*<div>
                                 <InputDate @bind-Value="NewCreateReceptionCertificate.CreationDate" class="w-44 ml-2 rounded-lg text-black" />
                                 <div class="text-xs"><ValidationMessage class="text-xs" For="@(() => NewCreateReceptionCertificate.CreationDate)" /></div>
-                            </div>
+                            </div>*@
                         </div>
                         <div class="flex my-3">
                             <label class="w-44 lg:w-52 text-left text-sm lg:text-md">Realizado por</label>
@@ -23,15 +26,11 @@
                     <div>
                         <div class="flex ">
                             <label class="w-44 lg:w-52 text-left text-sm lg:text-md">No Contrato</label>
-                            <div>
-                                <InputDate @bind-Value="NewCreateReceptionCertificate.ContractNumber" class="w-44 ml-2 rounded-lg text-black" />
-                                <div class="text-xs"><ValidationMessage class="text-xs" For="@(() => NewCreateReceptionCertificate.ContractNumber)" /></div>
-                            </div>
+                            <input class="w-36 lg:w-52 ml-2 px-2 rounded-lg text-black" type="text" />
                         </div>
                     </div>
-                </div>
+                </div>                
             </div>
-            </EditForm>
             @if (lessorValid != null)
             {
                 @foreach (var item in lessorValid)
@@ -57,9 +56,9 @@
                 <h1 class="text-xl mb-2">Arrendador</h1>
                 <div class="flex justify-center pt-2">
                     <button>
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-caret-down-fill" viewBox="0 0 16 16">
-                            <path d="M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z" />
-                        </svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-caret-down-fill" viewBox="0 0 16 16">
+                        <path d="M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z"/>
+                    </svg>
                     </button>
                 </div>
             </div>
@@ -69,40 +68,40 @@
                 <h1 class="text-xl mb-2">Arrendador</h1>
                 <div class="flex justify-center pt-2">
                     <button>
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-caret-down-fill" viewBox="0 0 16 16">
-                            <path d="M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z" />
-                        </svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-caret-down-fill" viewBox="0 0 16 16">
+                        <path d="M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z"/>
+                    </svg>
                     </button>
                 </div>
             </div>
             <div class="my-2 ocultar"><FormTenant @ref="formTenant" OpenModalTenant="ChangeOpenModalTenant" CurrentTenant="CurrentTenant" IsFormTenantExit="CurrentTenant.IdTenant == 0 ? false : true"></FormTenant></div>
-
+            
             <div class="mostrar bg-[#2B286F] mx-auto lg:h-44 md:m-3 sm:m-1 text-center text-sm-center md:text-md text-white pt-2 pb-3 rounded-lg lg:rounded-none my-2">
                 <h1 class="text-xl mb-2">Propiedad</h1>
                 <div class="flex justify-center pt-2">
                     <button>
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-caret-down-fill" viewBox="0 0 16 16">
-                            <path d="M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z" />
-                        </svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-caret-down-fill" viewBox="0 0 16 16">
+                        <path d="M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z"/>
+                    </svg>
                     </button>
                 </div>
-            </div>
+            </div> 
             <div class="my-2 ocultar"><FormProperty @ref="formProperty" OpenModalProperty="ChangeOpenModalProperty" CurrentProperty="CurrentProperty" IsFormPropertyExit="CurrentProperty.IdProperty == 0 ? false : true"></FormProperty></div>
 
             <div class="flex inline grid grid-cols-1  place-items-center">
-                @*<a href="/ReceptionCertificates/Inventory"><button class="bg-[#2B286F] text-white mt-10 rounded-lg h-10 w-20">Siguiente</button></a>*@
+                @*<a href="/ReceptionCertificates/Inventory"><button class="bg-[#2B286F] text-white mt-10 rounded-lg h-10 w-20">Siguiente</button></a>*@         
                 <div class="flex justify-center"><a href="/ReceptionCertificates/Inventory"><button class="bg-[#2B286F] text-white rounded-lg h-10 w-20">Siguiente</button></a></div>
             </div>
-            
+            @*</EditForm>*@
             @if (ShowModalLessor)
             {
                 <ModalLessor Lessors="lessors" SendIdLessor="SetLessorForm" CloseModalLessor="ChangeOpenModalLessor" ShowModal="ShowModalLessor"></ModalLessor>
-            }
-            @if (ShowModalTenant)
+            }      
+            @if(ShowModalTenant)
             {
                 <ModalTenant Tenants="tenants" SendIdTenant="SetTenantForm" CloseModalTenant="ChangeOpenModalTenant" ShowModal="ShowModalTenant"></ModalTenant>
             }
-            @if (ShowModalProperty)
+            @if(ShowModalProperty)
             {
                 <ModalProperty Propertys="properties" SendIdProperty="SetPropertyForm" CloseModalProperty="ChangeOpenModalProperty" ShowModal="ShowModalProperty"></ModalProperty>
             }
