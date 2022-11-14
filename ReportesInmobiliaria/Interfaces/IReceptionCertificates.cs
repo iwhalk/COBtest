@@ -1,5 +1,4 @@
-﻿using Shared.Models;
-using SharedLibrary.Models;
+﻿using SharedLibrary.Models;
 
 namespace ReportesInmobiliaria.Interfaces
 {

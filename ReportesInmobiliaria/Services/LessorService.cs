@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ReportesInmobiliaria.Interfaces;
-using Shared.Data;
+using SharedLibrary.Data;
 using SharedLibrary.Models;
 using System.ComponentModel.DataAnnotations;
 using System.DirectoryServices.ActiveDirectory;

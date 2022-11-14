@@ -1,5 +1,5 @@
 ﻿using Azure.Storage.Blobs.Models;
-using Shared.Models;
+using SharedLibrary.Models;
 
 namespace ReportesInmobiliaria.Interfaces
 {

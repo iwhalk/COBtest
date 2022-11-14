@@ -1,6 +1,5 @@
 ﻿using FrontEnd.Interfaces;
 using FrontEnd.Stores;
-using Shared.Models;
 using SharedLibrary.Models;
 
 namespace FrontEnd.Services

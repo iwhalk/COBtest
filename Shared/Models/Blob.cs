@@ -6,7 +6,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 
-namespace Shared.Models
+namespace SharedLibrary.Models
 {
     public partial class Blob
     {
@@ -40,10 +40,10 @@ namespace Shared.Models
         public string ContainerName { get; set; }
         public bool IsPrivate { get; set; }
         [Required]
-        [StringLength(50)]
         [Unicode(false)]
         public string Uri { get; set; }
         [Required]
+        [StringLength(20)]
         [Unicode(false)]
         public string BlobSize { get; set; }
 

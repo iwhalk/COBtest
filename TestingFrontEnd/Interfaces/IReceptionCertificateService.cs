@@ -1,5 +1,4 @@
 ﻿using SharedLibrary.Models;
-using Shared.Models;
 
 namespace FrontEnd.Interfaces
 {
