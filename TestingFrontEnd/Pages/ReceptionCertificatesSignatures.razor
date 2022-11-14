@@ -13,15 +13,15 @@
                 <div id="RecuadroObservaciones" class="mb-12 ml-8 flex">
                     <div class="flex flex-col">
                         <label for="" class="text-start text-xl text-blue-900 font-semibold mb-2">Oberservaciones</label>
-                        <input type="text" class="border-2 bg-slate-100 h-48" style="width: 42rem">
+                        <input @bind="Observaciones" type="text" class="border-2 bg-slate-100 h-48" style="width: 42rem">
                     </div>
-                </div>
+                </div>                                                
                 <div id="RecuadroObservaciones" class="mt-12 ml-8 flex">
                     <div class="mr-20">                                
-                        <Signature TitleSignature="Firma Arrendatario"></Signature>
+                        <SignaturesTenant @ref="signaturesTenantComponent"></SignaturesTenant>
                     </div>
                     <div class="ml-20">                   
-                        <Signature TitleSignature="Firma Arrendedor/Agente"></Signature>
+                        <SignaturesLessor @ref="signaturesLessorComponent"></SignaturesLessor>
                     </div>
                 </div>
             </div>
@@ -30,7 +30,7 @@
     <div id="Botones" class="flex justify-center -my-5">
         <button class="py-2 my-4 w-48 border rounded-lg text-white text-xl shadow-xl" style="background-color: #2B286F;">Previsualizar</button>
         <button class="py-2 my-4 w-48 border rounded-lg text-white text-xl shadow-xl" style="background-color: #2B286F;">Guardar</button>
-        <a href="/Emails"><button class="py-2 my-4 w-48 border rounded-lg text-white text-xl shadow-xl" style="background-color: #2B286F;">Firmar</button></a>
+        <button onclick="@HandleInsertSignatures" class="py-2 my-4 w-48 border rounded-lg text-white text-xl shadow-xl" style="background-color: #2B286F;">Firmar</button>
     </div>
 </body>
 <Footer></Footer>

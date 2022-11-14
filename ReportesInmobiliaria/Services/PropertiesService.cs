@@ -26,10 +26,10 @@ namespace ReportesInmobiliaria.Services
             return await _dbContext.Properties.FirstOrDefaultAsync(x => x.IdProperty == id);
         }
 
-        public async Task<Property?> GetPropertyAsync(string propertyName)
-        {
-            return await _dbContext.Properties.FirstOrDefaultAsync(x => x.PropertyName == propertyName);
-        }
+        //public async Task<Property?> GetPropertyAsync(string propertyName)
+        //{
+        //    return await _dbContext.Properties.FirstOrDefaultAsync(x => x.PropertyName == propertyName);
+        //}
 
         public async Task<Property?> CreatePropertyAsync(Property property)
         {
