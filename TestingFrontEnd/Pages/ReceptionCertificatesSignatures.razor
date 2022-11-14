@@ -13,15 +13,15 @@
                 <div id="RecuadroObservaciones" class="mb-12 ml-8 flex">
                     <div class="flex flex-col">
                         <label for="" class="text-start text-xl text-blue-900 font-semibold mb-2">Oberservaciones</label>
-                        <input type="text" class="border-2 bg-slate-100 h-48" style="width: 42rem">
+                        <input @bind="@CurrentReceptionCertificate.Observation" type="text" class="border-2 bg-slate-100 h-48" style="width: 42rem">
                     </div>
                 </div>
                 <div id="RecuadroObservaciones" class="mt-12 ml-8 flex">
                     <div class="mr-20">                                
-                        <Signature TitleSignature="Firma Arrendatario"></Signature>
+                        <SignaturesTenant ImageBase64Tenant="@CurrentReceptionCertificate.ApprovalPathTenant" TitleSignature="Firma Arrendatario"></SignaturesTenant>
                     </div>
                     <div class="ml-20">                   
-                        <Signature TitleSignature="Firma Arrendedor/Agente"></Signature>
+                        <SignaturesLessor ImageBase64Lessor="@CurrentReceptionCertificate.ApprovarPathLessor" TitleSignature="Firma Arrendedor/Agente"></SignaturesLessor>
                     </div>
                 </div>
             </div>

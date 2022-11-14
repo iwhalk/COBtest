@@ -1,4 +1,5 @@
-﻿using FrontEnd.Interfaces;
+﻿using FrontEnd.Components.Signatures;
+using FrontEnd.Interfaces;
 using FrontEnd.Stores;
 using Microsoft.AspNetCore.Components;
 using Shared.Models;
@@ -43,6 +44,11 @@ namespace FrontEnd.Pages
         private List<Feature> features { get; set; }
         private List<PropertyType> propertyTypes { get; set; }
         private ReceptionCertificate CurrentReceptionCertificate { get; set; }
+        public string ImageBase64Lessor { get; set; }
+        public string ImageBase64Tenant { get; set; }
+        public string Observacionbes { get; set; }
+
+        public SignaturesLessor signaturesLessorComponent = new SignaturesLessor(); 
 
         protected override async Task OnInitializedAsync()
         {
@@ -57,6 +63,14 @@ namespace FrontEnd.Pages
             propertyTypes = await _propertyTypeService.GetPropertyTypeAsync();
 
             CurrentReceptionCertificate = _context.CurrentReceptionCertificate;
+
+            
+        }
+
+        public async void HandleInsertSignature()
+        {
+            await signaturesLessorComponent.ImageAsync();
+
         }
     }
 }

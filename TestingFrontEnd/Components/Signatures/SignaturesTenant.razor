@@ -3,7 +3,7 @@
 @inject IJSRuntime js
 @inject HttpClient http
 
-<h6>@ImageBase64</h6>
+<h6>@ImageBase64Tenant</h6>
 @*<button @onclick="ToggleColorAsync" style="color:@clr">Toggle color between black and red</button>
 <button @onclick="ClearAsync" style="color:@clr">CLEAR</button>*@
 <button @onclick="ImageAsync" style="color:@clr">image</button>
@@ -25,7 +25,7 @@
     [Parameter]
     public string TitleSignature { get; set; }
     [Parameter]
-    public string ImageBase64 { get; set; }
+    public string ImageBase64Tenant { get; set; }
     private ElementReference container;
     private Canvas _context;
     private Excubo.Blazor.Canvas.Contexts.Context2D ctx1;
@@ -37,7 +37,7 @@
     private double mousey;
     private bool mousedown = false;
     private string clr = "black";
-    
+
 
     private class Position
     {
@@ -55,7 +55,7 @@
     }
     private async Task ImageAsync()
     {
-        ImageBase64 = await _context.ToDataURLAsync();
+        ImageBase64Tenant = await _context.ToDataURLAsync();
     }
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {

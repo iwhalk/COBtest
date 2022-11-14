@@ -6,6 +6,10 @@
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Content Remove="Components\Propertys\SignaturesLessor.razor" />
+  </ItemGroup>
+
   <!--<ItemGroup>
     <Compile Remove="Components\**" />
     <Compile Remove="Models\**" />
@@ -41,6 +45,18 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Shared\SharedLibrary.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Components\Propertys\SignaturesLessor.razor" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <_ContentIncludedByDefault Remove="Components\Propertys\SignaturesLessor.razor" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="Components\Signatures\SignaturesLessor.razor" />
   </ItemGroup>
 
 </Project>
