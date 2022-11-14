@@ -47,7 +47,7 @@ namespace FrontEnd.Pages
         public void ChangeOpenModalTenant() => ShowModalTenant = ShowModalTenant ? false : true;
         public void ChangeOpenModalProperty() => ShowModalProperty = ShowModalProperty ? false : true;
 
-        public ReceptionCertificate NewCreateReceptionCertificate { get; set; } = new ReceptionCertificate { CreationDate = DateTime.Now };
+        public ReceptionCertificate NewReceptionCertificate { get; set; } = new ReceptionCertificate { CreationDate = DateTime.Now };
 
         public FormLessor formLessor;
         public FormTenant formTenant;
@@ -103,11 +103,11 @@ namespace FrontEnd.Pages
                     }
                     var authUser = await authenticationStateTask;                    
 
-                    NewCreateReceptionCertificate.IdTenant = CurrentTenant.IdTenant;
-                    NewCreateReceptionCertificate.IdProperty = CurrentProperty.IdProperty;                    
-                    NewCreateReceptionCertificate.IdTypeRecord = 1; //For ReceptionCertificate In
-                    NewCreateReceptionCertificate.IdAgent = "1e6d90d6-32b5-43af-bc6a-0b43678462ec";                    
-                    _context.CurrentReceptionCertificate = await _receptionCertificateService.PostReceptionCertificatesAsync(NewCreateReceptionCertificate);                    
+                    NewReceptionCertificate.IdTenant = CurrentTenant.IdTenant;
+                    NewReceptionCertificate.IdProperty = CurrentProperty.IdProperty;                    
+                    NewReceptionCertificate.IdTypeRecord = 1; //For ReceptionCertificate In
+                    NewReceptionCertificate.IdAgent = "1e6d90d6-32b5-43af-bc6a-0b43678462ec";                    
+                    _context.CurrentReceptionCertificate = await _receptionCertificateService.PostReceptionCertificatesAsync(NewReceptionCertificate);                    
                 }
                 catch (Exception ex)
                 {

@@ -42,6 +42,7 @@ namespace FrontEnd.Pages
         private List<Description> descriptions { get; set; }
         private List<Feature> features { get; set; }
         private List<PropertyType> propertyTypes { get; set; }
+        private ReceptionCertificate CurrentReceptionCertificate { get; set; }
 
         protected override async Task OnInitializedAsync()
         {
@@ -54,6 +55,8 @@ namespace FrontEnd.Pages
             descriptions = await _descriptionService.GetDescriptionAsync();
             features = await _featuresService.GetFeaturesAsync();
             propertyTypes = await _propertyTypeService.GetPropertyTypeAsync();
+
+            CurrentReceptionCertificate = _context.CurrentReceptionCertificate;
         }
     }
 }
