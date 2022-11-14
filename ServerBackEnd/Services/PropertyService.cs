@@ -1,7 +1,8 @@
 ﻿using ApiGateway.Interfaces;
 using ApiGateway.Proxies;
 using Shared;
-using Shared.Models;
+using SharedLibrary.Models;
+using System.Reflection.Metadata;
 
 namespace ApiGateway.Services
 {
@@ -20,6 +21,11 @@ namespace ApiGateway.Services
         public async Task<ApiResponse<Property>> PostPropertyAsync(Property property)
         {
             return await PostAsync<Property>(property, path: "Properties");
+        }
+
+        public async Task<ApiResponse<Property>> PutPropertyAsync(Property property)
+        {
+            return await PutAsync<Property>(property.IdProperty, property, path: "Properties");
         }
     }
 }

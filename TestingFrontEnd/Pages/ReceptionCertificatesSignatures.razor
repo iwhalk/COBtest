@@ -1,0 +1,36 @@
+﻿@page "/ReceptionCertificate/Signatures"
+@attribute [Authorize]
+<PageTitle>Firmas</PageTitle>
+
+<Navbar></Navbar>
+<body class="flex flex-column min-h-screen bg-[url('/assets/img/fondocasa.png')] imgfondo">
+    <div id="ContenedorInventario" class="flex">
+        <div id="ListActas" class="flex ml-4">
+            <LeftListActas TypeList="Habitaciones"></LeftListActas>
+        </div>
+        <div id="ContenedorElementos" class="my-12 relative border-1 border-black rounded-lg p-2 mr-6 w-full" style="height: 42rem">
+            <div id="Recuadros" class="my-12 flex flex-col">
+                <div id="RecuadroObservaciones" class="mb-12 ml-8 flex">
+                    <div class="flex flex-col">
+                        <label for="" class="text-start text-xl text-blue-900 font-semibold mb-2">Oberservaciones</label>
+                        <input type="text" class="border-2 bg-slate-100 h-48" style="width: 42rem">
+                    </div>
+                </div>
+                <div id="RecuadroObservaciones" class="mt-12 ml-8 flex">
+                    <div class="mr-20">                                
+                        <Signature TitleSignature="Firma Arrendatario"></Signature>
+                    </div>
+                    <div class="ml-20">                   
+                        <Signature TitleSignature="Firma Arrendedor/Agente"></Signature>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="Botones" class="flex justify-center -my-5">
+        <button class="py-2 my-4 w-48 border rounded-lg text-white text-xl shadow-xl" style="background-color: #2B286F;">Previsualizar</button>
+        <button class="py-2 my-4 w-48 border rounded-lg text-white text-xl shadow-xl" style="background-color: #2B286F;">Guardar</button>
+        <a href="/Emails"><button class="py-2 my-4 w-48 border rounded-lg text-white text-xl shadow-xl" style="background-color: #2B286F;">Firmar</button></a>
+    </div>
+</body>
+<Footer></Footer>

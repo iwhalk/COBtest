@@ -1,23 +1,24 @@
 ﻿using FrontEnd.Interfaces;
 using Microsoft.AspNetCore.Components;
 using Shared.Models;
+using SharedLibrary.Models;
 
 namespace FrontEnd.Pages
 {
     public partial class PruebasGateway : ComponentBase
     {
-        private readonly ILessorService _lessorService;
-        public PruebasGateway(ILessorService lessorService)
+        private readonly IReceptionCertificateService _reception;
+        public PruebasGateway(IReceptionCertificateService reception)
         {
-            _lessorService = lessorService;
+            _reception = reception;
         }
 
-        private List<Lessor> ListArea { get; set; }
+        private List<ActasRecepcion> ListArea { get; set; }
 
         protected override async Task OnInitializedAsync()
         {
             Console.WriteLine("si llego aca");
-            ListArea = await _lessorService.GetLessorAsync();            
+            ListArea = await _reception.GetReceptionCertificatesAsync(null, null, null, null, null, null, null, null, null, null, null);            
         }
     }
 }

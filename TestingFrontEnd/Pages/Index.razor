@@ -2,20 +2,21 @@
 @attribute [Authorize]
 <PageTitle>Index</PageTitle>
 
-<Navbar></Navbar>
-<body>    
-    <div id="ContenedorHome" class="bg-[url('/assets/img/fondocasa.png')] imgfondo">        
-        <div class="flex justify-center py-6">
-            <label for="" class="font-sans font-semibold text-4xl text-blue-900">Acta Entrega Recepción de Inmueble</label>
+
+<body class="flex flex-column min-h-screen bg-[url('/assets/img/fondocasa.png')] imgfondo">   
+    <div id="ContenedorHome" class="my-auto">                
+        <div class="flex justify-center pt-12">
+            <label for="" class="font-sans font-semibold text-center text-3xl lg:text-4xl text-blue-900">Acta Entrega Recepción de Inmueble</label>
         </div>                    
-        <div class="flex justify-around py-20">
-            <div class="flex justify-center py-20">
+        <div class="md:flex md:justify-around md:py-20">
+            <div class="scale-50 md:scale-75 lg:scale-100 flex justify-center md:py-20">
                 <ButtonLink TypeIcon="Actas"></ButtonLink>
             </div>            
-            <div class="flex justify-center py-20">
+            <div class="scale-50 md:scale-75 lg:scale-100 flex justify-center md:py-20">
                 <ButtonLink TypeIcon="Historico"></ButtonLink>
             </div>
         </div>                        
     </div>    
 </body>
+<Navbar></Navbar>
 <Footer></Footer>

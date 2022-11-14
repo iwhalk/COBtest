@@ -5,8 +5,9 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
+using SharedLibrary.Models;
 
-namespace Shared.Models
+namespace SharedLibrary.Models
 {
     public partial class PropertyType
     {

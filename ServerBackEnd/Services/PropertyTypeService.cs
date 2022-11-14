@@ -2,6 +2,7 @@
 using ApiGateway.Proxies;
 using Shared;
 using Shared.Models;
+using SharedLibrary.Models;
 
 namespace ApiGateway.Services
 {
@@ -20,6 +21,11 @@ namespace ApiGateway.Services
         public async Task<ApiResponse<PropertyType>> PostPropertyTypeAsync(PropertyType propertyType)
         {
             return await PostAsync<PropertyType>(propertyType, path: "PropertyTypes");
+        }
+
+        public async Task<ApiResponse<PropertyType>> PutPropertyTypeAsync(PropertyType propertyType)
+        {
+            return await PutAsync<PropertyType>(propertyType.IdPropertyType, propertyType, path: "PropertyTypes");
         }
     }
 }

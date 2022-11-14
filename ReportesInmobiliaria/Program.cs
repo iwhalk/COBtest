@@ -14,13 +14,15 @@ using ReportesInmobiliaria.Services;
 using ReportesInmobiliaria.Utilities;
 using Microsoft.AspNetCore.Http;
 using SixLabors.Fonts.Tables.AdvancedTypographic;
-using Shared;
+using SharedLibrary.Models;
 using System.DirectoryServices.ActiveDirectory;
 using Azure.Storage.Blobs;
 using System.Configuration;
 using System.Reflection.Metadata;
 using Microsoft.AspNetCore.Mvc;
 using Azure.Core;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
+
 
 var builder = WebApplication.CreateBuilder(args);
 var connectionString = "Server=prosisdev.database.windows.net;Database=prosisdb_3;User=PROSIS_DEVELOPER;Password=PR0515_D3ev3l0p3r;MultipleActiveResultSets=true";
@@ -147,7 +149,7 @@ app.MapGet("/Lessor",
 .Produces<HttpValidationProblemDetails>(StatusCodes.Status400BadRequest, "application/problem+json")
 .Produces<HttpValidationProblemDetails>(StatusCodes.Status500InternalServerError, "application/problem+json");
 
-app.MapPost("/Lessor", async (Shared.Models.Lessor lessor, ILessorService _lessorService) =>
+app.MapPost("/Lessor", async (Lessor lessor, ILessorService _lessorService) =>
 {
     try
     {
@@ -191,7 +193,7 @@ app.MapGet("/Tenant",
 .Produces<HttpValidationProblemDetails>(StatusCodes.Status400BadRequest, "application/problem+json")
 .Produces<HttpValidationProblemDetails>(StatusCodes.Status500InternalServerError, "application/problem+json");
 
-app.MapPost("/Tenant", async (Shared.Models.Tenant tenant, ITenantService _tenantService) =>
+app.MapPost("/Tenant", async (Tenant tenant, ITenantService _tenantService) =>
 {
     try
     {
@@ -404,7 +406,7 @@ app.MapGet("/Properties", async (IPropertiesService _propertiesService) =>
 .Produces<HttpValidationProblemDetails>(StatusCodes.Status400BadRequest, "application/problem+json")
 .Produces<HttpValidationProblemDetails>(StatusCodes.Status500InternalServerError, "application/problem+json");
 
-app.MapPost("/Properties", async (Property property, IPropertiesService _propertiesService) =>
+app.MapPost("/Properties", async (SharedLibrary.Models.Property property, IPropertiesService _propertiesService) =>
 {
     try
     {
@@ -423,7 +425,7 @@ app.MapPost("/Properties", async (Property property, IPropertiesService _propert
 .Produces<HttpValidationProblemDetails>(StatusCodes.Status400BadRequest, "application/problem+json")
 .Produces<HttpValidationProblemDetails>(StatusCodes.Status500InternalServerError, "application/problem+json");
 
-app.MapPut("/Properties", async (Property property, IPropertiesService _propertiesService) =>
+app.MapPut("/Properties", async (SharedLibrary.Models.Property property, IPropertiesService _propertiesService) =>
 {
     try
     {

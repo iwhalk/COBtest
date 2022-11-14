@@ -28,8 +28,9 @@ namespace ApiGateway.Areas.Identity.Pages.Account
             _signInManager = signInManager;
             _logger = logger;
         }
+
         [BindProperty]
-        public bool ShowPassword { get; set; }
+        public bool ShowPassword { get; set; } = true;
 
         /// <summary>
         ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
@@ -86,8 +87,13 @@ namespace ApiGateway.Areas.Identity.Pages.Account
             [Display(Name = "Remember me?")]
             public bool RememberMe { get; set; }
         }
-        
-        public async Task ChangeShowPassword() => ShowPassword = ShowPassword ? false : true;
+
+        public async Task ChangeShowPassword() {
+
+            ShowPassword = ShowPassword ? false : true;
+
+            Console.Write("dasda");
+        }
 
         public async Task OnGetAsync(string returnUrl = null)
         {
@@ -137,7 +143,6 @@ namespace ApiGateway.Areas.Identity.Pages.Account
                     return Page();
                 }
             }
-
             // If we got this far, something failed, redisplay form
             return Page();
         }

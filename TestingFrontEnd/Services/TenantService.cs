@@ -1,5 +1,5 @@
-﻿using FrontEnd.Stores;
-using Shared.Models;
+using FrontEnd.Stores;
+using SharedLibrary.Models;
 using FrontEnd.Interfaces;
 
 namespace FrontEnd.Services
@@ -16,18 +16,18 @@ namespace FrontEnd.Services
 
         public async Task<List<Tenant>> GetTenantAsync()
         {
-            if (_context.Tenant == null)
+            if (_context.TenantList == null)
             {
                 var response = await _repository.GetAsync<List<Tenant>>("api/Tenant");
 
                 if (response != null)
                 {
-                    _context.Tenant = response;
-                    return _context.Tenant;
+                    _context.TenantList = response;
+                    return _context.TenantList;
                 }
             }
 
-            return _context.Tenant;
+            return _context.TenantList;
         }
         public async Task<Tenant> PostTenantAsync(Tenant tenant)
         {

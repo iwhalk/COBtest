@@ -1,33 +1,37 @@
 ﻿using Shared.Models;
+using SharedLibrary.Models;
 
 namespace FrontEnd.Stores
 {
     public class ApplicationContext
     {
-        public event Action OnChange;
-        private int counter;
-        private string errorMessage;
+        public event Action OnChange;        
+        private string errorMessage; 
         private List<Tenant> tenantList;
         private List<Lessor> lessorList;
         private List<Property> propertiesList;
         private List<Inventory> inventoriesList;
         private List<Service> serviceList;
+        private Tenant tenant;
+        private Lessor lessor;
+        private Property property;
+        private ReceptionCertificate receptionCertificate;
         private List<Area> areasList;
         private List<Description> descriptionsList;
         private List<Feature> featuresList;
         private List<PropertyType> propertyTypesList;
+        private List<ActasRecepcion> actasRecepcionsList;
 
-        public int Counter
+        public Tenant CurrentTenant
         {
-            get => counter;
+            get => tenant;
             set
             {
-                counter = value;
+                tenant = value;
                 NotifyStateChanged();
             }
         }
-
-        public List<Tenant> Tenant
+        public List<Tenant> TenantList
         {
             get => tenantList;
             set
@@ -36,7 +40,16 @@ namespace FrontEnd.Stores
                 NotifyStateChanged();
             }
         }
-        public List<Lessor> Lessor
+        public Lessor CurrentLessor
+        {
+            get => lessor;
+            set
+            {
+                lessor = value;
+                NotifyStateChanged();
+            }
+        }
+        public List<Lessor> LessorList
         {
             get => lessorList;
             set
@@ -45,7 +58,16 @@ namespace FrontEnd.Stores
                 NotifyStateChanged();
             }
         }
-        public List<Property> Property
+        public Property CurrentPropertys
+        {
+            get => property; 
+            set
+            {
+                property = value;
+                NotifyStateChanged();
+            }
+        }
+        public List<Property> PropertyList
         {
             get => propertiesList;
             set
@@ -63,7 +85,7 @@ namespace FrontEnd.Stores
                 NotifyStateChanged();
             }
         }
-        public List<Service> Service
+        public List<Service> ServiceList
         {
             get => serviceList;
             set
@@ -81,7 +103,7 @@ namespace FrontEnd.Stores
                 NotifyStateChanged();
             }
         }
-        public List<Description> Description
+        public List<Description> DescriptionList
         {
             get => descriptionsList;
             set
@@ -90,7 +112,7 @@ namespace FrontEnd.Stores
                 NotifyStateChanged();
             }
         }
-        public List<Feature> Feature
+        public List<Feature> FeatureList
         {
             get => featuresList;
             set
@@ -99,12 +121,31 @@ namespace FrontEnd.Stores
                 NotifyStateChanged();
             }
         }
-        public List<PropertyType> PropertyType
+        public List<PropertyType> PropertyTypeList
         {
             get => propertyTypesList;
             set
             {
                 propertyTypesList = value;
+                NotifyStateChanged();
+            }
+        }
+        public ReceptionCertificate CurrentReceptionCertificate
+        {
+            get => receptionCertificate;
+            set
+            {
+                receptionCertificate = value;
+                NotifyStateChanged();
+            }
+        }
+
+        public List<ActasRecepcion> ActasRecepcionList
+        {
+            get => actasRecepcionsList;
+            set
+            {
+                actasRecepcionsList = value;
                 NotifyStateChanged();
             }
         }

@@ -21,7 +21,7 @@ var client = "blazor-client";
 
 if (!builder.HostEnvironment.IsDevelopment())
 {
-    client = "blazor-azure";
+    client = "blazor-arisoft2245";
 }
 
 builder.RootComponents.Add<App>("#app");
@@ -48,6 +48,7 @@ builder.Services.AddScoped<IAreaService, AreaService>();
 builder.Services.AddScoped<IFeaturesService, FeaturesService>();
 builder.Services.AddScoped<IDescriptionService, DescriptionService>();
 builder.Services.AddScoped<IInventoryService, InventoryService>();
+builder.Services.AddScoped<IReceptionCertificateService, ReceptionCertificateService>();
 
 
 // Supply HttpClient instances that include access tokens when making requests to the server project.

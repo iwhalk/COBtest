@@ -1,7 +1,7 @@
-﻿using FrontEnd.Stores;
-using Shared.Models;
+using FrontEnd.Stores;
 ﻿using FrontEnd.Interfaces;
-using Shared.Models;
+using SharedLibrary.Models;
+
 
 namespace FrontEnd.Services
 {
@@ -17,18 +17,17 @@ namespace FrontEnd.Services
 
         public async Task<List<Property>> GetPropertyAsync()
         {
-            if (_context.Property == null)
+            if (_context.PropertyList == null)
             {
                 var response = await _repository.GetAsync<List<Property>>("api/Property");
 
                 if (response != null)
                 {
-                    _context.Property = response;
-                    return _context.Property;
+                    _context.PropertyList = response;
+                    return _context.PropertyList;
                 }
             }
-
-            return _context.Property;
+            return _context.PropertyList;
         }
         public async Task<Property> PostPropertyAsync(Property property)
         {

@@ -3,6 +3,7 @@ using ReportesInmobiliaria.Interfaces;
 using ReportesInmobiliaria.Utilities;
 using Shared.Data;
 using Shared.Models;
+using SharedLibrary.Models;
 using System.Diagnostics;
 
 namespace ReportesInmobiliaria.Services

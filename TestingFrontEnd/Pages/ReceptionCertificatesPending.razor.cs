@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Components;
 using Shared.Models;
 using FrontEnd.Interfaces;
+using SharedLibrary.Models;
 
 namespace FrontEnd.Pages
 {
