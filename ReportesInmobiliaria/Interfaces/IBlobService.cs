@@ -1,11 +1,12 @@
-﻿using Shared.Models;
+﻿using Azure.Storage.Blobs.Models;
+using Shared.Models;
 
 namespace ReportesInmobiliaria.Interfaces
 {
     public interface IBlobService
     {
-        Task<List<Blob>?> GetBlobAsync();
-        Task<Blob?> CreateBlobAsync(Blob blob);
+        Task<BlobDownloadInfo> GetBlobAsync(int id);
+        Task<Blob?> CreateBlobAsync(string name, IFormFileCollection file);
         Task<bool> UpdateBlobAsync(Blob blob);
         Task<bool> DeleteBlobAsync(int id);
         Task<List<BlobsInventory>?> GetBlobInventoryAsync();
