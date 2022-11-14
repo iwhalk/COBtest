@@ -584,6 +584,7 @@ app.MapGet("/ReporteFeatures", async (int? id, IReporteFeaturesService _reportes
 app.MapGet("/Blobs", async (int id, IBlobService _blobService) =>
 {
     var blobs = await _blobService.GetBlobAsync(id);
+    if (blobs == null) return Results.NoContent();
     using MemoryStream ms = new MemoryStream();
     blobs.Content.CopyTo(ms);
     return Results.File(ms.ToArray(), blobs.ContentType);
@@ -753,7 +754,7 @@ app.MapGet("/ReceptionCertificate", async (string? startDay, string? endDay, int
         }
         if (endDay != null)
         {
-            if (Regex.IsMatch(startDay, endDay) == false)
+            if (Regex.IsMatch(endDay, patternDia) == false)
             {
                 return Results.Problem("El dia se encuentra en un formato incorrecto", statusCode: 400);
             }

@@ -5,7 +5,7 @@ namespace ReportesInmobiliaria.Interfaces
 {
     public interface IBlobService
     {
-        Task<BlobDownloadInfo> GetBlobAsync(int id);
+        Task<BlobDownloadInfo>? GetBlobAsync(int id);
         Task<Blob?> CreateBlobAsync(string name, IFormFileCollection file);
         Task<bool> UpdateBlobAsync(Blob blob);
         Task<bool> DeleteBlobAsync(int id);
