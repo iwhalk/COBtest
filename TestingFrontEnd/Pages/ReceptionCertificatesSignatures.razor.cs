@@ -66,7 +66,6 @@ namespace FrontEnd.Pages
 
             
         }
-
         public async void HandleInsertSignature()
         {
             await signaturesLessorComponent.ImageAsync();
