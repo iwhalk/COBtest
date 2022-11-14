@@ -62,9 +62,7 @@ namespace FrontEnd.Pages
             features = await _featuresService.GetFeaturesAsync();
             propertyTypes = await _propertyTypeService.GetPropertyTypeAsync();
 
-            CurrentReceptionCertificate = _context.CurrentReceptionCertificate;
-
-            
+            CurrentReceptionCertificate = _context.CurrentReceptionCertificate;            
         }
         public async void HandleInsertSignature()
         {
