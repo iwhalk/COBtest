@@ -32,7 +32,7 @@ namespace ReportesInmobiliaria.Services
             {
                 header = await _dbContext.Procedures.SP_GET_AERI_HEADERAsync(idProperty),
                 areas = await _dbContext.Procedures.SP_GET_AERI_AREASAsync(idProperty),
-                deliverables = await _dbContext.Procedures.SP_GET_AERI_DELIVERABLESAsync(idProperty),
+                deliverables = await _dbContext.Procedures.SP_GET_AERI_DELIVERABLESAsync(idProperty)
             };
             return _reportesFactory.CrearPdf(reporteActaEntrega);
         }

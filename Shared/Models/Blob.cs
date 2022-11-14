@@ -40,7 +40,6 @@ namespace Shared.Models
         public string ContainerName { get; set; }
         public bool IsPrivate { get; set; }
         [Required]
-        [StringLength(50)]
         [Unicode(false)]
         public string Uri { get; set; }
         [Required]

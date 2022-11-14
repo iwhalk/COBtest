@@ -6,6 +6,7 @@ using MigraDocCore.DocumentObjectModel.MigraDoc.DocumentObjectModel.Shapes;
 using MigraDocCore.DocumentObjectModel.Shapes;
 using MigraDocCore.DocumentObjectModel.Tables;
 using MigraDocCore.Rendering;
+using PdfSharpCore.Drawing;
 using PdfSharpCore.Utils;
 //using MigraDoc.DocumentObjectModel;
 //using MigraDoc.DocumentObjectModel.Shapes;
@@ -18,10 +19,14 @@ using System;
 using System.Data.Entity.Core.Common.CommandTrees.ExpressionBuilder;
 using System.Drawing.Text;
 using System.Globalization;
+using System.Net;
 using System.Text;
 using Column = MigraDocCore.DocumentObjectModel.Tables.Column;
+using Image = System.Drawing.Image;
 using Row = MigraDocCore.DocumentObjectModel.Tables.Row;
 using Table = MigraDocCore.DocumentObjectModel.Tables.Table;
+using Azure.Storage.Blobs;
+using Microsoft.EntityFrameworkCore.Scaffolding;
 
 namespace ReportesInmobiliaria.Utilities
 {
@@ -49,6 +54,9 @@ namespace ReportesInmobiliaria.Utilities
         TextFrame dataValuesFrameRight;
         TextFrame dataValueTable;
         TextFrame dataValuesFrameFecha;
+
+        //PARA GUARDAR LOS URIS DE BLOBS
+        List<string> blobUris = new List<string>();
 
         /// <summary>
         /// The table of the MigraDoc document that contains the invoice items.
@@ -246,8 +254,7 @@ namespace ReportesInmobiliaria.Utilities
             {
                 MigraDocCore.DocumentObjectModel.MigraDoc.DocumentObjectModel.Shapes.ImageSource.ImageSourceImpl = new ImageSharpImageSource<Rgba32>();
             }
-
-            //Recorre los elementos de la tabla de Areas, los va separando en tablas de acuerdo al Area
+            
             for (int i = 0; i < reporteActaEntrega.areas.Count; i++)
             {
                 string tableTitle = reporteActaEntrega.areas.ElementAt(i).Area;
@@ -307,15 +314,16 @@ namespace ReportesInmobiliaria.Utilities
                 columnI = tableImages.AddColumn("5cm");
                 columnI.Format.Alignment = ParagraphAlignment.Center;
                 Row rowI = tableImages.AddRow();
-                rowI.Cells[0].Format.Alignment = ParagraphAlignment.Center;
-                rowI.Cells[0].VerticalAlignment = VerticalAlignment.Center;
-                rowI.Cells[0].AddParagraph().AddImage(ImageSource.FromFile(Environment.CurrentDirectory + @"\Imagenes\apartment1.jpg")).Width = "4.8cm";
-                rowI.Cells[1].Format.Alignment = ParagraphAlignment.Center;
-                rowI.Cells[1].VerticalAlignment = VerticalAlignment.Center;
-                rowI.Cells[1].AddParagraph().AddImage(ImageSource.FromFile(Environment.CurrentDirectory + @"\Imagenes\apartment2.jpg")).Width = "4.8cm";
-                rowI.Cells[2].Format.Alignment = ParagraphAlignment.Center;
-                rowI.Cells[2].VerticalAlignment = VerticalAlignment.Center;
-                rowI.Cells[2].AddParagraph().AddImage(ImageSource.FromFile(Environment.CurrentDirectory + @"\Imagenes\apartment3.jpg")).Width = "4.8cm";
+                for (int j = 0; j < blobUris.Count; j++) {
+                    if (j == 3)
+                        break;
+                    string currentUri = blobUris.ElementAt(j);
+                    var currentImage = new BlobClient(new Uri(currentUri)).DownloadContent();
+                    rowI.Cells[j].Format.Alignment = ParagraphAlignment.Center;
+                    rowI.Cells[j].VerticalAlignment = VerticalAlignment.Center;
+                    rowI.Cells[j].AddParagraph().AddImage(ImageSource.FromStream("imagen" + i + j, currentImage.Value.Content.ToStream)).Width = "4.8cm";
+                }
+                blobUris.Clear();
             }
 
             document.LastSection.AddPageBreak();
@@ -372,12 +380,25 @@ namespace ReportesInmobiliaria.Utilities
                 columnI = tableImages.AddColumn("5cm");
                 columnI.Format.Alignment = ParagraphAlignment.Center;
                 Row rowI = tableImages.AddRow();
-                rowI.Cells[0].Format.Alignment = ParagraphAlignment.Center;
-                rowI.Cells[0].VerticalAlignment = VerticalAlignment.Center;
-                rowI.Cells[0].AddParagraph().AddImage(ImageSource.FromFile(Environment.CurrentDirectory + @"\Imagenes\key.jpg")).Width = "4.2cm";
-                rowI.Cells[1].Format.Alignment = ParagraphAlignment.Center;
-                rowI.Cells[1].VerticalAlignment = VerticalAlignment.Center;
-                rowI.Cells[1].AddParagraph().AddImage(ImageSource.FromFile(Environment.CurrentDirectory + @"\Imagenes\medidor.jpg")).Width = "4.2cm";
+
+                for (int j = 0; j < blobUris.Count; j++)
+                {
+                    if (j == 3)
+                        break;
+                    string currentUri = blobUris.ElementAt(j);
+                    var currentImage = new BlobClient(new Uri(currentUri)).DownloadContent();                    
+                    rowI.Cells[j].Format.Alignment = ParagraphAlignment.Center;
+                    rowI.Cells[j].VerticalAlignment = VerticalAlignment.Center;
+                    rowI.Cells[j].AddParagraph().AddImage(ImageSource.FromStream("imagenD" + i + j, currentImage.Value.Content.ToStream)).Width = "4.8cm";
+                }
+                blobUris.Clear();
+
+                //rowI.Cells[0].Format.Alignment = ParagraphAlignment.Center;
+                //rowI.Cells[0].VerticalAlignment = VerticalAlignment.Center;
+                //rowI.Cells[0].AddParagraph().AddImage(ImageSource.FromFile(Environment.CurrentDirectory + @"\Imagenes\key.jpg")).Width = "4.2cm";
+                //rowI.Cells[1].Format.Alignment = ParagraphAlignment.Center;
+                //rowI.Cells[1].VerticalAlignment = VerticalAlignment.Center;
+                //rowI.Cells[1].AddParagraph().AddImage(ImageSource.FromFile(Environment.CurrentDirectory + @"\Imagenes\medidor.jpg")).Width = "4.2cm";
             }            
 
             paragraph = section.AddParagraph();
@@ -466,7 +487,7 @@ namespace ReportesInmobiliaria.Utilities
                                 return i;
                             }                                
                         }
-                        if (index >= 3)
+                        if (index >= 3 && index <= 5)
                         {                            
                             if (type == typeof(DateTime))
                             {
@@ -489,9 +510,18 @@ namespace ReportesInmobiliaria.Utilities
                                 row.Cells[index - 3].AddParagraph(prop.GetValue(item, null)?.ToString());
                             }
                         }
+                        if (index == 6)
+                        {
+                            string currentUri = prop.GetValue(item, null)?.ToString();
+                            if(currentUri != null)
+                                if (currentUri.Contains("http"))
+                                {
+                                    blobUris.Add(currentUri);
+                                }
+                        }
                     }
             }
             return value.Count;
         }
-    }
+    }    
 }

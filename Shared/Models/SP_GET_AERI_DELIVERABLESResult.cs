@@ -14,5 +14,6 @@ namespace Shared.Models
         public string AreaServicio { get; set; }
         public string Cantidad { get; set; }
         public string Observaciones { get; set; }
+        public string Uri { get; set; }
     }
 }

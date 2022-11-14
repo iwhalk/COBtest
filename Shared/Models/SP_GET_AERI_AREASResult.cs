@@ -14,5 +14,6 @@ namespace Shared.Models
         [Column("Cantidad/Descripcion")]
         public string CantidadDescripcion { get; set; }
         public string Observaciones { get; set; }
+        public string Uri { get; set; }
     }
 }
