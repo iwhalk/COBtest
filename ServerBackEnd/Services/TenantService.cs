@@ -14,7 +14,7 @@ namespace ApiGateway.Services
 
         public async Task<ApiResponse<List<Tenant>>> GetTenantAsync()
         {
-            return await GetAsync<List<Tenant>>(path: "Tenant");
+            return await GetAsync<List<Tenant>>(path: "Tenants");
         }
 
         public async Task<ApiResponse<Tenant>> PostTenantAsync(Tenant tenant)

@@ -19,7 +19,7 @@ namespace ApiGateway.Services
 
         public async Task<ApiResponse<Service>> PostServicesAsync(Service service)
         {
-            return await PostAsync<Service>(service, path: "Services");
+            return await PostAsync<Service>(service, path: "Service");
         }
     }
 }
