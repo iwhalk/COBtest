@@ -82,5 +82,9 @@ namespace ApiGateway.Services
         {
             return await PostAsync<ReceptionCertificate>(reception, path: "ReceptionCertificate");
         }
+        public async Task<ApiResponse<ReceptionCertificate>> PutReceptionCertificateAsync(ReceptionCertificate reception)
+        {
+            return await PutAsync<ReceptionCertificate>(id: reception.IdReceptionCertificate, reception, path: "ReceptionCertificate");
+        }
     }
 }

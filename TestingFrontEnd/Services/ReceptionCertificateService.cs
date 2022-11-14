@@ -36,5 +36,9 @@ namespace FrontEnd.Services
         {
             return await _repository.PostAsync("api/ReceptionCertificates", receptionCertificate);
         }
+        public async Task<ReceptionCertificate> PutReceptionCertificatesAsync(ReceptionCertificate receptionCertificate)
+        {
+            return await _repository.PutAsync("api/ReceptionCertificates", receptionCertificate);
+        }
     }
 }

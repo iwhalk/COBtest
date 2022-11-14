@@ -79,5 +79,19 @@ namespace ReportesInmobiliaria.Services
             }
             return receptionCertificate;
         }
+
+        public async Task<ReceptionCertificate?> UpdateReceptionCertificateAsync(ReceptionCertificate receptionCertificate)
+        {
+            _dbContext.ReceptionCertificates.Update(receptionCertificate);
+            try
+            {
+                await _dbContext.SaveChangesAsync();
+            }   
+            catch(DbUpdateConcurrencyException)
+            {
+                throw;
+            }
+            return receptionCertificate;
+        }   
     }
 }

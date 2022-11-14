@@ -86,6 +86,19 @@ namespace ApiGateway.Controllers
             return BadRequest(result);
         }
 
+        [HttpPut]
+        public async Task<ActionResult> PutReceptionCertificates(ReceptionCertificate reception)
+        {
+            var result = await _receptionCertificateService.PutReceptionCertificateAsync(reception);
+
+            if (result.Succeeded)
+            {
+                return Ok(result);
+            }
+
+            return BadRequest(result);
+        }
+
         static string? GetNullableString(string? value) => !string.IsNullOrWhiteSpace(value) && value.ToUpper().Contains("NULL") ? null : value;
     }
 }
