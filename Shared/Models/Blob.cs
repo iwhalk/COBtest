@@ -44,7 +44,6 @@ namespace Shared.Models
         [Unicode(false)]
         public string Uri { get; set; }
         [Required]
-        [StringLength(20)]
         [Unicode(false)]
         public string BlobSize { get; set; }
 
