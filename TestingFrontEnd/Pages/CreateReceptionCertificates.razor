@@ -4,34 +4,41 @@
 <body>    
     <div id="ContenedorHome" class="bg-[url('/assets/img/fondocasa.png')] imgfondo">       
         <div class="mx-auto max-w-screen-xl bg-transparent pt-2 md:p-5 sm:p-1">
-            @*<EditForm Model="@NewCreateReceptionCertificate" OnSubmit="HandlePostCreateCertificates">*@
-            @*<DataAnnotationsValidator />*@
+            <EditForm Model="@NewCreateReceptionCertificate">
+            <DataAnnotationsValidator />
             <div class="bg-[#2B286F] mx-auto h-32 md:m-3 sm:m-1 text-center text-sm-center md:text-md text-white">
-                <h1 class="text-xl mb-2">Informacion general @MyProperty</h1>
+                <h1 class="text-xl mb-2">Informacion general</h1>
         
                 <div class="flex inline grid grid-cols-2  place-items-center">
                     <div>
                         <div class="flex inline mb-3">
                             <label class="w-52 text-left">Fecha y Hora de Realizacion</label>
-                            <input  class="w-52 ml-2 rounded-lg text-black" type="text" />
-                            @*<div>
+                            <div>
                                 <InputDate @bind-Value="NewCreateReceptionCertificate.CreationDate" class="w-44 ml-2 rounded-lg text-black" />
                                 <div class="text-xs"><ValidationMessage class="text-xs" For="@(() => NewCreateReceptionCertificate.CreationDate)" /></div>
-                            </div>*@
+                            </div>
                         </div>
                         <div class="flex inline">
                             <label class="w-52 text-left">Realizado por</label>
                              <input class="w-52 ml-2 rounded-lg text-black" type="text" />
+              @*              <div>
+                                <InputText @bind-Value="NewCreateReceptionCertificate..Rfc" disabled="@IsFormLessorExit" class="w-44 ml-2 rounded-lg text-black" />
+                                <div class="text-xs"><ValidationMessage class="text-xs" For="@(() => CurrentLessor.Rfc)" /></div>
+                            </div>*@
                         </div>
                     </div>
                     <div>
                         <div class="flex ">
-                            <label class="w-44 lg:w-52 text-left text-sm lg:text-md">No Contrato</label>
-                            <input class="w-36 lg:w-52 ml-2 px-2 rounded-lg text-black" type="text" />
+                            <label class="w-44 lg:w-52 text-left text-sm lg:text-md">No Contrato</label>                            
+                            <div>
+                                <InputText @bind-Value="NewCreateReceptionCertificate.ContractNumber" class="w-44 ml-2 rounded-lg text-black" />
+                                <div class="text-xs"><ValidationMessage class="text-xs" For="@(() => NewCreateReceptionCertificate.ContractNumber)" /></div>
+                            </div>
                         </div>
                     </div>
                 </div>                
             </div>
+            </EditForm>
             @if (lessorValid != null)
             {
                 @foreach (var item in lessorValid)
@@ -52,16 +59,14 @@
                 {
                     @item3
                 }
-            }
+            }            
             <FormLessor @ref="formLessor" OpenModalLessor="ChangeOpenModalLessor" CurrentLessor="CurrentLessor" IsFormLessorExit="CurrentLessor.IdLessor == 0 ? false : true"></FormLessor>
             <FormTenant @ref="formTenant" OpenModalTenant="ChangeOpenModalTenant" CurrentTenant="CurrentTenant" IsFormTenantExit="CurrentTenant.IdTenant == 0 ? false : true"></FormTenant>
             <FormProperty @ref="formProperty" OpenModalProperty="ChangeOpenModalProperty" CurrentProperty="CurrentProperty" IsFormPropertyExit="CurrentProperty.IdProperty == 0 ? false : true"></FormProperty>
 
-            <div class="flex inline grid grid-cols-1  place-items-center">
-                @*<a href="/ReceptionCertificates/Inventory"><button class="bg-[#2B286F] text-white mt-10 rounded-lg h-10 w-20">Siguiente</button></a>*@         
-                <button @onclick="HandlePostCreateCertificates" type="submit" class="bg-[#2B286F] text-white mt-10 rounded-lg h-10 w-20">Siguiente</button>
-            </div>
-            @*</EditForm>*@
+            <div class="flex inline grid grid-cols-1 place-items-center">                
+                <button @onclick="HandlePostCreateCertificates" class="bg-[#2B286F] text-white mt-10 rounded-lg h-10 w-20">Siguiente</button>
+            </div>            
             @if (ShowModalLessor)
             {
                 <ModalLessor Lessors="lessors" SendIdLessor="SetLessorForm" CloseModalLessor="ChangeOpenModalLessor" ShowModal="ShowModalLessor"></ModalLessor>

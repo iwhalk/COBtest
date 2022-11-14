@@ -18,18 +18,18 @@ namespace FrontEnd.Services
 
         public async Task<List<ActasRecepcion>> GetReceptionCertificatesAsync(string? day, string? week, string? month, string? propertyType, string? numberOfRooms, string? lessor, string? tenant, string? delegation, string? agent, string? currentPage, string? rowNumber)
         {
-            if (_context.ActasRecepcion == null)
+            if (_context.ActasRecepcionList == null)
             {
                 var response = await _repository.GetAsync<List<ActasRecepcion>>($"api/ReceptionCertificates?day={day}&week={week}&month={month}&propertyType={propertyType}&numberOfRooms={numberOfRooms}&lessor={lessor}&tenant={tenant}&delegation={delegation}&agent={agent}&currentPage={currentPage}&rowNumber={rowNumber}");
 
                 if (response != null)
                 {
-                    _context.ActasRecepcion = response;
-                    return _context.ActasRecepcion;
+                    _context.ActasRecepcionList = response;
+                    return _context.ActasRecepcionList;
                 }
             }
 
-            return _context.ActasRecepcion;
+            return _context.ActasRecepcionList;
         }
 
         public async Task<ReceptionCertificate> PostReceptionCertificatesAsync(ReceptionCertificate receptionCertificate)

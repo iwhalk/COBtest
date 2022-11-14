@@ -17,18 +17,18 @@ namespace FrontEnd.Services
 
         public async Task<List<PropertyType>> GetPropertyTypeAsync()
         {
-            if (_context.PropertyType == null)
+            if (_context.PropertyTypeList == null)
             {
                 var response = await _repository.GetAsync<List<PropertyType>>("api/PropertyType");
 
                 if (response != null)
                 {
-                    _context.PropertyType = response;
-                    return _context.PropertyType;
+                    _context.PropertyTypeList = response;
+                    return _context.PropertyTypeList;
                 }
             }
 
-            return _context.PropertyType;
+            return _context.PropertyTypeList;
         }
 
         public async Task<PropertyType> PostPropertyTypeAsync(PropertyType propertyType)

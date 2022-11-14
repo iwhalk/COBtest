@@ -15,6 +15,7 @@ namespace FrontEnd.Stores
         private Tenant tenant;
         private Lessor lessor;
         private Property property;
+        private ReceptionCertificate receptionCertificate;
         private List<Area> areasList;
         private List<Description> descriptionsList;
         private List<Feature> featuresList;
@@ -30,7 +31,7 @@ namespace FrontEnd.Stores
                 NotifyStateChanged();
             }
         }
-        public List<Tenant> Tenant
+        public List<Tenant> TenantList
         {
             get => tenantList;
             set
@@ -48,7 +49,7 @@ namespace FrontEnd.Stores
                 NotifyStateChanged();
             }
         }
-        public List<Lessor> Lessor
+        public List<Lessor> LessorList
         {
             get => lessorList;
             set
@@ -66,7 +67,7 @@ namespace FrontEnd.Stores
                 NotifyStateChanged();
             }
         }
-        public List<Property> Property
+        public List<Property> PropertyList
         {
             get => propertiesList;
             set
@@ -84,7 +85,7 @@ namespace FrontEnd.Stores
                 NotifyStateChanged();
             }
         }
-        public List<Service> Service
+        public List<Service> ServiceList
         {
             get => serviceList;
             set
@@ -102,7 +103,7 @@ namespace FrontEnd.Stores
                 NotifyStateChanged();
             }
         }
-        public List<Description> Description
+        public List<Description> DescriptionList
         {
             get => descriptionsList;
             set
@@ -111,7 +112,7 @@ namespace FrontEnd.Stores
                 NotifyStateChanged();
             }
         }
-        public List<Feature> Feature
+        public List<Feature> FeatureList
         {
             get => featuresList;
             set
@@ -120,7 +121,7 @@ namespace FrontEnd.Stores
                 NotifyStateChanged();
             }
         }
-        public List<PropertyType> PropertyType
+        public List<PropertyType> PropertyTypeList
         {
             get => propertyTypesList;
             set
@@ -129,7 +130,17 @@ namespace FrontEnd.Stores
                 NotifyStateChanged();
             }
         }
-        public List<ActasRecepcion> ActasRecepcion
+        public ReceptionCertificate CurrentReceptionCertificate
+        {
+            get => receptionCertificate;
+            set
+            {
+                receptionCertificate = value;
+                NotifyStateChanged();
+            }
+        }
+
+        public List<ActasRecepcion> ActasRecepcionList
         {
             get => actasRecepcionsList;
             set

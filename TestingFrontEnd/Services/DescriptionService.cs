@@ -16,18 +16,18 @@ namespace FrontEnd.Services
         }
         public async Task<List<Description>> GetDescriptionAsync()
         {
-            if (_context.Description == null)
+            if (_context.DescriptionList == null)
             {
                 var response = await _repository.GetAsync<List<Description>>("api/Description");
 
                 if (response != null)
                 {
-                    _context.Description = response;
-                    return _context.Description;
+                    _context.DescriptionList = response;
+                    return _context.DescriptionList;
                 }
             }
 
-            return _context.Description;
+            return _context.DescriptionList;
         }
 
         public async Task<Description> PostDescriptionAsync(Description description)
