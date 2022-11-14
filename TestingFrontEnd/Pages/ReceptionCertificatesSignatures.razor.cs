@@ -2,6 +2,7 @@
 using FrontEnd.Interfaces;
 using FrontEnd.Stores;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Routing;
 using Shared.Models;
 using SharedLibrary.Models;
 
@@ -10,6 +11,7 @@ namespace FrontEnd.Pages
     public partial class ReceptionCertificatesSignatures : ComponentBase
     {
         private readonly ApplicationContext _context;
+        private readonly NavigationManager _navigate;
         private readonly ITenantService _tenantService;
         private readonly ILessorService _lessorService;
         private readonly IPropertyService _propertyService;
@@ -21,9 +23,10 @@ namespace FrontEnd.Pages
         private readonly IPropertyTypeService _propertyTypeService;
         private readonly IReceptionCertificateService _receptionCertificateService;
 
-        public ReceptionCertificatesSignatures(ApplicationContext context, ITenantService tenantService, IPropertyService propertyService, ILessorService lessorService, IInventoryService inventoryService, IServicesService servicesService, IAreaService areaService, IDescriptionService descriptionService, IFeaturesService featuresService, IPropertyTypeService propertyTypeService, IReceptionCertificateService receptionCertificateService)
+        public ReceptionCertificatesSignatures(ApplicationContext context, NavigationManager navigate, ITenantService tenantService, IPropertyService propertyService, ILessorService lessorService, IInventoryService inventoryService, IServicesService servicesService, IAreaService areaService, IDescriptionService descriptionService, IFeaturesService featuresService, IPropertyTypeService propertyTypeService, IReceptionCertificateService receptionCertificateService)
         {
             _context = context;
+            _navigate = navigate;
             _tenantService = tenantService;
             _propertyService = propertyService;
             _lessorService = lessorService;
@@ -83,6 +86,12 @@ namespace FrontEnd.Pages
             CurrentReceptionCertificate.ApprovarPathLessor = ImageBase64Lessor;
             CurrentReceptionCertificate.ApprovalPathTenant = ImageBase64Tenant;
             var r = await _receptionCertificateService.PutReceptionCertificatesAsync(CurrentReceptionCertificate);
+
+            if(r is null)
+            {
+                _navigate.NavigateTo("/Emails");
+            }
+            
         }
     }
 }

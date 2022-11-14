@@ -40,9 +40,9 @@ namespace FrontEnd.Pages
         public Lessor? CurrentLessor { get; set; } = new Lessor();
         public Tenant? CurrentTenant { get; set; } = new Tenant();
         public Property? CurrentProperty { get; set; } = new Property();
-        public List<Lessor> lessors { get; set; }
-        private List<Tenant> tenants { get; set; }
-        private List<Property> properties { get; set; }
+        public List<Lessor> lessors { get; set; } = new();
+        private List<Tenant> tenants { get; set; } = new();
+        private List<Property> properties { get; set; } = new();
         public int MyProperty { get; set; }
 
         public void ChangeOpenModalLessor() => ShowModalLessor = ShowModalLessor ? false : true;

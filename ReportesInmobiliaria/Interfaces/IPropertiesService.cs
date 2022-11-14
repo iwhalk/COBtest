@@ -7,7 +7,7 @@ namespace ReportesInmobiliaria.Interfaces
     {
         Task<List<Property>?> GetPropertiesAsync();
         Task<Property?> GetPropertyAsync(int id);
-        Task<Property?> GetPropertyAsync(string propertyName);
+        //Task<Property?> GetPropertyAsync(string propertyName);
         Task<Property?> CreatePropertyAsync(Property property);
         Task<bool> UpdatePropertyAsync(Property property);
         Task<bool> DeletePropertyAsync(int id);
