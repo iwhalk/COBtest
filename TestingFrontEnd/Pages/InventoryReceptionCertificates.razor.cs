@@ -67,7 +67,7 @@ namespace FrontEnd.Pages
         public List<Inventory> InventoriesList { get; set; } = new();
         public List<DtoDescription> dtoDescriptions { get; set; } = new();
 
-        public int[] FeaturesIds { get; set; } = { 4, 12, 17, 30, 34, 38, 43 };
+        public int[] FeaturesIds { get; set; } = { 2, 4, 7, 11, 13, 15, 17, 25, 28, 30, 33, 60, 64 };
 
         public void ChangeOpenModalRooms() => ShowModalRooms = ShowModalRooms ? false : true;
         public void ChangeOpenModalComponents() => ShowModalComponents = ShowModalComponents ? false : true;
@@ -142,7 +142,7 @@ namespace FrontEnd.Pages
             dtoDescriptions.FirstOrDefault(x => x.IdFeature == CurrentFeature.IdFeature).IdDescription = idDescription;
             dtoDescriptions.FirstOrDefault(x => x.IdDescription == idDescription).Note = name;
             DescriptionsList = new();
-            //CurrentInventory = await _inventoryService.PostInventoryAsync(newInventory);
+            CurrentInventory = await _inventoryService.PostInventoryAsync(newInventory);
         }
 
         public class DtoDescription
