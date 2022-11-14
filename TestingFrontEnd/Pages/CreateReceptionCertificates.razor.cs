@@ -60,19 +60,19 @@ namespace FrontEnd.Pages
         {
             CurrentLessor = lessors.Find(x => x.IdLessor == IdLessor);            
             ShowModalLessor = false;
-            _context.CurrentLessor = CurrentLessor;
+            _context.CurrentLessor = CurrentLessor ?? new Lessor();
         }
         public void SetTenantForm(int IdTenant)
         {
             CurrentTenant = tenants.Find(x => x.IdTenant == IdTenant);            
             ShowModalTenant = false;
-            _context.CurrentTenant = CurrentTenant;
+            _context.CurrentTenant = CurrentTenant ?? new Tenant();
         }
         public void SetPropertyForm(int IdProperty)
         {
             CurrentProperty = properties.Find(x => x.IdProperty == IdProperty);                        
             ShowModalProperty = false;
-            _context.CurrentPropertys = CurrentProperty;            
+            _context.CurrentPropertys = CurrentProperty ?? new Property();
         }
         public async void HandlePostCreateCertificates()
         {
@@ -86,33 +86,28 @@ namespace FrontEnd.Pages
                 {
                     MyProperty = 10;
                     if (CurrentLessor.IdLessor == 0)
-                    {
-                        //Crear nuewvo lessor                    
-                        await _lessorService.PostLessorAsync(CurrentLessor);
-                        await _lessorService.GetLessorAsync();
+                    {   //Crear nuewvo lessor                    
+                        CurrentLessor =  await _lessorService.PostLessorAsync(CurrentLessor);
+                        _context.LessorList.Add(CurrentLessor);                        
                     }
                     if (CurrentProperty.IdProperty == 0)
-                    {
-                        //Crear nuevo property con idLessor                    
+                    {   //Crear nuevo property con idLessor                    
                         CurrentProperty.IdLessor = CurrentLessor.IdLessor;
-                        await _propertyService.PostPropertyAsync(CurrentProperty);
-                        await _propertyService.GetPropertyAsync();
+                        CurrentProperty = await _propertyService.PostPropertyAsync(CurrentProperty);
+                        _context.PropertyList.Add(CurrentProperty);                        
                     }
                     if (CurrentTenant.IdTenant == 0)
-                    {
-                        //Crear nuevo tenant                    
-                        await _tenantService.PostTenantAsync(CurrentTenant);
-                        await _tenantService.GetTenantAsync();
+                    {   //Crear nuevo tenant                    
+                        CurrentTenant = await _tenantService.PostTenantAsync(CurrentTenant);
+                        _context.TenantList.Add(CurrentTenant);
                     }
                     var authUser = await authenticationStateTask;                    
 
                     NewCreateReceptionCertificate.IdTenant = CurrentTenant.IdTenant;
-                    NewCreateReceptionCertificate.IdProperty = CurrentProperty.IdProperty;
-                    NewCreateReceptionCertificate.ContractNumber = "0001";
-                    NewCreateReceptionCertificate.IdTypeRecord = 1;
+                    NewCreateReceptionCertificate.IdProperty = CurrentProperty.IdProperty;                    
+                    NewCreateReceptionCertificate.IdTypeRecord = 1; //For ReceptionCertificate In
                     NewCreateReceptionCertificate.IdAgent = "1e6d90d6-32b5-43af-bc6a-0b43678462ec";                    
-                    _receptionCertificateService.PostReceptionCertificatesAsync(NewCreateReceptionCertificate);
-                    MyProperty = 99999;
+                    _context.CurrentReceptionCertificate = await _receptionCertificateService.PostReceptionCertificatesAsync(NewCreateReceptionCertificate);                    
                 }
                 catch (Exception ex)
                 {
