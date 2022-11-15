@@ -67,7 +67,7 @@ namespace FrontEnd.Pages
         public List<Inventory> InventoriesList { get; set; } = new();
         public List<DtoDescription> dtoDescriptions { get; set; } = new();
 
-        public int[] FeaturesIds { get; set; } = { 2, 4, 7, 11, 13, 15, 17, 25, 28, 30, 33, 60, 64 };
+        public int[] FeaturesIds { get; set; } = { 2, 7, 11, 15, 25, 30, 33, 60};
 
         public void ChangeOpenModalRooms() => ShowModalRooms = ShowModalRooms ? false : true;
         public void ChangeOpenModalComponents() => ShowModalComponents = ShowModalComponents ? false : true;
@@ -96,24 +96,38 @@ namespace FrontEnd.Pages
             inventories = await _inventoryService.GetInventoryAsync();
             Services = await _servicesService.GetServicesAsync();
             Descriptions = await _descriptionService.GetDescriptionAsync();
+
+            AreasList = (await _areaService.GetAreaAsync())?.Take(4).ToList();
+            //ServicesList = (await _servicesService.GetServicesAsync())?.Take(3).ToList();
         }
         public void AgregarAreas()
         {
-            AreasList = modalAreas.SelectedValues;
+            foreach (var selectedArea in modalAreas.SelectedValues)
+            {
+                AreasList.Add(selectedArea);
+            }
+
+            ShowModalRooms = false;
         }
         public void AgregarServicios()
         {
-            ServicesList = modalServices.SelectedValues;
+            foreach (var selectedService in modalServices.SelectedValues)
+            {
+                ServicesList.Add(selectedService);
+            }
+
             foreach (var serviceSelected in ServicesList)
             {
-                CurrentArea.AreaServices.Add(new() { IdProperty = 1, IdArea = 1, IdService = serviceSelected.IdService});
+                CurrentArea.IdServices.Add(new() { IdService = serviceSelected.IdService});
             }
             modalServices.SelectedValues = new();
+
+            ShowModalComponents = false;
         }
         public async void AreaButtonClicked(int idArea)
         {
             CurrentArea = AreasList.FirstOrDefault(x => x.IdArea == idArea);
-            ServicesList = Services.Where(x => CurrentArea.AreaServices.Any(y => x.IdService.Equals(y.IdService))).ToList();
+            ServicesList = Services.Where(x => CurrentArea.IdServices.Any(y => x.IdService.Equals(y.IdService))).ToList();
         }
         public async void ServiceButtonClicked(int idService)
         {
@@ -126,23 +140,45 @@ namespace FrontEnd.Pages
         }
         public async void FeatureButtonClicked(int IdFeature)
         {
+            //CurrentInventory = new();
             CurrentFeature = FeaturesList.FirstOrDefault(x => x.IdFeature == IdFeature);
             DescriptionsList = (await _descriptionService.GetDescriptionAsync())?.Where(x => x.IdFeature == IdFeature)?.ToList();
 
         }
 
+        public async void FeatureInput(int IdFeature)
+        {
+            CurrentFeature = FeaturesList.FirstOrDefault(x => x.IdFeature == IdFeature);
+
+            CurrentInventory.IdProperty = _context.CurrentPropertys.IdProperty;
+            CurrentInventory.IdArea = CurrentArea.IdArea;
+
+            InventoriesList.Add(CurrentInventory);
+
+            //dtoDescriptions.FirstOrDefault(x => x.IdFeature == CurrentFeature.IdFeature).IdDescription = idDescription;
+            //dtoDescriptions.FirstOrDefault(x => x.IdDescription == idDescription).Note = name;
+            //DescriptionsList = new();
+
+            var res = await _inventoryService.PostInventoryAsync(CurrentInventory);
+        }
 
         public async void DescriptionButtonClicked(int idDescription)
         {
             var name = Descriptions?.FirstOrDefault(x => x.IdDescription == idDescription)?.DescriptionName;
-            var newInventory = new Inventory { IdArea = CurrentArea.IdArea, IdProperty = 2, IdDescription = idDescription, Note = name, };
-            CurrentInventory = newInventory;
-            InventoriesList.Add(newInventory);
+            CurrentInventory.IdProperty = _context.CurrentPropertys.IdProperty;
+            CurrentInventory.IdArea = CurrentArea.IdArea;
+            CurrentInventory.IdDescription = idDescription;
+            //CurrentInventory.Note = name;
+
+            //var newInventory = new Inventory { IdArea = CurrentArea.IdArea, IdProperty = 2, IdDescription = idDescription, Note = name, };
+            //CurrentInventory = newInventory;
+            InventoriesList.Add(CurrentInventory);
 
             dtoDescriptions.FirstOrDefault(x => x.IdFeature == CurrentFeature.IdFeature).IdDescription = idDescription;
             dtoDescriptions.FirstOrDefault(x => x.IdDescription == idDescription).Note = name;
-            DescriptionsList = new();
-            CurrentInventory = await _inventoryService.PostInventoryAsync(newInventory);
+            //DescriptionsList = new();
+
+            var res = await _inventoryService.PostInventoryAsync(CurrentInventory);
         }
 
         public class DtoDescription

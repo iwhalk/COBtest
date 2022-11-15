@@ -20,10 +20,11 @@ namespace FrontEnd.Pages
         private readonly ILessorService _lessorService;
         private readonly IPropertyService _propertyService;
         private readonly IReceptionCertificateService _receptionCertificateService;
+        private readonly AuthenticationStateProvider _getAuthenticationStateAsync;
         [CascadingParameter]
         private Task<AuthenticationState> authenticationStateTask { get; set; }
 
-        public CreateReceptionCertificates(ApplicationContext context, NavigationManager navigationManager, ITenantService tenantService, IPropertyService propertyService, ILessorService lessorService, IReceptionCertificateService receptionCertificateService)
+        public CreateReceptionCertificates(ApplicationContext context, NavigationManager navigationManager, ITenantService tenantService, IPropertyService propertyService, ILessorService lessorService, IReceptionCertificateService receptionCertificateService, AuthenticationStateProvider getAuthenticationStateAsync)
         {
             _context = context;
             _navigation = navigationManager;
@@ -31,6 +32,7 @@ namespace FrontEnd.Pages
             _lessorService = lessorService;
             _propertyService = propertyService;
             _receptionCertificateService = receptionCertificateService;
+            _getAuthenticationStateAsync = getAuthenticationStateAsync;
         }
 
         public bool ShowModalLessor { get; set; } = false;
@@ -43,6 +45,7 @@ namespace FrontEnd.Pages
         private List<Tenant> tenants { get; set; } = new();
         private List<Property> properties { get; set; } = new();
         public int MyProperty { get; set; }
+        public string UserName { get; set; }
 
         public void ChangeOpenModalLessor() => ShowModalLessor = ShowModalLessor ? false : true;
         public void ChangeOpenModalTenant() => ShowModalTenant = ShowModalTenant ? false : true;
@@ -122,6 +125,10 @@ namespace FrontEnd.Pages
             tenants = await _tenantService.GetTenantAsync();        
             lessors = await _lessorService.GetLessorAsync();
             properties = await _propertyService.GetPropertyAsync();
+
+            var authstate = await _getAuthenticationStateAsync.GetAuthenticationStateAsync();
+            var user = authstate.User;
+            UserName = user.Identity?.Name;
         }
     }
 }
