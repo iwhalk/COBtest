@@ -20,7 +20,7 @@ namespace ApiGateway.Services
 
         public async Task<ApiResponse<PropertyType>> PostPropertyTypeAsync(PropertyType propertyType)
         {
-            return await PostAsync<PropertyType>(propertyType, path: "PropertyTypes");
+            return await PostAsync<PropertyType>(propertyType, path: "PropertyType");
         }
 
         public async Task<ApiResponse<PropertyType>> PutPropertyTypeAsync(PropertyType propertyType)

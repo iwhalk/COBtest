@@ -15,7 +15,7 @@ namespace ApiGateway.Services
 
         public async Task<ApiResponse<List<Lessor>>> GetLessorAsync()
         {
-            return await GetAsync<List<Lessor>>(path: "Lessor");
+            return await GetAsync<List<Lessor>>(path: "Lessors");
         }
 
         public async Task<ApiResponse<Lessor>> PostLessorAsync(Lessor lessor)

@@ -15,7 +15,7 @@ namespace ApiGateway.Services
 
         public async Task<ApiResponse<List<Inventory>>> GetInventoryAsync()
         {
-            return await GetAsync<List<Inventory>>(path: "Inventory");
+            return await GetAsync<List<Inventory>>(path: "Inventories");
         }
 
         public async Task<ApiResponse<Inventory>> PostInventoryAsync(Inventory inventory)

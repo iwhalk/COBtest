@@ -14,7 +14,6 @@ using ReportesInmobiliaria.Services;
 using ReportesInmobiliaria.Utilities;
 using Microsoft.AspNetCore.Http;
 using SixLabors.Fonts.Tables.AdvancedTypographic;
-using SharedLibrary.Models;
 using System.DirectoryServices.ActiveDirectory;
 using Azure.Storage.Blobs;
 using System.Configuration;
@@ -78,10 +77,6 @@ builder.Services.AddLogging(loggingBuilder =>
 });
 //builder.Services.AddScoped<CreationLogger>();
 
-//builder.Services.AddScoped<IModulesService, ModulesService>();
-//builder.Services.AddScoped<ITagsService, TagsService>();
-//builder.Services.AddScoped<ITelepeajeService, TelepeajeService>();
-//builder.Services.AddScoped<IReportesService, ReportesService>();
 builder.Services.AddScoped<IPropertyTypesService, PropertyTypesService>();
 builder.Services.AddScoped<IPropertiesService, PropertiesService>();
 builder.Services.AddScoped<ILessorService, LessorService>();
@@ -91,11 +86,13 @@ builder.Services.AddScoped<IServicesService, ServicesService>();
 builder.Services.AddScoped<IDescriptionService, DescriptionService>();
 builder.Services.AddScoped<IAreasService, AreasService>();
 builder.Services.AddScoped<IFeaturesService, FeaturesService>();
-builder.Services.AddScoped<IReportesService, ReportesService>();
-builder.Services.AddScoped<IReporteFeaturesService, ReporteFeaturesService>();
+//builder.Services.AddScoped<IReportesService, ReportesService>();
+//builder.Services.AddScoped<IReporteFeaturesService, ReporteFeaturesService>();
 builder.Services.AddScoped<IBlobService, BlobService>();
 builder.Services.AddScoped<IReceptionCertificates, ReceptionCertificatesService>();
 builder.Services.AddScoped<AuxiliaryMethods>();
+builder.Services.AddScoped<IReporteActaEntregaService, ReporteActaEntregaService>();
+builder.Services.AddScoped<IInmobiliariaDbContextProcedures, InmobiliariaDbContextProcedures>();
 builder.Services.AddScoped<ReportesFactory>();
 
 builder.Services.AddCors();
@@ -127,7 +124,7 @@ app.UseCors(x => x
 #region Inmobiliaria
 
 #region Lessor
-app.MapGet("/Lessor",
+app.MapGet("/Lessors",
     async (ILessorService _lessorService, ILogger<Program> _logger) =>
     {
         try
@@ -171,7 +168,7 @@ app.MapPost("/Lessor", async (Lessor lessor, ILessorService _lessorService) =>
 #endregion
 
 #region Tenant
-app.MapGet("/Tenant",
+app.MapGet("/Tenants",
     async (ITenantService _tenantService , ILogger<Program> _logger) =>
     {
         try
@@ -214,7 +211,7 @@ app.MapPost("/Tenant", async (Tenant tenant, ITenantService _tenantService) =>
 #endregion
 
 #region Inventory
-app.MapGet("/Inventory",
+app.MapGet("/Inventories",
     async (IInventoryService _inventoryService, ILogger<Program> _logger) =>
     {
         try
@@ -322,7 +319,7 @@ app.MapGet("/Descriptions",
 .Produces<HttpValidationProblemDetails>(StatusCodes.Status400BadRequest, "application/problem+json")
 .Produces<HttpValidationProblemDetails>(StatusCodes.Status500InternalServerError, "application/problem+json");
 
-app.MapPost("/Descriptions", async (SharedLibrary.Models.Description description, IDescriptionService _descriptionService) =>
+app.MapPost("/Description", async (SharedLibrary.Models.Description description, IDescriptionService _descriptionService) =>
 {
     try
     {
@@ -343,7 +340,7 @@ app.MapPost("/Descriptions", async (SharedLibrary.Models.Description description
 
 #endregion
 
-#region Porperty
+#region PropertyType
 app.MapGet("/PropertyTypes", async (IPropertyTypesService _propertyTypesService) =>
 {
     var propertyTypes = await _propertyTypesService.GetPropertyTypesAsync();
@@ -355,7 +352,7 @@ app.MapGet("/PropertyTypes", async (IPropertyTypesService _propertyTypesService)
 .Produces<HttpValidationProblemDetails>(StatusCodes.Status400BadRequest, "application/problem+json")
 .Produces<HttpValidationProblemDetails>(StatusCodes.Status500InternalServerError, "application/problem+json");
 
-app.MapPost("/PropertyTypes", async (PropertyType propertyType, IPropertyTypesService _propertyTypesService) =>
+app.MapPost("/PropertyType", async (PropertyType propertyType, IPropertyTypesService _propertyTypesService) =>
 {
     try
     {
@@ -373,25 +370,6 @@ app.MapPost("/PropertyTypes", async (PropertyType propertyType, IPropertyTypesSe
 .Produces<IResult>(StatusCodes.Status200OK)
 .Produces<HttpValidationProblemDetails>(StatusCodes.Status400BadRequest, "application/problem+json")
 .Produces<HttpValidationProblemDetails>(StatusCodes.Status500InternalServerError, "application/problem+json");
-
-app.MapPut("/PropertyTypes", async (PropertyType propertyType, IPropertyTypesService _propertyTypesService) =>
-{
-    try
-    {
-        var res = await _propertyTypesService.UpdatePropertyTypeAsync(propertyType);
-        return Results.Ok(res);
-    }
-    catch (Exception e)
-    {
-        if (e.GetType() == typeof(ValidationException))
-            return Results.Problem(e.Message, statusCode: 400);
-        return Results.Problem(e.Message);
-    }
-})
-.WithName("UpdatePropertyType")
-.Produces<IResult>(StatusCodes.Status200OK)
-.Produces<HttpValidationProblemDetails>(StatusCodes.Status400BadRequest, "application/problem+json")
-.Produces<HttpValidationProblemDetails>(StatusCodes.Status500InternalServerError, "application/problem+json");
 #endregion
 
 #region Properties
@@ -406,7 +384,7 @@ app.MapGet("/Properties", async (IPropertiesService _propertiesService) =>
 .Produces<HttpValidationProblemDetails>(StatusCodes.Status400BadRequest, "application/problem+json")
 .Produces<HttpValidationProblemDetails>(StatusCodes.Status500InternalServerError, "application/problem+json");
 
-app.MapPost("/Properties", async (SharedLibrary.Models.Property property, IPropertiesService _propertiesService) =>
+app.MapPost("/Property", async (SharedLibrary.Models.Property property, IPropertiesService _propertiesService) =>
 {
     try
     {
@@ -421,25 +399,6 @@ app.MapPost("/Properties", async (SharedLibrary.Models.Property property, IPrope
     }
 })
 .WithName("CreateProperty")
-.Produces<IResult>(StatusCodes.Status200OK)
-.Produces<HttpValidationProblemDetails>(StatusCodes.Status400BadRequest, "application/problem+json")
-.Produces<HttpValidationProblemDetails>(StatusCodes.Status500InternalServerError, "application/problem+json");
-
-app.MapPut("/Properties", async (SharedLibrary.Models.Property property, IPropertiesService _propertiesService) =>
-{
-    try
-    {
-        var res = await _propertiesService.UpdatePropertyAsync(property);
-        return Results.Ok(res);
-    }
-    catch (Exception e)
-    {
-        if (e.GetType() == typeof(ValidationException))
-            return Results.Problem(e.Message, statusCode: 400);
-        return Results.Problem(e.Message);
-    }
-})
-.WithName("UpdateProperty")
 .Produces<IResult>(StatusCodes.Status200OK)
 .Produces<HttpValidationProblemDetails>(StatusCodes.Status400BadRequest, "application/problem+json")
 .Produces<HttpValidationProblemDetails>(StatusCodes.Status500InternalServerError, "application/problem+json");
@@ -466,7 +425,7 @@ app.MapGet("/Areas", async (IAreasService _areasService, ILogger<Program> _logge
 .Produces<HttpValidationProblemDetails>(StatusCodes.Status400BadRequest, "application/problem+json")
 .Produces<HttpValidationProblemDetails>(StatusCodes.Status500InternalServerError, "application/problem+json");
 
-app.MapPost("/Areas", async (Area area, IAreasService _areasService, ILogger<Program> _logger) =>
+app.MapPost("/Area", async (Area area, IAreasService _areasService, ILogger<Program> _logger) =>
 {
     try
     {
@@ -508,7 +467,7 @@ app.MapGet("/Features", async (IFeaturesService _featuresService, ILogger<Progra
 .Produces<HttpValidationProblemDetails>(StatusCodes.Status400BadRequest, "application/problem+json")
 .Produces<HttpValidationProblemDetails>(StatusCodes.Status500InternalServerError, "application/problem+json");
 
-app.MapPost("/Features", async (Feature feature, IFeaturesService _featuresService, ILogger<Program> _logger) =>
+app.MapPost("/Feature", async (Feature feature, IFeaturesService _featuresService, ILogger<Program> _logger) =>
 {
     try
     {
@@ -530,12 +489,12 @@ app.MapPost("/Features", async (Feature feature, IFeaturesService _featuresServi
 #endregion Features
 
 #region ReportesPDF
-app.MapGet("/ReporteArrendores", async (int? id,IReportesService _reportesService,ILogger<Program> _logger) =>
+app.MapGet("/ReporteActaEntrega", async (int idProperty, IReporteActaEntregaService _reportesService, ILogger<Program> _logger) =>
 {
     try
 
     {
-        var newModule = await _reportesService.GetReporteArrendadores(id);
+        var newModule = await _reportesService.GetActaEntrega(idProperty);
         if (newModule == null) return Results.NoContent();
         //System.IO.File.WriteAllBytes("ReporteTransaccionesCrucesTotales.pdf", newModule);
         return Results.File(newModule, "application/pdf");
@@ -548,31 +507,7 @@ app.MapGet("/ReporteArrendores", async (int? id,IReportesService _reportesServic
         return Results.Problem(e.Message);
     }
 })
-.WithName("GetReporteArrendadores")
-.Produces<IResult>(StatusCodes.Status200OK, "application/pdf")
-.Produces<HttpValidationProblemDetails>(StatusCodes.Status400BadRequest, "application/problem+json")
-.Produces<HttpValidationProblemDetails>(StatusCodes.Status500InternalServerError, "application/problem+json");
-//.AllowAnonymous();
-
-app.MapGet("/ReporteFeatures", async (int? id, IReporteFeaturesService _reportesService, ILogger<Program> _logger) =>
-{
-    try
-
-    {
-        var newModule = await _reportesService.GetReporteFeatures(id);
-        if (newModule == null) return Results.NoContent();
-        //System.IO.File.WriteAllBytes("ReporteTransaccionesCrucesTotales.pdf", newModule);
-        return Results.File(newModule, "application/pdf");
-    }
-    catch (Exception e)
-    {
-        _logger.LogError(e, e.Message);
-        if (e.GetType() == typeof(ValidationException))
-            return Results.Problem(e.Message, statusCode: 400);
-        return Results.Problem(e.Message);
-    }
-})
-.WithName("GetReporteFeatures")
+.WithName("GetReporteActaEntrega")
 .Produces<IResult>(StatusCodes.Status200OK, "application/pdf")
 .Produces<HttpValidationProblemDetails>(StatusCodes.Status400BadRequest, "application/problem+json")
 .Produces<HttpValidationProblemDetails>(StatusCodes.Status500InternalServerError, "application/problem+json");
