@@ -15,7 +15,6 @@ namespace SharedLibrary.Models
             BlobsInventories = new HashSet<BlobsInventory>();
             Inventories = new HashSet<Inventory>();
             ReceptionCertificates = new HashSet<ReceptionCertificate>();
-            IdAreas = new HashSet<Area>();
         }
 
         [Key]
@@ -58,9 +57,5 @@ namespace SharedLibrary.Models
         public virtual ICollection<Inventory> Inventories { get; set; }
         [InverseProperty("IdPropertyNavigation")]
         public virtual ICollection<ReceptionCertificate> ReceptionCertificates { get; set; }
-
-        [ForeignKey("IdProperty")]
-        [InverseProperty("IdProperties")]
-        public virtual ICollection<Area> IdAreas { get; set; }
     }
 }
