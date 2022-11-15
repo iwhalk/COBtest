@@ -11,9 +11,9 @@ namespace ApiGateway.Services
 
         }
 
-        public async Task<ApiResponse<byte[]>> GetReporteFeaturesAsync(int IdFeature)
+        public async Task<ApiResponse<byte[]>> GEetReporteReceptionCertificateAsync(int IdProperty)
         {
-            return await GetAsync<byte[]>(path: "/ReporteFeatures");
+            return await GetAsync<byte[]>(path: $"/ReporteActaEntrega/?IdProperty={IdProperty}");
         }
 
         public async Task<ApiResponse<byte[]>> GetReporteLessorsAsync(int Lessor)

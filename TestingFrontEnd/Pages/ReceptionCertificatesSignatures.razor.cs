@@ -2,8 +2,6 @@
 using FrontEnd.Interfaces;
 using FrontEnd.Stores;
 using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.Routing;
-using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
 using SharedLibrary.Models;
 
 namespace FrontEnd.Pages
@@ -59,7 +57,6 @@ namespace FrontEnd.Pages
         public string Observaciones { get; set; }
         public SignaturesLessor signaturesLessorComponent;
         public SignaturesTenant signaturesTenantComponent;
-
         public void ChangeOpenModalPreview() => ShowModalPreview = ShowModalPreview ? false : true;
         protected override async Task OnInitializedAsync()
         {
@@ -74,28 +71,24 @@ namespace FrontEnd.Pages
             propertyTypes = await _propertyTypeService.GetPropertyTypeAsync();
             CurrentReceptionCertificate = _context.CurrentReceptionCertificate ?? new();                            
         }
-
         public async void HandlePreviewPdf()
         {
             if (CurrentReceptionCertificate != null)
-            {
-                //Falta cambiar el servicio por el reporte real cuando se junte con rapa de julio
-                var id = CurrentReceptionCertificate.IdReceptionCertificate;
-                BlobPDFPreview = await _reportService.GetReportFeature(id); //change for id
-                PdfName = "PDFPreview.pdf";
-                ShowModalPreview = true;
-            }
-            BlobPDFPreview = await _reportService.GetReportFeature(1); //change for id
-            PdfName = "PDFPreview.pdf";
-            ShowModalPreview = true;
-        }
+            {                
+                var IdProperty = CurrentReceptionCertificate.IdProperty;                
+                BlobPDFPreview = await _reportService.GetReportFeature(IdProperty);
+                if (BlobPDFPreview != null)
+                {
+                    PdfName = "PDFPreview.pdf";                    
+                }
+            }        
+        }        
         public async void HandleSaveReceptionCertificate()
         {       
             HandleInsertSignatures();            
         }
         public async void HandleInsertSignatures()
         {
-
             ImageBase64Lessor = await signaturesLessorComponent._context.ToDataURLAsync();
             ImageBase64Tenant = await signaturesTenantComponent._context.ToDataURLAsync();
             CurrentReceptionCertificate.Observation = Observaciones;

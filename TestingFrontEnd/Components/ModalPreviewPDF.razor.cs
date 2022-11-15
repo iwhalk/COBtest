@@ -23,7 +23,7 @@ namespace FrontEnd.Components
         protected override void OnInitialized()
         {
             if (Content != null)
-            {
+            { 
                 BlobUrl = _js.Invoke<string>("CreateObjectURL", Content, PdfName ?? "Pdf.pdf", "application/pdf");
             }
         }
