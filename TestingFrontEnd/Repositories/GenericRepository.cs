@@ -1,10 +1,10 @@
-﻿using Shared;
-using System.Net.Http.Json;
+﻿using System.Net.Http.Json;
 using System.Text.Json.Serialization;
-using TestingFrontEnd.Interfaces;
-using TestingFrontEnd.Stores;
+using FrontEnd.Stores;
+using FrontEnd.Interfaces;
+using SharedLibrary;
 
-namespace TestingFrontEnd.Repositories
+namespace FrontEnd.Repositories
 {
     public class GenericRepository : IGenericRepository
     {
@@ -51,6 +51,17 @@ namespace TestingFrontEnd.Repositories
         public async Task<T>? PostAsync<T>(string path, object value)
         {
             using HttpResponseMessage httpResponse = await _httpClient.PostAsJsonAsync(path, value);
+            return await ParseHttpResponseAsync<T>(httpResponse);
+        }
+        public async Task<T>? PutAsync<T>(string path, object value)
+        {
+            using HttpResponseMessage httpResponse = await _httpClient.PutAsJsonAsync(path, value);
+            return await ParseHttpResponseAsync<T>(httpResponse);
+        }
+
+        public async Task<T>? PutAsync<T>(string path, T value)
+        {
+            using HttpResponseMessage httpResponse = await _httpClient.PutAsJsonAsync(path, value as HttpContent);
             return await ParseHttpResponseAsync<T>(httpResponse);
         }
 

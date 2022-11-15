@@ -1,0 +1,75 @@
+﻿<div class="ocultar bg-[#2B286F] mx-auto md:m-3 sm:m-1 text-center text-sm-center md:text-md text-white pt-2 pb-3 rounded-lg lg:rounded-none my-2">
+    <h1 class="text-xl mb-2">Propiedad</h1>
+    <EditForm EditContext="PropertyEditContext">
+    <DataAnnotationsValidator />
+    <div class="flex flex-col lg:grid lg:grid-cols-4  place-items-center">
+        <div>
+            <div class="flex my-2 lg:mb-3">
+                <label class="w-44 lg:w-28 text-left text-sm lg:text-md">Calle y Numero</label>
+                <div>
+                    <InputText @bind-Value="CurrentProperty.Street" disabled="@IsFormPropertyExit" class="w-36 lg:w-36 ml-2 px-2 rounded-lg text-black " />
+                    <div class="text-xs"><ValidationMessage class="text-xs" For="@(() => CurrentProperty.Street)" /></div>
+                </div>
+            </div>
+            <div class="flex my-2 lg:mb-3">
+                <label class="w-44 lg:w-28 text-left text-sm lg:text-md">Colonia</label>
+                    <div>
+                        <InputText @bind-Value="CurrentProperty.Colony" disabled="@IsFormPropertyExit" class="w-36 lg:w-36 ml-2 px-2 rounded-lg text-black " />
+                        <div class="text-xs"><ValidationMessage class="text-xs" For="@(() => CurrentProperty.Colony)" /></div>
+                    </div>
+            </div>
+            <div class="flex my-2">
+                <label class="w-44 lg:w-28 text-left text-sm lg:text-md">Delegacion</label>
+                <div>
+                    <InputText @bind-Value="CurrentProperty.Delegation" disabled="@IsFormPropertyExit" class="w-36 lg:w-36 ml-2 px-2 rounded-lg text-black" />
+                    <div class="text-xs"><ValidationMessage class="text-xs" For="@(() => CurrentProperty.Delegation)" /></div>
+                </div>
+            </div>
+        </div>
+        <div>
+            <div class="flex mb-2 lg:mb-3">
+                <label class="w-44 lg:w-32 text-left text-sm lg:text-md">C.P</label>
+                <div>
+                    <InputText @bind-Value="CurrentProperty.Cp" disabled="@IsFormPropertyExit" class="w-36 lg:w-32 ml-2 px-2 rounded-lg text-black"/>
+                    <div class="text-xs"><ValidationMessage class="text-xs" For="@(() => CurrentProperty.Cp)" /></div>
+                </div>                
+            </div>
+            <div class="flex my-2 lg:mb-3">
+                <label class="w-44 lg:w-32 text-left text-sm lg:text-md">Tipo de Inmueble</label>
+                <div>
+                    <InputNumber @bind-Value="CurrentProperty.IdPropertyType" disabled="@IsFormPropertyExit" class="w-36 lg:w-32 ml-2 px-2 rounded-lg text-black"/>
+                    <div class="text-xs"><ValidationMessage class="text-xs" For="@(() => CurrentProperty.IdPropertyType)" /></div>
+                </div>                
+            </div>
+            <div class="flex my-2">
+                <label class="w-44 lg:w-32 text-left text-sm lg:text-md">No Habitaciones</label>
+                <div>
+                    <InputNumber @bind-Value="CurrentProperty.NumberOfRooms" disabled="@IsFormPropertyExit" class="w-36 lg:w-32 ml-2 px-2 rounded-lg text-black"/>
+                    <div class="text-xs"><ValidationMessage class="text-xs" For="@(() => CurrentProperty.NumberOfRooms)" /></div>
+                </div>                
+            </div>
+        </div>
+        <div>
+            <div class="flex mb-2 lg:mb-3">
+                <label class="w-44 lg:w-24 text-left text-sm lg:text-md">Tamaño m2</label>
+                <div>
+                    <InputNumber @bind-Value="CurrentProperty.Size" disabled="@IsFormPropertyExit" class="w-36 lg:w-40 ml-2 px-2 rounded-lg text-black"/>
+                    <div class="text-xs"><ValidationMessage class="text-xs" For="@(() => CurrentProperty.Size)" /></div>
+                </div>                  
+            </div>
+        </div>
+        <div>
+            <div>
+                <button @onclick="@(() => OpenModalProperty.InvokeAsync())" class="bg-blue-300 rounded-lg h-6 w-36">Existente</button>
+            </div>
+        </div>
+    </div>        
+    <div class="flex justify-center pt-2">
+        <button class="mostrar">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-caret-up-fill" viewBox="0 0 16 16">
+            <path d="m7.247 4.86-4.796 5.481c-.566.647-.106 1.659.753 1.659h9.592a1 1 0 0 0 .753-1.659l-4.796-5.48a1 1 0 0 0-1.506 0z"/>
+        </svg>
+        </button>
+    </div>
+    </EditForm>
+</div>

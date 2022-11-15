@@ -3,7 +3,8 @@ using ApiGateway.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Shared.Models;
+using SharedLibrary.Models;
+using SharedLibrary.Models;
 
 namespace ApiGateway.Controllers
 {
@@ -35,6 +36,19 @@ namespace ApiGateway.Controllers
         public async Task<ActionResult> PostProperty(Property property)
         {
             var result = await _propertyService.PostPropertyAsync(property);
+
+            if (result.Succeeded)
+            {
+                return Ok(result);
+            }
+
+            return BadRequest(result);
+        }
+
+        [HttpPut]
+        public async Task<ActionResult> PutProperty(Property property)
+        {
+            var result = await _propertyService.PutPropertyAsync(property);
 
             if (result.Succeeded)
             {

@@ -1,23 +1,37 @@
-﻿using Shared.Models;
-using TestingFrontEnd.Interfaces;
+using FrontEnd.Stores;
+﻿using FrontEnd.Interfaces;
+using SharedLibrary.Models;
 
-namespace TestingFrontEnd.Services
+
+namespace FrontEnd.Services
 {
     public class PropertyService : IPropertyService
     {
         private readonly IGenericRepository _repository;
-        public PropertyService(IGenericRepository repository)
+        private readonly ApplicationContext _context;
+        public PropertyService(IGenericRepository repository, ApplicationContext context)
         {
+            _context = context;
             _repository = repository;
         }
 
         public async Task<List<Property>> GetPropertyAsync()
         {
-            return await _repository.GetAsync<List<Property>>("api/Property");
+            if (_context.PropertyList == null)
+            {
+                var response = await _repository.GetAsync<List<Property>>("api/Property");
+
+                if (response != null)
+                {
+                    _context.PropertyList = response;
+                    return _context.PropertyList;
+                }
+            }
+            return _context.PropertyList;
         }
         public async Task<Property> PostPropertyAsync(Property property)
         {
-            return await _repository.PostAsync<Property>("api/Property", property);
+            return await _repository.PostAsync("api/Property", property);
         }
     }
 }

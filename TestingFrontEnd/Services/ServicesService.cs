@@ -1,23 +1,38 @@
-﻿using Shared.Models;
-using TestingFrontEnd.Interfaces;
+﻿using FrontEnd.Stores;
+using SharedLibrary.Models;
+﻿using FrontEnd.Interfaces;
+using SharedLibrary.Models;
 
-namespace TestingFrontEnd.Services
+namespace FrontEnd.Services
 {
     public class ServicesService : IServicesService
     {
         private readonly IGenericRepository _repository;
-        public ServicesService(IGenericRepository repository)
+        private readonly ApplicationContext _context;
+        public ServicesService(IGenericRepository repository, ApplicationContext context)
         {
             _repository = repository;
+            _context = context; 
         }
         public async Task<List<Service>> GetServicesAsync()
         {
-            return await _repository.GetAsync<List<Service>>("api/Services");
+            if (_context.ServiceList == null)
+            {
+                var response = await _repository.GetAsync<List<Service>>("api/Services");
+
+                if (response != null)
+                {
+                    _context.ServiceList = response;
+                    return _context.ServiceList;
+                }
+            }
+
+            return _context.ServiceList;
         }
 
         public async Task<Service> PostServicesAsync(Service service)
         {
-            return await _repository.PostAsync<Service>("api/Services", service);
+            return await _repository.PostAsync("api/Services", service);
         }
     }
 }

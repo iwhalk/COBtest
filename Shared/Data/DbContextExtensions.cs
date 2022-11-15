@@ -9,7 +9,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Shared.Data
+namespace SharedLibrary.Data
 {
     public static class DbContextExtensions
     {

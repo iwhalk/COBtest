@@ -1,6 +1,6 @@
 {
   "profiles": {
-    "TestingFrontEnd": {
+    "FrontEnd": {
       "commandName": "Project",
       "launchBrowser": true,
       "environmentVariables": {

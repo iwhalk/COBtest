@@ -1,30 +1,23 @@
-﻿using Microsoft.AspNetCore.Components;
-using Shared.Models;
-using TestingFrontEnd.Interfaces;
+﻿using FrontEnd.Interfaces;
+using Microsoft.AspNetCore.Components;
+using SharedLibrary.Models;
 
-namespace TestingFrontEnd.Pages
+namespace FrontEnd.Pages
 {
     public partial class PruebasGateway : ComponentBase
     {
-        private readonly IAreaService _areaService;
-        public PruebasGateway(IAreaService areaService)
+        private readonly IReceptionCertificateService _reception;
+        public PruebasGateway(IReceptionCertificateService reception)
         {
-            _areaService = areaService;
+            _reception = reception;
         }
 
-        private List<Area> ListArea { get; set; }
-        private Area Area { get; set; }
-
-        Area ejem = new Area()
-        {
-            AreaName = "PruebaBaseAddress"
-        };
+        private List<ActasRecepcion> ListArea { get; set; }
 
         protected override async Task OnInitializedAsync()
         {
-            ListArea = await _areaService.GetAreaAsync();
-
-            Area = await _areaService.PostAreaAsync(ejem);            
+            Console.WriteLine("si llego aca");
+            ListArea = await _reception.GetReceptionCertificatesAsync(null, null, null, null, null, null, null, null, null, null, null);            
         }
     }
 }

@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Shared.Models
+namespace SharedLibrary.Models
 {
     public partial class SP_GET_AERI_AREASResult
     {

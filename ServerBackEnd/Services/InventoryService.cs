@@ -1,7 +1,7 @@
 ﻿using ApiGateway.Interfaces;
 using ApiGateway.Proxies;
-using Shared;
-using Shared.Models;
+using SharedLibrary.Models;
+using SharedLibrary;
 using System.Security.Claims;
 
 namespace ApiGateway.Services

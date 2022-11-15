@@ -93,7 +93,14 @@ builder.Services.AddProblemDetails(setup =>
     .AddProblemDetailsConventions()
 .AddJsonOptions(x => x.JsonSerializerOptions.DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull);
 
-builder.Services.AddHttpClient("Reportes", client => client.BaseAddress = new Uri("http://localhost:7293/"));
+if (builder.Environment.IsDevelopment())
+{
+    builder.Services.AddHttpClient("Reportes", client => client.BaseAddress = new Uri("http://localhost:7293/"));
+}
+else
+{
+    builder.Services.AddHttpClient("Reportes", client => client.BaseAddress = new Uri("https://reportesarisoft2245.azurewebsites.net"));
+}
 
 builder.Services.AddCors();
 
@@ -278,6 +285,10 @@ builder.Services.AddScoped<IAreaService, AreaService>();
 builder.Services.AddScoped<IFeaturesService, FeaturesService>();
 builder.Services.AddScoped<IDescriptionService, DescriptionService>();
 builder.Services.AddScoped<IInventoryService, InventoryService>();
+builder.Services.AddScoped<IBlobsService, BlobsService>();
+builder.Services.AddScoped<IReportesService, ReportesService>();
+builder.Services.AddScoped<IBlobInventoryService, BlobInventoryService>();
+builder.Services.AddScoped<IReceptionCertificateService, ReceptionCertificateService>();
 
 var app = builder.Build();
 

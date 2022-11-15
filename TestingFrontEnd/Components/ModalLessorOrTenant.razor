@@ -1,49 +1,52 @@
 ﻿@if (ShowModal)
 {
-    <div class="fixed inset-0 overflow-y-auto">
-        <div class="flex min-h-full mx-auto items-end justify-center text-center sm:items-center sm:p-0">    
-            <div class="mx-auto bg-white md:max-w-2xl sm:max-w-sm mt-20 h-96 rounded-lg border border-grey-300 drop-shadow-lg border-2">
-                <div class="relative">
-                    <button @onclick="@(() => OnClick.InvokeAsync())" type="button" class="absolute top-3 right-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-red-600 rounded-full border border-2 ">
-                        <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
-                    </button>
-                </div>
-                <div class="text-center text-gray-400 text-xl pt-7">Lista de @TitleModal</div>
-                <div class="mx-auto text-center pt-5 px-3 pr-2">
-                    <table class="w-full overflow flex text-sm">
-                        <tr class="bg-[#2B286F] text-white text-sm h-10">
-                            <th></th>
-                            <th>Nombre</th>
-                            <th>Direccion</th>
-                            <th>RFC</th>
-                            <th>Email</th>
-                            <th>Telefono</th>
-                        </tr>
-                        <tr class="m-10 border h-10">
-                            <td class="p-2"><input type="checkbox" /></td>
-                            <td class="p-2">Alfreds Futterkiste</td>
-                            <td class="p-2">Calle Sisal 380</td>
-                            <td class="p-2">ETLIGUJ39849</td>
-                            <td class="p-2">chuleta@gmail.com</td>
-                            <td class="p-2">55 10 12 34 59</td>
-                        </tr>
-                        <tr class="m-10 border h-10">
-                            <td class="p-2"><input type="checkbox" /></td>
-                            <td class="p-2">Alfreds Futterkiste</td>
-                            <td class="p-2">Calle Sisal 380</td>
-                            <td class="p-2">ETLIGUJ39849</td>
-                            <td class="p-2">chuleta@gmail.com</td>
-                            <td class="p-2">55 10 12 34 59</td>
-                        </tr>
-                        <tr class="m-10 border h-10">
-                            <td class="p-2"><input type="checkbox" /></td>
-                            <td class="p-2">Alfreds Futterkiste</td>
-                            <td class="p-2">Calle Sisal 380</td>
-                            <td class="p-2">ETLIGUJ39849</td>
-                            <td class="p-2">chuleta@gmail.com</td>
-                            <td class="p-2">55 10 12 34 59</td>
-                        </tr>
-                    </table>
+    <div class="relative z-10" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+        <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"></div>
+        <div class="fixed inset-0 z-10 overflow-y-auto">
+            <div class="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
+                <div class="mx-auto bg-white md:max-w-2xl sm:max-w-sm my-auto lg:h-96 rounded-lg border border-grey-300 drop-shadow-lg border-2">
+                    <div class="relative">
+                        <button @onclick="@(() => OnClick.InvokeAsync())" type="button" class="absolute top-3 right-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-red-600 rounded-full border border-2 ">
+                            <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
+                        </button>
+                    </div>
+                    <div class="text-center text-gray-400 text-xl py-10">Lista de @TitleModal</div>
+                    <div class="mx-auto text-center px-3 pb-5">
+                        <table class="w-96 lg:w-full overflow flex justify-center text-sm">
+                            <tr class="bg-[#2B286F] text-white text-sm h-10">
+                                <th></th>
+                                <th>Nombre</th>
+                                <th>Direccion</th>
+                                <th>RFC</th>
+                                <th class="ocultar">Email</th>
+                                <th class="ocultar">Telefono</th>
+                            </tr>
+                            <tr class="m-10 border h-10">
+                                <td class="p-2"><input type="checkbox" /></td>
+                                <td class="p-2">Alfreds Futterkiste</td>
+                                <td class="p-2">Calle Sisal 380</td>
+                                <td class="p-2">ETLIGUJ39849</td>
+                                <td class="p-2 ocultar">chuleta@gmail.com</td>
+                                <td class="p-2 ocultar">55 10 12 34 59</td>
+                            </tr>
+                            <tr class="m-10 border h-10">
+                                <td class="p-2"><input type="checkbox" /></td>
+                                <td class="p-2">Alfreds Futterkiste</td>
+                                <td class="p-2">Calle Sisal 380</td>
+                                <td class="p-2">ETLIGUJ39849</td>
+                                <td class="p-2 ocultar">chuleta@gmail.com</td>
+                                <td class="p-2 ocultar">55 10 12 34 59</td>
+                            </tr>
+                            <tr class="m-10 border h-10">
+                                <td class="p-2"><input type="checkbox" /></td>
+                                <td class="p-2">Alfreds Futterkiste</td>
+                                <td class="p-2">Calle Sisal 380</td>
+                                <td class="p-2">ETLIGUJ39849</td>
+                                <td class="p-2 ocultar">chuleta@gmail.com</td>
+                                <td class="p-2 ocultar">55 10 12 34 59</td>
+                            </tr>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>

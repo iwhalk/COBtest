@@ -3,52 +3,106 @@
 <PageTitle>Inventario</PageTitle>
 
 <body class="flex flex-column min-h-screen bg-[url('/assets/img/fondocasa.png')] imgfondo">
-    <div id="ContenedorInventario" class="flex">
-        <div id="ListActas" class="flex ml-4" >
-            <LeftListActas OnClick="ChangeOpenModalRooms" OpenModalGauges="ChangeOpenModalGauges" OpenModalKeys="ChangeOpenModalKeys" TypeList="Habitaciones"></LeftListActas>            
+    <div class="my-auto">
+    <div class="flex inline-flex">
+        <div id="ListActas" class="flex ml-4" style="height: 48rem">
+            <ListAreas OnAreaClick="AreaButtonClicked" Areas="@AreasList" OnClick="ChangeOpenModalRooms" OpenModalGauges="ChangeOpenModalGauges" OpenModalKeys="ChangeOpenModalKeys" TypeList="Habitaciones"></ListAreas>
         </div>
-        <div id="ListActas" class="flex">        
-            <LeftListActas OnClick="ChangeOpenModalComponents" TypeList="Componentes"></LeftListActas>
-        </div>
-        <div id="ContenedorElementos" class="my-12 flex justify-around relative border-1 border-black rounded-lg p-2 -ml-2 mr-6 w-full" style="height: 40rem">
-            <div id="ComponteInputs" class="flex p-2">
-                <div class="flex">
-                    <div class="flex">
-                        <div class="flex flex-col">
-                            <span class="flex my-2"><label for="" class="text-blue-900 w-32">Material</label><button @onclick="@(() => ChangeButtonsShow("Material"))" class="border-2 bg-slate-100 ml-5 w-3/6 flex justify-end h-7 w-24">@MaterialSelect</button></span>
-                            <span class="flex my-2"><label for="" class="text-blue-900 w-32">Color</label><button @onclick="@(() => ChangeButtonsShow("Color"))" class="border-2 bg-slate-100 ml-5 w-3/6 flex justify-end h-7 w-24">@ColorSelect</button></span>
-                            <span class="flex my-2"><label for="" class="text-blue-900 w-32">Estado General</label><button @onclick="@(() => ChangeButtonsShow("EstadoGeneral"))" class="border-2 bg-slate-100 ml-5 w-3/6 flex justify-end h-7 w-24">@StatusSelect</button></span>
-                            <span class="flex my-2"><label for="" class="text-blue-900 w-32">Canitdad</label><button @onclick="@(() => ChangeButtonsShow(""))"><input type="number" class="border-2 bg-slate-100 ml-5 w-3/6 flex justify-end"></button></span>
-                            <span class="flex my-2"><label for="" class="text-blue-900 w-32">Superficie m2</label><button @onclick="@(() => ChangeButtonsShow(""))"><input type="number" class="border-2 bg-slate-100 ml-5 w-3/6 flex justify-end"></button></span>
-                        </div>
-                    </div>
-                    <div class="mx-5">
-                        <li class="py-2 flex text-blue-900">Copiar Valores<input @onclick="ChangeOpenModalCopyValues" type="checkbox" class="border-2 w-1/4"></li>
-                    </div>
+        <div class="pt-9">
+            <div class="flex w-full">
+                <div id="ListActas" class="flex" style="height: 45.8rem">
+                    <ListServices OnServiceClick="ServiceButtonClicked" Services="@ServicesList" OnClick="ChangeOpenModalComponents" TypeList="Componentes"></ListServices>
                 </div>
-            </div>            
-            @if(TypeButtonsInventory == "Material" && MaterialSelect == "")
-            {
-                <DynamicComponentInventory OnClick="SetMaterial"></DynamicComponentInventory>
-            }
-            @if(TypeButtonsInventory == "Color" && ColorSelect == "")
-            {
-                <ColorsInventory OnClick="SetColor"></ColorsInventory>
-            }
-            @if(TypeButtonsInventory == "EstadoGeneral" && StatusSelect == "")
-            {
-                <StatusInventory OnClick="SetStatus"></StatusInventory>
-            }
-            <BoxesInventory></BoxesInventory>         
-        </div>
+                <div id="ContenedorElementos" class="my-12 flex justify-around relative border-1 border-black rounded-lg p-2 -ml-2 mr-6"  style="width: 87rem">
+                    <div id="ComponteInputs" class="flex p-2">
+                        <div class="flex">
+                            <div>
+                                <div class="flex flex-col">
+                                    @foreach (var feature in FeaturesList)
+                                    {
+                                        @if(FeaturesIds.Contains(feature.IdFeature))
+                                        {
+                                            <span class="flex my-2">
+                                                <label for="" class="text-blue-900 w-32">
+                                                    @feature.FeatureName
+                                                </label>
+                                                    <input @onfocusout="@(() => FeatureInput(@feature.IdFeature))" @bind-value="CurrentInventory.Note" type="number" class="border-2 bg-slate-100 ml-5 w-3/6 flex justify-end">
+                                            </span>
+                                        }
+                                        else
+                                        {
+                                            <span class="flex my-2">
+                                                <label for="" class="text-blue-900 w-32">
+                                                    @feature.FeatureName
+                                                </label>
+                                                <button @onclick="@(() => FeatureButtonClicked(@feature.IdFeature))" class="border-2 bg-slate-100 ml-5 w-3/6 flex justify-end h-7 w-24">
+                                                    @dtoDescriptions.FirstOrDefault(x => x.IdFeature == feature.IdFeature)?.Note
+                                                </button>
+                                            </span>
+                                        }
+                                    }
+                                  @*<span class="flex my-2"><label for="" class="text-blue-900 w-32">Material</label><button @onclick="@(() => ChangeButtonsShow("Material"))" class="border-2 bg-slate-100 ml-5 w-3/6 flex justify-end h-7 w-24">@MaterialSelect</button></span>
+                                    <span class="flex my-2"><label for="" class="text-blue-900 w-32">Color</label><button @onclick="@(() => ChangeButtonsShow("Color"))" class="border-2 bg-slate-100 ml-5 w-3/6 flex justify-end h-7 w-24">@ColorSelect</button></span>
+                                    <span class="flex my-2"><label for="" class="text-blue-900 w-32">Estado General</label><button @onclick="@(() => ChangeButtonsShow("EstadoGeneral"))" class="border-2 bg-slate-100 ml-5 w-3/6 flex justify-end h-7 w-24">@StatusSelect</button></span>
+                                    <span class="flex my-2"><label for="" class="text-blue-900 w-32">Canitdad</label><button @onclick="@(() => ChangeButtonsShow(""))"><input type="number" class="border-2 bg-slate-100 ml-5 w-3/6 flex justify-end"></button></span>
+                                    <span class="flex my-2"><label for="" class="text-blue-900 w-32">Superficie m2</label><button @onclick="@(() => ChangeButtonsShow(""))"><input type="number" class="border-2 bg-slate-100 ml-5 w-3/6 flex justify-end"></button></span>*@
+                                </div>
+                            </div>
+                            <div class="mx-5">
+                                <li class="py-2 flex text-blue-900">Copiar Valores<input @onclick="ChangeOpenModalCopyValues" type="checkbox" class="border-2 w-1/4"></li>
+                            </div>
+                        </div>
+                    </div>            
+                    <ButtonsDescriptions OnClick="DescriptionButtonClicked" DescriptionsList="DescriptionsList"></ButtonsDescriptions>
+                    @*@if(TypeButtonsInventory == "Material" && MaterialSelect == "")
+                    {
+                        <DynamicComponentInventory OnClick="SetMaterial"></DynamicComponentInventory>
+                    }   
+                    @if(TypeButtonsInventory == "Color" && ColorSelect == "")
+                    {
+                        <ColorsInventory OnClick="SetColor"></ColorsInventory>
+                    }
+                    @if(TypeButtonsInventory == "EstadoGeneral" && StatusSelect == "")
+                    {
+                        <StatusInventory OnClick="SetStatus"></StatusInventory>
+                    }*@
+
+                    @*<BoxesInventory></BoxesInventory>*@
+                        <div id="ComponenteRecuadros" class="p-2">
+                            <div>
+                                <label for="" class="text-center text-xl text-blue-900 font-semibold mb-2">Oberservaciones</label>
+                                <input @bind-value="CurrentInventory.Observation" type="text" class="border-2 bg-slate-100 ml-5 w-96 h-48 flex justify-end">
+                            </div>
+                            <div class="my-8">
+                                <label for="" class="text-xl text-blue-900 font-semibold">Fotografias</label>
+                                <div class="mt-8 relative border bg-slate-100 mx-auto ml-5 w-96 h-48 flex justify-center block">
+                                    <input class="border-2 bg-slate-100 mx-auto ml-5 w-80 h-40 flex justify-end inset-0 absolute opacity-0 cursor-pointer" type="file" multiple>
+                                    <div class="block text-center my-auto">
+                                        <div class="flex justify-center">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" fill="#2B286F" class="bi bi-plus-lg" viewBox="0 0 16 16">
+                                                <path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2Z" />
+                                            </svg>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                </div>
+            </div>
+        </div> 
     </div>
-    <div id="Botones" class="flex justify-center -my-5">
-        <button class="py-2 my-4 w-48 border rounded-lg text-white text-xl shadow-xl" style="background-color: #2B286F;">Guardar</button>
-        <a href="/Signatures"><button class="py-2 my-4 w-48 border rounded-lg text-white text-xl shadow-xl" style="background-color: #2B286F;">Generar Acta</button></a>
+    <div id="Botones" class="flex justify-center -my-8">
+        <button class="py-2 w-48 border rounded-lg text-white text-xl shadow-xl" style="background-color: #2B286F;">Guardar</button>
+            <a href="/ReceptionCertificate/Signatures"><button class="py-2 w-48 border rounded-lg text-white text-xl shadow-xl" style="background-color: #2B286F;">Generar Acta</button></a>
     </div>
-    <ModalRoomsOrComponents OnClick="ChangeOpenModalRooms" TitleTable="Habitaciones" ShowModal="@ShowModalRooms"></ModalRoomsOrComponents>
-    <ModalRoomsOrComponents OnClick="ChangeOpenModalComponents" TitleTable="Componentes" ShowModal="@ShowModalComponents"></ModalRoomsOrComponents>
+
+    <ModalAreas @ref="modalAreas" OnClick="ChangeOpenModalRooms" AgregarOnClick="AgregarAreas" TitleTable="Habitaciones" ShowModal="@ShowModalRooms"></ModalAreas>
+    <ModalServices @ref="modalServices" OnClick="ChangeOpenModalComponents" AgregarOnClick="AgregarServicios" TitleTable="Componentes" ShowModal="@ShowModalComponents"></ModalServices>
+
     <ModalRoomsOrComponents OnClick="ChangeOpenModalCopyValues" TitleTable="Habitaciones" ShowModal="@ShowModalCopyValues"></ModalRoomsOrComponents>
     <ModalGaugesOrKeys OnClick="ChangeOpenModalGauges" TitleModal="Medidores" ShowModal="@ShowModalGauges"></ModalGaugesOrKeys>
     <ModalGaugesOrKeys OnClick="ChangeOpenModalKeys" TitleModal="Llaves" ShowModal="@ShowModalkeys"></ModalGaugesOrKeys>
+    </div>
 </body>
+<Navbar></Navbar>
+<Footer></Footer>

@@ -40,13 +40,13 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Shared\Shared.csproj" />
-    <ProjectReference Include="..\TestingFrontEnd\TestingFrontEnd.csproj" />
+    <ProjectReference Include="..\Shared\SharedLibrary.csproj" />
+    <ProjectReference Include="..\TestingFrontEnd\FrontEnd.csproj" />
   </ItemGroup>
 
   <ItemGroup>
     <Reference Include="ReportesData">
-      <HintPath>..\Shared\ReportesData.dll</HintPath>
+      <HintPath>..\SharedLibrary\ReportesData.dll</HintPath>
     </Reference>
   </ItemGroup>
 

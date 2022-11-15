@@ -1,0 +1,47 @@
+﻿<div id="ComponenteCambiable" class="flex absolute bottom-20 left-20">
+    <div id="ColumBotones1" class="mx-6 flex flex-col">
+        @if (DescriptionsList.Count > 0)
+        {
+            <button @onclick="@(() => OnClick.InvokeAsync(DescriptionsList[0].IdDescription))" class="py-2 my-4 w-48 border rounded-lg text-white shadow-xl" style="background-color: #6AA7B7;">@DescriptionsList[0]?.DescriptionName</button>
+        }
+        @if (DescriptionsList.Count > 1)
+        {
+                <button @onclick="@(() => OnClick.InvokeAsync(DescriptionsList[1].IdDescription))" class="py-2 my-4 w-48 border rounded-lg text-white shadow-xl" style="background-color: #6AA7B7;">@DescriptionsList[1]?.DescriptionName</button>
+        }        
+        @if (DescriptionsList.Count > 2)
+        {
+            <button @onclick="@(() => OnClick.InvokeAsync(DescriptionsList[2].IdDescription))" class="py-2 my-4 w-48 border rounded-lg text-white shadow-xl" style="background-color: #6AA7B7;">@DescriptionsList[2]?.DescriptionName</button>
+        }
+    </div>
+    <div id="ColumBotones2" class="mx-6 flex flex-col">
+        @if (DescriptionsList.Count > 3)
+        {
+            <button @onclick="@(() => OnClick.InvokeAsync(DescriptionsList[3].IdDescription))" class="py-2 my-4 w-48 border rounded-lg text-white shadow-xl" style="background-color: #6AA7B7;">@DescriptionsList[3]?.DescriptionName</button>
+        }
+        @if (DescriptionsList.Count > 4)
+        {
+            <button @onclick="@(() => OnClick.InvokeAsync(DescriptionsList[4].IdDescription))" class="py-2 my-4 w-48 border rounded-lg text-white shadow-xl" style="background-color: #6AA7B7;">@DescriptionsList[4]?.DescriptionName</button>
+        }
+        @if (DescriptionsList.Count > 5)
+        {
+            <button @onclick="@(() => OnClick.InvokeAsync(DescriptionsList[5].IdDescription))" class="py-2 my-4 w-48 border rounded-lg text-white shadow-xl" style="background-color: #6AA7B7;">@DescriptionsList[5]?.DescriptionName</button>
+        }
+    </div>
+    <div id="ColumBotones1" class="mx-6 flex flex-col">
+@*        @foreach (var description in DescriptionsList)
+        {*@        
+        @if (DescriptionsList.Count > 6)
+        {
+            <button @onclick="@(() => OnClick.InvokeAsync(DescriptionsList[6].IdDescription))" class="py-2 my-4 w-48 border rounded-lg text-white shadow-xl" style="background-color: #6AA7B7;">@DescriptionsList[6]?.DescriptionName</button>
+        }
+        @if (DescriptionsList.Count > 7)
+        {
+            <button @onclick="@(() => OnClick.InvokeAsync(DescriptionsList[7].IdDescription))" class="py-2 my-4 w-48 border rounded-lg text-white shadow-xl" style="background-color: #6AA7B7;">@DescriptionsList[7]?.DescriptionName</button>
+        }
+        @if (DescriptionsList.Count > 8)
+        {
+            <button @onclick="@(() => OnClick.InvokeAsync(DescriptionsList[8].IdDescription))" class="py-2 my-4 w-48 border rounded-lg text-white shadow-xl" style="background-color: #6AA7B7;">@DescriptionsList[8]?.DescriptionName</button>
+        }
+@*        }*@
+    </div>
+</div>

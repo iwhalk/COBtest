@@ -1,5 +1,6 @@
-﻿using Shared;
-using Shared.Models;
+﻿using SharedLibrary;
+using SharedLibrary.Models;
+using SharedLibrary.Models;
 
 namespace ApiGateway.Interfaces
 {
@@ -7,5 +8,6 @@ namespace ApiGateway.Interfaces
     {
         Task<ApiResponse<List<PropertyType>>> GetPropertyTypeAsync();
         Task<ApiResponse<PropertyType>> PostPropertyTypeAsync(PropertyType propertyType);
+        Task<ApiResponse<PropertyType>> PutPropertyTypeAsync(PropertyType propertyType);
     }
 }

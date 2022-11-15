@@ -6,7 +6,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 
-namespace Shared.Models
+namespace SharedLibrary.Models
 {
     public partial class Property
     {
@@ -20,10 +20,6 @@ namespace Shared.Models
         [Key]
         [Column("ID_Property")]
         public int IdProperty { get; set; }
-        [Required]
-        [StringLength(30)]
-        [Unicode(false)]
-        public string PropertyName { get; set; }
         [Required]
         [StringLength(50)]
         [Unicode(false)]

@@ -12,7 +12,7 @@ using PdfSharpCore.Utils;
 //using MigraDoc.DocumentObjectModel.Shapes;
 //using MigraDoc.DocumentObjectModel.Tables;
 //using MigraDoc.Rendering;
-using Shared.Models;
+using SharedLibrary.Models;
 using SixLabors.ImageSharp.PixelFormats;
 using SQLitePCL;
 using System;

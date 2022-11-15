@@ -4,9 +4,9 @@ using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Shared.Models;
+using SharedLibrary.Models;
 
-namespace Shared.Data
+namespace SharedLibrary.Data
 {
     public partial class InmobiliariaDbContext : DbContext
     {
