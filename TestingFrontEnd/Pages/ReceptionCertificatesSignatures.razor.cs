@@ -57,8 +57,8 @@ namespace FrontEnd.Pages
         public string ImageBase64Lessor { get; set; }
         public string ImageBase64Tenant { get; set; }
         public string Observaciones { get; set; }
-        public SignaturesLessor signaturesLessorComponent = new();
-        public SignaturesTenant signaturesTenantComponent= new();
+        public SignaturesLessor signaturesLessorComponent;
+        public SignaturesTenant signaturesTenantComponent;
 
         public void ChangeOpenModalPreview() => ShowModalPreview = ShowModalPreview ? false : true;
         protected override async Task OnInitializedAsync()
@@ -72,7 +72,7 @@ namespace FrontEnd.Pages
             descriptions = await _descriptionService.GetDescriptionAsync();
             features = await _featuresService.GetFeaturesAsync();
             propertyTypes = await _propertyTypeService.GetPropertyTypeAsync();
-            CurrentReceptionCertificate = _context.CurrentReceptionCertificate;                            
+            CurrentReceptionCertificate = _context.CurrentReceptionCertificate ?? new();                            
         }
 
         public async void HandlePreviewPdf()
