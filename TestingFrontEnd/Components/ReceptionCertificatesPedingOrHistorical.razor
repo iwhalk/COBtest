@@ -6,60 +6,65 @@
         <span class="flex flex-col justify-center">
             <label for="" class="mb-1 text-3xl text-center text-cyan-700">Fechas</label>
             <div>
-                <input type="date" class="px-2 mx-2 py-1 border-1 border-black rounded-lg">
-                <input type="date" class="px-2 mx-2 py-1 border-1 border-black rounded-lg">
+                <input type="date" @bind-value="startDay" @onchange="Filter" @bind-value:event="oninput" class="px-2 mx-2 py-1 border-1 border-black rounded-lg" />
+                <input type="date" @bind-value="endDay" @onchange="Filter" @bind-value:event="oninput" class="px-2 mx-2 py-1 border-1 border-black rounded-lg" />
             </div>
         </span>
         <span class="flex flex-col items-center">
             <label for="" class="mb-1 text-3xl text-cyan-700">Tipo de Acta</label>
-            <select name="" class="px-2 py-1 border-1 border-black rounded-lg w-36 flex justify-center">
-                <option>Entrada</option>
-                <option>Salida</option>
+            <select @bind-value="certificateType" @onchange="Filter" @bind-value:event="oninput" name="" class="px-2 py-1 border-1 border-black rounded-lg w-36 flex justify-center">
+                <option value="0">Sin seleccionar</option>
+                <option value="1">Entrada</option>
+                <option value="2">Salida</option>
             </select>
         </span>
         <span class="flex flex-col items-center">
             <label for="" class="mb-1 text-3xl text-cyan-700">Tipo de Inmueble</label>
-            <select name="" class="px-2 py-1 border-1 border-black rounded-lg w-36">
-                @if (PropertyTypes is not null)
+            <select @bind-value="propertyType" @onchange="Filter" @bind-value:event="oninput" name="" class="px-2 py-1 border-1 border-black rounded-lg w-36">
+                <option value="0">Sin seleccionar</option>
+                @if (propertyTypes is not null)
                 {
-                    @foreach (var item in PropertyTypes)
+                    @foreach (var item in propertyTypes)
                     {
-                        <option>@item.PropertyTypeName</option>
+                        <option value="@item.IdPropertyType">@item.PropertyTypeName</option>
                     }
                 }
             </select>
         </span>
         <span class="flex flex-col items-center">
             <label for="" class="mb-1 text-3xl text-cyan-700">No. Habitaciones</label>
-            <input type="number" class="px-2 py-1 border-1 border-black rounded-lg w-36">
+            <input type="number" @bind-value="numberOfRooms" @onchange="Filter" @bind-value:event="oninput" placeholder="0" class="px-2 py-1 border-1 border-black rounded-lg w-36">
         </span>
         <span class="flex flex-col items-center">
             <label for="" class="mb-1 text-3xl text-cyan-700">Arrendador</label>
-            <select name="" class="px-2 py-1 border-1 border-black rounded-lg w-36">
-                @if (Lessors is not null)
+            <select @bind-value="lessor" @onchange="Filter" @bind-value:event="oninput" name="" class="px-2 py-1 border-1 border-black rounded-lg w-36">
+                <option value="0">Sin seleccionar</option>
+                @if (lessors is not null)
                 {
-                    @foreach (var item in Lessors)
+                    @foreach (var item in lessors)
                     {
-                        <option>@item.Name</option>
+                        <option value="@item.IdLessor">@item.Name</option>
                     }
                 }
             </select>
         </span>
         <span class="flex flex-col items-center">
             <label for="" class="mb-1 text-3xl text-cyan-700">Arrendatario</label>
-            <select name="" class="px-2 py-1 border-1 border-black rounded-lg w-36">
-                @if (Tenants is not null)
+            <select @bind-value="tenant" @onchange="Filter" @bind-value:event="oninput" name="" class="px-2 py-1 border-1 border-black rounded-lg w-36">
+                <option value="0">Sin seleccionar</option>
+                @if (tenants is not null)
                 {
-                    @foreach (var item in Tenants)
+                    @foreach (var item in tenants)
                     {
-                        <option>@item.Name</option>
+                        <option value="@item.IdTenant">@item.Name</option>
                     }
                 }
             </select>
         </span>
         <span class="flex flex-col items-center">
             <label for="" class="mb-1 text-3xl text-cyan-700">Delegación</label>
-            <select name="" class="px-2 py-1 border-1 border-black rounded-lg w-36">
+            <select @bind-value="delegation" @onchange="Filter" @bind-value:event="oninput" name="" class="px-2 py-1 border-1 border-black rounded-lg w-36">
+                <option value="0">Sin seleccionar</option>
                 <option>Álvaro Obregón</option>
                 <option>Azcapotzalco</option>
                 <option>Benito Juárez</option>
@@ -117,9 +122,9 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @if (Actas is not null)
+                    @if (actasRecepcions is not null)
                     {
-                        @foreach (var item in Actas)
+                        @foreach (var item in actasRecepcions)
                         {
                             <tr>
                                 <td class="py-2 text-center text-2xl">

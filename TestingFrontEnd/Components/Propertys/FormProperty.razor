@@ -57,13 +57,6 @@
                     <div class="text-xs"><ValidationMessage class="text-xs" For="@(() => CurrentProperty.Size)" /></div>
                 </div>                  
             </div>
-            <div class="flex inline mb-3">
-                <label class="w-24 text-left">Nombre de la Propiedad</label>
-                <div>
-                    <InputText @bind-Value="CurrentProperty.PropertyName" disabled="@IsFormPropertyExit" class="w-44 ml-2 rounded-lg text-black" />
-                    <div class="text-xs"><ValidationMessage class="text-xs" For="@(() => CurrentProperty.PropertyName)" /></div>
-                </div>
-            </div>
             <div>
                 <button @onclick="@(() => OpenModalProperty.InvokeAsync())" class="bg-blue-300 rounded-lg h-6 w-full">Existente</button>
             </div>

@@ -20,11 +20,10 @@ namespace ApiGateway.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult> GetReceptionCertificates(string? day, string? week, string? month, string? propertyType, string? numberOfRooms, string? lessor, string? tenant, string? delegation, string? agent, string? currentPage, string? rowNumber)
+        public async Task<ActionResult> GetReceptionCertificates(string? startDay, string? endDay, string? certificateType, string? propertyType, string? numberOfRooms, string? lessor, string? tenant, string? delegation, string? agent, string? currentPage, string? rowNumber)
         {
-            day = GetNullableString(day);
-            week = GetNullableString(week);
-            month = GetNullableString(month);
+            startDay = GetNullableString(startDay);
+            endDay = GetNullableString(endDay);
             delegation = GetNullableString(delegation);
             agent = GetNullableString(agent);
 
@@ -41,29 +40,34 @@ namespace ApiGateway.Controllers
                 rowNumberInt = ndf;
             }
 
+            int certificateTypeInt = 0;
             int propertyTypeInt = 0;
             int numberOfRoomsInt = 0;
             int lessorInt = 0;
             int tenantInt = 0;
 
+            if (!string.IsNullOrWhiteSpace(certificateType))
+            {
+                certificateTypeInt = Convert.ToInt16(certificateType);
+            }
             if (!string.IsNullOrWhiteSpace(propertyType)) 
             {
                 propertyTypeInt = Convert.ToInt16(propertyType); 
             }
             if (!string.IsNullOrWhiteSpace(numberOfRooms)) 
             {
-                propertyTypeInt = Convert.ToInt16(numberOfRoomsInt); 
+                numberOfRoomsInt = Convert.ToInt16(numberOfRooms); 
             }
             if (!string.IsNullOrWhiteSpace(lessor))
             {
-                propertyTypeInt = Convert.ToInt16(lessorInt); 
+                lessorInt = Convert.ToInt16(lessor); 
             }
             if (!string.IsNullOrWhiteSpace(tenant))
             {
-                propertyTypeInt = Convert.ToInt16(tenantInt); 
+                tenantInt = Convert.ToInt16(tenant); 
             }
 
-            var result = await _receptionCertificateService.GetReceptionCertificateAsync(day, week, month, propertyTypeInt, numberOfRoomsInt, lessorInt, tenantInt, delegation, agent, currentPageInt, rowNumberInt);
+            var result = await _receptionCertificateService.GetReceptionCertificateAsync(startDay, endDay, certificateTypeInt, propertyTypeInt, numberOfRoomsInt, lessorInt, tenantInt, delegation, agent, currentPageInt, rowNumberInt);
 
             if (result.Succeeded)
             {

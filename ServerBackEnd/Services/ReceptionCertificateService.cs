@@ -14,20 +14,24 @@ namespace ApiGateway.Services
 
         }
 
-        public async Task<ApiResponse<List<ActasRecepcion>>> GetReceptionCertificateAsync(string? day, string? week, string? month, int? propertyType, int? numberOfRooms, int? lessor, int? tenant, string? delegation, string? agent, int? currentPage, int? rowNumber)
+        public async Task<ApiResponse<List<ActasRecepcion>>> GetReceptionCertificateAsync(string? startDay, string? endDay, int? certificateType, int? propertyType, int? numberOfRooms, int? lessor, int? tenant, string? delegation, string? agent, int? currentPage, int? rowNumber)
         {
             Dictionary<string, string> parameters = new();
-            if (!string.IsNullOrEmpty(day))
+
+            if (!string.IsNullOrEmpty(startDay))
             {
-                parameters.Add("day", day);
+                parameters.Add("startDay", startDay);
             }
-            if (!string.IsNullOrEmpty(week))
+            if (!string.IsNullOrEmpty(endDay))
             {
-                parameters.Add("week", week);
+                parameters.Add("endDay", endDay);
             }
-            if (!string.IsNullOrEmpty(month))
+            if (certificateType != null)
             {
-                parameters.Add("month", month);
+                if (certificateType > 0)
+                {
+                    parameters.Add("certificateType", certificateType.ToString());
+                }
             }
             if (propertyType != null)
             {
@@ -59,7 +63,10 @@ namespace ApiGateway.Services
             }
             if (!string.IsNullOrEmpty(delegation))
             {
-                parameters.Add("delegation", delegation);
+                if (delegation.Equals("0") == false)
+                {
+                    parameters.Add("delegation", delegation);
+                }
             }
             if (!string.IsNullOrEmpty(agent))
             {

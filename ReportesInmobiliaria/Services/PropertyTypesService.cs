@@ -2,6 +2,7 @@
 using ReportesInmobiliaria.Interfaces;
 using Shared.Data;
 using Shared.Models;
+using SharedLibrary.Models;
 
 namespace ReportesInmobiliaria.Services
 {
