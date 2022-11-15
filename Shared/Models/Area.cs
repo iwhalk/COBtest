@@ -13,6 +13,7 @@ namespace SharedLibrary.Models
         public Area()
         {
             Inventories = new HashSet<Inventory>();
+            IdServices = new HashSet<Service>();
         }
 
         [Key]
@@ -25,5 +26,9 @@ namespace SharedLibrary.Models
 
         [InverseProperty("IdAreaNavigation")]
         public virtual ICollection<Inventory> Inventories { get; set; }
+
+        [ForeignKey("IdArea")]
+        [InverseProperty("IdAreas")]
+        public virtual ICollection<Service> IdServices { get; set; }
     }
 }

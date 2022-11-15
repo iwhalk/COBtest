@@ -14,7 +14,6 @@ using ReportesInmobiliaria.Services;
 using ReportesInmobiliaria.Utilities;
 using Microsoft.AspNetCore.Http;
 using SixLabors.Fonts.Tables.AdvancedTypographic;
-using SharedLibrary.Models;
 using System.DirectoryServices.ActiveDirectory;
 using Azure.Storage.Blobs;
 using System.Configuration;
@@ -78,10 +77,6 @@ builder.Services.AddLogging(loggingBuilder =>
 });
 //builder.Services.AddScoped<CreationLogger>();
 
-//builder.Services.AddScoped<IModulesService, ModulesService>();
-//builder.Services.AddScoped<ITagsService, TagsService>();
-//builder.Services.AddScoped<ITelepeajeService, TelepeajeService>();
-//builder.Services.AddScoped<IReportesService, ReportesService>();
 builder.Services.AddScoped<IPropertyTypesService, PropertyTypesService>();
 builder.Services.AddScoped<IPropertiesService, PropertiesService>();
 builder.Services.AddScoped<ILessorService, LessorService>();
@@ -115,7 +110,7 @@ app.UseSwaggerUI();
 
 app.UseAuthentication();
 
-app.UseAuthorization();
+//app.UseAuthorization();
 
 //app.UseHttpsRedirection();
 

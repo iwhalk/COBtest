@@ -9,13 +9,17 @@
    "OutputContextPath": "Data",
    "OutputPath": "Models",
    "PreserveCasingWithRegex": true,
-   "ProjectRootNamespace": "Shared",
+   "ProjectRootNamespace": "SharedLibrary",
    "Schemas": null,
    "SelectedHandlebarsLanguage": 0,
    "SelectedToBeGenerated": 0,
    "Tables": [
       {
          "Name": "[dbo].[Areas]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[AreaServices]",
          "ObjectType": 0
       },
       {
@@ -80,14 +84,6 @@
       },
       {
          "Name": "[dbo].[SP_GET_AERI_HEADER]",
-         "ObjectType": 1
-      },
-      {
-         "Name": "[dbo].[SP_GET_AERI]",
-         "ObjectType": 1
-      },
-      {
-         "Name": "[dbo].[SP_GET_AERIImages]",
          "ObjectType": 1
       }
    ],
