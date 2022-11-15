@@ -57,8 +57,8 @@ namespace FrontEnd.Pages
         public string ImageBase64Lessor { get; set; }
         public string ImageBase64Tenant { get; set; }
         public string Observaciones { get; set; }
-        public SignaturesLessor signaturesLessorComponent;
-        public SignaturesTenant signaturesTenantComponent;
+        public SignaturesLessor signaturesLessorComponent = new();
+        public SignaturesTenant signaturesTenantComponent= new();
 
         public void ChangeOpenModalPreview() => ShowModalPreview = ShowModalPreview ? false : true;
         protected override async Task OnInitializedAsync()
@@ -77,8 +77,14 @@ namespace FrontEnd.Pages
 
         public async void HandlePreviewPdf()
         {
-            //Falta cambiar el servicio por el reporte real cuando se junte con rapa de julio
-            var id = CurrentReceptionCertificate.IdReceptionCertificate;
+            if (CurrentReceptionCertificate != null)
+            {
+                //Falta cambiar el servicio por el reporte real cuando se junte con rapa de julio
+                var id = CurrentReceptionCertificate.IdReceptionCertificate;
+                BlobPDFPreview = await _reportService.GetReportFeature(id); //change for id
+                PdfName = "PDFPreview.pdf";
+                ShowModalPreview = true;
+            }
             BlobPDFPreview = await _reportService.GetReportFeature(1); //change for id
             PdfName = "PDFPreview.pdf";
             ShowModalPreview = true;
