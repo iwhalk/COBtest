@@ -49,6 +49,7 @@ builder.Services.AddScoped<IFeaturesService, FeaturesService>();
 builder.Services.AddScoped<IDescriptionService, DescriptionService>();
 builder.Services.AddScoped<IInventoryService, InventoryService>();
 builder.Services.AddScoped<IReceptionCertificateService, ReceptionCertificateService>();
+builder.Services.AddScoped<IReportsService, ReportsService>();
 
 
 // Supply HttpClient instances that include access tokens when making requests to the server project.
