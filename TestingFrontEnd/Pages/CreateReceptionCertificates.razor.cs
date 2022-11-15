@@ -47,10 +47,9 @@ namespace FrontEnd.Pages
         public int MyProperty { get; set; }
         public string UserName { get; set; }
 
-        public void ChangeOpenModalLessor() => ShowModalLessor = ShowModalLessor ? false : true;
-        public void ChangeOpenModalTenant() => ShowModalTenant = ShowModalTenant ? false : true;
-        public void ChangeOpenModalProperty() => ShowModalProperty = ShowModalProperty ? false : true;
-
+        public void ChangeOpenModalLessor() => ShowModalLessor = ShowModalLessor ? false : true;       
+        public void ChangeOpenModalTenant() => ShowModalTenant = ShowModalTenant ? false : true;        
+        public void ChangeOpenModalProperty() => ShowModalProperty = ShowModalProperty ? false : true;        
         public ReceptionCertificate NewReceptionCertificate { get; set; } = new ReceptionCertificate { CreationDate = DateTime.Now };
 
         public FormLessor formLessor;
@@ -92,24 +91,39 @@ namespace FrontEnd.Pages
                     if (CurrentLessor.IdLessor == 0)
                     {   //Crear nuewvo lessor                    
                         CurrentLessor =  await _lessorService.PostLessorAsync(CurrentLessor);
+                        if(CurrentLessor == null)
+                        {
+                            CurrentLessor = new();
+                            return;
+                        }
                         _context.LessorList.Add(CurrentLessor);                        
                     }
                     if (CurrentProperty.IdProperty == 0)
                     {   //Crear nuevo property con idLessor                    
                         CurrentProperty.IdLessor = CurrentLessor.IdLessor;
                         CurrentProperty = await _propertyService.PostPropertyAsync(CurrentProperty);
+                        if (CurrentProperty == null)
+                        {
+                            CurrentProperty = new();
+                            return;
+                        }
                         _context.PropertyList.Add(CurrentProperty);                        
                     }
                     if (CurrentTenant.IdTenant == 0)
                     {   //Crear nuevo tenant                    
                         CurrentTenant = await _tenantService.PostTenantAsync(CurrentTenant);
+                        if(CurrentTenant == null)
+                        {
+                            CurrentTenant = new();
+                            return;
+                        }
                         _context.TenantList.Add(CurrentTenant);
                     }
                     var authUser = await authenticationStateTask;                    
 
                     NewReceptionCertificate.IdTenant = CurrentTenant.IdTenant;
                     NewReceptionCertificate.IdProperty = CurrentProperty.IdProperty;
-                    NewReceptionCertificate.IdTypeRecord = 1; //For ReceptionCertificate In
+                    NewReceptionCertificate.IdTypeRecord = _context.TypeReceptionCertificate; //For ReceptionCertificate (1)In or (2)Out
                     NewReceptionCertificate.IdAgent = "1e6d90d6-32b5-43af-bc6a-0b43678462ec";                    
                     _context.CurrentReceptionCertificate = await _receptionCertificateService.PostReceptionCertificatesAsync(NewReceptionCertificate);
                     _navigation.NavigateTo("/ReceptionCertificates/Inventory");

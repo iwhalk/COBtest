@@ -12,6 +12,9 @@ namespace FrontEnd.Components.Tenants
         public Tenant? CurrentTenant { get; set; }
         [Parameter]
         public bool IsFormTenantExit { get; set; }
+        [Parameter]
+        public bool DisableButtonModal { get; set; }
+
         public EditContext TenantEditContext;
         protected override void OnInitialized()
         {
