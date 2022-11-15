@@ -26,7 +26,7 @@
                                                 <label for="" class="text-blue-900 w-32">
                                                     @feature.FeatureName
                                                 </label>
-                                                <input type="number" class="border-2 bg-slate-100 ml-5 w-3/6 flex justify-end">
+                                                    <input @onfocusout="@(() => FeatureInput(@feature.IdFeature))" @bind-value="CurrentInventory.Note" type="number" class="border-2 bg-slate-100 ml-5 w-3/6 flex justify-end">
                                             </span>
                                         }
                                         else
@@ -66,7 +66,27 @@
                     {
                         <StatusInventory OnClick="SetStatus"></StatusInventory>
                     }*@
-                    <BoxesInventory></BoxesInventory>         
+
+                    @*<BoxesInventory></BoxesInventory>*@
+                        <div id="ComponenteRecuadros" class="p-2">
+                            <div>
+                                <label for="" class="text-center text-xl text-blue-900 font-semibold mb-2">Oberservaciones</label>
+                                <input @bind-value="CurrentInventory.Observation" type="text" class="border-2 bg-slate-100 ml-5 w-96 h-48 flex justify-end">
+                            </div>
+                            <div class="my-8">
+                                <label for="" class="text-xl text-blue-900 font-semibold">Fotografias</label>
+                                <div class="mt-8 relative border bg-slate-100 mx-auto ml-5 w-96 h-48 flex justify-center block">
+                                    <input class="border-2 bg-slate-100 mx-auto ml-5 w-80 h-40 flex justify-end inset-0 absolute opacity-0 cursor-pointer" type="file" multiple>
+                                    <div class="block text-center my-auto">
+                                        <div class="flex justify-center">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" fill="#2B286F" class="bi bi-plus-lg" viewBox="0 0 16 16">
+                                                <path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2Z" />
+                                            </svg>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                 </div>
             </div>
         </div> 

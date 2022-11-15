@@ -3,7 +3,6 @@ using FrontEnd.Interfaces;
 using FrontEnd.Stores;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Routing;
-using Shared.Models;
 using SharedLibrary.Models;
 
 namespace FrontEnd.Pages
