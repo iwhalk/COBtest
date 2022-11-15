@@ -84,35 +84,28 @@ namespace FrontEnd.Pages
             ShowModalPreview = true;
         }
         public async void HandleSaveReceptionCertificate()
-        {
-            if (signaturesLessorComponent != null && signaturesTenantComponent != null)
-            {
-                HandleInsertSignatures();
-            }
-            return;
+        {       
+            HandleInsertSignatures();            
         }
         public async void HandleInsertSignatures()
         {
-            if (signaturesLessorComponent != null && signaturesTenantComponent != null)
-            {
-                ImageBase64Lessor = await signaturesLessorComponent._context.ToDataURLAsync();
-                ImageBase64Tenant = await signaturesTenantComponent._context.ToDataURLAsync();
-                CurrentReceptionCertificate.Observation = Observaciones;
-                CurrentReceptionCertificate.ApprovarPathLessor = ImageBase64Lessor;
-                CurrentReceptionCertificate.ApprovalPathTenant = ImageBase64Tenant;
-                CurrentReceptionCertificate = await _receptionCertificateService.PutReceptionCertificatesAsync(CurrentReceptionCertificate);
 
-                if (CurrentReceptionCertificate is null)
-                {
-                    _navigate.NavigateTo("/Emails");
-                }
-                else
-                {
-                    _context.CurrentReceptionCertificate = CurrentReceptionCertificate;
-                    _navigate.NavigateTo("/Emails");
-                }
+            ImageBase64Lessor = await signaturesLessorComponent._context.ToDataURLAsync();
+            ImageBase64Tenant = await signaturesTenantComponent._context.ToDataURLAsync();
+            CurrentReceptionCertificate.Observation = Observaciones;
+            CurrentReceptionCertificate.ApprovarPathLessor = ImageBase64Lessor;
+            CurrentReceptionCertificate.ApprovalPathTenant = ImageBase64Tenant;
+            CurrentReceptionCertificate = await _receptionCertificateService.PutReceptionCertificatesAsync(CurrentReceptionCertificate);
+
+            if (CurrentReceptionCertificate is null)
+            {
+                _navigate.NavigateTo("/Emails");
             }
-            return;
+            else
+            {
+                _context.CurrentReceptionCertificate = CurrentReceptionCertificate;
+                _navigate.NavigateTo("/Emails");
+            }
         }
     }
 }
