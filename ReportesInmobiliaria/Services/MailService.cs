@@ -20,15 +20,12 @@ namespace ReportesInmobiliaria.Services
             _dbContext = dbContext;
         }
 
-        public Task<bool> SendReceptionCertificate(byte[] reporte, string IdUser)
+        public Task<bool> SendReceptionCertificate(byte[] reporte, string email)
         {
             try
             {
-                var user = _dbContext.AspNetUsers.FirstOrDefault(u => u.Id == IdUser);
-                var userName = user.Name + " " + user.LastName;
-                var email = user.Email;
                 MimeMessage mimeMessage = new();
-                mimeMessage.To.Add(new MailboxAddress(userName, email));
+                mimeMessage.To.Add(new MailboxAddress("Usuario ARI", email));
                 mimeMessage.Subject = "Registro del Sistema ARI";
 
                 var bodyBuilder = new BodyBuilder();
