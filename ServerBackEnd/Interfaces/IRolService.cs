@@ -1,6 +1,6 @@
 ﻿using ApiGateway.Services.User;
 using Microsoft.AspNetCore.Identity;
-using Shared;
+using SharedLibrary;
 
 namespace ApiGateway.Interfaces
 {

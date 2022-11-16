@@ -1,5 +1,4 @@
-﻿using Shared.Models;
-using SharedLibrary.Models;
+﻿using SharedLibrary.Models;
 
 namespace FrontEnd.Stores
 {
@@ -21,6 +20,18 @@ namespace FrontEnd.Stores
         private List<Feature> featuresList;
         private List<PropertyType> propertyTypesList;
         private List<ActasRecepcion> actasRecepcionsList;
+        private List<Blob> BlobsList;
+        private int typeReceptionCertificate;
+
+        public int TypeReceptionCertificate
+        {
+            get => typeReceptionCertificate; 
+            set
+            {
+                typeReceptionCertificate = value;
+                NotifyStateChanged();
+            }
+        }
 
         public Tenant CurrentTenant
         {
@@ -146,6 +157,16 @@ namespace FrontEnd.Stores
             set
             {
                 actasRecepcionsList = value;
+                NotifyStateChanged();
+            }
+        }
+
+        public List<Blob> Blobs
+        {
+            get => BlobsList;
+            set
+            {
+                BlobsList = value;
                 NotifyStateChanged();
             }
         }

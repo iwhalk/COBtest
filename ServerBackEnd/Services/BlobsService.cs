@@ -1,7 +1,8 @@
 ﻿using ApiGateway.Interfaces;
 using ApiGateway.Proxies;
-using Shared;
-using Shared.Models;
+using FrontEnd.Models;
+using SharedLibrary;
+using SharedLibrary.Models;
 
 namespace ApiGateway.Services
 {
@@ -22,14 +23,27 @@ namespace ApiGateway.Services
             return await GetAsync<List<Blob>>(path: "Blobs");
         }
 
-        public async Task<ApiResponse<Blob>> PostBlobAsync(Blob blob)
+        public async Task<ApiResponse<Blob>> PostBlobAsync(Blob blob, IFormFile file)
         {
-            return await PostAsync<Blob>(blob, path: "Blobs");
+            var content = SerializeMultipartFormDataContent(new() { FileStream = file.OpenReadStream(), Blob = blob });
+            return await PostAsync<Blob>(content as HttpContent, path: "Blobs?name=test");
         }
 
         public async Task<ApiResponse<Blob>> PutBlobAsync(Blob blob)
         {
             return await PutAsync<Blob>(blob.IdBlobs, blob, path: "Blobs");
+        }
+        private static MultipartFormDataContent SerializeMultipartFormDataContent(BlobFile blobFile)
+        {
+            MultipartFormDataContent content = new();
+            content.Headers.ContentDisposition = new System.Net.Http.Headers.ContentDispositionHeaderValue("form-data");
+
+            content.Add(new StringContent(blobFile.Blob?.BlodTypeId.ToString()), "BlobTypeId");
+            content.Add(new StringContent(blobFile.Blob?.ContentType ?? ""), "ContentType");
+
+            content.Add(new StreamContent(blobFile.FileStream, Convert.ToInt32(blobFile.Blob?.BlobSize)), name: "file", fileName: "file");
+
+            return content;
         }
     }
 }

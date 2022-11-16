@@ -4,10 +4,9 @@ using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Shared.Models;
 using SharedLibrary.Models;
 
-namespace Shared.Data
+namespace SharedLibrary.Data
 {
     public partial class InmobiliariaDbContext : DbContext
     {
@@ -41,6 +40,23 @@ namespace Shared.Data
             {
                 entity.HasKey(e => e.IdArea)
                     .HasName("PK__Areas__42A5C44C0FE9F5F8");
+
+                entity.HasMany(d => d.IdServices)
+                    .WithMany(p => p.IdAreas)
+                    .UsingEntity<Dictionary<string, object>>(
+                        "AreaService",
+                        l => l.HasOne<Service>().WithMany().HasForeignKey("IdService").OnDelete(DeleteBehavior.ClientSetNull).HasConstraintName("FK_AreaServices_Services"),
+                        r => r.HasOne<Area>().WithMany().HasForeignKey("IdArea").OnDelete(DeleteBehavior.ClientSetNull).HasConstraintName("FK_AreaServices_Areas"),
+                        j =>
+                        {
+                            j.HasKey("IdArea", "IdService");
+
+                            j.ToTable("AreaServices");
+
+                            j.IndexerProperty<int>("IdArea").HasColumnName("ID_Area");
+
+                            j.IndexerProperty<int>("IdService").HasColumnName("ID_Service");
+                        });
             });
 
             modelBuilder.Entity<Blob>(entity =>
@@ -186,6 +202,7 @@ namespace Shared.Data
                     .HasName("PK__Tenant__609A42186A15AA67");
             });
 
+            OnModelCreatingGeneratedProcedures(modelBuilder);
             OnModelCreatingPartial(modelBuilder);
         }
 

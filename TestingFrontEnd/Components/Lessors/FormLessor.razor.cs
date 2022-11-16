@@ -12,6 +12,8 @@ namespace FrontEnd.Components.Lessors
         public Lessor? CurrentLessor { get; set; }
         [Parameter]
         public bool IsFormLessorExit { get; set; }
+        [Parameter]
+        public bool DisableButtonModal { get; set; }
 
         public EditContext LessorEditContext;
 

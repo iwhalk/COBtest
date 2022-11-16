@@ -13,6 +13,9 @@ namespace FrontEnd.Components.Propertys
         public Property? CurrentProperty { get; set; }
         [Parameter]
         public bool IsFormPropertyExit { get; set; }
+        [Parameter]
+        public bool DisableButtonModal { get; set; }
+
         public EditContext PropertyEditContext;
         protected override void OnInitialized()
         {

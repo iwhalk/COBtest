@@ -7,7 +7,6 @@ using FrontEnd.Components.Propertys;
 using FrontEnd.Components.Tenants;
 using FrontEnd.Components.Lessors;
 using SharedLibrary.Models;
-using Shared.Models;
 using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.Components.Authorization;
 
@@ -16,20 +15,24 @@ namespace FrontEnd.Pages
     public partial class CreateReceptionCertificates : ComponentBase
     {
         private readonly ApplicationContext _context;
+        private readonly NavigationManager _navigation;
         private readonly ITenantService _tenantService;
         private readonly ILessorService _lessorService;
         private readonly IPropertyService _propertyService;
         private readonly IReceptionCertificateService _receptionCertificateService;
+        private readonly AuthenticationStateProvider _getAuthenticationStateAsync;
         [CascadingParameter]
         private Task<AuthenticationState> authenticationStateTask { get; set; }
 
-        public CreateReceptionCertificates(ApplicationContext context, ITenantService tenantService, IPropertyService propertyService, ILessorService lessorService, IReceptionCertificateService receptionCertificateService)
+        public CreateReceptionCertificates(ApplicationContext context, NavigationManager navigationManager, ITenantService tenantService, IPropertyService propertyService, ILessorService lessorService, IReceptionCertificateService receptionCertificateService, AuthenticationStateProvider getAuthenticationStateAsync)
         {
             _context = context;
+            _navigation = navigationManager;
             _tenantService = tenantService;
             _lessorService = lessorService;
             _propertyService = propertyService;
             _receptionCertificateService = receptionCertificateService;
+            _getAuthenticationStateAsync = getAuthenticationStateAsync;
         }
 
         public bool ShowModalLessor { get; set; } = false;
@@ -38,16 +41,16 @@ namespace FrontEnd.Pages
         public Lessor? CurrentLessor { get; set; } = new Lessor();
         public Tenant? CurrentTenant { get; set; } = new Tenant();
         public Property? CurrentProperty { get; set; } = new Property();
-        public List<Lessor> lessors { get; set; }
-        private List<Tenant> tenants { get; set; }
-        private List<Property> properties { get; set; }
+        public List<Lessor> lessors { get; set; } = new();
+        private List<Tenant> tenants { get; set; } = new();
+        private List<Property> properties { get; set; } = new();
         public int MyProperty { get; set; }
+        public string UserName { get; set; }
 
-        public void ChangeOpenModalLessor() => ShowModalLessor = ShowModalLessor ? false : true;
-        public void ChangeOpenModalTenant() => ShowModalTenant = ShowModalTenant ? false : true;
-        public void ChangeOpenModalProperty() => ShowModalProperty = ShowModalProperty ? false : true;
-
-        public ReceptionCertificate NewCreateReceptionCertificate { get; set; } = new ReceptionCertificate { CreationDate = DateTime.Now };
+        public void ChangeOpenModalLessor() => ShowModalLessor = ShowModalLessor ? false : true;       
+        public void ChangeOpenModalTenant() => ShowModalTenant = ShowModalTenant ? false : true;        
+        public void ChangeOpenModalProperty() => ShowModalProperty = ShowModalProperty ? false : true;        
+        public ReceptionCertificate NewReceptionCertificate { get; set; } = new ReceptionCertificate { CreationDate = DateTime.Now };
 
         public FormLessor formLessor;
         public FormTenant formTenant;
@@ -88,26 +91,42 @@ namespace FrontEnd.Pages
                     if (CurrentLessor.IdLessor == 0)
                     {   //Crear nuewvo lessor                    
                         CurrentLessor =  await _lessorService.PostLessorAsync(CurrentLessor);
+                        if(CurrentLessor == null)
+                        {
+                            CurrentLessor = new();
+                            return;
+                        }
                         _context.LessorList.Add(CurrentLessor);                        
                     }
                     if (CurrentProperty.IdProperty == 0)
                     {   //Crear nuevo property con idLessor                    
                         CurrentProperty.IdLessor = CurrentLessor.IdLessor;
                         CurrentProperty = await _propertyService.PostPropertyAsync(CurrentProperty);
+                        if (CurrentProperty == null)
+                        {
+                            CurrentProperty = new();
+                            return;
+                        }
                         _context.PropertyList.Add(CurrentProperty);                        
                     }
                     if (CurrentTenant.IdTenant == 0)
                     {   //Crear nuevo tenant                    
                         CurrentTenant = await _tenantService.PostTenantAsync(CurrentTenant);
+                        if(CurrentTenant == null)
+                        {
+                            CurrentTenant = new();
+                            return;
+                        }
                         _context.TenantList.Add(CurrentTenant);
                     }
                     var authUser = await authenticationStateTask;                    
 
-                    NewCreateReceptionCertificate.IdTenant = CurrentTenant.IdTenant;
-                    NewCreateReceptionCertificate.IdProperty = CurrentProperty.IdProperty;                    
-                    NewCreateReceptionCertificate.IdTypeRecord = 1; //For ReceptionCertificate In
-                    NewCreateReceptionCertificate.IdAgent = "1e6d90d6-32b5-43af-bc6a-0b43678462ec";                    
-                    _context.CurrentReceptionCertificate = await _receptionCertificateService.PostReceptionCertificatesAsync(NewCreateReceptionCertificate);                    
+                    NewReceptionCertificate.IdTenant = CurrentTenant.IdTenant;
+                    NewReceptionCertificate.IdProperty = CurrentProperty.IdProperty;
+                    NewReceptionCertificate.IdTypeRecord = _context.TypeReceptionCertificate; //For ReceptionCertificate (1)In or (2)Out
+                    NewReceptionCertificate.IdAgent = "1e6d90d6-32b5-43af-bc6a-0b43678462ec";                    
+                    _context.CurrentReceptionCertificate = await _receptionCertificateService.PostReceptionCertificatesAsync(NewReceptionCertificate);
+                    _navigation.NavigateTo("/ReceptionCertificates/Inventory");
                 }
                 catch (Exception ex)
                 {
@@ -120,6 +139,10 @@ namespace FrontEnd.Pages
             tenants = await _tenantService.GetTenantAsync();        
             lessors = await _lessorService.GetLessorAsync();
             properties = await _propertyService.GetPropertyAsync();
+
+            var authstate = await _getAuthenticationStateAsync.GetAuthenticationStateAsync();
+            var user = authstate.User;
+            UserName = user.Identity?.Name;
         }
     }
 }

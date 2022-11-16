@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Shared.Models;
+using SharedLibrary.Models;
 
 namespace ApiGateway.Controllers
 {
@@ -31,9 +31,9 @@ namespace ApiGateway.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> PostBlob(Blob blob)
+        public async Task<ActionResult> PostBlob(IFormFile file)
         {
-            var result = await _blobService.PostBlobAsync(blob);
+            var result = await _blobService.PostBlobAsync(new() { BlobSize = file.Length.ToString(), ContentType = file.ContentType, BlodTypeId = "1"}, file);
 
             if (result.Succeeded)
             {

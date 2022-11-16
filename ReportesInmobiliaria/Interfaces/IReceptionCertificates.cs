@@ -1,5 +1,4 @@
-﻿using Shared.Models;
-using SharedLibrary.Models;
+﻿using SharedLibrary.Models;
 
 namespace ReportesInmobiliaria.Interfaces
 {
@@ -7,5 +6,6 @@ namespace ReportesInmobiliaria.Interfaces
     {
         Task<List<ActasRecepcion?>> GetReceptionCertificatesAsync(Dates dates,int? certificateType, int? propertyType, int? numberOfRooms, int? lessor, int? tenant, string? delegation, string? agent);
         Task<ReceptionCertificate?> CreateReceptionCertificateAsync(ReceptionCertificate receptionCertificate);
+        Task<ReceptionCertificate?> UpdateReceptionCertificateAsync(ReceptionCertificate receptionCertificate);
     }
 }

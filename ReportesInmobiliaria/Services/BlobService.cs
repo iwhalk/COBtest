@@ -2,8 +2,8 @@
 using Azure.Storage.Blobs.Models;
 using Microsoft.EntityFrameworkCore;
 using ReportesInmobiliaria.Interfaces;
-using Shared.Data;
-using Shared.Models;
+using SharedLibrary.Data;
+using SharedLibrary.Models;
 using System.IO;
 
 namespace ReportesInmobiliaria.Services
@@ -19,9 +19,10 @@ namespace ReportesInmobiliaria.Services
             _blobServiceClient = blobServiceClient;
         }
 
-        public async Task<BlobDownloadInfo> GetBlobAsync(int id)
+        public async Task<BlobDownloadInfo>? GetBlobAsync(int id)
         {
             var blob = await _dbContext.Blobs.FindAsync(id);
+            if (blob == null) return null;
 
             var blobContainerClient = _blobServiceClient.GetBlobContainerClient("inventario");
             var blobClient = blobContainerClient.GetBlobClient(blob.BlodName);
@@ -30,7 +31,7 @@ namespace ReportesInmobiliaria.Services
             return blobFile;
         }
 
-        public async Task<Blob?> CreateBlobAsync(string name, IFormFileCollection files)
+        public async Task<Blob?> CreateBlobAsync(string name, IFormFile file)
         {
             
             try
@@ -42,20 +43,20 @@ namespace ReportesInmobiliaria.Services
                 {
                     BlodName = name,
                     Uri = blobClient.Uri.ToString(),
-                    BlobSize = files.FirstOrDefault().Length.ToString(),
+                    BlobSize = file.Length.ToString(),
                     ContainerName = "Inventario",
                     IsPrivate = false,
                     BlodTypeId = "",
-                    ContentType = files.FirstOrDefault().ContentType,
+                    ContentType = file.ContentType ?? "image/jpg",
                     DateCreated = DateTime.Now,
                     DateModified = DateTime.Now
                 };
 
                 var response = await blobClient.UploadAsync(
-                files.FirstOrDefault().OpenReadStream(),
+                file.OpenReadStream(),
                 new BlobHttpHeaders
                 {
-                    ContentType = files.FirstOrDefault().ContentType
+                    ContentType = file.ContentType
                 });
 
                 await _dbContext.Blobs.AddAsync(newBlob);

@@ -1,7 +1,7 @@
 ﻿using ApiGateway.Interfaces;
 using ApiGateway.Proxies;
-using Shared;
-using Shared.Models;
+using SharedLibrary.Models;
+using SharedLibrary;
 using System.Security.Claims;
 
 namespace ApiGateway.Services
@@ -15,7 +15,7 @@ namespace ApiGateway.Services
 
         public async Task<ApiResponse<List<Inventory>>> GetInventoryAsync()
         {
-            return await GetAsync<List<Inventory>>(path: "Inventory");
+            return await GetAsync<List<Inventory>>(path: "Inventories");
         }
 
         public async Task<ApiResponse<Inventory>> PostInventoryAsync(Inventory inventory)

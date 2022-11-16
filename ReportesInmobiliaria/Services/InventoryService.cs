@@ -1,9 +1,9 @@
-﻿using Shared.Data;
+﻿using SharedLibrary.Data;
 using ReportesInmobiliaria.Interfaces;
 using System.ComponentModel.DataAnnotations;
 using System.Security.Claims;
 using Microsoft.EntityFrameworkCore;
-using Shared.Models;
+using SharedLibrary.Models;
 
 namespace ReportesInmobiliaria.Services
 {
@@ -30,8 +30,9 @@ namespace ReportesInmobiliaria.Services
             {
                 await _dbContext.SaveChangesAsync();
             }
-            catch (DbUpdateConcurrencyException)
+            catch (DbUpdateConcurrencyException e)
             {
+                Console.WriteLine(e.InnerException.Message);
                 throw;
             }
             return inventory;

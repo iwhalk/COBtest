@@ -1,8 +1,8 @@
-﻿<div class="bg-[#2B286F] mx-auto lg:h-56 md:m-3 sm:m-1 text-center text-sm-center md:text-md text-white pt-2 pb-3 rounded-lg lg:rounded-none">
-    <h1 class="text-xl mb-2">Arrendador</h1>
+﻿<div class="bg-[#2B286F] mx-auto md:m-3 sm:m-1 text-center text-sm-center md:text-md text-white pt-2 pb-3 rounded-lg lg:rounded-none">
+    <h1 class="text-xl mb-2">Arrendatario</h1>
     <EditForm EditContext="TenantEditContext">
         <DataAnnotationsValidator />
-        <div class="flex grid lg:grid-cols-3  place-items-center">
+        <div class="flex grid lg:grid-cols-4  place-items-center">
             <div>
                 <div class="flex my-2 lg:mb-3">
                     <label class="w-44 lg:w-20 text-left text-sm lg:text-md">Nombre</label>
@@ -71,8 +71,10 @@
                         <div class="text-xs"><ValidationMessage class="text-xs" For="@(() => CurrentTenant.EmailAddress)" /></div>
                     </div>
                 </div>
+            </div>
+            <div>
                 <div>
-                    <button @onclick="@(() => OpenModalTenant.InvokeAsync())" class="bg-blue-300 mt-4 rounded-lg h-6 w-24 lg:w-full">Existente</button>
+                    <button @onclick="@(() => OpenModalTenant.InvokeAsync())" disabled="@DisableButtonModal" class="bg-blue-300 rounded-lg h-6 w-36 @(DisableButtonModal ? "bg-gray-400" : "")">Existente</button>
                 </div>
             </div>
         </div>

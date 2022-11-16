@@ -1,7 +1,7 @@
 ﻿using System.Text.Json;
 using System.Text.Json.Serialization;
 
-namespace Shared
+namespace SharedLibrary
 {
     public class ApiResponse
     {

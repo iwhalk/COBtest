@@ -1,7 +1,7 @@
 ﻿using ApiGateway.Interfaces;
 using ApiGateway.Proxies;
-using Shared;
-using Shared.Models;
+using SharedLibrary.Models;
+using SharedLibrary;
 
 namespace ApiGateway.Services
 {
@@ -19,7 +19,7 @@ namespace ApiGateway.Services
 
         public async Task<ApiResponse<Description>> PostDescriptionAsync(Description description)
         {
-            return await PostAsync<Description>(description, path: "Descriptions");
+            return await PostAsync<Description>(description, path: "Description");
         }
     }
 }

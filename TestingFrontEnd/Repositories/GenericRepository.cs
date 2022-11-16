@@ -1,8 +1,8 @@
-﻿using Shared;
-using System.Net.Http.Json;
+﻿using System.Net.Http.Json;
 using System.Text.Json.Serialization;
 using FrontEnd.Stores;
 using FrontEnd.Interfaces;
+using SharedLibrary;
 
 namespace FrontEnd.Repositories
 {
@@ -34,23 +34,31 @@ namespace FrontEnd.Repositories
             return await ParseHttpResponseAsync(httpResponse);
         }
 
+        public async Task<T>? PostAsync<T>(string path, HttpContent value)
+        {
+            using HttpResponseMessage httpResponse = await _httpClient.PostAsync(path, value as HttpContent);
+            return await ParseHttpResponseAsync<T>(httpResponse);
+        }
         public async Task<T>? PostAsync<T>(string path, T value)
         {
-            if (typeof(T) == typeof(HttpContent))
-            {
-                using HttpResponseMessage httpResponse = await _httpClient.PostAsync(path, value as HttpContent);
-                return await ParseHttpResponseAsync<T>(httpResponse);
-            }
-            else
-            {
-                using HttpResponseMessage httpResponse = await _httpClient.PostAsJsonAsync(path, value);
-                return await ParseHttpResponseAsync<T>(httpResponse);
-            }
+            using HttpResponseMessage httpResponse = await _httpClient.PostAsJsonAsync(path, value);
+            return await ParseHttpResponseAsync<T>(httpResponse);
         }
 
         public async Task<T>? PostAsync<T>(string path, object value)
         {
             using HttpResponseMessage httpResponse = await _httpClient.PostAsJsonAsync(path, value);
+            return await ParseHttpResponseAsync<T>(httpResponse);
+        }
+        public async Task<T>? PutAsync<T>(string path, object value)
+        {
+            using HttpResponseMessage httpResponse = await _httpClient.PutAsJsonAsync(path, value);
+            return await ParseHttpResponseAsync<T>(httpResponse);
+        }
+
+        public async Task<T>? PutAsync<T>(string path, T value)
+        {
+            using HttpResponseMessage httpResponse = await _httpClient.PutAsJsonAsync(path, value as HttpContent);
             return await ParseHttpResponseAsync<T>(httpResponse);
         }
 

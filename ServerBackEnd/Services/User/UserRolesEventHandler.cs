@@ -3,7 +3,7 @@ using ApiGateway.Interfaces;
 using ApiGateway.Models;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
-using Shared;
+using SharedLibrary;
 using System.ComponentModel.DataAnnotations;
 using System.Security.Claims;
 

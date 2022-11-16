@@ -2,11 +2,11 @@
 @using Microsoft.JSInterop
 @inject IJSRuntime js
 @inject HttpClient http
-@*
-<h6>@image</h6>
-<button @onclick="ToggleColorAsync" style="color:@clr">Toggle color between black and red</button>
-<button @onclick="ClearAsync" style="color:@clr">CLEAR</button>
-<button @onclick="ImageAsync" style="color:@clr">image</button>*@
+
+<h6>@ImageBase64</h6>
+@*<button @onclick="ToggleColorAsync" style="color:@clr">Toggle color between black and red</button>
+<button @onclick="ClearAsync" style="color:@clr">CLEAR</button>*@
+<button @onclick="ImageAsync" style="color:@clr">image</button>
 <label for="" class="text-start text-xl text-blue-900 font-semibold mb-2">@TitleSignature</label>
 <div @ref="container">
     <Canvas @ref="_context"
@@ -16,7 +16,7 @@
             @ontouchstart="MouseDownCanvas"
             @ontouchmove="MouseMoveCanvasAsync"
             @ontouchend="MouseUpCanvas"
-            class="bg-white border-2 bg-slate-100" width="500px" height="500px">
+            class="bg-white border-2 bg-slate-100" width="672px" height="192px">
     </Canvas>
 </div>
 <button @onclick="ClearAsync" class="mt-2 w-48 border rounded-lg text-white text-xl shadow-xl" style="background-color: #2B286F;">Limpiar</button>
@@ -24,6 +24,8 @@
 @code {
     [Parameter]
     public string TitleSignature { get; set; }
+    [Parameter]
+    public string ImageBase64 { get; set; }
     private ElementReference container;
     private Canvas _context;
     private Excubo.Blazor.Canvas.Contexts.Context2D ctx1;
@@ -35,7 +37,7 @@
     private double mousey;
     private bool mousedown = false;
     private string clr = "black";
-    public string image = "";
+    
 
     private class Position
     {
@@ -49,11 +51,11 @@
     }
     private async Task ClearAsync()
     {
-        await ctx1.ClearRectAsync(0, 0, 500, 500);
+        await ctx1.ClearRectAsync(0, 0, 672, 192);
     }
     private async Task ImageAsync()
     {
-        image = await _context.ToDataURLAsync();
+        ImageBase64 = await _context.ToDataURLAsync();
     }
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {

@@ -1,9 +1,9 @@
-﻿using Shared.Data;
+﻿using SharedLibrary.Data;
 using ReportesInmobiliaria.Interfaces;
 using System.ComponentModel.DataAnnotations;
 using System.Security.Claims;
 using Microsoft.EntityFrameworkCore;
-using Shared.Models;
+using SharedLibrary.Models;
 using System.Diagnostics;
 using SharedLibrary.Models;
 using NuGet.Packaging.Signing;
@@ -79,5 +79,19 @@ namespace ReportesInmobiliaria.Services
             }
             return receptionCertificate;
         }
+
+        public async Task<ReceptionCertificate?> UpdateReceptionCertificateAsync(ReceptionCertificate receptionCertificate)
+        {
+            _dbContext.ReceptionCertificates.Update(receptionCertificate);
+            try
+            {
+                await _dbContext.SaveChangesAsync();
+            }   
+            catch(DbUpdateConcurrencyException)
+            {
+                throw;
+            }
+            return receptionCertificate;
+        }   
     }
 }

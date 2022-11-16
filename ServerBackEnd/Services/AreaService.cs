@@ -1,7 +1,7 @@
 ﻿using ApiGateway.Interfaces;
 using ApiGateway.Proxies;
-using Shared;
-using Shared.Models;
+using SharedLibrary.Models;
+using SharedLibrary;
 
 namespace ApiGateway.Services
 {
@@ -18,7 +18,7 @@ namespace ApiGateway.Services
 
         public async Task<ApiResponse<Area>> PostAreaAsync(Area area)
         {
-            return await PostAsync<Area>(area, path: "Areas");
+            return await PostAsync<Area>(area, path: "Area");
         }
     }
 }

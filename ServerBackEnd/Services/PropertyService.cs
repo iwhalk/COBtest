@@ -1,6 +1,6 @@
 ﻿using ApiGateway.Interfaces;
 using ApiGateway.Proxies;
-using Shared;
+using SharedLibrary;
 using SharedLibrary.Models;
 using System.Reflection.Metadata;
 
@@ -20,7 +20,7 @@ namespace ApiGateway.Services
 
         public async Task<ApiResponse<Property>> PostPropertyAsync(Property property)
         {
-            return await PostAsync<Property>(property, path: "Properties");
+            return await PostAsync<Property>(property, path: "Property");
         }
 
         public async Task<ApiResponse<Property>> PutPropertyAsync(Property property)

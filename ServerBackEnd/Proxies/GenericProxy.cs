@@ -1,7 +1,7 @@
 ﻿using ApiGateway.Extensions;
 using Microsoft.AspNetCore.WebUtilities;
 using PluralizeService.Core;
-using Shared;
+using SharedLibrary;
 using System.Net;
 
 namespace ApiGateway.Proxies
@@ -143,7 +143,6 @@ namespace ApiGateway.Proxies
             using HttpResponseMessage httpResponse = await _httpClient.PutAsync(GetUri<object>(id, parameters, path), content);
             return await ParseHttpResponseAsync(httpResponse);
         }
-
         /// <summary>
         /// Realiza una llamada http DELETE al endpoint del servicio especificado
         /// </summary>
@@ -179,7 +178,6 @@ namespace ApiGateway.Proxies
                     string controllerName = new(typeName.Where(c => char.IsLetterOrDigit(c) || char.IsWhiteSpace(c)).ToArray());
                     path = $"api/{controllerName}";
                 }
-
             }
 
             if (id != null && !id.Equals(0))

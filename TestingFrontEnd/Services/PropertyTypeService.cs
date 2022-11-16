@@ -1,5 +1,5 @@
 ﻿using FrontEnd.Stores;
-using Shared.Models;
+using SharedLibrary.Models;
 using FrontEnd.Interfaces;
 using SharedLibrary.Models;
 
