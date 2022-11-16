@@ -810,7 +810,7 @@ app.MapGet("/SendReceptionCertificate", async (int idProperty, string idUser, IR
         var reporte = await _reportesService.GetActaEntrega(idProperty);
         if (reporte == null) return Results.NoContent();
         var mail = await _mailService.SendReceptionCertificate(reporte, idUser);
-        if (mail == false) return Results.NoContent();
+        if (mail == false) return Results.NotFound();
         return Results.Ok();
     }
     catch (Exception e)

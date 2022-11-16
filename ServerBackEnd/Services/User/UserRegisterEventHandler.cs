@@ -36,10 +36,12 @@ namespace ApiGateway.Services.User
             mimeMessage.Subject = "Registro del Sistema ARI";
 
             var bodyBuilder = new BodyBuilder();
-            bodyBuilder.HtmlBody = "<h1>Te haz registrado en Sistema ARI para la generación de Actas Entrega y Recepción de Inmuebles.</h1>" +
-                "<p> La contraseña para iniciar sesión es: <strong>" + password + "</strong></p>" +
-                "<p> Para iniciar sesión, ingresa a la siguiente liga, e ingresa tu correo electrónico y la contraseña proporcionada. </p>" +
-                "<p>Link de la página.</p>";
+            bodyBuilder.HtmlBody = "<h1>Se ha registrado en Sistema ARI para la generación de Actas Entrega y Recepción de Inmuebles.</h1>" +
+            "<hr>" +
+            "<p><font size=\"5\">Su contraseña de cuenta es: <mark><strong>" + password + "</strong></mark></font></p>" +
+            "<hr>" +
+            "<p><font size=\"5\"> Para iniciar sesión entre en la siguiente liga e ingrese su correo electrónico y la contraseña proporcionada:</font></p>" +
+            "<font size=\"5\"><a href=\"https://sof2245.com/\">Sof2245</a></font>";
             mimeMessage.Body = bodyBuilder.ToMessageBody();
 
             //mailService.MailSender(email);

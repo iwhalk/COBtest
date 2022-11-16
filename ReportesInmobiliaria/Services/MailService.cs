@@ -22,19 +22,30 @@ namespace ReportesInmobiliaria.Services
 
         public Task<bool> SendReceptionCertificate(byte[] reporte, string IdUser)
         {
-            var userName = _dbContext.AspNetUsers.FirstOrDefault(a => a.Id == IdUser).Name + " " + _dbContext.AspNetUsers.FirstOrDefault(a => a.Id == IdUser).LastName;
-            var email = _dbContext.AspNetUsers.FirstOrDefault(a => a.Id == IdUser).Email;
-            MimeMessage mimeMessage = new();
-            mimeMessage.To.Add(new MailboxAddress(userName, email));
-            mimeMessage.Subject = "Registro del Sistema ARI";
+            try
+            {
+                var user = _dbContext.AspNetUsers.FirstOrDefault(u => u.Id == IdUser);
+                var userName = user.Name + " " + user.LastName;
+                var email = user.Email;
+                MimeMessage mimeMessage = new();
+                mimeMessage.To.Add(new MailboxAddress(userName, email));
+                mimeMessage.Subject = "Registro del Sistema ARI";
 
-            var bodyBuilder = new BodyBuilder();
-            bodyBuilder.HtmlBody = "<h1>MONO CON LAG</h1>";
-            bodyBuilder.Attachments.Add("Acta_Entrega", reporte, new ContentType("application", "pdf"));
-            mimeMessage.Body = bodyBuilder.ToMessageBody();
-            _mailFactory.MailSender(mimeMessage);
+                var bodyBuilder = new BodyBuilder();
+                bodyBuilder.HtmlBody = "<p><font size=\"5\">Se ha generado una acta de Entrega Recepción en el Sistema ARI, se adjuntó el archivo correspondiente en este correo.<br>" +
+                    "Saludos Cordiales.</font></p>";
+                    //"<hr>" +
+                    //"<p><font size=\"4\">Archivo adjunto:</font></p>";
+                bodyBuilder.Attachments.Add("Acta_Entrega", reporte, new ContentType("application", "pdf"));
+                mimeMessage.Body = bodyBuilder.ToMessageBody();
+                _mailFactory.MailSender(mimeMessage);
+                return Task.FromResult(true);
+            }
+            catch (Exception e)
+            {
+                return Task.FromResult(false);
+            }
 
-            return Task.FromResult(true);
         }
 
     }
