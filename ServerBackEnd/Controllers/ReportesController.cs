@@ -29,10 +29,10 @@ namespace ApiGateway.Controllers
             return BadRequest(result);
         }
 
-        [HttpGet("ReporteFeature/{id}")]
-        public async Task<ActionResult> GetReporteFeature(int id)
+        [HttpGet("ReporteReceptionCertificate")]
+        public async Task<ActionResult> GetReporteReceptionCertificate(int idProperty)
         {
-            var result = await _resportesService.GetReporteFeaturesAsync(id);
+            var result = await _resportesService.GEetReporteReceptionCertificateAsync(idProperty);
 
             if (result.Succeeded)
             {

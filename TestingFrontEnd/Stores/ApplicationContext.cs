@@ -21,6 +21,17 @@ namespace FrontEnd.Stores
         private List<PropertyType> propertyTypesList;
         private List<ActasRecepcion> actasRecepcionsList;
         private List<Blob> BlobsList;
+        private int typeReceptionCertificate;
+
+        public int TypeReceptionCertificate
+        {
+            get => typeReceptionCertificate; 
+            set
+            {
+                typeReceptionCertificate = value;
+                NotifyStateChanged();
+            }
+        }
 
         public Tenant CurrentTenant
         {

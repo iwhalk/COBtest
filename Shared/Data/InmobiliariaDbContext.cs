@@ -159,23 +159,6 @@ namespace SharedLibrary.Data
                     .HasForeignKey(d => d.IdPropertyType)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_Property_ID_PropertyType");
-
-                entity.HasMany(d => d.IdAreas)
-                    .WithMany(p => p.IdProperties)
-                    .UsingEntity<Dictionary<string, object>>(
-                        "PropertyArea",
-                        l => l.HasOne<Area>().WithMany().HasForeignKey("IdArea").OnDelete(DeleteBehavior.ClientSetNull).HasConstraintName("FK_PropertyAreas_Areas"),
-                        r => r.HasOne<Property>().WithMany().HasForeignKey("IdProperty").OnDelete(DeleteBehavior.ClientSetNull).HasConstraintName("FK_PropertyAreas_Properties"),
-                        j =>
-                        {
-                            j.HasKey("IdProperty", "IdArea");
-
-                            j.ToTable("PropertyAreas");
-
-                            j.IndexerProperty<int>("IdProperty").HasColumnName("ID_Property");
-
-                            j.IndexerProperty<int>("IdArea").HasColumnName("ID_Area");
-                        });
             });
 
             modelBuilder.Entity<PropertyType>(entity =>
@@ -219,6 +202,7 @@ namespace SharedLibrary.Data
                     .HasName("PK__Tenant__609A42186A15AA67");
             });
 
+            OnModelCreatingGeneratedProcedures(modelBuilder);
             OnModelCreatingPartial(modelBuilder);
         }
 

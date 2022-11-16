@@ -60,7 +60,7 @@
         </div>
         <div>
             <div>
-                <button @onclick="@(() => OpenModalProperty.InvokeAsync())" class="bg-blue-300 rounded-lg h-6 w-36">Existente</button>
+                    <button @onclick="@(() => OpenModalProperty.InvokeAsync())" disabled="@DisableButtonModal" class="bg-blue-300 rounded-lg h-6 w-36 @(DisableButtonModal ? "bg-gray-400" : "")">Existente</button>
             </div>
         </div>
     </div>        
