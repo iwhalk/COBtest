@@ -20,6 +20,17 @@ namespace FrontEnd.Stores
         private List<Feature> featuresList;
         private List<PropertyType> propertyTypesList;
         private List<ActasRecepcion> actasRecepcionsList;
+        private int typeReceptionCertificate;
+
+        public int TypeReceptionCertificate
+        {
+            get => typeReceptionCertificate; 
+            set
+            {
+                typeReceptionCertificate = value;
+                NotifyStateChanged();
+            }
+        }
 
         public Tenant CurrentTenant
         {
