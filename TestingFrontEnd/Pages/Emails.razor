@@ -14,11 +14,11 @@
             </div>
             <div class="flex justify-center">                
                 <div id="InputsEmail" class="flex flex-col">
-                    <span class="flex my-4"><input type="checkbox" class="w-8"><label class="pl-2 text-2xl text-blue-900 w-32">Arrendatario</label><input type="email" name="" id="" placeholder="eestrada@yahoo.com" class="w-72 ml-24 px-2 rounded-lg border-2 border-gray-300"></span>
-                    <span class="flex my-4"><input type="checkbox" class="w-8"><label class="pl-2 text-2xl text-blue-900 w-32">Arrendador</label><input type="email" name="" id="" placeholder="emolinaa@yahoo.com" class="w-72 ml-24 px-2 rounded-lg border-2 border-gray-300"></span>
-                    <span class="flex my-4"><input type="checkbox" class="w-8"><label class="pl-2 text-2xl text-blue-900 w-32">Agencia</label><input type="text" name="" id="" class="w-72 ml-24 px-2 rounded-lg border-2 border-gray-300"></span>
-                    <span class="flex my-4"><input type="checkbox" class="w-8"><label class="pl-2 text-2xl text-blue-900 w-32">Agente</label><input type="text" name="" id="" class="w-72 ml-24 px-2 rounded-lg border-2 border-gray-300"></span>
-                    <span class="flex my-4"><input type="checkbox" class="w-8"><label class="pl-2 text-2xl text-blue-900 w-32">Otro</label><input type="text" name="" id="" class="w-72 ml-24 px-2 rounded-lg border-2 border-gray-300"></span>
+                        <span class="flex my-4"><input type="checkbox" class="w-8" @bind-value="tenantCheck"><label class="pl-2 text-2xl text-blue-900 w-32">Arrendatario</label><input type="email" name="" id="" placeholder="@tenant" class="w-72 ml-24 px-2 rounded-lg border-2 border-gray-300" value="@tenant"></span>
+                        <span class="flex my-4"><input type="checkbox" class="w-8" @bind-value="lessorCheck"><label class="pl-2 text-2xl text-blue-900 w-32">Arrendador</label><input type="email" name="" id="" placeholder="@lessor" class="w-72 ml-24 px-2 rounded-lg border-2 border-gray-300" value="@lessor"></span>
+                        <span class="flex my-4"><input type="checkbox" class="w-8" @bind-value="agenciaCheck"><label class="pl-2 text-2xl text-blue-900 w-32">Agencia</label><input type="text" name="" id="" placeholder="ejemplo@gmail.com" class="w-72 ml-24 px-2 rounded-lg border-2 border-gray-300" @bind-value="agencia"></span>
+                        <span class="flex my-4"><input type="checkbox" class="w-8" @bind-value="agenteCheck"><label class="pl-2 text-2xl text-blue-900 w-32">Agente</label><input type="text" name="" id="" placeholder="ejemplo@gmail.com" class="w-72 ml-24 px-2 rounded-lg border-2 border-gray-300" @bind-value="agente"></span>
+                        <span class="flex my-4"><input type="checkbox" class="w-8" @bind-value="otroCheck"><label class="pl-2 text-2xl text-blue-900 w-32">Otro</label><input type="text" name="" id="" placeholder="ejemplo@gmail.com" class="w-72 ml-24 px-2 rounded-lg border-2 border-gray-300" @bind-value="otro"></span>
                 </div>
             </div>            
         </div>
@@ -26,7 +26,7 @@
     <div id="Botones" class="flex justify-center -my-14">
         <button class="py-2 my-4 w-48 border rounded-lg text-white text-xl shadow-xl" style="background-color: #2B286F;">Previsualizar</button>
         <button class="py-2 my-4 w-48 border rounded-lg text-white text-xl shadow-xl" style="background-color: #2B286F;">Guardar</button>
-        <button @onclick="ChangeOpenModalSend" class="py-2 my-4 w-48 border rounded-lg text-white text-xl shadow-xl" style="background-color: #2B286F;">Enviar</button>
+            <button @onclick="SendMenssage" class="py-2 my-4 w-48 border rounded-lg text-white text-xl shadow-xl" style="background-color: #2B286F;">Enviar</button>
     </div>   
     <ModalCreateReceptionCertificates ShowModal="@ShowModalSend"></ModalCreateReceptionCertificates>
     </div>
