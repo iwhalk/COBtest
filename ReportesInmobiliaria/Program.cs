@@ -814,6 +814,10 @@ app.MapPost("/ReceptionCertificate", async (ReceptionCertificate receptionCertif
 .Produces<HttpValidationProblemDetails>(StatusCodes.Status500InternalServerError, "application/problem+json");
 
 #endregion
+
+#region Mail
+
+#endregion
 static string? GetNullableString(string? value) => !string.IsNullOrWhiteSpace(value) && value.ToUpper().Contains("NULL") ? null : value;
 #endregion
 app.Run();
