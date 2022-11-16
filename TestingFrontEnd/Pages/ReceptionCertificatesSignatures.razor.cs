@@ -79,6 +79,7 @@ namespace FrontEnd.Pages
                 BlobPDFPreview = await _reportService.GetReportFeature(IdProperty);
                 if (BlobPDFPreview != null)
                 {
+                    ShowModalPreview = true;
                     PdfName = "PDFPreview.pdf";                    
                 }
             }        
