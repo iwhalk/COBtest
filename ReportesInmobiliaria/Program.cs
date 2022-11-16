@@ -113,7 +113,7 @@ app.UseSwaggerUI();
 
 app.UseAuthentication();
 
-//app.UseAuthorization();
+app.UseAuthorization();
 
 //app.UseHttpsRedirection();
 

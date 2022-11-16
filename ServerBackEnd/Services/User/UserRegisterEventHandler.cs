@@ -3,6 +3,8 @@ using MediatR;
 using Microsoft.AspNetCore.Identity;
 using System.ComponentModel.DataAnnotations;
 using ApiGateway.Data;
+using MimeKit;
+using static Duende.IdentityServer.Models.IdentityResources;
 
 namespace ApiGateway.Services.User
 {
@@ -28,13 +30,18 @@ namespace ApiGateway.Services.User
                 LastName = createCommand.LastName ?? "",
             };
             var password = GenerarPassword();
-            Email email = new Email()
-            {
-                Name = createCommand.UserName,
-                To = createCommand.Email,
-                Subject = "Password secreto",
-                Body = password,
-            };
+
+            MimeMessage mimeMessage = new();
+            mimeMessage.To.Add(new MailboxAddress(createCommand.UserName, createCommand.Email));
+            mimeMessage.Subject = "Registro del Sistema ARI";
+
+            var bodyBuilder = new BodyBuilder();
+            bodyBuilder.HtmlBody = "<h1>Te haz registrado en Sistema ARI para la generación de Actas Entrega y Recepción de Inmuebles.</h1>" +
+                "<p> La contraseña para iniciar sesión es: <strong>" + password + "</strong></p>" +
+                "<p> Para iniciar sesión, ingresa a la siguiente liga, e ingresa tu correo electrónico y la contraseña proporcionada. </p>" +
+                "<p>Link de la página.</p>";
+            mimeMessage.Body = bodyBuilder.ToMessageBody();
+
             //mailService.MailSender(email);
             var res = await _userManager.CreateAsync(entry, password);
             //_emailservice.sendemail(bodi{ passworf = passwor})
@@ -42,7 +49,7 @@ namespace ApiGateway.Services.User
             if (res.Succeeded)
             {
                 res = await _userManager.AddToRoleAsync(user, "User");
-                mailService.MailSender(email);
+                mailService.MailSender(mimeMessage);
             }
             return res;
         }
