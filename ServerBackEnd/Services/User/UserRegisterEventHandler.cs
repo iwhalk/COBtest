@@ -3,6 +3,8 @@ using MediatR;
 using Microsoft.AspNetCore.Identity;
 using System.ComponentModel.DataAnnotations;
 using ApiGateway.Data;
+using MimeKit;
+using static Duende.IdentityServer.Models.IdentityResources;
 
 namespace ApiGateway.Services.User
 {
@@ -28,13 +30,20 @@ namespace ApiGateway.Services.User
                 LastName = createCommand.LastName ?? "",
             };
             var password = GenerarPassword();
-            Email email = new Email()
-            {
-                Name = createCommand.UserName,
-                To = createCommand.Email,
-                Subject = "Password secreto",
-                Body = password,
-            };
+
+            MimeMessage mimeMessage = new();
+            mimeMessage.To.Add(new MailboxAddress(createCommand.UserName, createCommand.Email));
+            mimeMessage.Subject = "Registro del Sistema ARI";
+
+            var bodyBuilder = new BodyBuilder();
+            bodyBuilder.HtmlBody = "<h1>Se ha registrado en Sistema ARI para la generación de Actas Entrega y Recepción de Inmuebles.</h1>" +
+            "<hr>" +
+            "<p><font size=\"5\">Su contraseña de cuenta es: <mark><strong>" + password + "</strong></mark></font></p>" +
+            "<hr>" +
+            "<p><font size=\"5\"> Para iniciar sesión entre en la siguiente liga e ingrese su correo electrónico y la contraseña proporcionada:</font></p>" +
+            "<font size=\"5\"><a href=\"https://sof2245.com/\">Sof2245</a></font>";
+            mimeMessage.Body = bodyBuilder.ToMessageBody();
+
             //mailService.MailSender(email);
             var res = await _userManager.CreateAsync(entry, password);
             //_emailservice.sendemail(bodi{ passworf = passwor})
@@ -42,7 +51,7 @@ namespace ApiGateway.Services.User
             if (res.Succeeded)
             {
                 res = await _userManager.AddToRoleAsync(user, "User");
-                mailService.MailSender(email);
+                mailService.MailSender(mimeMessage);
             }
             return res;
         }
