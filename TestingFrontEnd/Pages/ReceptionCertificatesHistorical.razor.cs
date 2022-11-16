@@ -2,67 +2,141 @@
 using Microsoft.AspNetCore.Components;
 using SharedLibrary.Models;
 using FrontEnd.Interfaces;
-using SharedLibrary.Models;
+using static FrontEnd.Components.HeaderReceptionCertificatePendingOrHistorical;
+using static FrontEnd.Components.PaginationReceptionCertificate;
 
 namespace FrontEnd.Pages
 {
     public partial class ReceptionCertificatesHistorical : ComponentBase
     {
         private readonly ApplicationContext _context;
-        private readonly IReceptionCertificateService _reception;
-        private readonly IPropertyTypeService _propertyTypeService;
-        private readonly ITenantService _tenantService;
-        private readonly ILessorService _lessorService;
-
-
-        private List<Tenant> tenants { get; set; }
-        private List<Lessor> lessors { get; set; }
-        private List<ActasRecepcion>? actasRecepcions { get; set; }
-        private List<PropertyType> propertyTypes { get; set; }
-        private DateTime? startDay { get; set; } = null;
-        private DateTime? endDay { get; set; } = null;
-        private int? certificateType { get; set; } = null;
-        private int? propertyType { get; set; } = null;
-        private int? numberOfRooms { get; set; } = null;
-        private int? lessor { get; set; } = null;
-        private int? tenant { get; set; } = null;
-        private string? delegation { get; set; } = null;
-        private string? agent { get; set; } = null;
-        private int? currentPage { get; set; } = null;
-        private int? rowNumber { get; set; } = null;
-
-        public ReceptionCertificatesHistorical(ApplicationContext context, IReceptionCertificateService reception, IPropertyTypeService propertyTypeService, ITenantService tenantService, ILessorService lessorService)
+        private readonly IReceptionCertificateService _reception;                        
+        public List<ActasRecepcion>? actasRecepcions { get; set; }
+        public int currentPage { get; set; }
+        public int rowNumberForPage { get; set; }
+        public int maxNumberPage { get; set; }
+        public ReceptionCertificatesHistorical(ApplicationContext context, IReceptionCertificateService reception)
         {
             _context = context;
-            _reception = reception;
-            _propertyTypeService = propertyTypeService;
-            _tenantService = tenantService;
-            _lessorService = lessorService;
+            _reception = reception;               
         }
         protected override async Task OnInitializedAsync()
         {
-            tenants = await _tenantService.GetTenantAsync();
-            lessors = await _lessorService.GetLessorAsync();
-            propertyTypes = await _propertyTypeService.GetPropertyTypeAsync();
-            actasRecepcions = await _reception.GetReceptionCertificatesAsync(null, null, null, null, null, null, null, null, null, null, null);
+            currentPage = 1;
+            rowNumberForPage = 10;                                                        
+            actasRecepcions = await _reception.GetReceptionCertificatesAsync(null, null, null, null, null, null, null, null, null, currentPage, rowNumberForPage);
+            maxNumberPage = _context.MaxNumberPagination;
+            _context.CurrentFilterPagination = new FilterReceptionCertificate();
+            _context.ListPageInPaginate = CreatePaginationNumber();
         }        
-        public async Task Filter()
+        public async Task Filter(FilterReceptionCertificate filterReception)
+        {
+            actasRecepcions = null;
+            _context.ActasRecepcionList = null;
+            _context.NumberPaginationCurrent = 1;
+            currentPage = _context.NumberPaginationCurrent;
+
+            if (filterReception.StartDay is not null && filterReception.EndDay is not null)
+            {
+                string auxS = filterReception.StartDay.Value.Date.ToString("yyyy-MM-dd");
+                string auxE = filterReception.EndDay.Value.Date.ToString("yyyy-MM-dd");
+                actasRecepcions = await _reception.GetReceptionCertificatesAsync(auxS, auxE, filterReception.CertificateType, filterReception.PropertyType, filterReception.NumberOfRooms, filterReception.Lessor, filterReception.Tenant, filterReception.Delegation, filterReception.Agent, currentPage, rowNumberForPage);                                
+                maxNumberPage = _context.MaxNumberPagination;
+                _context.ListPageInPaginate = CreatePaginationNumber();
+            }
+            else
+            {
+                actasRecepcions = await _reception.GetReceptionCertificatesAsync(null, null, filterReception.CertificateType, filterReception.PropertyType, filterReception.NumberOfRooms, filterReception.Lessor, filterReception.Tenant, filterReception.Delegation, filterReception.Agent, currentPage, rowNumberForPage);                                
+                maxNumberPage = _context.MaxNumberPagination;
+                _context.ListPageInPaginate = CreatePaginationNumber();
+            }
+            StateHasChanged();
+            _context.CurrentFilterPagination = filterReception;
+        }
+        public async void HandlePaginationAction(PaginationAction paginationAction)
+        {
+            var filterReception = _context.CurrentFilterPagination;
+            switch (paginationAction)
+            {
+                case PaginationAction.EndPage:
+                    currentPage = _context.MaxNumberPagination;                    
+                    break;
+
+                case PaginationAction.FirstPage:
+                    _context.NumberPaginationCurrent = 1;
+                    currentPage = _context.NumberPaginationCurrent;
+                    break;
+
+                case PaginationAction.PreviewPage:
+                    if(currentPage - 1 >= 1)
+                    {
+                        currentPage = currentPage - 1;
+                        _context.NumberPaginationCurrent = currentPage;
+                        break;
+                    }
+                    return;
+                    break;
+                case PaginationAction.NextPage:
+                    if(currentPage + 1 <= _context.MaxNumberPagination)
+                    {                        
+                        currentPage = currentPage + 1;
+                        _context.NumberPaginationCurrent = currentPage;
+                        break;
+                    }
+                    return;
+                    break;
+            }
+            actasRecepcions = null;
+            _context.ActasRecepcionList = null;
+            if (filterReception.StartDay is not null && filterReception.EndDay is not null)
+            {
+                string auxS = filterReception.StartDay.Value.Date.ToString("yyyy-MM-dd");
+                string auxE = filterReception.EndDay.Value.Date.ToString("yyyy-MM-dd");
+                actasRecepcions = await _reception.GetReceptionCertificatesAsync(auxS, auxE, filterReception.CertificateType, filterReception.PropertyType, filterReception.NumberOfRooms, filterReception.Lessor, filterReception.Tenant, filterReception.Delegation, filterReception.Agent, currentPage, rowNumberForPage);
+                maxNumberPage = _context.MaxNumberPagination;
+                _context.ListPageInPaginate = CreatePaginationNumber();
+            }
+            else
+            {
+                actasRecepcions = await _reception.GetReceptionCertificatesAsync(null, null, filterReception.CertificateType, filterReception.PropertyType, filterReception.NumberOfRooms, filterReception.Lessor, filterReception.Tenant, filterReception.Delegation, filterReception.Agent, currentPage, rowNumberForPage);
+                maxNumberPage = _context.MaxNumberPagination;
+                _context.ListPageInPaginate = CreatePaginationNumber();
+            }
+            StateHasChanged();
+        }
+        public async void HandlePaginationForPage(int numberPage)
         {
             actasRecepcions = null;
             _context.ActasRecepcionList = null;
 
-            if (startDay is not null && endDay is not null)
+            var filterReception = _context.CurrentFilterPagination;
+            _context.NumberPaginationCurrent = numberPage;
+            currentPage = numberPage;
+
+            if (filterReception.StartDay is not null && filterReception.EndDay is not null)
             {
-                string auxS = startDay.Value.Date.ToString("yyyy-MM-dd");
-                string auxE = endDay.Value.Date.ToString("yyyy-MM-dd");
-
-
-                actasRecepcions = await _reception.GetReceptionCertificatesAsync(auxS, auxE, certificateType, propertyType, numberOfRooms, lessor, tenant, delegation, agent, currentPage, rowNumber);
+                string auxS = filterReception.StartDay.Value.Date.ToString("yyyy-MM-dd");
+                string auxE = filterReception.EndDay.Value.Date.ToString("yyyy-MM-dd");
+                actasRecepcions = await _reception.GetReceptionCertificatesAsync(auxS, auxE, filterReception.CertificateType, filterReception.PropertyType, filterReception.NumberOfRooms, filterReception.Lessor, filterReception.Tenant, filterReception.Delegation, filterReception.Agent, currentPage, rowNumberForPage);
+                maxNumberPage = _context.MaxNumberPagination;
+                _context.ListPageInPaginate = CreatePaginationNumber();
             }
             else
             {
-                actasRecepcions = await _reception.GetReceptionCertificatesAsync(null, null, certificateType, propertyType, numberOfRooms, lessor, tenant, delegation, agent, currentPage, rowNumber);
+                actasRecepcions = await _reception.GetReceptionCertificatesAsync(null, null, filterReception.CertificateType, filterReception.PropertyType, filterReception.NumberOfRooms, filterReception.Lessor, filterReception.Tenant, filterReception.Delegation, filterReception.Agent, currentPage, rowNumberForPage);
+                maxNumberPage = _context.MaxNumberPagination;
+                _context.ListPageInPaginate = CreatePaginationNumber();
             }
+            StateHasChanged();
+        }
+        private List<int> CreatePaginationNumber()
+        {
+            List<int> paginas = new List<int>();
+            for(int i = 1; i <= maxNumberPage; i++)
+            {
+                paginas.Add(i);
+            }            
+            return paginas;
         }
     }
 }

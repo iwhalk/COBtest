@@ -6,9 +6,10 @@
     <div class="my-auto">
         <div id="TituloActas" class="flex justify-center">
             <label for="" class="text-4xl text-blue-900 font-semibold my-8">Acta Entrega Recepción de Inmueble Histórico</label>
-        </div>
-        <HeaderReceptionCertificatePendingOrHistorical ChageFilters="Filter" ></HeaderReceptionCertificatePendingOrHistorical>
+        </div>            
+        <HeaderReceptionCertificatePendingOrHistorical ChageFilters="Filter"></HeaderReceptionCertificatePendingOrHistorical>
         <ReceptionCertificatesPedingOrHistorical ActasRecepcions="actasRecepcions" TypeTableReception="Historico"></ReceptionCertificatesPedingOrHistorical>
+        <PaginationReceptionCertificate ChangePagination="HandlePaginationAction" ChangePaginationForNumber="HandlePaginationForPage" CurrentPage="currentPage" NumberPage="rowNumberForPage" MaxNumberPages="maxNumberPage"></PaginationReceptionCertificate>
     </div>
 </body>
 <Navbar></Navbar>
