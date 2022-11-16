@@ -33,9 +33,9 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @if (ActasRecepcions is not null)
-                    {
-                        @foreach (var item in ActasRecepcions)
+                    @if (_context.ActasRecepcionList != null)
+                            {
+                        @foreach (var item in _context.ActasRecepcionList)
                         {
                             <tr>
                                 <td class="py-2 text-center text-2xl">
@@ -56,6 +56,12 @@
                                 <td class="py-2 text-center text-2xl">@item.Agente</td>
                             </tr>
                         }
+                    }
+                    else
+                    {
+                        <div style="margin: 0; position: absolute; top: 50%; left: 50%; width: auto; height: auto;">
+                            <FluentProgressRing style="width: 102px; height: 102px;"></FluentProgressRing>
+                        </div>
                     }
                 </tbody>
             </table>

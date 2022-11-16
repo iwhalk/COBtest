@@ -61,12 +61,14 @@ namespace FrontEnd.Services
 
                 if (response != null)
                 {
-                    _context.ActasRecepcionList = response;                    
-                    _context.NumberPaginationCurrent = Convert.ToInt32(Math.Ceiling(responseCount.Count() / 10.0));
+                    _context.ActasRecepcionList = response;
+                    _context.NumberPaginationCurrent = 1;
+                    _context.MaxNumberPagination = Convert.ToInt32(Math.Ceiling(responseCount.Count() / 10.0));
                     return _context.ActasRecepcionList;
                 }
             }
-            _context.NumberPaginationCurrent = 0;
+            _context.NumberPaginationCurrent = 1;
+            _context.MaxNumberPagination = 0;
             return _context.ActasRecepcionList;
         }
 

@@ -24,13 +24,34 @@ namespace FrontEnd.Stores
         private List<Blob> BlobsList;
         private int typeReceptionCertificate;
         private int rowNumberPaginationCurrent;
-        private FilterReceptionCertificate curremtFilterPagination;
-        public FilterReceptionCertificate CurremtFilterPagination
+        private int maxNumberPagination;
+        private FilterReceptionCertificate currentFilterPagination;
+        private List<int> listPageInPaginate;
+
+        public List<int> ListPageInPaginate
         {
-            get => curremtFilterPagination;
+            get => listPageInPaginate;
             set
             {
-                curremtFilterPagination = value;
+                listPageInPaginate = value;
+                NotifyStateChanged();
+            }
+        }
+        public FilterReceptionCertificate CurrentFilterPagination
+        {
+            get => currentFilterPagination;
+            set
+            {
+                currentFilterPagination = value;
+                NotifyStateChanged();
+            }
+        }
+        public int MaxNumberPagination
+        {
+            get => maxNumberPagination;
+            set
+            {
+                maxNumberPagination = value;
                 NotifyStateChanged();
             }
         }

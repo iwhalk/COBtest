@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿using FrontEnd.Stores;
+using Microsoft.AspNetCore.Components;
 
 namespace FrontEnd.Components
 {
@@ -8,16 +9,26 @@ namespace FrontEnd.Components
         { 
             FirstPage,
             EndPage,
+            NextPage,
+            PreviewPage
         }
+        private readonly ApplicationContext _context;
 
         [Parameter]
         public int CurrentPage { get; set; }
         [Parameter]
         public int NumberPage { get; set; }
         [Parameter]
-        public int RowNumberForPage { get; set; }
+        public int MaxNumberPages { get; set; }
 
         [Parameter]
         public EventCallback<PaginationAction> ChangePagination { get; set; }
+        [Parameter]
+        public EventCallback<int> ChangePaginationForNumber { get; set; }
+
+        public PaginationReceptionCertificate(ApplicationContext context)
+        {
+            _context = context;
+        }    
     }
 }
