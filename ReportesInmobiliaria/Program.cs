@@ -94,6 +94,8 @@ builder.Services.AddScoped<AuxiliaryMethods>();
 builder.Services.AddScoped<IReporteActaEntregaService, ReporteActaEntregaService>();
 builder.Services.AddScoped<IInmobiliariaDbContextProcedures, InmobiliariaDbContextProcedures>();
 builder.Services.AddScoped<IAspNetUserService, AspNetUserService>();
+builder.Services.AddScoped<IMailService, MailService>();
+builder.Services.AddScoped<MailFactory>();
 builder.Services.AddScoped<ReportesFactory>();
 
 builder.Services.AddCors();
@@ -800,7 +802,30 @@ app.MapPut("/ReceptionCertificate", async (ReceptionCertificate receptionCertifi
 #endregion
 
 #region Mail
+app.MapGet("/SendReceptionCertificate", async (int idProperty, string idUser, IReporteActaEntregaService _reportesService, IMailService _mailService, ILogger<Program> _logger) =>
+{
+    try
 
+    {
+        var reporte = await _reportesService.GetActaEntrega(idProperty);
+        if (reporte == null) return Results.NoContent();
+        var mail = await _mailService.SendReceptionCertificate(reporte, idUser);
+        if (mail == false) return Results.NoContent();
+        return Results.Ok();
+    }
+    catch (Exception e)
+    {
+        _logger.LogError(e, e.Message);
+        if (e.GetType() == typeof(ValidationException))
+            return Results.Problem(e.Message, statusCode: 400);
+        return Results.Problem(e.Message);
+    }
+})
+.WithName("SendActaEntrega")
+.Produces<IResult>(StatusCodes.Status200OK)
+.Produces<HttpValidationProblemDetails>(StatusCodes.Status400BadRequest, "application/problem+json")
+.Produces<HttpValidationProblemDetails>(StatusCodes.Status500InternalServerError, "application/problem+json")
+.AllowAnonymous();
 #endregion
 static string? GetNullableString(string? value) => !string.IsNullOrWhiteSpace(value) && value.ToUpper().Contains("NULL") ? null : value;
 #endregion
