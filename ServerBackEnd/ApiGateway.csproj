@@ -44,10 +44,4 @@
     <ProjectReference Include="..\TestingFrontEnd\FrontEnd.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Reference Include="ReportesData">
-      <HintPath>..\SharedLibrary\ReportesData.dll</HintPath>
-    </Reference>
-  </ItemGroup>
-
 </Project>
