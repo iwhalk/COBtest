@@ -31,7 +31,7 @@ namespace ReportesInmobiliaria.Services
             return blobFile;
         }
 
-        public async Task<Blob?> CreateBlobAsync(string name, IFormFileCollection files)
+        public async Task<Blob?> CreateBlobAsync(string name, IFormFile file)
         {
             
             try
@@ -43,20 +43,20 @@ namespace ReportesInmobiliaria.Services
                 {
                     BlodName = name,
                     Uri = blobClient.Uri.ToString(),
-                    BlobSize = files.FirstOrDefault().Length.ToString(),
+                    BlobSize = file.Length.ToString(),
                     ContainerName = "Inventario",
                     IsPrivate = false,
                     BlodTypeId = "",
-                    ContentType = files.FirstOrDefault().ContentType,
+                    ContentType = file.ContentType ?? "image/jpg",
                     DateCreated = DateTime.Now,
                     DateModified = DateTime.Now
                 };
 
                 var response = await blobClient.UploadAsync(
-                files.FirstOrDefault().OpenReadStream(),
+                file.OpenReadStream(),
                 new BlobHttpHeaders
                 {
-                    ContentType = files.FirstOrDefault().ContentType
+                    ContentType = file.ContentType
                 });
 
                 await _dbContext.Blobs.AddAsync(newBlob);

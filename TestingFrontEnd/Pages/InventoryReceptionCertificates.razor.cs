@@ -6,6 +6,7 @@ using FrontEnd.Interfaces;
 using FrontEnd.Services;
 using FrontEnd.Components;
 using System.Xml.Linq;
+using FrontEnd.Components.Blobs;
 
 namespace FrontEnd.Pages
 {
@@ -17,13 +18,17 @@ namespace FrontEnd.Pages
         private readonly IAreaService _areaService;
         private readonly IFeaturesService _featuresService;
         private readonly IDescriptionService _descriptionService;
+        private readonly IBlobService _blobService;
+        private readonly IBlobsInventoryService _blobsInventoryService;
 
         public InventoryReceptionCertificates(ApplicationContext context,
                                               IInventoryService inventoryService,
                                               IServicesService servicesService,
                                               IAreaService areaService,
                                               IFeaturesService featuresService,
-                                              IDescriptionService descriptionService)
+                                              IDescriptionService descriptionService,
+                                              IBlobService blobService,
+                                              IBlobsInventoryService blobsInventoryService)
         {
             _context = context;
             _inventoryService = inventoryService;
@@ -31,16 +36,18 @@ namespace FrontEnd.Pages
             _areaService = areaService;
             _featuresService = featuresService;
             _descriptionService = descriptionService;
+            _blobService = blobService;
+            _blobsInventoryService = blobsInventoryService;
         }
 
         private ModalAreas modalAreas;
         private ModalServices modalServices;
+        private FormBlob FormBlob;
 
         public string MaterialSelect { get; set; } = "";
         public string ColorSelect { get; set; } = "";
         public string StatusSelect { get; set; } = "";
-        public int Cantaida { get; set; }
-        public int M2 { get; set; }
+
 
         public bool ShowModalRooms { get; set; } = false;
         public bool ShowModalComponents { get; set; } = false;
@@ -55,6 +62,8 @@ namespace FrontEnd.Pages
         private Description CurrentDescription { get; set; } = new();
         private Feature CurrentFeature { get; set; } = new();
         private DtoDescription CurrentDtoDescription { get; set; } = new();
+        public Blob NewBlob { get; set; } = new();
+        private BlobsInventory BlobsInventory { get; set; } = new();
 
         private List<Service> Services { get; set; } = new();
         private List<Description> Descriptions { get; set; } = new();
@@ -131,6 +140,15 @@ namespace FrontEnd.Pages
         }
         public async void ServiceButtonClicked(int idService)
         {
+            //var bres = await _blobService.PostBlobAsync(FormBlob.CurrentBlobFile);
+            if (FormBlob.CurrentBlobFile.Blob.IdBlobs != null && FormBlob.CurrentBlobFile.Blob.IdBlobs != 0)
+            {
+                BlobsInventory.IdBlobs = FormBlob.CurrentBlobFile.Blob.IdBlobs;
+                BlobsInventory.IdInventory = CurrentInventory.IdInventory;
+                BlobsInventory.IdProperty = _context.CurrentPropertys.IdProperty;
+                var res = _blobsInventoryService.PostBlobsInventoryAsync(BlobsInventory);
+            }
+
             CurrentService = ServicesList.FirstOrDefault(x => x.IdService == idService);
             FeaturesList = (await _featuresService.GetFeaturesAsync())?.Where(x => x.IdService == idService)?.ToList();
             foreach (var feature in FeaturesList)
@@ -146,12 +164,15 @@ namespace FrontEnd.Pages
 
         }
 
-        public async void FeatureInput(int IdFeature)
+        public async void DescriptionNoteInput(int IdFeature)
         {
             CurrentFeature = FeaturesList.FirstOrDefault(x => x.IdFeature == IdFeature);
+            DescriptionsList = (await _descriptionService.GetDescriptionAsync())?.Where(x => x.IdFeature == IdFeature)?.ToList();
 
+            CurrentInventory = new();
             CurrentInventory.IdProperty = _context.CurrentPropertys.IdProperty;
             CurrentInventory.IdArea = CurrentArea.IdArea;
+            CurrentInventory.IdDescription = DescriptionsList.FirstOrDefault()?.IdDescription ?? 1;
 
             InventoriesList.Add(CurrentInventory);
 
@@ -160,11 +181,19 @@ namespace FrontEnd.Pages
             //DescriptionsList = new();
 
             var res = await _inventoryService.PostInventoryAsync(CurrentInventory);
+            CurrentInventory.IdInventory = res.IdInventory;
+
+            //var bres = await _blobService.PostBlobAsync(FormBlob.CurrentBlobFile);
+            //BlobsInventory.IdBlobs = bres.IdBlobs;
+            //BlobsInventory.IdInventory = res.IdInventory;
+            //BlobsInventory.IdProperty = _context.CurrentPropertys.IdProperty;
         }
 
         public async void DescriptionButtonClicked(int idDescription)
         {
             var name = Descriptions?.FirstOrDefault(x => x.IdDescription == idDescription)?.DescriptionName;
+
+            CurrentInventory = new();
             CurrentInventory.IdProperty = _context.CurrentPropertys.IdProperty;
             CurrentInventory.IdArea = CurrentArea.IdArea;
             CurrentInventory.IdDescription = idDescription;
@@ -179,6 +208,7 @@ namespace FrontEnd.Pages
             //DescriptionsList = new();
 
             var res = await _inventoryService.PostInventoryAsync(CurrentInventory);
+            CurrentInventory.IdInventory = res.IdInventory;
         }
 
         public class DtoDescription

@@ -595,11 +595,12 @@ app.MapGet("/Blobs", async (int id, IBlobService _blobService) =>
 .Produces<HttpValidationProblemDetails>(StatusCodes.Status500InternalServerError, "application/problem+json")
 .AllowAnonymous();
 
-app.MapPost("/Blobs", async (string name, [FromForm(Name = "file")] HttpRequest request, IBlobService _blobService) =>
+app.MapPost("/Blobs", async (string name, HttpRequest request, IBlobService _blobService) =>
 {
     try
     {
-        var file = request.Form.Files;
+        var file = request.Form.Files.FirstOrDefault();
+        if(file == null) return Results.BadRequest();
         var res = await _blobService.CreateBlobAsync(name, file);
         return Results.Ok(res);
     }

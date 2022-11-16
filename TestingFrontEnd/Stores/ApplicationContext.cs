@@ -20,6 +20,7 @@ namespace FrontEnd.Stores
         private List<Feature> featuresList;
         private List<PropertyType> propertyTypesList;
         private List<ActasRecepcion> actasRecepcionsList;
+        private List<Blob> BlobsList;
 
         public Tenant CurrentTenant
         {
@@ -145,6 +146,16 @@ namespace FrontEnd.Stores
             set
             {
                 actasRecepcionsList = value;
+                NotifyStateChanged();
+            }
+        }
+
+        public List<Blob> Blobs
+        {
+            get => BlobsList;
+            set
+            {
+                BlobsList = value;
                 NotifyStateChanged();
             }
         }

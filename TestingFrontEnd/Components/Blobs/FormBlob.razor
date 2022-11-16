@@ -1,0 +1,23 @@
+﻿@if (CurrentBlobFile == null)
+{
+    <h2>Loading...</h2>
+}
+else
+{
+    <EditForm EditContext="CurrentBlobFileEditContext">
+        <DataAnnotationsValidator />
+
+        <div class="form-group">
+            <InputFile OnChange="@((InputFileChangeEventArgs args) => OnChangeAsync(args))" />
+            <ValidationMessage For="() => CurrentBlobFile.BrowserFile" />
+            <h6>@CurrentBlobFile.Blob.BlodName</h6>
+            <h6>@CurrentBlobFile.Blob.BlobSize</h6>
+            @if (InputBlob.Uri != null)
+            {
+                <NavLink href="@InputBlob.Uri">View</NavLink>
+            }
+        </div>
+
+    </EditForm>
+
+}

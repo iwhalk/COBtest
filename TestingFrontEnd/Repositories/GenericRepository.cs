@@ -34,18 +34,15 @@ namespace FrontEnd.Repositories
             return await ParseHttpResponseAsync(httpResponse);
         }
 
+        public async Task<T>? PostAsync<T>(string path, HttpContent value)
+        {
+            using HttpResponseMessage httpResponse = await _httpClient.PostAsync(path, value as HttpContent);
+            return await ParseHttpResponseAsync<T>(httpResponse);
+        }
         public async Task<T>? PostAsync<T>(string path, T value)
         {
-            if (typeof(T) == typeof(HttpContent))
-            {
-                using HttpResponseMessage httpResponse = await _httpClient.PostAsync(path, value as HttpContent);
-                return await ParseHttpResponseAsync<T>(httpResponse);
-            }
-            else
-            {
-                using HttpResponseMessage httpResponse = await _httpClient.PostAsJsonAsync(path, value);
-                return await ParseHttpResponseAsync<T>(httpResponse);
-            }
+            using HttpResponseMessage httpResponse = await _httpClient.PostAsJsonAsync(path, value);
+            return await ParseHttpResponseAsync<T>(httpResponse);
         }
 
         public async Task<T>? PostAsync<T>(string path, object value)
