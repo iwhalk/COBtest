@@ -2,7 +2,6 @@
 @attribute [Authorize]
 <PageTitle>Firmas</PageTitle>
 
-<Navbar></Navbar>
 <body class="flex flex-column min-h-screen bg-[url('/assets/img/fondocasa.png')] imgfondo">
     <div id="ContenedorInventario" class="flex">
         <div id="ListActas" class="flex ml-4">
@@ -31,11 +30,11 @@
         <button onclick="@HandlePreviewPdf" class="py-2 my-4 w-48 border rounded-lg text-white text-xl shadow-xl" style="background-color: #2B286F;">Previsualizar</button>
         <button onclick="@HandleSaveReceptionCertificate" class="py-2 my-4 w-48 border rounded-lg text-white text-xl shadow-xl" style="background-color: #2B286F;">Guardar</button>
         <button onclick="@HandleInsertSignatures" class="py-2 my-4 w-48 border rounded-lg text-white text-xl shadow-xl" style="background-color: #2B286F;">Firmar</button>
-    </div>
-    @BlobPDFPreview
+    </div>    
     @if (ShowModalPreview)
     {  
         <ModalPreviewPDF CloseModalLessor="ChangeOpenModalPreview" Content="BlobPDFPreview" PdfName="PdfName" ShowModal="ShowModalPreview"></ModalPreviewPDF>                 
     }
 </body>
+<Navbar></Navbar>
 <Footer></Footer>

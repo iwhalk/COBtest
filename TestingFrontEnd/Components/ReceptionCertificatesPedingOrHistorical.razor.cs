@@ -26,10 +26,5 @@ namespace FrontEnd.Components
         public string TypeTableReception { get; set; } = "";
         [Parameter]
         public List<ActasRecepcion> ActasRecepcions { get; set; } 
-        protected override async Task OnInitializedAsync()
-        {    
-        }
-
- 
     }
 }

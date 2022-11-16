@@ -2,66 +2,63 @@
 using Microsoft.AspNetCore.Components;
 using SharedLibrary.Models;
 using FrontEnd.Interfaces;
-using SharedLibrary.Models;
+using static FrontEnd.Components.HeaderReceptionCertificatePendingOrHistorical;
+using static FrontEnd.Components.PaginationReceptionCertificate;
 
 namespace FrontEnd.Pages
 {
     public partial class ReceptionCertificatesHistorical : ComponentBase
     {
         private readonly ApplicationContext _context;
-        private readonly IReceptionCertificateService _reception;
-        private readonly IPropertyTypeService _propertyTypeService;
-        private readonly ITenantService _tenantService;
-        private readonly ILessorService _lessorService;
+        private readonly IReceptionCertificateService _reception;                        
 
+        public List<ActasRecepcion>? actasRecepcions { get; set; }
+        public int currentPage { get; set; }
+        public int rowNumberForPage { get; set; }
+        public int rowNumber { get; set; }
 
-        private List<Tenant> tenants { get; set; }
-        private List<Lessor> lessors { get; set; }
-        private List<ActasRecepcion>? actasRecepcions { get; set; }
-        private List<PropertyType> propertyTypes { get; set; }
-        private DateTime? startDay { get; set; } = null;
-        private DateTime? endDay { get; set; } = null;
-        private int? certificateType { get; set; } = null;
-        private int? propertyType { get; set; } = null;
-        private int? numberOfRooms { get; set; } = null;
-        private int? lessor { get; set; } = null;
-        private int? tenant { get; set; } = null;
-        private string? delegation { get; set; } = null;
-        private string? agent { get; set; } = null;
-        private int? currentPage { get; set; } = null;
-        private int? rowNumber { get; set; } = null;
-
-        public ReceptionCertificatesHistorical(ApplicationContext context, IReceptionCertificateService reception, IPropertyTypeService propertyTypeService, ITenantService tenantService, ILessorService lessorService)
+        public ReceptionCertificatesHistorical(ApplicationContext context, IReceptionCertificateService reception)
         {
             _context = context;
-            _reception = reception;
-            _propertyTypeService = propertyTypeService;
-            _tenantService = tenantService;
-            _lessorService = lessorService;
+            _reception = reception;               
         }
         protected override async Task OnInitializedAsync()
         {
-            tenants = await _tenantService.GetTenantAsync();
-            lessors = await _lessorService.GetLessorAsync();
-            propertyTypes = await _propertyTypeService.GetPropertyTypeAsync();
-            actasRecepcions = await _reception.GetReceptionCertificatesAsync(null, null, null, null, null, null, null, null, null, null, null);
+            currentPage = 1;
+            rowNumberForPage = 10;                                                        
+            actasRecepcions = await _reception.GetReceptionCertificatesAsync(null, null, null, null, null, null, null, null, null, currentPage, rowNumberForPage);
+            rowNumber = _context.NumberPaginationCurrent;
+            _context.CurremtFilterPagination = new FilterReceptionCertificate();
         }        
-        public async Task Filter()
+        public async Task Filter(FilterReceptionCertificate filterReception)
         {
             actasRecepcions = null;
-            _context.ActasRecepcionList = null;
+            _context.ActasRecepcionList = null;            
 
-            if (startDay is not null && endDay is not null)
+            if (filterReception.StartDay is not null && filterReception.EndDay is not null)
             {
-                string auxS = startDay.Value.Date.ToString("yyyy-MM-dd");
-                string auxE = endDay.Value.Date.ToString("yyyy-MM-dd");
-
-
-                actasRecepcions = await _reception.GetReceptionCertificatesAsync(auxS, auxE, certificateType, propertyType, numberOfRooms, lessor, tenant, delegation, agent, currentPage, rowNumber);
+                string auxS = filterReception.StartDay.Value.Date.ToString("yyyy-MM-dd");
+                string auxE = filterReception.EndDay.Value.Date.ToString("yyyy-MM-dd");
+                actasRecepcions = await _reception.GetReceptionCertificatesAsync(auxS, auxE, filterReception.CertificateType, filterReception.PropertyType, filterReception.NumberOfRooms, filterReception.Lessor, filterReception.Tenant, filterReception.Delegation, filterReception.Agent, currentPage, rowNumberForPage);                                
+                rowNumber = _context.NumberPaginationCurrent;
             }
             else
             {
-                actasRecepcions = await _reception.GetReceptionCertificatesAsync(null, null, certificateType, propertyType, numberOfRooms, lessor, tenant, delegation, agent, currentPage, rowNumber);
+                actasRecepcions = await _reception.GetReceptionCertificatesAsync(null, null, filterReception.CertificateType, filterReception.PropertyType, filterReception.NumberOfRooms, filterReception.Lessor, filterReception.Tenant, filterReception.Delegation, filterReception.Agent, currentPage, rowNumberForPage);                                
+                rowNumber = _context.NumberPaginationCurrent;                
+            }
+            _context.CurremtFilterPagination = filterReception;
+        }
+        public void HandlePaginationAction(PaginationAction paginationAction)
+        {
+            actasRecepcions = null;
+            _context.ActasRecepcionList = null;
+            switch (paginationAction)
+            {
+                case PaginationAction.EndPage:
+                    currentPage = _context.NumberPaginationCurrent;
+                    Filter(_context.CurremtFilterPagination);
+                break;
             }
         }
     }

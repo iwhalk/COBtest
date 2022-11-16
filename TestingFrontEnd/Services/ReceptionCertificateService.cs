@@ -57,14 +57,16 @@ namespace FrontEnd.Services
             if (_context.ActasRecepcionList == null)
             {
                 var response = await _repository.GetAsync<List<ActasRecepcion>>($"api/ReceptionCertificates?startDay={startDay}&endDay={endDay}&certificateType={certificateTypeS}&propertyType={propertyTypeS}&numberOfRooms={numberOfRoomsS}&lessor={lessorS}&tenant={tenantS}&delegation={delegation}&agent={agent}&currentPage={currentPageS}&rowNumber={rowNumberS}");
+                var responseCount = await _repository.GetAsync<List<ActasRecepcion>>($"api/ReceptionCertificates?startDay={startDay}&endDay={endDay}&certificateType={certificateTypeS}&propertyType={propertyTypeS}&numberOfRooms={numberOfRoomsS}&lessor={lessorS}&tenant={tenantS}&delegation={delegation}&agent={agent}&currentPage={null}&rowNumber={null}");
 
                 if (response != null)
                 {
-                    _context.ActasRecepcionList = response;
+                    _context.ActasRecepcionList = response;                    
+                    _context.NumberPaginationCurrent = Convert.ToInt32(Math.Ceiling(responseCount.Count() / 10.0));
                     return _context.ActasRecepcionList;
                 }
             }
-
+            _context.NumberPaginationCurrent = 0;
             return _context.ActasRecepcionList;
         }
 

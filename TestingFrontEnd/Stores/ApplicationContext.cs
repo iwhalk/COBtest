@@ -1,4 +1,5 @@
 ﻿using SharedLibrary.Models;
+using static FrontEnd.Components.HeaderReceptionCertificatePendingOrHistorical;
 
 namespace FrontEnd.Stores
 {
@@ -22,7 +23,26 @@ namespace FrontEnd.Stores
         private List<ActasRecepcion> actasRecepcionsList;
         private List<Blob> BlobsList;
         private int typeReceptionCertificate;
-
+        private int rowNumberPaginationCurrent;
+        private FilterReceptionCertificate curremtFilterPagination;
+        public FilterReceptionCertificate CurremtFilterPagination
+        {
+            get => curremtFilterPagination;
+            set
+            {
+                curremtFilterPagination = value;
+                NotifyStateChanged();
+            }
+        }
+        public int NumberPaginationCurrent
+        {
+            get => rowNumberPaginationCurrent;
+            set
+            {
+                rowNumberPaginationCurrent = value;
+                NotifyStateChanged();
+            }
+        }
         public int TypeReceptionCertificate
         {
             get => typeReceptionCertificate; 
