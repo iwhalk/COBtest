@@ -26,7 +26,7 @@ namespace ReportesInmobiliaria.Services
             {
                 MimeMessage mimeMessage = new();
                 mimeMessage.To.Add(new MailboxAddress("Usuario ARI", email));
-                mimeMessage.Subject = "Registro del Sistema ARI";
+                mimeMessage.Subject = "Envío de Acta";
 
                 var bodyBuilder = new BodyBuilder();
                 bodyBuilder.HtmlBody = "<p><font size=\"5\">Se ha generado una acta de Entrega Recepción en el Sistema ARI, se adjuntó el archivo correspondiente en este correo.<br>" +
