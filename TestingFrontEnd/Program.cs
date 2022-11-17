@@ -21,7 +21,7 @@ var client = "blazor-client";
 
 if (!builder.HostEnvironment.IsDevelopment())
 {
-    client = "blazor-arisoft2245";
+    client = "blazor-arisoft";
 }
 
 builder.RootComponents.Add<App>("#app");
