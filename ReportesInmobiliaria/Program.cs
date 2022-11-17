@@ -719,7 +719,7 @@ app.MapDelete("/BlobInventory/{id}",
 
 #region ReceptionCertificates
 
-app.MapGet("/ReceptionCertificate", async (string? startDay, string? endDay, int? certificateType, int? propertyType, int? numberOfRooms, int? lessor, int? tenant, string? delegation, string? agent, int? currentPage, int? rowNumber, IReceptionCertificates _receptionCertificates,AuxiliaryMethods _auxiliaryMethods , ILogger<Program> _logger) =>
+app.MapGet("/ReceptionCertificate", async (string? startDay, string? endDay, int? certificateType, int? propertyType, int? numberOfRooms, int? lessor, int? tenant, string? delegation, string? agent, int? currentPage, int? rowNumber, bool? completed, IReceptionCertificates _receptionCertificates,AuxiliaryMethods _auxiliaryMethods , ILogger<Program> _logger) =>
 {
     try
     {
@@ -756,7 +756,7 @@ app.MapGet("/ReceptionCertificate", async (string? startDay, string? endDay, int
         else
             dates = null;
 
-        var actas = await _receptionCertificates.GetReceptionCertificatesAsync(dates, certificateType, propertyType, numberOfRooms, lessor, tenant, delegation, agent);
+        var actas = await _receptionCertificates.GetReceptionCertificatesAsync(dates, certificateType, propertyType, numberOfRooms, lessor, tenant, delegation, agent, completed);
         if (currentPage != null && rowNumber != null)
         {
             actas = actas.Skip((int)((currentPage - 1) * rowNumber)).Take((int)rowNumber).ToList();
