@@ -34,9 +34,11 @@ namespace SharedLibrary.Data
 
         protected void OnModelCreatingGeneratedProcedures(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<SP_GET_AERIResult>().HasNoKey().ToView(null);
             modelBuilder.Entity<SP_GET_AERI_AREASResult>().HasNoKey().ToView(null);
             modelBuilder.Entity<SP_GET_AERI_DELIVERABLESResult>().HasNoKey().ToView(null);
             modelBuilder.Entity<SP_GET_AERI_HEADERResult>().HasNoKey().ToView(null);
+            modelBuilder.Entity<SP_GET_AERIImagesResult>().HasNoKey().ToView(null);
         }
     }
 
@@ -47,6 +49,32 @@ namespace SharedLibrary.Data
         public InmobiliariaDbContextProcedures(InmobiliariaDbContext context)
         {
             _context = context;
+        }
+
+        public virtual async Task<List<SP_GET_AERIResult>> SP_GET_AERIAsync(int? IDProperty, OutputParameter<int> returnValue = null, CancellationToken cancellationToken = default)
+        {
+            var parameterreturnValue = new SqlParameter
+            {
+                ParameterName = "returnValue",
+                Direction = System.Data.ParameterDirection.Output,
+                SqlDbType = System.Data.SqlDbType.Int,
+            };
+
+            var sqlParameters = new []
+            {
+                new SqlParameter
+                {
+                    ParameterName = "IDProperty",
+                    Value = IDProperty ?? Convert.DBNull,
+                    SqlDbType = System.Data.SqlDbType.Int,
+                },
+                parameterreturnValue,
+            };
+            var _ = await _context.SqlQueryAsync<SP_GET_AERIResult>("EXEC @returnValue = [dbo].[SP_GET_AERI] @IDProperty", sqlParameters, cancellationToken);
+
+            returnValue?.SetValue(parameterreturnValue.Value);
+
+            return _;
         }
 
         public virtual async Task<List<SP_GET_AERI_AREASResult>> SP_GET_AERI_AREASAsync(int? IDProperty, OutputParameter<int> returnValue = null, CancellationToken cancellationToken = default)
@@ -121,6 +149,32 @@ namespace SharedLibrary.Data
                 parameterreturnValue,
             };
             var _ = await _context.SqlQueryAsync<SP_GET_AERI_HEADERResult>("EXEC @returnValue = [dbo].[SP_GET_AERI_HEADER] @IDProperty", sqlParameters, cancellationToken);
+
+            returnValue?.SetValue(parameterreturnValue.Value);
+
+            return _;
+        }
+
+        public virtual async Task<List<SP_GET_AERIImagesResult>> SP_GET_AERIImagesAsync(int? IDProperty, OutputParameter<int> returnValue = null, CancellationToken cancellationToken = default)
+        {
+            var parameterreturnValue = new SqlParameter
+            {
+                ParameterName = "returnValue",
+                Direction = System.Data.ParameterDirection.Output,
+                SqlDbType = System.Data.SqlDbType.Int,
+            };
+
+            var sqlParameters = new []
+            {
+                new SqlParameter
+                {
+                    ParameterName = "IDProperty",
+                    Value = IDProperty ?? Convert.DBNull,
+                    SqlDbType = System.Data.SqlDbType.Int,
+                },
+                parameterreturnValue,
+            };
+            var _ = await _context.SqlQueryAsync<SP_GET_AERIImagesResult>("EXEC @returnValue = [dbo].[SP_GET_AERIImages] @IDProperty", sqlParameters, cancellationToken);
 
             returnValue?.SetValue(parameterreturnValue.Value);
 

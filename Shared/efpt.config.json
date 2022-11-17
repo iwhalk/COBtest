@@ -77,6 +77,26 @@
       {
          "Name": "[dbo].[Tenants]",
          "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[SP_GET_AERI_AREAS]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[SP_GET_AERI_DELIVERABLES]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[SP_GET_AERI_HEADER]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[SP_GET_AERI]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[SP_GET_AERIImages]",
+         "ObjectType": 1
       }
    ],
    "UiHint": "prosisdev.prosisdb_3",

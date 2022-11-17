@@ -222,6 +222,7 @@ namespace SharedLibrary.Data
                     .HasName("PK__Tenant__609A42186A15AA67");
             });
 
+            OnModelCreatingGeneratedProcedures(modelBuilder);
             OnModelCreatingPartial(modelBuilder);
         }
 
