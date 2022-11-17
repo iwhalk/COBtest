@@ -21,7 +21,7 @@ namespace ReportesInmobiliaria.Services
             _httpContextAccessor = httpContextAccessor;
         }
 
-        public async Task<List<ActasRecepcion?>> GetReceptionCertificatesAsync(Dates dates, int? certificateType, int? propertyType, int? numberOfRooms, int? lessor, int? tenant, string? delegation, string? agent)
+        public async Task<List<ActasRecepcion?>> GetReceptionCertificatesAsync(Dates dates, int? certificateType, int? propertyType, int? numberOfRooms, int? lessor, int? tenant, string? delegation, string? agent, bool? completed)
         {
             IQueryable<AspNetUser> aspNetUsers = _dbContext.AspNetUsers;
             IQueryable<ReceptionCertificate> receptionCertificates = _dbContext.ReceptionCertificates
@@ -32,6 +32,10 @@ namespace ReportesInmobiliaria.Services
                                                                                 .ThenInclude(x => x.IdLessorNavigation);            
             if (dates != null)
                 receptionCertificates = receptionCertificates.Where(d => d.CreationDate.Date >= dates.StartDate && d.CreationDate <= dates.EndDate);
+            if (completed != null && completed != false)
+                receptionCertificates = receptionCertificates.Where(x => !string.IsNullOrEmpty(x.ApprovalPathTenant) && !string.IsNullOrEmpty(x.ApprovalPathTenant));
+            else if (completed == false || completed ==  null)
+                receptionCertificates = receptionCertificates.Where(x => string.IsNullOrEmpty(x.ApprovalPathTenant) && string.IsNullOrEmpty(x.ApprovalPathTenant));
             if (propertyType != null)
                 receptionCertificates = receptionCertificates.Where(x => x.IdPropertyNavigation.IdPropertyTypeNavigation.IdPropertyType == propertyType);
             if (numberOfRooms != null)
