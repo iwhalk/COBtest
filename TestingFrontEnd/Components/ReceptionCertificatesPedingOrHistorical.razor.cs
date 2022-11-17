@@ -25,6 +25,8 @@ namespace FrontEnd.Components
         [Parameter]
         public string TypeTableReception { get; set; } = "";
         [Parameter]
-        public List<ActasRecepcion> ActasRecepcions { get; set; } 
+        public List<ActasRecepcion> ActasRecepcions { get; set; }
+        [Parameter]
+        public EventCallback<int> PreviewPdf { get; set; }
     }
 }

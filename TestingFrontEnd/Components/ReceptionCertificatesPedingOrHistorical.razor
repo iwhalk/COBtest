@@ -47,7 +47,7 @@
                                     }
                                     else
                                     {
-                                        <button class="bg-red-300 p-1 text-xs rounded-sm w-10 h-10 border border-red-900">PDF</button>
+                                        <button onclick="@(() => PreviewPdf.InvokeAsync(item.IdProperty))" class="bg-red-300 p-1 text-xs rounded-sm w-10 h-10 border border-red-900">PDF</button>
                                     }
                                 </td>
                                 <td class="py-2 text-center text-2xl">@item.Fecha</td>

@@ -8,9 +8,13 @@
             <label for="" class="text-4xl text-blue-900 font-semibold my-8">Acta Entrega Recepción de Inmueble Histórico</label>
         </div>            
         <HeaderReceptionCertificatePendingOrHistorical ChageFilters="Filter"></HeaderReceptionCertificatePendingOrHistorical>
-        <ReceptionCertificatesPedingOrHistorical ActasRecepcions="actasRecepcions" TypeTableReception="TypeTableHistoricalOrPending"></ReceptionCertificatesPedingOrHistorical>
+        <ReceptionCertificatesPedingOrHistorical PreviewPdf="@HandlePreviewPdf" ActasRecepcions="actasRecepcions" TypeTableReception="TypeTableHistoricalOrPending"></ReceptionCertificatesPedingOrHistorical>
         <PaginationReceptionCertificate ChangePagination="HandlePaginationAction" ChangePaginationForNumber="HandlePaginationForPage" CurrentPage="currentPage" NumberPage="rowNumberForPage" MaxNumberPages="maxNumberPage"></PaginationReceptionCertificate>
     </div>
+    @if (showModalPDFPreview)
+    {
+        <ModalPreviewPDF CloseModalLessor="ChangeModalPDFPreview" Content="BlobPDFPreview" PdfName="PdfName" ShowModal="showModalPDFPreview"></ModalPreviewPDF>
+    }
 </body>
 <Navbar></Navbar>
 <Footer></Footer>
