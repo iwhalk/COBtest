@@ -52,19 +52,19 @@ namespace FrontEnd.Pages
         {
             lessors = await _lessorService.GetLessorAsync();
             tenants = await _tenantService.GetTenantAsync();
-            properties = await _propertyService.GetPropertyAsync(); 
-
-            tenant = tenants.FirstOrDefault(x => x.IdTenant == _context.CurrentReceptionCertificate.IdTenant).EmailAddress;
-
-            property = properties.FirstOrDefault(x => x.IdLessor == _context.CurrentReceptionCertificate.IdProperty);
-
-            lessor = lessors.FirstOrDefault(x => x.IdLessor == property.IdLessor).EmailAddress;
+            properties = await _propertyService.GetPropertyAsync();
+            tenant = _context.CurrentTenant.EmailAddress;
+            property = _context.CurrentPropertys;
+            lessor = _context.CurrentLessor.EmailAddress;
+            //tenant = tenants.FirstOrDefault(x => x.IdTenant == _context.CurrentReceptionCertificate.IdTenant).EmailAddress;
+            //property = properties.FirstOrDefault(x => x.IdLessor == _context.CurrentReceptionCertificate.IdProperty);
+            //lessor = lessors.FirstOrDefault(x => x.IdLessor == property.IdLessor).EmailAddress;
         }
 
         private async Task SendMenssage()
         {
             int idProperty = _context.CurrentReceptionCertificate.IdProperty;
-            if (idProperty == 0)
+            if (idProperty > 0)
             {
                 if (tenantCheck == true)
                 {
