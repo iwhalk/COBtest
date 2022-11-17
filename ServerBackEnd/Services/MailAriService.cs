@@ -36,30 +36,19 @@ namespace ApiGateway.Services
             return await GetAsync(path: "SendReceptionCertificate", parameters: parameters);
         }
 
-        public bool MailSender(Email email)
+        public bool MailSender(MimeMessage mimeMessage)
         {
             try
             {
-
-                var message = new MimeMessage();
                 //From address
-                message.From.Add(new MailboxAddress("PROSIS", "send1@grupo-prosis.com"));
-                //To address
-                message.To.Add(new MailboxAddress(email.Name, email.To));
-                //Subject
-                message.Subject = email.Subject;
-                //Body
-                message.Body = new TextPart("plain")
-                {
-                    Text = email.Body
-                };
+                mimeMessage.From.Add(new MailboxAddress("PROSIS", "send1@grupo-prosis.com"));
+                
                 //Configuration
-
                 using (var client = new SmtpClient())
                 {
                     client.Connect("smtpout.europe.secureserver.net", 465, true);
                     client.Authenticate("send1@grupo-prosis.com", "Pr0s1s");
-                    client.Send(message);
+                    client.Send(mimeMessage);
                     client.Disconnect(true);
                 }
                 return true;

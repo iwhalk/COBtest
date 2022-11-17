@@ -29,6 +29,18 @@ namespace ApiGateway.Controllers
 
             return BadRequest(result);
         }
+        [HttpGet("AreaServices")]
+        public async Task<ActionResult> GetAreaServices()
+        {
+            var result = await _areaService.GetAreaServicesAsync();
+
+            if (result.Succeeded)
+            {
+                return Ok(result);
+            }
+
+            return BadRequest(result);
+        }
 
         [HttpPost]
         public async Task<ActionResult> PostArea(Area area)

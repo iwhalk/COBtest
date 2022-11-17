@@ -281,7 +281,7 @@ builder.Services.AddScoped<ITenantService, TenantService>();
 builder.Services.AddScoped<IPropertyService, PropertyService>();
 builder.Services.AddScoped<IPropertyTypeService, PropertyTypeService>();
 builder.Services.AddScoped<IServicesService, ServicesService>();
-builder.Services.AddScoped<IAreaService, AreaService>();
+builder.Services.AddScoped<IAreaService, AreasService>();
 builder.Services.AddScoped<IFeaturesService, FeaturesService>();
 builder.Services.AddScoped<IDescriptionService, DescriptionService>();
 builder.Services.AddScoped<IInventoryService, InventoryService>();

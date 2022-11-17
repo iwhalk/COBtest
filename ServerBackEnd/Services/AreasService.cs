@@ -5,15 +5,19 @@ using SharedLibrary;
 
 namespace ApiGateway.Services
 {
-    public class AreaService : GenericProxy, IAreaService
+    public class AreasService : GenericProxy, IAreaService
     {
-        public AreaService(IHttpContextAccessor? httpContextAccessor, IHttpClientFactory httpClientFactory) : base(httpContextAccessor, httpClientFactory, "Reportes")
+        public AreasService(IHttpContextAccessor? httpContextAccessor, IHttpClientFactory httpClientFactory) : base(httpContextAccessor, httpClientFactory, "Reportes")
         {
 
         }
         public async Task<ApiResponse<List<Area>>> GetAreaAsync()
         {
             return await GetAsync<List<Area>>(path: "Areas");
+        }
+        public async Task<ApiResponse<List<AreaService>>> GetAreaServicesAsync()
+        {
+            return await GetAsync<List<AreaService>>(path: "AreaServices");
         }
 
         public async Task<ApiResponse<Area>> PostAreaAsync(Area area)

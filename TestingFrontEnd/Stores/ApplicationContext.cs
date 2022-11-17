@@ -1,4 +1,5 @@
 ﻿using SharedLibrary.Models;
+using static FrontEnd.Components.HeaderReceptionCertificatePendingOrHistorical;
 
 namespace FrontEnd.Stores
 {
@@ -22,7 +23,47 @@ namespace FrontEnd.Stores
         private List<ActasRecepcion> actasRecepcionsList;
         private List<Blob> BlobsList;
         private int typeReceptionCertificate;
+        private int rowNumberPaginationCurrent;
+        private int maxNumberPagination;
+        private FilterReceptionCertificate currentFilterPagination;
+        private List<int> listPageInPaginate;
 
+        public List<int> ListPageInPaginate
+        {
+            get => listPageInPaginate;
+            set
+            {
+                listPageInPaginate = value;
+                NotifyStateChanged();
+            }
+        }
+        public FilterReceptionCertificate CurrentFilterPagination
+        {
+            get => currentFilterPagination;
+            set
+            {
+                currentFilterPagination = value;
+                NotifyStateChanged();
+            }
+        }
+        public int MaxNumberPagination
+        {
+            get => maxNumberPagination;
+            set
+            {
+                maxNumberPagination = value;
+                NotifyStateChanged();
+            }
+        }
+        public int NumberPaginationCurrent
+        {
+            get => rowNumberPaginationCurrent;
+            set
+            {
+                rowNumberPaginationCurrent = value;
+                NotifyStateChanged();
+            }
+        }
         public int TypeReceptionCertificate
         {
             get => typeReceptionCertificate; 

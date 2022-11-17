@@ -13,6 +13,8 @@ namespace FrontEnd.Components
         public Area Area { get; set; } = new();
         [Parameter]
         public EventCallback OnClick { get; set; }
+        [Parameter]
+        public EventCallback<int> OnMinusClick { get; set; }
 
         [Parameter]
         public EventCallback OpenModalGauges { get; set; }
@@ -22,9 +24,16 @@ namespace FrontEnd.Components
         [Parameter]
         public EventCallback<int> OnAreaClick { get; set; }
 
+        public int SelectedArea { get; set; }
+
         protected override async Task OnInitializedAsync()
         {
-
         }
+        private async Task OnClicked(int IdArea)
+        {
+            SelectedArea = IdArea;
+            await OnAreaClick.InvokeAsync(IdArea);
+        }
+
     }
 }
