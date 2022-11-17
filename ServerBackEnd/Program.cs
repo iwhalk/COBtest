@@ -290,6 +290,7 @@ builder.Services.AddScoped<IReportesService, ReportesService>();
 builder.Services.AddScoped<IBlobInventoryService, BlobInventoryService>();
 builder.Services.AddScoped<IReceptionCertificateService, ReceptionCertificateService>();
 builder.Services.AddScoped<IAspNetUserService, AspNetUserService>();
+builder.Services.AddScoped<IMailAriService, MailAriService>();
 
 var app = builder.Build();
 

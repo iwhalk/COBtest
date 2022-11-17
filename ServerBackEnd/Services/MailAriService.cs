@@ -6,11 +6,36 @@ using MailKit;
 using MimeKit;
 using ApiGateway.Data;
 using static System.Net.Mime.MediaTypeNames;
+using ApiGateway.Interfaces;
+using SharedLibrary;
+using ApiGateway.Proxies;
+using SharedLibrary.Models;
 
 namespace ApiGateway.Services
 {
-    public class MailService
+    public class MailAriService : GenericProxy, IMailAriService
     {
+        public MailAriService(IHttpContextAccessor? httpContextAccessor, IHttpClientFactory httpClientFactory) : base(httpContextAccessor, httpClientFactory, "Reportes")
+        {
+
+        }
+
+        public async Task<ApiResponse> GetMailAsync(int idProperty, string email)
+        {
+            Dictionary<string, string> parameters = new();
+
+            if (idProperty != null)
+            {
+                parameters.Add("idProperty", idProperty.ToString());
+            }
+            if (!string.IsNullOrEmpty(email))
+            {
+                parameters.Add("email", email);
+            }
+
+            return await GetAsync(path: "SendReceptionCertificate", parameters: parameters);
+        }
+
         public bool MailSender(MimeMessage mimeMessage)
         {
             try
