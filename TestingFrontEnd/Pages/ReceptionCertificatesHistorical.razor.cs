@@ -4,24 +4,32 @@ using SharedLibrary.Models;
 using FrontEnd.Interfaces;
 using static FrontEnd.Components.HeaderReceptionCertificatePendingOrHistorical;
 using static FrontEnd.Components.PaginationReceptionCertificate;
+using FrontEnd.Services;
 
 namespace FrontEnd.Pages
 {
     public partial class ReceptionCertificatesHistorical : ComponentBase
     {
         private readonly ApplicationContext _context;
-        private readonly IReceptionCertificateService _reception;                        
+        private readonly IReceptionCertificateService _reception;
+        private readonly IReportsService _reportService;
         public List<ActasRecepcion>? actasRecepcions { get; set; }
+        public bool showModalPDFPreview { get; set; }
+        public byte[] BlobPDFPreview { get; set; }
+        public string PdfName { get; set; }
         public int currentPage { get; set; }
         public int rowNumberForPage { get; set; }
         public int maxNumberPage { get; set; }
-        public ReceptionCertificatesHistorical(ApplicationContext context, IReceptionCertificateService reception)
+        public string TypeTableHistoricalOrPending { get; set; }
+        public ReceptionCertificatesHistorical(ApplicationContext context, IReceptionCertificateService reception, IReportsService reportsService)
         {
             _context = context;
-            _reception = reception;               
+            _reception = reception;
+            _reportService = reportsService;
         }
         protected override async Task OnInitializedAsync()
         {
+            TypeTableHistoricalOrPending = _context.TypeHistoricalOrPending;
             currentPage = 1;
             rowNumberForPage = 10;                                                        
             actasRecepcions = await _reception.GetReceptionCertificatesAsync(null, null, null, null, null, null, null, null, null, currentPage, rowNumberForPage);
@@ -129,6 +137,15 @@ namespace FrontEnd.Pages
             }
             StateHasChanged();
         }
+        public async void HandlePreviewPdf(int IdProperty)
+        {            
+            BlobPDFPreview = await _reportService.GetReportFeature(IdProperty);
+            if (BlobPDFPreview != null)
+            {
+                showModalPDFPreview = true;
+                PdfName = "PDFPreview.pdf";
+            }
+        }
         private List<int> CreatePaginationNumber()
         {
             List<int> paginas = new List<int>();
@@ -138,5 +155,6 @@ namespace FrontEnd.Pages
             }            
             return paginas;
         }
+        public void ChangeModalPDFPreview() => showModalPDFPreview = showModalPDFPreview ? false : true;
     }
 }

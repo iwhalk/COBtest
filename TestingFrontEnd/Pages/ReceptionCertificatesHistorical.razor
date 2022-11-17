@@ -5,12 +5,23 @@
 <body class="flex flex-column min-h-screen bg-[url('/assets/img/fondocasa.png')] imgfondo">   
     <div class="my-auto">
         <div id="TituloActas" class="flex justify-center">
-            <label for="" class="text-4xl text-blue-900 font-semibold my-8">Acta Entrega Recepción de Inmueble Histórico</label>
+            @if(_context.TypeHistoricalOrPending == "Historical")
+            {
+                <label for="" class="text-4xl text-blue-900 font-semibold my-8">Acta Entrega Recepción de Inmueble Histórico</label>
+            }            
+            else 
+            {
+                <label for="" class="text-4xl text-blue-900 font-semibold my-8">Acta Entrega Recepción de Inmueble Existentes</label>
+            }
         </div>            
         <HeaderReceptionCertificatePendingOrHistorical ChageFilters="Filter"></HeaderReceptionCertificatePendingOrHistorical>
-        <ReceptionCertificatesPedingOrHistorical ActasRecepcions="actasRecepcions" TypeTableReception="Historico"></ReceptionCertificatesPedingOrHistorical>
+        <ReceptionCertificatesPedingOrHistorical PreviewPdf="@HandlePreviewPdf" ActasRecepcions="actasRecepcions" TypeTableReception="TypeTableHistoricalOrPending"></ReceptionCertificatesPedingOrHistorical>
         <PaginationReceptionCertificate ChangePagination="HandlePaginationAction" ChangePaginationForNumber="HandlePaginationForPage" CurrentPage="currentPage" NumberPage="rowNumberForPage" MaxNumberPages="maxNumberPage"></PaginationReceptionCertificate>
     </div>
+    @if (showModalPDFPreview)
+    {
+        <ModalPreviewPDF CloseModalLessor="ChangeModalPDFPreview" Content="BlobPDFPreview" PdfName="PdfName" ShowModal="showModalPDFPreview"></ModalPreviewPDF>
+    }
 </body>
 <Navbar></Navbar>
 <Footer></Footer>

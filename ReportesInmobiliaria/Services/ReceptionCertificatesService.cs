@@ -60,7 +60,8 @@ namespace ReportesInmobiliaria.Services
                     Arrendador = certificate.IdPropertyNavigation.IdLessorNavigation.Name + " " + certificate.IdPropertyNavigation.IdLessorNavigation.LastName,
                     Arrendatario = certificate.IdTenantNavigation.Name + " " + certificate.IdTenantNavigation.Name,
                     Delegacion = certificate.IdPropertyNavigation.Delegation ?? "",
-                    Agente = aspNetUsers.FirstOrDefault(x => x.Id == certificate.IdAgent).Name + " " + aspNetUsers.FirstOrDefault(x => x.Id == certificate.IdAgent).LastName
+                    Agente = aspNetUsers.FirstOrDefault(x => x.Id == certificate.IdAgent).Name + " " + aspNetUsers.FirstOrDefault(x => x.Id == certificate.IdAgent).LastName,
+                    IdProperty = certificate.IdProperty
                 });
             }
             return list;

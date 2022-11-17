@@ -12,8 +12,10 @@ namespace FrontEnd.Components
         private readonly IPropertyTypeService _propertyTypeService;
         private readonly ITenantService _tenantService;
         private readonly ILessorService _lessorService;
+        private readonly IUserService _userService;
         private List<Tenant> tenants { get; set; }
         private List<Lessor> lessors { get; set; }
+        private List<AspNetUser> users { get; set; }
         private List<PropertyType> propertyTypes { get; set; }
         public FilterReceptionCertificate FilterReception { get; set; } = new();
         [Parameter]
@@ -31,20 +33,21 @@ namespace FrontEnd.Components
             public string? Agent { get; set; } = null;
         }
 
-        public HeaderReceptionCertificatePendingOrHistorical(ApplicationContext context, IReceptionCertificateService reception, IPropertyTypeService propertyTypeService, ITenantService tenantService, ILessorService lessorService)
+        public HeaderReceptionCertificatePendingOrHistorical(ApplicationContext context, IReceptionCertificateService reception, IPropertyTypeService propertyTypeService, ITenantService tenantService, ILessorService lessorService, IUserService userService)
         {
             _context = context;
             _reception = reception;
             _propertyTypeService = propertyTypeService;
             _tenantService = tenantService;
             _lessorService= lessorService;
-
+            _userService = userService;
         }
         protected override async Task OnInitializedAsync()
         {
             tenants = await _tenantService.GetTenantAsync();
             lessors = await _lessorService.GetLessorAsync();
             propertyTypes = await _propertyTypeService.GetPropertyTypeAsync();
+            users = await _userService.GetUsersAsync();
         }
     }
 }
