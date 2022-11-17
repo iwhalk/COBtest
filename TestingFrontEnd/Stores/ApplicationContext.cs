@@ -28,6 +28,16 @@ namespace FrontEnd.Stores
         private FilterReceptionCertificate currentFilterPagination;
         private List<int> listPageInPaginate;
         private string typeHistoricalOrPending;
+        private List<AspNetUser> listUserAsp;
+        public List<AspNetUser> ListUserAsp
+        {
+            get => listUserAsp;
+            set
+            {                
+                listUserAsp = value;
+                NotifyStateChanged();
+            }
+        }
         public string TypeHistoricalOrPending
         {
             get => typeHistoricalOrPending;

@@ -82,7 +82,16 @@
     </span>
     <span class="flex flex-col items-center">
         <label for="" class="mb-1 text-3xl text-cyan-700">Agente</label>
-        <select name="" class="px-2 py-1 border-1 border-black rounded-lg w-36"></select>
+            <select @bind-value="FilterReception.Agent" @onchange="@(() => ChageFilters.InvokeAsync(FilterReception))" @bind-value:event="oninput" name="" class="px-2 py-1 border-1 border-black rounded-lg w-36">
+                <option value="0">Sin seleccionar</option>
+                @if (users is not null)
+                {
+                    @foreach (var item in users)
+                    {
+                        <option value="@item.Id">@item.Name</option>
+                    }
+                }
+            </select>
     </span>
 </div>
 </div>
