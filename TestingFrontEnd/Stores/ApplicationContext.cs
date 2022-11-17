@@ -27,7 +27,16 @@ namespace FrontEnd.Stores
         private int maxNumberPagination;
         private FilterReceptionCertificate currentFilterPagination;
         private List<int> listPageInPaginate;
-
+        private string typeHistoricalOrPending;
+        public string TypeHistoricalOrPending
+        {
+            get => typeHistoricalOrPending;
+            set
+            {
+                typeHistoricalOrPending = value;
+                NotifyStateChanged();
+            }
+        }
         public List<int> ListPageInPaginate
         {
             get => listPageInPaginate;

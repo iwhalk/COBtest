@@ -39,11 +39,15 @@
                         {
                             <tr>
                                 <td class="py-2 text-center text-2xl">
-                                    @if (TypeTableReception == "Historico")
+                                    @if (TypeTableReception == "Historical")
                                     {
                                         <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" class="bi bi-lock-fill" viewBox="0 0 16 16">
                                             <path d="M8 1a2 2 0 0 1 2 2v4H6V3a2 2 0 0 1 2-2zm3 6V3a3 3 0 0 0-6 0v4a2 2 0 0 0-2 2v5a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2z" />
                                         </svg>
+                                    }
+                                    else
+                                    {
+                                        <button class="bg-red-300 p-1 text-xs rounded-sm w-10 h-10 border border-red-900">PDF</button>
                                     }
                                 </td>
                                 <td class="py-2 text-center text-2xl">@item.Fecha</td>

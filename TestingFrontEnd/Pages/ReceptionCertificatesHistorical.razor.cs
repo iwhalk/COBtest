@@ -15,6 +15,7 @@ namespace FrontEnd.Pages
         public int currentPage { get; set; }
         public int rowNumberForPage { get; set; }
         public int maxNumberPage { get; set; }
+        public string TypeTableHistoricalOrPending { get; set; }
         public ReceptionCertificatesHistorical(ApplicationContext context, IReceptionCertificateService reception)
         {
             _context = context;
@@ -22,6 +23,7 @@ namespace FrontEnd.Pages
         }
         protected override async Task OnInitializedAsync()
         {
+            TypeTableHistoricalOrPending = _context.TypeHistoricalOrPending;
             currentPage = 1;
             rowNumberForPage = 10;                                                        
             actasRecepcions = await _reception.GetReceptionCertificatesAsync(null, null, null, null, null, null, null, null, null, currentPage, rowNumberForPage);
