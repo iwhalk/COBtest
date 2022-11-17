@@ -2,14 +2,14 @@
 <div id="DatosInputs" class="flex justify-between mx-2 mb-2 px-4 pt-2 pb-4 rounded-lg" style="background-color: #E3F2F6;">
     <span class="flex flex-col justify-center">
         <label for="" class="mb-1 text-3xl text-center text-cyan-700">Fechas</label>
-        <div>                     
-            <input type="date" @bind-value="StartDay" @onchange="@(() => ChageFilters.InvokeAsync())" @bind-value:event="oninput" class="px-2 mx-2 py-1 border-1 border-black rounded-lg" />
-            <input type="date" @bind-value="EndDay" @onchange="@(() => ChageFilters.InvokeAsync())" @bind-value:event="oninput" class="px-2 mx-2 py-1 border-1 border-black rounded-lg" />
+        <div>
+                <input type="date" @bind-value="FilterReception.StartDay" @onchange="@(() => ChageFilters.InvokeAsync(FilterReception))" @bind-value:event="oninput" class="px-2 mx-2 py-1 border-1 border-black rounded-lg" />
+                <input type="date" @bind-value="FilterReception.EndDay" @onchange="@(() => ChageFilters.InvokeAsync(FilterReception))" @bind-value:event="oninput" class="px-2 mx-2 py-1 border-1 border-black rounded-lg" />
         </div>
     </span>
     <span class="flex flex-col items-center">
         <label for="" class="mb-1 text-3xl text-cyan-700">Tipo de Acta</label>
-        <select @bind-value="CertificateType" @onchange="@(() => ChageFilters.InvokeAsync())" @bind-value:event="oninput" name="" class="px-2 py-1 border-1 border-black rounded-lg w-36 flex justify-center">
+            <select @bind-value="FilterReception.CertificateType" @onchange="@(() => ChageFilters.InvokeAsync(FilterReception))" @bind-value:event="oninput" name="" class="px-2 py-1 border-1 border-black rounded-lg w-36 flex justify-center">
             <option value="0">Sin seleccionar</option>
             <option value="1">Entrada</option>
             <option value="2">Salida</option>
@@ -17,7 +17,7 @@
     </span>
     <span class="flex flex-col items-center">
         <label for="" class="mb-1 text-3xl text-cyan-700">Tipo de Inmueble</label>
-        <select @bind-value="PropertyType" @onchange="@(() => ChageFilters.InvokeAsync())" @bind-value:event="oninput" name="" class="px-2 py-1 border-1 border-black rounded-lg w-36">
+            <select @bind-value="FilterReception.PropertyType" @onchange="@(() => ChageFilters.InvokeAsync(FilterReception))" @bind-value:event="oninput" name="" class="px-2 py-1 border-1 border-black rounded-lg w-36">
             <option value="0">Sin seleccionar</option>
             @if (propertyTypes is not null)
             {
@@ -30,11 +30,11 @@
     </span>
     <span class="flex flex-col items-center">
         <label for="" class="mb-1 text-3xl text-cyan-700">No. Habitaciones</label>
-        <input type="number" @bind-value="NumberOfRooms" @onchange="@(() => ChageFilters.InvokeAsync())" @bind-value:event="oninput" placeholder="0" class="px-2 py-1 border-1 border-black rounded-lg w-36">
+            <input type="number" @bind-value="FilterReception.NumberOfRooms" @onchange="@(() => ChageFilters.InvokeAsync(FilterReception))" @bind-value:event="oninput" placeholder="0" class="px-2 py-1 border-1 border-black rounded-lg w-36">
     </span>
     <span class="flex flex-col items-center">
         <label for="" class="mb-1 text-3xl text-cyan-700">Arrendador</label>
-        <select @bind-value="Lessor" @onchange="@(() => ChageFilters.InvokeAsync())" @bind-value:event="oninput" name="" class="px-2 py-1 border-1 border-black rounded-lg w-36">
+            <select @bind-value="FilterReception.Lessor" @onchange="@(() => ChageFilters.InvokeAsync(FilterReception))" @bind-value:event="oninput" name="" class="px-2 py-1 border-1 border-black rounded-lg w-36">
             <option value="0">Sin seleccionar</option>
             @if (lessors is not null)
             {
@@ -47,7 +47,7 @@
     </span>
     <span class="flex flex-col items-center">
         <label for="" class="mb-1 text-3xl text-cyan-700">Arrendatario</label>
-        <select @bind-value="Tenant" @onchange="@(() => ChageFilters.InvokeAsync())" @bind-value:event="oninput" name="" class="px-2 py-1 border-1 border-black rounded-lg w-36">
+            <select @bind-value="FilterReception.Tenant" @onchange="@(() => ChageFilters.InvokeAsync(FilterReception))" @bind-value:event="oninput" name="" class="px-2 py-1 border-1 border-black rounded-lg w-36">
             <option value="0">Sin seleccionar</option>
             @if (tenants is not null)
             {
@@ -60,7 +60,7 @@
     </span>
     <span class="flex flex-col items-center">
         <label for="" class="mb-1 text-3xl text-cyan-700">Delegación</label>
-        <select @bind-value="Delegation" @onchange="@(() => ChageFilters.InvokeAsync())" @bind-value:event="oninput" name="" class="px-2 py-1 border-1 border-black rounded-lg w-36">
+            <select @bind-value="FilterReception.Delegation" @onchange="@(() => ChageFilters.InvokeAsync(FilterReception))" @bind-value:event="oninput" name="" class="px-2 py-1 border-1 border-black rounded-lg w-36">
             <option value="0">Sin seleccionar</option>
             <option>Álvaro Obregón</option>
             <option>Azcapotzalco</option>

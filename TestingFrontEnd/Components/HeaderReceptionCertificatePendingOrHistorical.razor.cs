@@ -15,31 +15,21 @@ namespace FrontEnd.Components
         private List<Tenant> tenants { get; set; }
         private List<Lessor> lessors { get; set; }
         private List<PropertyType> propertyTypes { get; set; }
-
+        public FilterReceptionCertificate FilterReception { get; set; } = new();
         [Parameter]
-        public EventCallback ChageFilters { get; set; }
-        [Parameter]
-        public DateTime? StartDay { get; set; } = null;
-        [Parameter]
-        public DateTime? EndDay { get; set; } = null;
-        [Parameter]
-        public int? CertificateType { get; set; } = null;
-        [Parameter]
-        public int? PropertyType { get; set; } = null;
-        [Parameter]
-        public int? NumberOfRooms { get; set; } = null;
-        [Parameter]
-        public int? Lessor { get; set; } = null;
-        [Parameter]
-        public int? Tenant { get; set; } = null;
-        [Parameter]
-        public string? Delegation { get; set; } = null;
-        [Parameter]
-        public string? Agent { get; set; } = null;
-        //[Parameter]
-        //public int? currentPage { get; set; } = null;
-        //[Parameter]
-        //public int? rowNumber { get; set; } = null;
+        public EventCallback<FilterReceptionCertificate> ChageFilters { get; set; }        
+        public class FilterReceptionCertificate
+        {                                   
+            public DateTime? StartDay { get; set; } = null;            
+            public DateTime? EndDay { get; set; } = null;            
+            public int? CertificateType { get; set; } = null;            
+            public int? PropertyType { get; set; } = null;            
+            public int? NumberOfRooms { get; set; } = null;            
+            public int? Lessor { get; set; } = null;            
+            public int? Tenant { get; set; } = null;            
+            public string? Delegation { get; set; } = null;            
+            public string? Agent { get; set; } = null;
+        }
 
         public HeaderReceptionCertificatePendingOrHistorical(ApplicationContext context, IReceptionCertificateService reception, IPropertyTypeService propertyTypeService, ITenantService tenantService, ILessorService lessorService)
         {
@@ -47,12 +37,14 @@ namespace FrontEnd.Components
             _reception = reception;
             _propertyTypeService = propertyTypeService;
             _tenantService = tenantService;
+            _lessorService= lessorService;
 
         }
         protected override async Task OnInitializedAsync()
         {
             tenants = await _tenantService.GetTenantAsync();
             lessors = await _lessorService.GetLessorAsync();
+            propertyTypes = await _propertyTypeService.GetPropertyTypeAsync();
         }
     }
 }
