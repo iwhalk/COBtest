@@ -20,11 +20,12 @@ namespace FrontEnd.Pages
         private readonly ILessorService _lessorService;
         private readonly IPropertyService _propertyService;
         private readonly IReceptionCertificateService _receptionCertificateService;
+        private readonly IUserService _userService;
         private readonly AuthenticationStateProvider _getAuthenticationStateAsync;
         [CascadingParameter]
         private Task<AuthenticationState> authenticationStateTask { get; set; }
 
-        public CreateReceptionCertificates(ApplicationContext context, NavigationManager navigationManager, ITenantService tenantService, IPropertyService propertyService, ILessorService lessorService, IReceptionCertificateService receptionCertificateService, AuthenticationStateProvider getAuthenticationStateAsync)
+        public CreateReceptionCertificates(ApplicationContext context, NavigationManager navigationManager, ITenantService tenantService, IPropertyService propertyService, ILessorService lessorService, IReceptionCertificateService receptionCertificateService, AuthenticationStateProvider getAuthenticationStateAsync, IUserService userService)
         {
             _context = context;
             _navigation = navigationManager;
@@ -33,6 +34,7 @@ namespace FrontEnd.Pages
             _propertyService = propertyService;
             _receptionCertificateService = receptionCertificateService;
             _getAuthenticationStateAsync = getAuthenticationStateAsync;
+            _userService = userService;
         }
 
         public bool ShowModalLessor { get; set; } = false;
@@ -44,6 +46,7 @@ namespace FrontEnd.Pages
         public List<Lessor> lessors { get; set; } = new();
         private List<Tenant> tenants { get; set; } = new();
         private List<Property> properties { get; set; } = new();
+        private List<AspNetUser> users { get; set; } = new();
         public int MyProperty { get; set; }
         public string UserName { get; set; }
 
@@ -119,12 +122,12 @@ namespace FrontEnd.Pages
                         }
                         _context.TenantList.Add(CurrentTenant);
                     }
-                    var authUser = await authenticationStateTask;                    
+                    //var authUser = await authenticationStateTask;                    
 
                     NewReceptionCertificate.IdTenant = CurrentTenant.IdTenant;
                     NewReceptionCertificate.IdProperty = CurrentProperty.IdProperty;
                     NewReceptionCertificate.IdTypeRecord = _context.TypeReceptionCertificate; //For ReceptionCertificate (1)In or (2)Out
-                    NewReceptionCertificate.IdAgent = "1e6d90d6-32b5-43af-bc6a-0b43678462ec";                    
+                    NewReceptionCertificate.IdAgent = UserName;                    
                     _context.CurrentReceptionCertificate = await _receptionCertificateService.PostReceptionCertificatesAsync(NewReceptionCertificate);
                     _navigation.NavigateTo("/ReceptionCertificates/Inventory");
                 }
@@ -139,10 +142,10 @@ namespace FrontEnd.Pages
             tenants = await _tenantService.GetTenantAsync();        
             lessors = await _lessorService.GetLessorAsync();
             properties = await _propertyService.GetPropertyAsync();
+            users = await _userService.GetUsersAsync();
 
             var authstate = await _getAuthenticationStateAsync.GetAuthenticationStateAsync();
-            var user = authstate.User;
-            UserName = user.Identity?.Name;
+            UserName = authstate.User.Claims.FirstOrDefault(x => x.Type.Equals("sub")).Value;
         }
     }
 }

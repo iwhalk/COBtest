@@ -19,7 +19,15 @@
                             </div>
                             <div class="flex my-3">
                                 <label class="w-44 lg:w-52 text-left text-sm lg:text-md">Realizado por</label>
-                                <input @bind-value="UserName" class="w-44 lg:w-52 ml-2 px-2 rounded-lg text-black" type="text" />
+                                @*<input @bind-value="UserName" class="w-44 lg:w-52 ml-2 px-2 rounded-lg text-black" type="text" />*@
+                                <select class="w-44 lg:w-52 ml-2 px-2 rounded-lg text-black" @bind="@UserName">
+
+                                    @foreach (var user in users)
+                                    {
+                                        <option value="@user.Id">@(user.Name + " " + user.LastName)</option>
+                                    }
+
+                                </select>
                             </div>
                         </div>
                         <div>

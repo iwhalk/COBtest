@@ -9,6 +9,7 @@ using System.Xml.Linq;
 using FrontEnd.Components.Blobs;
 using System.Runtime.CompilerServices;
 using Microsoft.AspNetCore.Components.Web;
+using Microsoft.EntityFrameworkCore.ChangeTracking.Internal;
 
 namespace FrontEnd.Pages
 {
@@ -66,11 +67,11 @@ namespace FrontEnd.Pages
         private DtoDescription CurrentDtoDescription { get; set; } = new();
         public Blob NewBlob { get; set; } = new();
         private BlobsInventory BlobsInventory { get; set; } = new();
+        public Property CurrentProperty { get; private set; }
 
 
         private List<Service> Services { get; set; } = new();
         private List<Description> Descriptions { get; set; } = new();
-
         private List<Inventory> inventories { get; set; }
         private List<Service> ServicesList { get; set; } = new();
         public List<Area> AreasList { get; set; } = new();
@@ -115,9 +116,12 @@ namespace FrontEnd.Pages
 
         protected override async Task OnInitializedAsync()
         {
-            inventories = await _inventoryService.GetInventoryAsync();
             Services = await _servicesService.GetServicesAsync();
             Descriptions = await _descriptionService.GetDescriptionAsync();
+
+
+            //CurrentPropertyId = _context.CurrentReceptionCertificate.IdProperty;
+
 
             AreasList = (await _areaService.GetAreaAsync())?.Take(4).ToList();
             //ServicesList = (await _servicesService.GetServicesAsync())?.Take(3).ToList();
@@ -192,7 +196,7 @@ namespace FrontEnd.Pages
             DescriptionsList = (await _descriptionService.GetDescriptionAsync())?.Where(x => x.IdFeature == IdFeature)?.ToList();
 
             CurrentInventory.Note = e.Value.ToString();
-            CurrentInventory.IdProperty = _context.CurrentPropertys.IdProperty;
+            CurrentInventory.IdProperty = _context.CurrentReceptionCertificate.IdProperty;
             CurrentInventory.IdArea = CurrentArea.IdArea;
             CurrentInventory.IdDescription = DescriptionsList.FirstOrDefault()?.IdDescription ?? 1;
 
@@ -208,7 +212,7 @@ namespace FrontEnd.Pages
             {
                 BlobsInventory.IdBlobs = FormBlob.CurrentBlobFile.Blob.IdBlobs;
                 BlobsInventory.IdInventory = CurrentInventory.IdInventory;
-                BlobsInventory.IdProperty = _context.CurrentPropertys.IdProperty;
+                BlobsInventory.IdProperty = _context.CurrentReceptionCertificate.IdProperty;
                 _blobsInventoryService.PostBlobsInventoryAsync(BlobsInventory);
                 NewBlob = new();
             }
@@ -227,7 +231,7 @@ namespace FrontEnd.Pages
             var name = Descriptions?.FirstOrDefault(x => x.IdDescription == idDescription)?.DescriptionName;
 
             //CurrentInventory = new();
-            CurrentInventory.IdProperty = _context.CurrentPropertys.IdProperty;
+            CurrentInventory.IdProperty = _context.CurrentReceptionCertificate.IdProperty;
             CurrentInventory.IdArea = CurrentArea.IdArea;
             CurrentInventory.IdDescription = idDescription;
             //CurrentInventory.Note = name;
@@ -246,7 +250,7 @@ namespace FrontEnd.Pages
             {
                 BlobsInventory.IdBlobs = FormBlob.CurrentBlobFile.Blob.IdBlobs;
                 BlobsInventory.IdInventory = CurrentInventory.IdInventory;
-                BlobsInventory.IdProperty = _context.CurrentPropertys.IdProperty;
+                BlobsInventory.IdProperty = _context.CurrentReceptionCertificate.IdProperty;
                 _blobsInventoryService.PostBlobsInventoryAsync(BlobsInventory);
                 NewBlob = new();
             }
