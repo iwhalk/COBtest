@@ -1,15 +1,26 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿using FrontEnd.Stores;
+using Microsoft.AspNetCore.Components;
 
 namespace FrontEnd.Pages
 {
     public partial class IndexReceptionCertificates : ComponentBase
     {
-        public bool OpenModal { get; set; } = false;
-        public string TypeIndex { get; set; } = "/";
+        private readonly NavigationManager _navigationManager;
+        private readonly ApplicationContext _context;
+        public bool OpenModal { get; set; } = false;        
         public void ChangeOpenModal() => OpenModal = OpenModal ? false : true;
-        public void ChangeTypeIndex(string newTypeIndex)
+ 
+        public IndexReceptionCertificates(NavigationManager navigationManager, ApplicationContext context)
         {
-            TypeIndex = newTypeIndex;
+            _navigationManager = navigationManager;
+            _context = context;
         }
+
+        public void RedirectRecptionPending()
+        {
+            _context.TypeHistoricalOrPending = "Pending";
+            _navigationManager.NavigateTo("/ReceptionCertificates/Historical");
+        }
+
     }
 }

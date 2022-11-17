@@ -53,6 +53,7 @@ builder.Services.AddScoped<IBlobService, BlobService>();
 builder.Services.AddScoped<IBlobsInventoryService, BlobsInventoryService>();
 builder.Services.AddScoped<IReportsService, ReportsService>();
 builder.Services.AddScoped<IMailAriService, MailAriService>();
+builder.Services.AddScoped<IUserService, UserService>();
 
 
 // Supply HttpClient instances that include access tokens when making requests to the server project.

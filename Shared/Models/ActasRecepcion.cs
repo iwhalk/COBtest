@@ -16,6 +16,7 @@ namespace SharedLibrary.Models
         public string Arrendatario { get; set; }
         public string Delegacion { get; set; }
         public string? Agente { get; set; }
+        public int IdProperty { get; set; }
 
     }
 }
