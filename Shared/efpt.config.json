@@ -1,162 +1,101 @@
 ﻿{
-  "CodeGenerationMode": 2,
-  "ContextClassName": "InmobiliariaDbContext",
-  "ContextNamespace": null,
-  "DefaultDacpacSchema": null,
-  "FilterSchemas": false,
-  "IncludeConnectionString": false,
-  "ModelNamespace": null,
-  "OutputContextPath": "Data",
-  "OutputPath": "Models",
-  "PreserveCasingWithRegex": true,
-  "ProjectRootNamespace": "SharedLibrary",
-  "Schemas": null,
-  "SelectedHandlebarsLanguage": 0,
-  "SelectedToBeGenerated": 0,
-  "Tables": [
-    {
-      "Name": "[dbo].[Areas]",
-      "ObjectType": 0
-    },
-    {
-      "Name": "[dbo].[AreaServices]",
-      "ObjectType": 0
-    },
-    {
-      "Name": "[dbo].[AspNetUsers]",
-      "ObjectType": 0
-    },
-    {
-      "Name": "[dbo].[Blobs]",
-      "ObjectType": 0
-    },
-    {
-      "Name": "[dbo].[BlobsInventories]",
-      "ObjectType": 0
-    },
-    {
-      "Name": "[dbo].[Descriptions]",
-      "ObjectType": 0
-    },
-    {
-      "Name": "[dbo].[Features]",
-      "ObjectType": 0
-    },
-    {
-      "Name": "[dbo].[Inventories]",
-      "ObjectType": 0
-    },
-    {
-      "Name": "[dbo].[Lessors]",
-      "ObjectType": 0
-    },
-    {
-      "Name": "[dbo].[Modules]",
-      "ObjectType": 0
-    },
-    {
-      "Name": "[dbo].[Properties]",
-      "ObjectType": 0
-    },
-    {
-      "Name": "[dbo].[PropertyAreas]",
-      "ObjectType": 0
-    },
-    {
-      "Name": "[dbo].[PropertyTypes]",
-      "ObjectType": 0
-    },
-    {
-      "Name": "[dbo].[ReceptionCertificates]",
-      "ObjectType": 0
-    },
-    {
-      "Name": "[dbo].[Services]",
-      "ObjectType": 0
-    },
-    {
-      "Name": "[dbo].[Tenants]",
-      "ObjectType": 0
-    },
-    {
-      "CodeGenerationMode": 2,
-      "ContextClassName": "InmobiliariaDbContext",
-      "ContextNamespace": null,
-      "DefaultDacpacSchema": null,
-      "FilterSchemas": false,
-      "IncludeConnectionString": false,
-      "ModelNamespace": null,
-      "OutputContextPath": "Data",
-      "OutputPath": "Models",
-      "PreserveCasingWithRegex": true,
-      "ProjectRootNamespace": "SharedLibrary",
-      "Schemas": null,
-      "SelectedHandlebarsLanguage": 0,
-      "SelectedToBeGenerated": 0,
-      "Tables": [
-        {
-          "Name": "[dbo].[Areas]",
-          "ObjectType": 0
-        },
-        {
-          "Name": "[dbo].[AreaServices]",
-          "ObjectType": 0
-        },
-        {
-          "Name": "[dbo].[AspNetUsers]",
-          "ObjectType": 0
-        },
-        {
-          "Name": "[dbo].[Blobs]",
-          "ObjectType": 0
-        },
-        {
-          "Name": "[dbo].[BlobsInventories]",
-          "ObjectType": 0
-        },
-        {
-          "Name": "[dbo].[Descriptions]",
-          "ObjectType": 0
-        },
-        {
-          "Name": "[dbo].[Features]",
-          "ObjectType": 0
-        },
-        {
-          "Name": "[dbo].[Inventories]",
-          "ObjectType": 0
-        },
-        {
-          "Name": "[dbo].[Lessors]",
-          "ObjectType": 0
-        },
-        {
-          "Name": "[dbo].[Modules]",
-          "ObjectType": 0
-        },
-        {
-          "Name": "[dbo].[Properties]",
-          "ObjectType": 0
-        },
-        {
-      ],
-      "UiHint": "prosisdev.prosisdb_3",
-      "UseBoolPropertiesWithoutDefaultSql": false,
-      "UseDatabaseNames": false,
-      "UseDbContextSplitting": false,
-      "UseFluentApiOnly": false,
-      "UseHandleBars": false,
-      "UseHierarchyId": false,
-      "UseInflector": true,
-      "UseLegacyPluralizer": false,
-      "UseManyToManyEntity": false,
-      "UseNoConstructor": false,
-      "UseNoDefaultConstructor": false,
-      "UseNoNavigations": false,
-      "UseNoObjectFilter": false,
-      "UseNodaTime": false,
-      "UseNullableReferences": false,
-      "UseSchemaFolders": false,
-      "UseSpatial": false,
-      "UseT4": false
-    }
+   "CodeGenerationMode": 2,
+   "ContextClassName": "InmobiliariaDbContext",
+   "ContextNamespace": null,
+   "DefaultDacpacSchema": null,
+   "FilterSchemas": false,
+   "IncludeConnectionString": false,
+   "ModelNamespace": null,
+   "OutputContextPath": "Data",
+   "OutputPath": "Models",
+   "PreserveCasingWithRegex": true,
+   "ProjectRootNamespace": "SharedLibrary",
+   "Schemas": null,
+   "SelectedHandlebarsLanguage": 0,
+   "SelectedToBeGenerated": 0,
+   "Tables": [
+      {
+         "Name": "[dbo].[Areas]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[AreaServices]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[AspNetUsers]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Blobs]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[BlobsInventories]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Descriptions]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Features]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Inventories]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Lessors]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Modules]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Properties]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[PropertyAreas]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[PropertyTypes]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[ReceptionCertificates]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Services]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Tenants]",
+         "ObjectType": 0
+      }
+   ],
+   "UiHint": "prosisdev.prosisdb_3",
+   "UseBoolPropertiesWithoutDefaultSql": false,
+   "UseDatabaseNames": false,
+   "UseDbContextSplitting": false,
+   "UseFluentApiOnly": false,
+   "UseHandleBars": false,
+   "UseHierarchyId": false,
+   "UseInflector": true,
+   "UseLegacyPluralizer": false,
+   "UseManyToManyEntity": false,
+   "UseNoConstructor": false,
+   "UseNoDefaultConstructor": false,
+   "UseNoNavigations": false,
+   "UseNoObjectFilter": false,
+   "UseNodaTime": false,
+   "UseNullableReferences": false,
+   "UseSchemaFolders": false,
+   "UseSpatial": false,
+   "UseT4": false
+}

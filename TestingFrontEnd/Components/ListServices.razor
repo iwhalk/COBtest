@@ -5,7 +5,7 @@
         @*<button class="py-2 text-white border" style="background-color: #2B286F;">Entrada</button>*@
         @foreach (var service in Services)
         {
-            <button @onclick="@(() => OnServiceClick.InvokeAsync(service.IdService))" class="py-2 text-white border-1 border-blue-800 hover:bg-violet-600 active:bg-violet-700 focus:outline-none">@service?.ServiceName</button>
+            <button @onclick="@(() => OnClicked(service.IdService))" style="@((SelectedService == service.IdService) ? "background-color: #2B286F;" : "")" class="py-2 text-white border-1 border-blue-800 hover:bg-violet-600 active:bg-violet-700 focus:outline-none">@service?.ServiceName</button>
         }
         <br>
     </div>
@@ -23,7 +23,7 @@
                     <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z" />
                 </svg>
             </button>
-            <button>
+            <button @onclick="@(() => OnMinusClick.InvokeAsync(SelectedService))">
                 <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" fill="white" class="bi bi-dash" viewBox="0 0 16 16">
                     <path d="M4 8a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7A.5.5 0 0 1 4 8z" />
                 </svg>

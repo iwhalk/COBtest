@@ -7,6 +7,8 @@ using FrontEnd.Services;
 using FrontEnd.Components;
 using System.Xml.Linq;
 using FrontEnd.Components.Blobs;
+using System.Runtime.CompilerServices;
+using Microsoft.AspNetCore.Components.Web;
 
 namespace FrontEnd.Pages
 {
@@ -65,6 +67,7 @@ namespace FrontEnd.Pages
         public Blob NewBlob { get; set; } = new();
         private BlobsInventory BlobsInventory { get; set; } = new();
 
+
         private List<Service> Services { get; set; } = new();
         private List<Description> Descriptions { get; set; } = new();
 
@@ -81,8 +84,18 @@ namespace FrontEnd.Pages
         public void ChangeOpenModalRooms() => ShowModalRooms = ShowModalRooms ? false : true;
         public void ChangeOpenModalComponents() => ShowModalComponents = ShowModalComponents ? false : true;
         public void ChangeOpenModalCopyValues() => ShowModalCopyValues = ShowModalCopyValues ? false : true;
-        public void ChangeOpenModalGauges() => ShowModalGauges = ShowModalGauges ? false : true;
-        public void ChangeOpenModalKeys() => ShowModalkeys = ShowModalkeys ? false : true;
+        public void ChangeOpenModalGauges()
+        {
+            //ServicesList = Services.Where(x => CurrentArea.IdServices.Any(y => x.IdService.Equals(y.IdService))).ToList();
+            ServiceButtonClicked(13);
+            ShowModalGauges = ShowModalGauges ? false : true;
+        }
+
+        public void ChangeOpenModalKeys()
+        {
+            ServiceButtonClicked(14);
+            ShowModalkeys = ShowModalkeys ? false : true;
+        }
 
         public void ChangeButtonsShow(string newButtonsShow)
         {
@@ -113,41 +126,48 @@ namespace FrontEnd.Pages
         {
             foreach (var selectedArea in modalAreas.SelectedValues)
             {
-                AreasList.Add(selectedArea);
+                if (AreasList.Find(x => x.IdArea == selectedArea.IdArea) == null)
+                    AreasList.Add(selectedArea);
             }
 
             ShowModalRooms = false;
+        }
+        public async void AreaButtonClicked(int idArea)
+        {
+            CurrentArea = AreasList.FirstOrDefault(x => x.IdArea == idArea);
+
+            var areaServices = (await _areaService.GetAreaServicesAsync())?.Where(x=>x.IdArea==idArea).Take(4);
+
+            ServicesList = Services.Where(x => areaServices.Any(y => x.IdService.Equals(y.IdService))).ToList();
+            //ServicesList = Services.Where(x => CurrentArea.AreaServices.Any(y => x.IdService.Equals(y.IdService))).ToList();
         }
         public void AgregarServicios()
         {
             foreach (var selectedService in modalServices.SelectedValues)
             {
-                ServicesList.Add(selectedService);
+                if (ServicesList.Find(x => x.IdService == selectedService.IdService) == null)
+                    ServicesList.Add(selectedService);
             }
 
-            foreach (var serviceSelected in ServicesList)
-            {
-                CurrentArea.IdServices.Add(new() { IdService = serviceSelected.IdService});
-            }
+            //foreach (var serviceSelected in ServicesList)
+            //{
+            //    CurrentArea.AreaServices.Add(new() { IdService = serviceSelected.IdService});
+            //}
             modalServices.SelectedValues = new();
 
             ShowModalComponents = false;
-        }
-        public async void AreaButtonClicked(int idArea)
-        {
-            CurrentArea = AreasList.FirstOrDefault(x => x.IdArea == idArea);
-            ServicesList = Services.Where(x => CurrentArea.IdServices.Any(y => x.IdService.Equals(y.IdService))).ToList();
+            StateHasChanged();
         }
         public async void ServiceButtonClicked(int idService)
         {
-            //var bres = await _blobService.PostBlobAsync(FormBlob.CurrentBlobFile);
-            if (FormBlob.CurrentBlobFile.Blob.IdBlobs != null && FormBlob.CurrentBlobFile.Blob.IdBlobs != 0)
-            {
-                BlobsInventory.IdBlobs = FormBlob.CurrentBlobFile.Blob.IdBlobs;
-                BlobsInventory.IdInventory = CurrentInventory.IdInventory;
-                BlobsInventory.IdProperty = _context.CurrentPropertys.IdProperty;
-                var res = _blobsInventoryService.PostBlobsInventoryAsync(BlobsInventory);
-            }
+            ////var bres = await _blobService.PostBlobAsync(FormBlob.CurrentBlobFile);
+            //if (FormBlob.CurrentBlobFile.Blob.IdBlobs != null && FormBlob.CurrentBlobFile.Blob.IdBlobs != 0)
+            //{
+            //    BlobsInventory.IdBlobs = FormBlob.CurrentBlobFile.Blob.IdBlobs;
+            //    BlobsInventory.IdInventory = CurrentInventory.IdInventory;
+            //    BlobsInventory.IdProperty = _context.CurrentPropertys.IdProperty;
+            //    var res = _blobsInventoryService.PostBlobsInventoryAsync(BlobsInventory);
+            //}
 
             CurrentService = ServicesList.FirstOrDefault(x => x.IdService == idService);
             FeaturesList = (await _featuresService.GetFeaturesAsync())?.Where(x => x.IdService == idService)?.ToList();
@@ -155,21 +175,23 @@ namespace FrontEnd.Pages
             {
                 dtoDescriptions.Add(new() { IdFeature = feature.IdFeature, IdService = idService });
             }
+            StateHasChanged();
         }
         public async void FeatureButtonClicked(int IdFeature)
         {
             //CurrentInventory = new();
             CurrentFeature = FeaturesList.FirstOrDefault(x => x.IdFeature == IdFeature);
             DescriptionsList = (await _descriptionService.GetDescriptionAsync())?.Where(x => x.IdFeature == IdFeature)?.ToList();
-
+            StateHasChanged();
         }
 
-        public async void DescriptionNoteInput(int IdFeature)
+        public async void DescriptionNoteInput(int IdFeature, ChangeEventArgs e)
         {
+            dtoDescriptions.FirstOrDefault(x => x.IdFeature == IdFeature).Note = e.Value.ToString();
             CurrentFeature = FeaturesList.FirstOrDefault(x => x.IdFeature == IdFeature);
             DescriptionsList = (await _descriptionService.GetDescriptionAsync())?.Where(x => x.IdFeature == IdFeature)?.ToList();
 
-            CurrentInventory = new();
+            CurrentInventory.Note = e.Value.ToString();
             CurrentInventory.IdProperty = _context.CurrentPropertys.IdProperty;
             CurrentInventory.IdArea = CurrentArea.IdArea;
             CurrentInventory.IdDescription = DescriptionsList.FirstOrDefault()?.IdDescription ?? 1;
@@ -182,18 +204,29 @@ namespace FrontEnd.Pages
 
             var res = await _inventoryService.PostInventoryAsync(CurrentInventory);
             CurrentInventory.IdInventory = res.IdInventory;
+            if (FormBlob.CurrentBlobFile.Blob.IdBlobs != null && FormBlob.CurrentBlobFile.Blob.IdBlobs != 0)
+            {
+                BlobsInventory.IdBlobs = FormBlob.CurrentBlobFile.Blob.IdBlobs;
+                BlobsInventory.IdInventory = CurrentInventory.IdInventory;
+                BlobsInventory.IdProperty = _context.CurrentPropertys.IdProperty;
+                _blobsInventoryService.PostBlobsInventoryAsync(BlobsInventory);
+                NewBlob = new();
+            }
 
             //var bres = await _blobService.PostBlobAsync(FormBlob.CurrentBlobFile);
             //BlobsInventory.IdBlobs = bres.IdBlobs;
             //BlobsInventory.IdInventory = res.IdInventory;
             //BlobsInventory.IdProperty = _context.CurrentPropertys.IdProperty;
+            CurrentInventory = new();
+            DescriptionsList = new();
+            StateHasChanged();
         }
 
         public async void DescriptionButtonClicked(int idDescription)
         {
             var name = Descriptions?.FirstOrDefault(x => x.IdDescription == idDescription)?.DescriptionName;
 
-            CurrentInventory = new();
+            //CurrentInventory = new();
             CurrentInventory.IdProperty = _context.CurrentPropertys.IdProperty;
             CurrentInventory.IdArea = CurrentArea.IdArea;
             CurrentInventory.IdDescription = idDescription;
@@ -204,18 +237,37 @@ namespace FrontEnd.Pages
             InventoriesList.Add(CurrentInventory);
 
             dtoDescriptions.FirstOrDefault(x => x.IdFeature == CurrentFeature.IdFeature).IdDescription = idDescription;
-            dtoDescriptions.FirstOrDefault(x => x.IdDescription == idDescription).Note = name;
+            dtoDescriptions.FirstOrDefault(x => x.IdDescription == idDescription).Description = name;
             //DescriptionsList = new();
 
             var res = await _inventoryService.PostInventoryAsync(CurrentInventory);
             CurrentInventory.IdInventory = res.IdInventory;
+            if (FormBlob.CurrentBlobFile.Blob.IdBlobs != null && FormBlob.CurrentBlobFile.Blob.IdBlobs != 0)
+            {
+                BlobsInventory.IdBlobs = FormBlob.CurrentBlobFile.Blob.IdBlobs;
+                BlobsInventory.IdInventory = CurrentInventory.IdInventory;
+                BlobsInventory.IdProperty = _context.CurrentPropertys.IdProperty;
+                _blobsInventoryService.PostBlobsInventoryAsync(BlobsInventory);
+                NewBlob = new();
+            }
+            CurrentInventory = new();
+            DescriptionsList = new();
+            StateHasChanged();
         }
-
+        public void RemoveArea(int IdArea)
+        {
+            AreasList.Remove(CurrentArea);
+        }
+        public void RemoveService(int IdService)
+        {
+            ServicesList.Remove(CurrentService);
+        }
         public class DtoDescription
         {
             public int IdDescription { get; set; }
             public int IdService { get; set; }
             public int IdFeature { get; set; }
+            public string Description { get; set; }
             public string Note { get; set; }
         }
     }

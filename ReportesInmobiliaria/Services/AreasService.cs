@@ -18,6 +18,10 @@ namespace ReportesInmobiliaria.Services
         {
             return await _dbContext.Areas.ToListAsync();
         }
+        public async Task<List<AreaService>?> GetAreaServicesAsync()
+        {
+            return await _dbContext.AreaServices.ToListAsync();
+        }
 
         public async Task<Area?> CreateAreaAsync(Area area)
         {

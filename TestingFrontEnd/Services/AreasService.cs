@@ -4,11 +4,11 @@ using SharedLibrary.Models;
 
 namespace FrontEnd.Services
 {
-    public class AreaService : IAreaService
+    public class AreasService : IAreaService
     {
         private readonly IGenericRepository _repository;
         private readonly ApplicationContext _context;
-        public AreaService(IGenericRepository repository, ApplicationContext context)
+        public AreasService(IGenericRepository repository, ApplicationContext context)
         {
             _repository = repository;
             _context = context; 
@@ -30,6 +30,11 @@ namespace FrontEnd.Services
             return _context.Area;
         }
 
+        public async Task<List<AreaService>> GetAreaServicesAsync()
+        {
+            var response = await _repository.GetAsync<List<AreaService>>("api/Area/AreaServices");
+            return response;
+        }
         public async Task<Area> PostAreaAsync(Area area)
         {
             return await _repository.PostAsync("api/Area", area);
