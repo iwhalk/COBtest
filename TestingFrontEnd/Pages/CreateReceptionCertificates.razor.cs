@@ -91,8 +91,8 @@ namespace FrontEnd.Pages
             lessorValid = formLessor.LessorEditContext.GetValidationMessages();
             tenantValid = formTenant.TenantEditContext.GetValidationMessages();
             propertyValid = formProperty.PropertyEditContext.GetValidationMessages();            
-            //if (lessorValid && tenantValid && propertyValid)
-            //{
+            if (!string.IsNullOrEmpty(NewReceptionCertificate.ContractNumber)) 
+            {
                 try
                 {
                     MyProperty = 10;
@@ -140,7 +140,8 @@ namespace FrontEnd.Pages
                 {
                     Console.WriteLine(ex.Message);
                 }
-            //}            
+            }
+            return;
         }
         protected override async Task OnInitializedAsync()
         {

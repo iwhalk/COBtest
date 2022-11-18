@@ -60,6 +60,8 @@ namespace FrontEnd.Pages
         public bool ShowModalGauges { get; set; } = false;
         public bool ShowModalkeys { get; set; } = false;
         public string TypeButtonsInventory { get; set; } = "";
+        public string NameKey { get; set; }
+        public string NameMedidor { get; set; }
 
         private Inventory CurrentInventory { get; set; } = new();
         private Area CurrentArea { get; set; } = new();
@@ -201,7 +203,7 @@ namespace FrontEnd.Pages
             CurrentInventory.Note = e.Value.ToString();
             CurrentInventory.IdProperty = _context.CurrentReceptionCertificate.IdProperty;
             CurrentInventory.IdArea = CurrentArea.IdArea;
-            CurrentInventory.IdDescription = DescriptionsList.FirstOrDefault()?.IdDescription ?? 1;
+            CurrentInventory.IdDescription = DescriptionsList.FirstOrDefault()?.IdDescription ?? 1;            
 
             InventoriesList.Add(CurrentInventory);
 
@@ -229,7 +231,6 @@ namespace FrontEnd.Pages
             DescriptionsList = new();
             StateHasChanged();
         }
-
         public async void DescriptionButtonClicked(int idDescription)
         {
             var name = Descriptions?.FirstOrDefault(x => x.IdDescription == idDescription)?.DescriptionName;
@@ -237,7 +238,7 @@ namespace FrontEnd.Pages
             //CurrentInventory = new();
             CurrentInventory.IdProperty = _context.CurrentReceptionCertificate.IdProperty;
             CurrentInventory.IdArea = CurrentArea.IdArea;
-            CurrentInventory.IdDescription = idDescription;
+            CurrentInventory.IdDescription = idDescription;            
             //CurrentInventory.Note = name;
 
             //var newInventory = new Inventory { IdArea = CurrentArea.IdArea, IdProperty = 2, IdDescription = idDescription, Note = name, };
@@ -273,6 +274,7 @@ namespace FrontEnd.Pages
                 ServicesList.Add(newService);
             }
             ShowModalComponents = false;
+            StateHasChanged();
         }
         public async void HandlePostNewArea(string nameArea)
         {
@@ -283,6 +285,37 @@ namespace FrontEnd.Pages
                 AreasList.Add(newArea);                
             }
             ShowModalRooms = false;
+            StateHasChanged();
+        }
+        public async void HandlePostNewMedidor()
+        {
+            if (NameMedidor != "")
+            {
+                Feature? newFeature = new Feature { FeatureName = NameMedidor, IdService = 13 };
+                newFeature = await _featuresService.PostFeaturesAsync(newFeature);
+                if (newFeature != null)
+                {
+                    FeaturesList.Add(newFeature);
+                    StateHasChanged();
+                }
+            }
+            NameMedidor = "";
+            return;
+        }
+        public async void HandlePostNewKey()
+        {
+            if (NameKey != "")
+            {
+                Feature? newFeature = new Feature { FeatureName = NameKey, IdService = 14 };
+                newFeature = await _featuresService.PostFeaturesAsync(newFeature);
+                if (newFeature != null)
+                {
+                    FeaturesList.Add(newFeature);
+                    StateHasChanged();
+                }
+            }
+            NameKey = "";
+            return;
         }
         public void RemoveArea(int IdArea)
         {
@@ -311,6 +344,7 @@ namespace FrontEnd.Pages
             public int IdFeature { get; set; }
             public string Description { get; set; }
             public string Note { get; set; }
+            public string Observation { get; set; }
         }
     }
 }
