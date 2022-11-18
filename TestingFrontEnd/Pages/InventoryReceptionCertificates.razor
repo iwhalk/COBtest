@@ -4,65 +4,65 @@
 
 <body class="flex flex-column min-h-screen bg-[url('/assets/img/fondocasa.png')] imgfondo">
     <div class="my-auto">
-    <div class="flex inline-flex">
-        <div id="ListActas" class="flex ml-4" style="height: 48rem">
-            <ListAreas OnAreaClick="AreaButtonClicked" Areas="@AreasList" OnClick="ChangeOpenModalRooms" OnMinusClick="RemoveArea" OpenModalGauges="ChangeOpenModalGauges" OpenModalKeys="ChangeOpenModalKeys" TypeList="Habitaciones"></ListAreas>
-        </div>
-        <div class="pt-9">
-            <div class="flex w-full">
-                <div id="ListActas" class="flex" style="height: 45.8rem">
-                    <ListServices OnServiceClick="ServiceButtonClicked" Services="@ServicesList" OnClick="ChangeOpenModalComponents" OnMinusClick="RemoveService" TypeList="Componentes"></ListServices>
-                </div>
-                <div id="ContenedorElementos" class="my-12 flex justify-around relative border-1 border-black rounded-lg p-2 -ml-2 mr-6"  style="width: 87rem">
-                    <div id="ComponteInputs" class="flex p-2">
-                        <div class="flex">
-                            <div>
-                                <div class="flex flex-col">
-                                    @foreach (var feature in FeaturesList)
-                                    {
-                                        @if(FeaturesIds.Contains(feature.IdFeature))
+        <div class="flex inline-flex">
+            <div id="ListActas" class="flex ml-4" style="height: 48rem">
+                <ListAreas OnAreaClick="AreaButtonClicked" Areas="@AreasList" OnClick="ChangeOpenModalRooms" OnMinusClick="RemoveArea" OpenModalGauges="ChangeOpenModalGauges" OpenModalKeys="ChangeOpenModalKeys" TypeList="Habitaciones"></ListAreas>
+            </div>
+            <div class="pt-9">
+                <div class="flex w-full">
+                    <div id="ListActas" class="flex" style="height: 45.8rem">
+                        <ListServices OnServiceClick="ServiceButtonClicked" Services="@ServicesList" OnClick="ChangeOpenModalComponents" OnMinusClick="RemoveService" TypeList="Componentes"></ListServices>
+                    </div>
+                    <div id="ContenedorElementos" class="my-12 flex justify-around relative border-1 border-black rounded-lg p-2 -ml-2 mr-6" style="width: 87rem">
+                        <div id="ComponteInputs" class="flex p-2">
+                            <div class="flex">
+                                <div>
+                                    <div class="flex flex-col">
+                                        @foreach (var feature in FeaturesList)
                                         {
-                                            <span class="flex my-2">
-                                                <label for="" class="text-blue-900 w-32">
-                                                    @feature.FeatureName
-                                                </label>
+                                            @if (FeaturesIds.Contains(feature.IdFeature))
+                                            {
+                                                <span class="flex my-2">
+                                                    <label for="" class="text-blue-900 w-32">
+                                                        @feature.FeatureName
+                                                    </label>
                                                     <input value="@(dtoDescriptions.FirstOrDefault(x => x.IdFeature == feature.IdFeature)?.Note)" @onchange="@((ChangeEventArgs e) => DescriptionNoteInput(@feature.IdFeature, e))" class="border-2 bg-slate-100 ml-5 w-3/6 flex justify-end">
-                                            </span>
+                                                </span>
+                                            }
+                                            else
+                                            {
+                                                <span class="flex my-2">
+                                                    <label for="" class="text-blue-900 w-32">
+                                                        @feature.FeatureName
+                                                    </label>
+                                                    <button @onclick="@(() => FeatureButtonClicked(@feature.IdFeature))" class="border-2 bg-slate-100 ml-5 w-3/6 flex justify-end h-7 w-24">
+                                                        @dtoDescriptions.FirstOrDefault(x => x.IdFeature == feature.IdFeature)?.Description
+                                                    </button>
+                                                </span>
+                                            }
                                         }
-                                        else
-                                        {
-                                            <span class="flex my-2">
-                                                <label for="" class="text-blue-900 w-32">
-                                                    @feature.FeatureName
-                                                </label>
-                                                <button @onclick="@(() => FeatureButtonClicked(@feature.IdFeature))" class="border-2 bg-slate-100 ml-5 w-3/6 flex justify-end h-7 w-24">
-                                                    @dtoDescriptions.FirstOrDefault(x => x.IdFeature == feature.IdFeature)?.Description
-                                                </button>
-                                            </span>
-                                        }
-                                    }
+                                    </div>
+                                </div>
+                                <div class="mx-5">
+                                    <li class="py-2 flex text-blue-900">Copiar Valores<input @onclick="ChangeOpenModalCopyValues" type="checkbox" class="border-2 w-1/4"></li>
                                 </div>
                             </div>
-                            <div class="mx-5">
-                                <li class="py-2 flex text-blue-900">Copiar Valores<input @onclick="ChangeOpenModalCopyValues" type="checkbox" class="border-2 w-1/4"></li>
-                            </div>
                         </div>
-                    </div>            
-                    <ButtonsDescriptions OnClick="DescriptionButtonClicked" DescriptionsList="DescriptionsList"></ButtonsDescriptions>
-                    @*@if(TypeButtonsInventory == "Material" && MaterialSelect == "")
-                    {
+                        <ButtonsDescriptions OnClick="DescriptionButtonClicked" DescriptionsList="DescriptionsList"></ButtonsDescriptions>
+                        @*@if(TypeButtonsInventory == "Material" && MaterialSelect == "")
+                        {
                         <DynamicComponentInventory OnClick="SetMaterial"></DynamicComponentInventory>
-                    }   
-                    @if(TypeButtonsInventory == "Color" && ColorSelect == "")
-                    {
+                        }
+                        @if(TypeButtonsInventory == "Color" && ColorSelect == "")
+                        {
                         <ColorsInventory OnClick="SetColor"></ColorsInventory>
-                    }
-                    @if(TypeButtonsInventory == "EstadoGeneral" && StatusSelect == "")
-                    {
+                        }
+                        @if(TypeButtonsInventory == "EstadoGeneral" && StatusSelect == "")
+                        {
                         <StatusInventory OnClick="SetStatus"></StatusInventory>
-                    }*@
+                        }*@
 
-                    @*<BoxesInventory></BoxesInventory>*@
+                        @*<BoxesInventory></BoxesInventory>*@
                         <div id="ComponenteRecuadros" class="p-2">
                             <div>
                                 <label for="" class="text-center text-xl text-blue-900 font-semibold mb-2">Oberservaciones</label>
@@ -73,11 +73,11 @@
                                 <div class="mt-8 relative border bg-slate-100 mx-auto ml-5 w-96 h-48 flex justify-center block">
                                     @*<input class="border-2 bg-slate-100 mx-auto ml-5 w-80 h-40 flex justify-end inset-0 absolute opacity-0 cursor-pointer" type="file" multiple>
                                     <div class="block text-center my-auto">
-                                        <div class="flex justify-center">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" fill="#2B286F" class="bi bi-plus-lg" viewBox="0 0 16 16">
-                                                <path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2Z" />
-                                            </svg>
-                                        </div>
+                                    <div class="flex justify-center">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" fill="#2B286F" class="bi bi-plus-lg" viewBox="0 0 16 16">
+                                    <path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2Z" />
+                                    </svg>
+                                    </div>
                                     </div>*@
                                     @if (LastInventoryAdded != 0)
                                     {
@@ -86,26 +86,26 @@
                                 </div>
                             </div>
                         </div>
+                    </div>
                 </div>
             </div>
-        </div> 
-    </div>
-    <div id="Botones" class="flex justify-center -my-8">
-        <button class="py-2 w-48 border rounded-lg text-white text-xl shadow-xl" style="background-color: #2B286F;">Guardar</button>
+        </div>
+        <div id="Botones" class="flex justify-center -my-8">
+            <button class="py-2 w-48 border rounded-lg text-white text-xl shadow-xl" style="background-color: #2B286F;">Guardar</button>
             <a><button @onclick="@GenerarActa" class="py-2 w-48 border rounded-lg text-white text-xl shadow-xl" style="background-color: #2B286F;">Generar Acta</button></a>
-    </div>
+        </div>
 
         @if (ShowModalRooms)
         {
             <ModalAreas @ref="modalAreas" PostNewArea="HandlePostNewArea" OnClick="ChangeOpenModalRooms" AgregarOnClick="AgregarAreas" TitleTable="Habitaciones"></ModalAreas>
         }
-        @if(ShowModalComponents)
+        @if (ShowModalComponents)
         {
             <ModalServices @ref="modalServices" PostNewService="HandlePostNewService" OnClick="ChangeOpenModalComponents" AgregarOnClick="AgregarServicios" TitleTable="Componentes"></ModalServices>
-        }    
-    <ModalRoomsOrComponents OnClick="ChangeOpenModalCopyValues" TitleTable="Habitaciones" ShowModal="@ShowModalCopyValues"></ModalRoomsOrComponents>
-@*    <ModalGaugesOrKeys OnClick="ChangeOpenModalGauges" TitleModal="Medidores" ShowModal="@ShowModalGauges"></ModalGaugesOrKeys>
-    <ModalGaugesOrKeys OnClick="ChangeOpenModalKeys" TitleModal="Llaves" ShowModal="@ShowModalkeys"></ModalGaugesOrKeys>*@
+        }
+        <ModalRoomsOrComponents OnClick="ChangeOpenModalCopyValues" TitleTable="Habitaciones" ShowModal="@ShowModalCopyValues" Areas="AreasList"></ModalRoomsOrComponents>
+        @*    <ModalGaugesOrKeys OnClick="ChangeOpenModalGauges" TitleModal="Medidores" ShowModal="@ShowModalGauges"></ModalGaugesOrKeys>
+        <ModalGaugesOrKeys OnClick="ChangeOpenModalKeys" TitleModal="Llaves" ShowModal="@ShowModalkeys"></ModalGaugesOrKeys>*@
 
         @if (ShowModalGauges && FeaturesList.Count() > 0)
         {
@@ -121,15 +121,15 @@
                             </div>
                             <div class="text-center text-gray-400 text-xl pt-3 mb-10">Lista de medidores</div>
                             @*<div class=" inline-flex">
-                                <div class="text-blue-700">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="#2B286F" class="bi bi-plus-lg" viewBox="0 0 16 16">
-                                        <path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2Z" />
-                                    </svg>
-                                </div>
-                                <div class="w-80 pt-1">
-                                    <input class="w-full border boder-blue-700 h-9 pl-14" placeholder="Agregar nuevo elemento" />
-                                </div>
-                            </div>*@
+                        <div class="text-blue-700">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="#2B286F" class="bi bi-plus-lg" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2Z" />
+                        </svg>
+                        </div>
+                        <div class="w-80 pt-1">
+                        <input class="w-full border boder-blue-700 h-9 pl-14" placeholder="Agregar nuevo elemento" />
+                        </div>
+                        </div>*@
                             <div class="overflow-y-auto h-48 mx-auto w-96 text-center my-3 px-3 pr-2">
                                 <table class="w-full text-sm">
                                     <tr class="bg-[#2B286F] text-white text-sm h-10">
@@ -142,7 +142,7 @@
                                             <td class="p-2">@feature.FeatureName</td>
                                             <td class="pl-3 pr-3">
                                                 <input value="@(dtoDescriptions.FirstOrDefault(x => x.IdFeature == feature.IdFeature)?.Note)" @onchange="@((ChangeEventArgs e) => DescriptionNoteInput(@feature.IdFeature, e))" type="number" class="w-full" />
-                                                </td>
+                                            </td>
                                         </tr>
                                     }
                                 </table>
@@ -157,8 +157,8 @@
                                             <FormBlob @ref="FormBlob" AddedBlob="AddInventoryBlob" InputBlob="@NewBlob"></FormBlob>
                                         }
                                         @*<svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" fill="#2B286F" class="bi bi-plus-lg" viewBox="0 0 16 16">
-                                            <path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2Z" />
-                                        </svg>*@
+                                    <path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2Z" />
+                                    </svg>*@
                                     </div>
                                 </div>
                             </div>
@@ -220,8 +220,8 @@
                                             <FormBlob @ref="FormBlob" AddedBlob="AddInventoryBlob" InputBlob="@NewBlob"></FormBlob>
                                         }
                                         @*<svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" fill="#2B286F" class="bi bi-plus-lg" viewBox="0 0 16 16">
-                                            <path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2Z" />
-                                        </svg>*@
+                                    <path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2Z" />
+                                    </svg>*@
                                     </div>
                                 </div>
                             </div>
@@ -236,6 +236,6 @@
 
     </div>
 </body>
-    
+
 <Navbar></Navbar>
 <Footer></Footer>
