@@ -14,7 +14,7 @@ namespace ApiGateway.Services
 
         }
 
-        public async Task<ApiResponse<List<ActasRecepcion>>> GetReceptionCertificateAsync(string? startDay, string? endDay, int? certificateType, int? propertyType, int? numberOfRooms, int? lessor, int? tenant, string? delegation, string? agent, int? currentPage, int? rowNumber)
+        public async Task<ApiResponse<List<ActasRecepcion>>> GetReceptionCertificateAsync(string? startDay, string? endDay, int? certificateType, int? propertyType, int? numberOfRooms, int? lessor, int? tenant, string? delegation, string? agent, int? currentPage, int? rowNumber, bool completed)
         {
             Dictionary<string, string> parameters = new();
 
@@ -79,6 +79,10 @@ namespace ApiGateway.Services
             if (rowNumber != null)
             {
                 parameters.Add("rowNumber", rowNumber.ToString());
+            }
+            if (completed != null)
+            {
+                parameters.Add("completed", completed.ToString());
             }
 
 

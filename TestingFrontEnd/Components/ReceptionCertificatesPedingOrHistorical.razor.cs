@@ -20,7 +20,7 @@ namespace FrontEnd.Components
             _propertyTypeService = propertyTypeService;
             _tenantService = tenantService;
             _lessorService = lessorService;
-        }
+        }    
 
         [Parameter]
         public string TypeTableReception { get; set; } = "";
