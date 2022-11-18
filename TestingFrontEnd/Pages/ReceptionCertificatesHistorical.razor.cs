@@ -137,9 +137,9 @@ namespace FrontEnd.Pages
             }
             StateHasChanged();
         }
-        public async void HandlePreviewPdf(int IdProperty)
+        public async void HandlePreviewPdf(int IdReceptionCertificate)
         {            
-            BlobPDFPreview = await _reportService.GetReportFeature(IdProperty);
+            BlobPDFPreview = await _reportService.GetReporteReceptionCertificate(IdReceptionCertificate);
             if (BlobPDFPreview != null)
             {
                 showModalPDFPreview = true;

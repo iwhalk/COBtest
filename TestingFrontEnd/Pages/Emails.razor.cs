@@ -78,8 +78,8 @@ namespace FrontEnd.Pages
         {
             if (_context.CurrentReceptionCertificate != null)
             {
-                var IdProperty = _context.CurrentReceptionCertificate.IdProperty;
-                BlobPDFPreview = await _reportService.GetReportFeature(IdProperty);
+                var IdReceptionCertificate = _context.CurrentReceptionCertificate.IdProperty;
+                BlobPDFPreview = await _reportService.GetReporteReceptionCertificate(IdReceptionCertificate);
                 if (BlobPDFPreview != null)
                 {
                     ShowModalPreview = true;
