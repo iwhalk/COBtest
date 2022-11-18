@@ -3,6 +3,7 @@ using FrontEnd.Stores;
 using Microsoft.AspNetCore.Components;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using SharedLibrary.Models;
+using System.Reflection.Metadata.Ecma335;
 
 namespace FrontEnd.Pages
 {
@@ -45,54 +46,49 @@ namespace FrontEnd.Pages
 
         protected override async Task OnInitializedAsync()
         {
-
-            //await GetLessorTenantAddress();          
-
-            tenant = "dzwk19@outlook.com";
-            lessor = "prosis.rlucas@gmail.com";
+            await GetLessorTenantAddress();                                  
         }
-
         private async Task GetLessorTenantAddress()
         {
             lessors = await _lessorService.GetLessorAsync();
             tenants = await _tenantService.GetTenantAsync();
-            properties = await _propertyService.GetPropertyAsync(); 
-
-            tenant = tenants.FirstOrDefault(x => x.IdTenant == _context.CurrentReceptionCertificate.IdTenant).EmailAddress;
-
-            property = properties.FirstOrDefault(x => x.IdLessor == _context.CurrentReceptionCertificate.IdProperty);
-
-            lessor = lessors.FirstOrDefault(x => x.IdLessor == property.IdLessor).EmailAddress;
+            properties = await _propertyService.GetPropertyAsync();
+            tenant = _context.CurrentTenant.EmailAddress;
+            property = _context.CurrentPropertys;
+            lessor = _context.CurrentLessor.EmailAddress;
+            //tenant = tenants.FirstOrDefault(x => x.IdTenant == _context.CurrentReceptionCertificate.IdTenant).EmailAddress;
+            //property = properties.FirstOrDefault(x => x.IdLessor == _context.CurrentReceptionCertificate.IdProperty);
+            //lessor = lessors.FirstOrDefault(x => x.IdLessor == property.IdLessor).EmailAddress;
         }
 
         private async Task SendMenssage()
         {
-            Console.WriteLine("Entro en la funcion");
-            if (tenantCheck == true)
+            int idProperty = _context.CurrentReceptionCertificate.IdProperty;
+            if (idProperty > 0)
             {
-                Console.WriteLine("Si entro en el checked" + tenant);
-                                           //_context.CurrentReceptionCertificate.IdProperty
-                _mailAriService.GetMailAsync(1, tenant);
+                if (tenantCheck == true)
+                {
+                    _mailAriService.GetMailAsync(idProperty, tenant);
+                }
+                if (lessorCheck == true)
+                {                    
+                    _mailAriService.GetMailAsync(idProperty, lessor);
+                }
+                if (agenciaCheck == true)
+                {
+                    _mailAriService.GetMailAsync(idProperty, agencia);
+                }
+                if (agenteCheck == true)
+                {
+                    _mailAriService.GetMailAsync(idProperty, agente);
+                }
+                if (otroCheck == true)
+                {
+                    _mailAriService.GetMailAsync(idProperty, otro);
+                }
+                ChangeOpenModalSend();
             }
-            if (lessorCheck == true)
-            {
-                Console.WriteLine("Si entro en el checked" + lessor);
-                _mailAriService.GetMailAsync(1, lessor);
-            }
-            if (agenciaCheck == true)
-            {
-                _mailAriService.GetMailAsync(1, agencia);
-            }
-            if (agenteCheck == true)
-            {
-                _mailAriService.GetMailAsync(1, agente);
-            }
-            if (otroCheck == true)
-            {
-                _mailAriService.GetMailAsync(1, otro);
-            }
-
-            ChangeOpenModalSend();
+            return;            
         }
     }
 }
