@@ -56,6 +56,7 @@ namespace FrontEnd.Pages
             tenant = _context.CurrentTenant.EmailAddress;
             property = _context.CurrentPropertys;
             lessor = _context.CurrentLessor.EmailAddress;
+            agente = _context.CurrentUser.Email;
             //tenant = tenants.FirstOrDefault(x => x.IdTenant == _context.CurrentReceptionCertificate.IdTenant).EmailAddress;
             //property = properties.FirstOrDefault(x => x.IdLessor == _context.CurrentReceptionCertificate.IdProperty);
             //lessor = lessors.FirstOrDefault(x => x.IdLessor == property.IdLessor).EmailAddress;

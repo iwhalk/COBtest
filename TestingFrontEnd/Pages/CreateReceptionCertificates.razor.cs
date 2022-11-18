@@ -21,11 +21,12 @@ namespace FrontEnd.Pages
         private readonly IPropertyService _propertyService;
         private readonly IReceptionCertificateService _receptionCertificateService;
         private readonly IUserService _userService;
+        private readonly IPropertyTypeService _propertyTypeService;
         private readonly AuthenticationStateProvider _getAuthenticationStateAsync;
         [CascadingParameter]
         private Task<AuthenticationState> authenticationStateTask { get; set; }
 
-        public CreateReceptionCertificates(ApplicationContext context, NavigationManager navigationManager, ITenantService tenantService, IPropertyService propertyService, ILessorService lessorService, IReceptionCertificateService receptionCertificateService, AuthenticationStateProvider getAuthenticationStateAsync, IUserService userService)
+        public CreateReceptionCertificates(ApplicationContext context, NavigationManager navigationManager, ITenantService tenantService, IPropertyService propertyService, ILessorService lessorService, IReceptionCertificateService receptionCertificateService, AuthenticationStateProvider getAuthenticationStateAsync, IUserService userService, IPropertyTypeService propertyTypeService)
         {
             _context = context;
             _navigation = navigationManager;
@@ -35,6 +36,7 @@ namespace FrontEnd.Pages
             _receptionCertificateService = receptionCertificateService;
             _getAuthenticationStateAsync = getAuthenticationStateAsync;
             _userService = userService;
+            _propertyTypeService = propertyTypeService;
         }
 
         public bool ShowModalLessor { get; set; } = false;
@@ -47,8 +49,11 @@ namespace FrontEnd.Pages
         private List<Tenant> tenants { get; set; } = new();
         private List<Property> properties { get; set; } = new();
         private List<AspNetUser> users { get; set; } = new();
+
+        private List<PropertyType> propertyTypes = new();
+
         public int MyProperty { get; set; }
-        public string UserName { get; set; }
+        public string UserId { get; set; }
 
         public void ChangeOpenModalLessor() => ShowModalLessor = ShowModalLessor ? false : true;       
         public void ChangeOpenModalTenant() => ShowModalTenant = ShowModalTenant ? false : true;        
@@ -127,7 +132,7 @@ namespace FrontEnd.Pages
                     NewReceptionCertificate.IdTenant = CurrentTenant.IdTenant;
                     NewReceptionCertificate.IdProperty = CurrentProperty.IdProperty;
                     NewReceptionCertificate.IdTypeRecord = _context.TypeReceptionCertificate; //For ReceptionCertificate (1)In or (2)Out
-                    NewReceptionCertificate.IdAgent = UserName;                    
+                    NewReceptionCertificate.IdAgent = UserId;                    
                     _context.CurrentReceptionCertificate = await _receptionCertificateService.PostReceptionCertificatesAsync(NewReceptionCertificate);
                     _navigation.NavigateTo("/ReceptionCertificates/Inventory");
                 }
@@ -143,9 +148,11 @@ namespace FrontEnd.Pages
             lessors = await _lessorService.GetLessorAsync();
             properties = await _propertyService.GetPropertyAsync();
             users = await _userService.GetUsersAsync();
+            propertyTypes = await _propertyTypeService.GetPropertyTypeAsync();
 
             var authstate = await _getAuthenticationStateAsync.GetAuthenticationStateAsync();
-            UserName = authstate.User.Claims.FirstOrDefault(x => x.Type.Equals("sub")).Value;
+            UserId = authstate.User.Claims.FirstOrDefault(x => x.Type.Equals("sub")).Value;
+            _context.CurrentUser = users.FirstOrDefault(x => x.Id == UserId);
         }
     }
 }

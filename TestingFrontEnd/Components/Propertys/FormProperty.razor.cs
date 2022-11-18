@@ -12,6 +12,8 @@ namespace FrontEnd.Components.Propertys
         [Parameter]
         public Property? CurrentProperty { get; set; }
         [Parameter]
+        public List<PropertyType>? PropertyTypes { get; set; }
+        [Parameter]
         public bool IsFormPropertyExit { get; set; }
         [Parameter]
         public bool DisableButtonModal { get; set; }

@@ -16,6 +16,7 @@ namespace FrontEnd.Pages
     public partial class InventoryReceptionCertificates : ComponentBase
     {
         private readonly ApplicationContext _context;
+        private readonly NavigationManager _navigate;
         private readonly IInventoryService _inventoryService;
         private readonly IServicesService _servicesService;
         private readonly IAreaService _areaService;
@@ -31,7 +32,8 @@ namespace FrontEnd.Pages
                                               IFeaturesService featuresService,
                                               IDescriptionService descriptionService,
                                               IBlobService blobService,
-                                              IBlobsInventoryService blobsInventoryService)
+                                              IBlobsInventoryService blobsInventoryService,
+                                              NavigationManager navigate)
         {
             _context = context;
             _inventoryService = inventoryService;
@@ -41,6 +43,7 @@ namespace FrontEnd.Pages
             _descriptionService = descriptionService;
             _blobService = blobService;
             _blobsInventoryService = blobsInventoryService;
+            _navigate = navigate;
         }
 
         private ModalAreas modalAreas;
@@ -275,6 +278,11 @@ namespace FrontEnd.Pages
             BlobsInventory.IdInventory = LastInventoryAdded;
             BlobsInventory.IdProperty = _context.CurrentReceptionCertificate.IdProperty;
             _blobsInventoryService.PostBlobsInventoryAsync(BlobsInventory);
+        }
+        public void GenerarActa()
+        {
+            _context.CurrentAreasList = AreasList;
+            _navigate.NavigateTo("/ReceptionCertificate/Signatures");
         }
         public class DtoDescription
         {

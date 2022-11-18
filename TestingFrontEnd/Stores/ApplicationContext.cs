@@ -29,6 +29,9 @@ namespace FrontEnd.Stores
         private List<int> listPageInPaginate;
         private string typeHistoricalOrPending;
         private List<AspNetUser> listUserAsp;
+        private AspNetUser currentUser;
+        private List<Area> currentAreasList;
+
         public List<AspNetUser> ListUserAsp
         {
             get => listUserAsp;
@@ -227,6 +230,24 @@ namespace FrontEnd.Stores
             set
             {
                 BlobsList = value;
+                NotifyStateChanged();
+            }
+        }
+        public AspNetUser CurrentUser
+        {
+            get => currentUser;
+            set
+            {
+                currentUser = value;
+                NotifyStateChanged();
+            }
+        }
+        public List<Area> CurrentAreasList
+        {
+            get => currentAreasList;
+            set
+            {
+                currentAreasList = value;
                 NotifyStateChanged();
             }
         }
