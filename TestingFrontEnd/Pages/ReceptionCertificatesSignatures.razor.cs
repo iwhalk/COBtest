@@ -80,7 +80,8 @@ namespace FrontEnd.Pages
                 if (BlobPDFPreview != null)
                 {
                     ShowModalPreview = true;
-                    PdfName = "PDFPreview.pdf";                    
+                    PdfName = "PDFPreview.pdf";
+                    StateHasChanged();
                 }
             }        
         }
