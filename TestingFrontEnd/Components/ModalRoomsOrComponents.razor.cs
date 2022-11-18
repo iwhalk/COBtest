@@ -13,5 +13,7 @@ namespace FrontEnd.Components
         public bool ShowModal { get; set; } = false;
         [Parameter]
         public EventCallback OnClick { get; set; }
+
+        public void Exit() => ShowModal = false;
     }
 }
