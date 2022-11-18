@@ -29,8 +29,7 @@ namespace ReportesInmobiliaria.Services
 
             var blobFile = await blobClient.DownloadAsync();
             return blobFile;
-        }
-
+        }        
         public async Task<Blob?> CreateBlobAsync(string name, IFormFile file)
         {
             
@@ -41,10 +40,10 @@ namespace ReportesInmobiliaria.Services
 
                 var newBlob = new Blob
                 {
-                    BlodName = name,
+                    BlodName = Guid.NewGuid().ToString() + "." + file.ContentType.Split('/')[1],
                     Uri = blobClient.Uri.ToString(),
                     BlobSize = file.Length.ToString(),
-                    ContainerName = "inventories",
+                    ContainerName = "inventoryblobs",
                     IsPrivate = false,
                     BlodTypeId = "",
                     ContentType = file.ContentType ?? "image/jpg",
