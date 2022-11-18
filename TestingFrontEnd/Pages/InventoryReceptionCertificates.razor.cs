@@ -247,8 +247,7 @@ namespace FrontEnd.Pages
                 //BlobsInventory.IdProperty = _context.CurrentPropertys.IdProperty;
                 CurrentInventory = new();
                 DescriptionsList = new();
-                FeatureMedidorCurrent = 0;//Reinicamos el FEatureBAndera para desbloqeuar todos lo input
-                StateHasChanged();
+                FeatureMedidorCurrent = 0;//Reinicamos el FEatureBAndera para desbloqeuar todos lo input                
             }
             StateHasChanged();
             return;
@@ -278,8 +277,7 @@ namespace FrontEnd.Pages
                 
                 CurrentInventory = new();
                 DescriptionsList = new();
-                FeatureMedidorCurrent = 0;//Reinicamos el FEatureBAndera para desbloqeuar todos lo input
-                StateHasChanged();
+                FeatureMedidorCurrent = 0;//Reinicamos el FEatureBAndera para desbloqeuar todos lo input                
             }
             StateHasChanged();
             return;
