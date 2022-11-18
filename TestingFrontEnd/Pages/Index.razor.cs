@@ -17,6 +17,8 @@ namespace FrontEnd.Pages
         public void RedirectRecptionHistorical()
         {            
             _context.TypeHistoricalOrPending = "Historical";
+            _context.ActasRecepcionList = null;
+            _context.Completed = true;
             _navigationManager.NavigateTo("/ReceptionCertificates/Historical");
         }
     }

@@ -15,7 +15,7 @@ namespace FrontEnd.Services
             _context = context;
         }
 
-        public async Task<List<ActasRecepcion>> GetReceptionCertificatesAsync(string? startDay = null, string? endDay = null, int? certificateType = null, int? propertyType = null, int? numberOfRooms = null, int? lessor = null, int? tenant = null, string? delegation = null, string? agent = null, int? currentPage = null, int? rowNumber = null)
+        public async Task<List<ActasRecepcion>> GetReceptionCertificatesAsync(string? startDay = null, string? endDay = null, int? certificateType = null, int? propertyType = null, int? numberOfRooms = null, int? lessor = null, int? tenant = null, string? delegation = null, string? agent = null, int? currentPage = null, int? rowNumber = null, bool completed = true)
         { 
             string? certificateTypeS = null;
             string? propertyTypeS = null;
@@ -56,8 +56,8 @@ namespace FrontEnd.Services
 
             if (_context.ActasRecepcionList == null)
             {
-                var response = await _repository.GetAsync<List<ActasRecepcion>>($"api/ReceptionCertificates?startDay={startDay}&endDay={endDay}&certificateType={certificateTypeS}&propertyType={propertyTypeS}&numberOfRooms={numberOfRoomsS}&lessor={lessorS}&tenant={tenantS}&delegation={delegation}&agent={agent}&currentPage={currentPageS}&rowNumber={rowNumberS}");
-                var responseCount = await _repository.GetAsync<List<ActasRecepcion>>($"api/ReceptionCertificates?startDay={startDay}&endDay={endDay}&certificateType={certificateTypeS}&propertyType={propertyTypeS}&numberOfRooms={numberOfRoomsS}&lessor={lessorS}&tenant={tenantS}&delegation={delegation}&agent={agent}&currentPage={null}&rowNumber={null}");
+                var response = await _repository.GetAsync<List<ActasRecepcion>>($"api/ReceptionCertificates?startDay={startDay}&endDay={endDay}&certificateType={certificateTypeS}&propertyType={propertyTypeS}&numberOfRooms={numberOfRoomsS}&lessor={lessorS}&tenant={tenantS}&delegation={delegation}&agent={agent}&currentPage={currentPageS}&rowNumber={rowNumberS}&completed={completed}");
+                var responseCount = await _repository.GetAsync<List<ActasRecepcion>>($"api/ReceptionCertificates?startDay={startDay}&endDay={endDay}&certificateType={certificateTypeS}&propertyType={propertyTypeS}&numberOfRooms={numberOfRoomsS}&lessor={lessorS}&tenant={tenantS}&delegation={delegation}&agent={agent}&currentPage={null}&rowNumber={null}&completed={completed}");
 
                 if (response != null)
                 {

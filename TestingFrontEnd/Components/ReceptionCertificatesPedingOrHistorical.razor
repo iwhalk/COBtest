@@ -1,40 +1,40 @@
-<div id="ContenedorActas">      
+<div id="ContenedorActas">
     <div id="Actas" class="flex justify-around mt-4">
-        <div class="relative" style="height: 35rem">
-            <table class="overflow-y-auto">
+        <div class="relative overflow-y-auto h-80" style="height: 35rem">
+            <table class="">
                 <thead>
                     <tr>
-                        <th class="py-2 px-12 text-center mb-1 text-3xl text-center text-cyan-700 font-normal">
+                        <th class="py-2 px-12 text-center mb-1 text-xl text-center text-cyan-700 font-normal">
                         </th>
-                        <th class="py-2 px-12 text-center mb-1 text-3xl text-center text-cyan-700 font-normal" style="background-color: #E3F2F6;">
+                        <th class="py-2 px-12 text-center mb-1 text-xl text-center text-cyan-700 font-normal" style="background-color: #E3F2F6;">
                             Fecha
                         </th>
-                        <th class="py-2 px-12 text-center mb-1 text-3xl text-center text-cyan-700 font-normal" style="background-color: #E3F2F6;">
+                        <th class="py-2 px-12 text-center mb-1 text-xl text-center text-cyan-700 font-normal" style="background-color: #E3F2F6;">
                             Acta
                         </th>
-                        <th class="py-2 px-12 text-center mb-1 text-3xl text-center text-cyan-700 font-normal" style="background-color: #E3F2F6;">
+                        <th class="py-2 px-12 text-center mb-1 text-xl text-center text-cyan-700 font-normal" style="background-color: #E3F2F6;">
                             Inmueble
                         </th>
-                        <th class="py-2 px-12 text-center mb-1 text-3xl text-center text-cyan-700 font-normal" style="background-color: #E3F2F6;">
+                        <th class="py-2 px-12 text-center mb-1 text-xl text-center text-cyan-700 font-normal" style="background-color: #E3F2F6;">
                             Habitaciones
                         </th>
-                        <th class="py-2 px-12 text-center mb-1 text-3xl text-center text-cyan-700 font-normal" style="background-color: #E3F2F6;">
+                        <th class="py-2 px-12 text-center mb-1 text-xl text-center text-cyan-700 font-normal" style="background-color: #E3F2F6;">
                             Arrendador
                         </th>
-                        <th class="py-2 px-12 text-center mb-1 text-3xl text-center text-cyan-700 font-normal" style="background-color: #E3F2F6;">
+                        <th class="py-2 px-12 text-center mb-1 text-xl text-center text-cyan-700 font-normal" style="background-color: #E3F2F6;">
                             Arrendatario
                         </th>
-                        <th class="py-2 px-12 text-center mb-1 text-3xl text-center text-cyan-700 font-normal" style="background-color: #E3F2F6;">
+                        <th class="py-2 px-12 text-center mb-1 text-xl text-center text-cyan-700 font-normal" style="background-color: #E3F2F6;">
                             Ciudad
                         </th>
-                        <th class="py-2 px-12 text-center mb-1 text-3xl text-center text-cyan-700 font-normal" style="background-color: #E3F2F6;">
+                        <th class="py-2 px-12 text-center mb-1 text-xl text-center text-cyan-700 font-normal" style="background-color: #E3F2F6;">
                             Agente
                         </th>
                     </tr>
                 </thead>
                 <tbody>
                     @if (_context.ActasRecepcionList != null)
-                            {
+                    {
                         @foreach (var item in _context.ActasRecepcionList)
                         {
                             <tr>
@@ -50,14 +50,14 @@
                                         <button onclick="@(() => PreviewPdf.InvokeAsync(item.IdProperty))" class="bg-red-300 p-1 text-xs rounded-sm w-10 h-10 border border-red-900">PDF</button>
                                     }
                                 </td>
-                                <td class="py-2 text-center text-2xl">@item.Fecha</td>
-                                <td class="py-2 text-center text-2xl">@item.Acta</td>
-                                <td class="py-2 text-center text-2xl">@item.Inmueble</td>
-                                <td class="py-2 text-center text-2xl">@item.Habitaciones</td>
-                                <td class="py-2 text-center text-2xl">@item.Arrendador</td>
-                                <td class="py-2 text-center text-2xl">@item.Arrendatario</td>
-                                <td class="py-2 text-center text-2xl">@item.Delegacion</td>
-                                <td class="py-2 text-center text-2xl">@item.Agente</td>
+                                <td class="py-2 text-center text-lg">@item.Fecha</td>
+                                <td class="py-2 text-center text-lg">@item.Acta</td>
+                                <td class="py-2 text-center text-lg">@item.Inmueble</td>
+                                <td class="py-2 text-center text-lg">@item.Habitaciones</td>
+                                <td class="py-2 text-center text-lg">@item.Arrendador</td>
+                                <td class="py-2 text-center text-lg">@item.Arrendatario</td>
+                                <td class="py-2 text-center text-lg">@item.Delegacion</td>
+                                <td class="py-2 text-center text-lg">@item.Agente</td>
                             </tr>
                         }
                     }

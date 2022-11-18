@@ -9,7 +9,7 @@ using SharedLibrary.Models;
 namespace ApiGateway.Controllers
 {
     [Route("api/[controller]")]
-    [Authorize]
+    //[Authorize]
     [ApiController]
     public class ReceptionCertificatesController : ControllerBase
     {
@@ -20,7 +20,7 @@ namespace ApiGateway.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult> GetReceptionCertificates(string? startDay, string? endDay, string? certificateType, string? propertyType, string? numberOfRooms, string? lessor, string? tenant, string? delegation, string? agent, string? currentPage, string? rowNumber)
+        public async Task<ActionResult> GetReceptionCertificates(string? startDay, string? endDay, string? certificateType, string? propertyType, string? numberOfRooms, string? lessor, string? tenant, string? delegation, string? agent, string? currentPage, string? rowNumber, bool completed)
         {
             startDay = GetNullableString(startDay);
             endDay = GetNullableString(endDay);
@@ -67,7 +67,7 @@ namespace ApiGateway.Controllers
                 tenantInt = Convert.ToInt16(tenant); 
             }
 
-            var result = await _receptionCertificateService.GetReceptionCertificateAsync(startDay, endDay, certificateTypeInt, propertyTypeInt, numberOfRoomsInt, lessorInt, tenantInt, delegation, agent, currentPageInt, rowNumberInt);
+            var result = await _receptionCertificateService.GetReceptionCertificateAsync(startDay, endDay, certificateTypeInt, propertyTypeInt, numberOfRoomsInt, lessorInt, tenantInt, delegation, agent, currentPageInt, rowNumberInt, completed);
 
             if (result.Succeeded)
             {
