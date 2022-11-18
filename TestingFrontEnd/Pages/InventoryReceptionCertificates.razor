@@ -92,12 +92,17 @@
     </div>
     <div id="Botones" class="flex justify-center -my-8">
         <button class="py-2 w-48 border rounded-lg text-white text-xl shadow-xl" style="background-color: #2B286F;">Guardar</button>
-            <a href="/ReceptionCertificate/Signatures"><button class="py-2 w-48 border rounded-lg text-white text-xl shadow-xl" style="background-color: #2B286F;">Generar Acta</button></a>
-    </div>
+         <a href="/ReceptionCertificate/Signatures"><button class="py-2 w-48 border rounded-lg text-white text-xl shadow-xl" style="background-color: #2B286F;">Generar Acta</button></a>
+    </div>  
 
-    <ModalAreas @ref="modalAreas" OnClick="ChangeOpenModalRooms" AgregarOnClick="AgregarAreas" TitleTable="Habitaciones" ShowModal="@ShowModalRooms"></ModalAreas>
-    <ModalServices @ref="modalServices" OnClick="ChangeOpenModalComponents" AgregarOnClick="AgregarServicios" TitleTable="Componentes" ShowModal="@ShowModalComponents"></ModalServices>
-
+        @if (ShowModalRooms)
+        {
+            <ModalAreas @ref="modalAreas" PostNewArea="HandlePostNewArea" OnClick="ChangeOpenModalRooms" AgregarOnClick="AgregarAreas" TitleTable="Habitaciones"></ModalAreas>
+        }
+        @if(ShowModalComponents)
+        {
+            <ModalServices @ref="modalServices" PostNewService="HandlePostNewService" OnClick="ChangeOpenModalComponents" AgregarOnClick="AgregarServicios" TitleTable="Componentes"></ModalServices>
+        }    
     <ModalRoomsOrComponents OnClick="ChangeOpenModalCopyValues" TitleTable="Habitaciones" ShowModal="@ShowModalCopyValues"></ModalRoomsOrComponents>
 @*    <ModalGaugesOrKeys OnClick="ChangeOpenModalGauges" TitleModal="Medidores" ShowModal="@ShowModalGauges"></ModalGaugesOrKeys>
     <ModalGaugesOrKeys OnClick="ChangeOpenModalKeys" TitleModal="Llaves" ShowModal="@ShowModalkeys"></ModalGaugesOrKeys>*@

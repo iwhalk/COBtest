@@ -83,10 +83,10 @@ namespace FrontEnd.Pages
                     PdfName = "PDFPreview.pdf";                    
                 }
             }        
-        }        
+        }
         public async void HandleSaveReceptionCertificate()
-        {       
-            HandleInsertSignatures();            
+        {
+            HandleInsertSignatures();
         }
         public async void HandleInsertSignatures()
         {
@@ -98,11 +98,11 @@ namespace FrontEnd.Pages
             CurrentReceptionCertificate = await _receptionCertificateService.PutReceptionCertificatesAsync(CurrentReceptionCertificate);
 
             if (CurrentReceptionCertificate is null)
-            {
+            {                
                 _navigate.NavigateTo("/Emails");
             }
             else
-            {
+            {                
                 _context.CurrentReceptionCertificate = CurrentReceptionCertificate;
                 _navigate.NavigateTo("/Emails");
             }

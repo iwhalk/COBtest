@@ -1,33 +1,49 @@
-﻿@if (ShowModal)
-{
-    <div class="relative z-10" aria-labelledby="modal-title" role="dialog" aria-modal="true">
-        <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"></div>
-        <div class="fixed inset-0 z-10 overflow-y-auto">
-            <div class="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
-                <div class="mx-auto bg-white md:max-w-2xl sm:max-w-sm mt-20 h-96 rounded-lg border border-grey-300 drop-shadow-lg border-2">
-                    <div class="relative">
-                        <button @onclick="@(() => OnClick.InvokeAsync())" type="button" class="absolute top-3 right-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-red-600 rounded-full border border-2 ">
-                            <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
-                        </button>
+﻿<div class="relative z-10" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+    <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"></div>
+    <div class="fixed inset-0 z-10 overflow-y-auto">
+        <div class="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
+            <div class="mx-auto bg-white h-[520px] md:max-w-2xl sm:max-w-sm mt-20 h-96 rounded-lg border border-grey-300 drop-shadow-lg border-2">
+                <div class="relative">
+                    <button @onclick="@(() => OnClick.InvokeAsync())" type="button" class="absolute top-3 right-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-red-600 rounded-full border border-2 ">
+                        <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
+                    </button>
+                </div>
+                <div class=" inline-flex pt-3 mt-10">
+                    <button @onclick="CleanBeforePostService" class="text-blue-700">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="#2B286F" class="bi bi-plus-lg" viewBox="0 0 16 16">
+                            <path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2Z" />
+                        </svg>
+                    </button>
+                    <div class="w-80 pt-1">
+                        <input @bind="NameService" class="w-full border boder-blue-700 h-9 pl-14" placeholder="Agregar nuevo elemento" />
                     </div>
-                    <div class="overflow-y-auto h-48 mx-auto w-96 text-center mt-10 px-3 pr-2 mt-5">
-                        <table class="w-full overflow text-sm">
-                            <tr class="bg-[#2B286F] text-white text-sm h-10">
-                                <th class="w-10"></th>
-                                <th class="w-80">TitleTable</th>
-                            </tr>
-                            @foreach (var service in Services)
+                </div>
+                <div class="overflow-y-auto h-48 mx-auto w-96 text-center mt-10 px-3 pr-2 mt-5">
+                    <table class="w-full overflow text-sm">
+                        <tr class="bg-[#2B286F] text-white text-sm h-10">
+                            <th class="w-10"></th>
+                            <th class="w-80">TitleTable</th>
+                        </tr>
+                        @if (_context.ServiceList != null)
+                        {
+                            @foreach (var service in _context.ServiceList)
                             {
                                 <tr class="m-10 border h-10">
                                     <td class="p-2"><input type="checkbox" @onchange="eventArgs => { CheckboxClicked(service, eventArgs.Value); }" /></td>
                                     <td class="p-2">@service?.ServiceName</td>
                                 </tr>
                             }
-                        </table>
-                    </div>
-                    <button @onclick="@(() => AgregarOnClick.InvokeAsync())" class="py-2 mt-20 w-48 border rounded-lg text-white text-xl shadow-xl" style="background-color: #2B286F;">Agregar</button>
+                        }
+                        else
+                        {
+                            <div style="margin: 0; position: absolute; top: 50%; left: 50%; width: auto; height: auto;">
+                                <FluentProgressRing style="width: 51px; height: 51px;"></FluentProgressRing>
+                            </div>
+                        }
+                    </table>
                 </div>
+                <button @onclick="@(() => AgregarOnClick.InvokeAsync())" class="py-2 mt-20 w-48 border rounded-lg text-white text-xl shadow-xl" style="background-color: #2B286F;">Agregar</button>
             </div>
         </div>
     </div>
-}
+</div>

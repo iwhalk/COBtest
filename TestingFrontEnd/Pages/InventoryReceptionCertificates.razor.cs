@@ -261,6 +261,26 @@ namespace FrontEnd.Pages
             DescriptionsList = new();
             StateHasChanged();
         }
+        public async void HandlePostNewService(string nameArea)
+        {
+            Service? newService = new Service { ServiceName = nameArea };
+            newService = await _servicesService.PostServicesAsync(newService);
+            if (newService != null)
+            {
+                ServicesList.Add(newService);
+            }
+            ShowModalComponents = false;
+        }
+        public async void HandlePostNewArea(string nameArea)
+        {
+            Area? newArea = new Area { AreaName = nameArea };
+            newArea =  await _areaService.PostAreaAsync(newArea);
+            if(newArea != null)
+            {
+                AreasList.Add(newArea);                
+            }
+            ShowModalRooms = false;
+        }
         public void RemoveArea(int IdArea)
         {
             AreasList.Remove(CurrentArea);
