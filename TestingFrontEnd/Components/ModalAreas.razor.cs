@@ -23,9 +23,7 @@ namespace FrontEnd.Components
         public List<Area> Areas { get; set; } = new();
         public List<Area> SelectedValues { get; set; } = new();
         [Parameter]
-        public Area Area { get; set; } = new();
-        [Parameter]
-        public bool ShowModal { get; set; } = false;
+        public Area Area { get; set; } = new();        
         [Parameter]
         public EventCallback OnClick { get; set; }
         [Parameter]
@@ -40,7 +38,8 @@ namespace FrontEnd.Components
         private async void CleanBeforePostArea()
         {
             await PostNewArea.InvokeAsync(NameArea);
-            NameArea = "";  
+            NameArea = "";
+            //await OnClick.InvokeAsync();
             //_context.Area = null;          
             //Areas = await _areaService.GetAreaAsync();
         }

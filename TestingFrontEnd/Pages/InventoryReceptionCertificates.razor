@@ -94,11 +94,11 @@
 
         @if (ShowModalRooms)
         {
-            <ModalAreas @ref="modalAreas" PostNewArea="HandlePostNewArea" OnClick="ChangeOpenModalRooms" AgregarOnClick="AgregarAreas" TitleTable="Habitaciones" ShowModal="@ShowModalRooms"></ModalAreas>
+            <ModalAreas @ref="modalAreas" PostNewArea="HandlePostNewArea" OnClick="ChangeOpenModalRooms" AgregarOnClick="AgregarAreas" TitleTable="Habitaciones"></ModalAreas>
         }
         @if(ShowModalComponents)
         {
-            <ModalServices @ref="modalServices" PostNewService="HandlePostNewService" OnClick="ChangeOpenModalComponents" AgregarOnClick="AgregarServicios" TitleTable="Componentes" ShowModal="@ShowModalComponents"></ModalServices>
+            <ModalServices @ref="modalServices" PostNewService="HandlePostNewService" OnClick="ChangeOpenModalComponents" AgregarOnClick="AgregarServicios" TitleTable="Componentes"></ModalServices>
         }    
     <ModalRoomsOrComponents OnClick="ChangeOpenModalCopyValues" TitleTable="Habitaciones" ShowModal="@ShowModalCopyValues"></ModalRoomsOrComponents>
 @*    <ModalGaugesOrKeys OnClick="ChangeOpenModalGauges" TitleModal="Medidores" ShowModal="@ShowModalGauges"></ModalGaugesOrKeys>

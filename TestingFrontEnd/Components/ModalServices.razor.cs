@@ -22,9 +22,7 @@ namespace FrontEnd.Components
         public List<Service> Services { get; set; } = new();
         public List<Service> SelectedValues { get; set; } = new();
         [Parameter]
-        public Area Area { get; set; } = new();
-        [Parameter]
-        public bool ShowModal { get; set; } = false;
+        public Area Area { get; set; } = new();        
         [Parameter]
         public EventCallback OnClick { get; set; }
         [Parameter]
@@ -40,6 +38,7 @@ namespace FrontEnd.Components
         {
             await PostNewService.InvokeAsync(NameService);
             NameService = "";
+            //await OnClick.InvokeAsync();            
             //_context.Area = null;          
             //Areas = await _areaService.GetAreaAsync();
         }
