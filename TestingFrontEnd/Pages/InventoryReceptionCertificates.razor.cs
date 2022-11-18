@@ -60,6 +60,8 @@ namespace FrontEnd.Pages
         public bool ShowModalGauges { get; set; } = false;
         public bool ShowModalkeys { get; set; } = false;
         public string TypeButtonsInventory { get; set; } = "";
+        public string NameKey { get; set; }
+        public string NameMedidor { get; set; }
 
         private Inventory CurrentInventory { get; set; } = new();
         private Area CurrentArea { get; set; } = new();
@@ -273,6 +275,7 @@ namespace FrontEnd.Pages
                 ServicesList.Add(newService);
             }
             ShowModalComponents = false;
+            StateHasChanged();
         }
         public async void HandlePostNewArea(string nameArea)
         {
@@ -283,15 +286,37 @@ namespace FrontEnd.Pages
                 AreasList.Add(newArea);                
             }
             ShowModalRooms = false;
+            StateHasChanged();
         }
-        public async void HandlePostNewMedidor(string nameMedidor)
+        public async void HandlePostNewMedidor()
         {
-            Feature? newFeature = new Feature { FeatureName = nameMedidor, IdService = 13 };
-            newFeature = await _featuresService.PostFeaturesAsync(newFeature);
-            if(newFeature != null)
+            if (NameMedidor != "")
             {
-                FeaturesList.Add(newFeature);
-            }            
+                Feature? newFeature = new Feature { FeatureName = NameMedidor, IdService = 13 };
+                newFeature = await _featuresService.PostFeaturesAsync(newFeature);
+                if (newFeature != null)
+                {
+                    FeaturesList.Add(newFeature);
+                    StateHasChanged();
+                }
+            }
+            NameMedidor = "";
+            return;
+        }
+        public async void HandlePostNewKey()
+        {
+            if (NameKey != "")
+            {
+                Feature? newFeature = new Feature { FeatureName = NameKey, IdService = 14 };
+                newFeature = await _featuresService.PostFeaturesAsync(newFeature);
+                if (newFeature != null)
+                {
+                    FeaturesList.Add(newFeature);
+                    StateHasChanged();
+                }
+            }
+            NameKey = "";
+            return;
         }
         public void RemoveArea(int IdArea)
         {
