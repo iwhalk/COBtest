@@ -60,9 +60,10 @@ namespace FrontEnd.Pages
         public bool ShowModalCopyValues { get; set; } = false;
         public bool ShowModalGauges { get; set; } = false;
         public bool ShowModalkeys { get; set; } = false;
+        public int FeatureMedidorCurrent { get; set; } //BLoquea las demas filas que nosea este IdFeature
         public string TypeButtonsInventory { get; set; } = "";
         public string NameKey { get; set; }
-        public string NameMedidor { get; set; }
+        public string? NameMedidor { get; set; }
 
         private Inventory CurrentInventory { get; set; } = new();
         private Area CurrentArea { get; set; } = new();
@@ -192,9 +193,9 @@ namespace FrontEnd.Pages
             CurrentService = ServicesList.FirstOrDefault(x => x.IdService == idService);
             FeaturesList = (await _featuresService.GetFeaturesAsync())?.Where(x => x.IdService == idService)?.ToList();
             foreach (var feature in FeaturesList)
-            {
+            {                
                 dtoDescriptions.Add(new() { IdFeature = feature.IdFeature, IdService = idService });
-            }
+            }            
             StateHasChanged();
         }
         public async void FeatureButtonClicked(int IdFeature)
@@ -206,57 +207,80 @@ namespace FrontEnd.Pages
         }
         public async void DescriptionNoteInput(int IdFeature, ChangeEventArgs e)
         {
-            dtoDescriptions.FirstOrDefault(x => x.IdFeature == IdFeature).Note = e.Value.ToString();
+            FeatureMedidorCurrent = IdFeature;
+            StateHasChanged();
+
+            var CurrentDTO = dtoDescriptions.FirstOrDefault(x => x.IdFeature == IdFeature);
+            CurrentDTO.Note = e.Value.ToString();
             CurrentFeature = FeaturesList.FirstOrDefault(x => x.IdFeature == IdFeature);
             DescriptionsList = (await _descriptionService.GetDescriptionAsync())?.Where(x => x.IdFeature == IdFeature)?.ToList();
 
-            CurrentInventory.Note = e.Value.ToString();
-            CurrentInventory.IdProperty = _context.CurrentReceptionCertificate.IdProperty;
-            CurrentInventory.IdArea = CurrentArea.IdArea;
-            CurrentInventory.IdDescription = DescriptionsList.FirstOrDefault()?.IdDescription ?? 1;            
+            if (!string.IsNullOrEmpty(CurrentDTO.Observation))
+            {
 
-            InventoriesList.Add(CurrentInventory);
+                CurrentInventory.Note = e.Value.ToString();
+                CurrentInventory.IdProperty = _context.CurrentReceptionCertificate.IdProperty;
+                CurrentInventory.IdArea = CurrentArea.IdArea;
+                CurrentInventory.IdDescription = DescriptionsList.FirstOrDefault()?.IdDescription ?? 1;
 
-            //dtoDescriptions.FirstOrDefault(x => x.IdFeature == CurrentFeature.IdFeature).IdDescription = idDescription;
-            //dtoDescriptions.FirstOrDefault(x => x.IdDescription == idDescription).Note = name;
-            //DescriptionsList = new();
+                InventoriesList.Add(CurrentInventory);
 
-            var res = await _inventoryService.PostInventoryAsync(CurrentInventory);
-            CurrentInventory.IdInventory = res.IdInventory;
-            LastInventoryAdded = res.IdInventory;
-            //if (FormBlob.CurrentBlobFile.Blob.IdBlobs != null && FormBlob.CurrentBlobFile.Blob.IdBlobs != 0)
-            //{
-            //    BlobsInventory.IdBlobs = FormBlob.CurrentBlobFile.Blob.IdBlobs;
-            //    BlobsInventory.IdInventory = CurrentInventory.IdInventory;
-            //    BlobsInventory.IdProperty = _context.CurrentReceptionCertificate.IdProperty;
-            //    _blobsInventoryService.PostBlobsInventoryAsync(BlobsInventory);
-            //    NewBlob = new();
-            //}
+                //dtoDescriptions.FirstOrDefault(x => x.IdFeature == CurrentFeature.IdFeature).IdDescription = idDescription;
+                //dtoDescriptions.FirstOrDefault(x => x.IdDescription == idDescription).Note = name;
+                //DescriptionsList = new();
 
-            //var bres = await _blobService.PostBlobAsync(FormBlob.CurrentBlobFile);
-            //BlobsInventory.IdBlobs = bres.IdBlobs;
-            //BlobsInventory.IdInventory = res.IdInventory;
-            //BlobsInventory.IdProperty = _context.CurrentPropertys.IdProperty;
-            CurrentInventory = new();
-            DescriptionsList = new();
+                var res = await _inventoryService.PostInventoryAsync(CurrentInventory);
+                CurrentInventory.IdInventory = res.IdInventory;
+                LastInventoryAdded = res.IdInventory;
+                //if (FormBlob.CurrentBlobFile.Blob.IdBlobs != null && FormBlob.CurrentBlobFile.Blob.IdBlobs != 0)
+                //{
+                //    BlobsInventory.IdBlobs = FormBlob.CurrentBlobFile.Blob.IdBlobs;
+                //    BlobsInventory.IdInventory = CurrentInventory.IdInventory;
+                //    BlobsInventory.IdProperty = _context.CurrentReceptionCertificate.IdProperty;
+                //    _blobsInventoryService.PostBlobsInventoryAsync(BlobsInventory);
+                //    NewBlob = new();
+                //}
+
+                //var bres = await _blobService.PostBlobAsync(FormBlob.CurrentBlobFile);
+                //BlobsInventory.IdBlobs = bres.IdBlobs;
+                //BlobsInventory.IdInventory = res.IdInventory;
+                //BlobsInventory.IdProperty = _context.CurrentPropertys.IdProperty;
+                CurrentInventory = new();
+                DescriptionsList = new();
+                FeatureMedidorCurrent = 0;//Reinicamos el FEatureBAndera para desbloqeuar todos lo input                
+            }
             StateHasChanged();
+            return;
         }
         public async void DescriptionObservationInput(int IdFeature, ChangeEventArgs e)
         {
+            FeatureMedidorCurrent = IdFeature;
+            StateHasChanged();
 
-            //var currentDTO = dtoDescriptions.FirstOrDefault(x => x.IdFeature == IdFeature).Note = e.Value.ToString();
-            //InventoriesList.FirstOrDefault(x => x.IdInventory == );
-            //if (currentDTO != null)
-            //{
-            //    //Ya se cereo un DTO Dedes Note + su inventario
-            //}
-            //else
-            //{
+            var currentDTO = dtoDescriptions.FirstOrDefault(x => x.IdFeature == IdFeature);
+            currentDTO.Observation = e.Value.ToString();
+            CurrentFeature = FeaturesList.FirstOrDefault(x => x.IdFeature == IdFeature);
+            DescriptionsList = (await _descriptionService.GetDescriptionAsync())?.Where(x => x.IdFeature == IdFeature)?.ToList();
 
-            //}
-            
+            if(!string.IsNullOrEmpty(currentDTO.Note)) //Si tiene nota no insertar el inventory
+            {
+                CurrentInventory.Observation = e.Value.ToString();
+                CurrentInventory.IdProperty = _context.CurrentReceptionCertificate.IdProperty;
+                CurrentInventory.IdArea = CurrentArea.IdArea;
+                CurrentInventory.IdDescription = DescriptionsList.FirstOrDefault()?.IdDescription ?? 1;
 
-            
+                InventoriesList.Add(CurrentInventory);          
+
+                var res = await _inventoryService.PostInventoryAsync(CurrentInventory);
+                CurrentInventory.IdInventory = res.IdInventory;
+                LastInventoryAdded = res.IdInventory;
+                
+                CurrentInventory = new();
+                DescriptionsList = new();
+                FeatureMedidorCurrent = 0;//Reinicamos el FEatureBAndera para desbloqeuar todos lo input                
+            }
+            StateHasChanged();
+            return;
 
         }
         public async void DescriptionButtonClicked(int idDescription)
