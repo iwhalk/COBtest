@@ -79,7 +79,10 @@
                                             </svg>
                                         </div>
                                     </div>*@
-                                    <FormBlob @ref="FormBlob" InputBlob="@NewBlob"></FormBlob>
+                                    @if (LastInventoryAdded != 0)
+                                    {
+                                        <FormBlob @ref="FormBlob" AddedBlob="AddInventoryBlob" InputBlob="@NewBlob"></FormBlob>
+                                    }
                                 </div>
                             </div>
                         </div>
@@ -144,7 +147,10 @@
                                 <div class="block text-center">
                                     <label for="" class="text-xl text-blue-900 font-semibold">Fotografias</label>
                                     <div class="flex justify-center mt-10">
-                                        <FormBlob @ref="FormBlob" InputBlob="@NewBlob"></FormBlob>
+                                        @if (LastInventoryAdded != 0)
+                                        {
+                                            <FormBlob @ref="FormBlob" AddedBlob="AddInventoryBlob" InputBlob="@NewBlob"></FormBlob>
+                                        }
                                         @*<svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" fill="#2B286F" class="bi bi-plus-lg" viewBox="0 0 16 16">
                                             <path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2Z" />
                                         </svg>*@
@@ -204,7 +210,10 @@
                                 <div class="block text-center">
                                     <label for="" class="text-xl text-blue-900 font-semibold">Fotografias</label>
                                     <div class="flex justify-center mt-10">
-                                        <FormBlob @ref="FormBlob" InputBlob="@NewBlob"></FormBlob>
+                                        @if (LastInventoryAdded != 0)
+                                        {
+                                            <FormBlob @ref="FormBlob" AddedBlob="AddInventoryBlob" InputBlob="@NewBlob"></FormBlob>
+                                        }
                                         @*<svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" fill="#2B286F" class="bi bi-plus-lg" viewBox="0 0 16 16">
                                             <path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2Z" />
                                         </svg>*@

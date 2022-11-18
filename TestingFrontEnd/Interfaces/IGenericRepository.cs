@@ -11,6 +11,6 @@
         public Task<T>? PostAsync<T>(string path, T value);
 
         public Task<T>? PutAsync<T>(string path, T value);
-        public Task<T>? PutAsync<T>(string path, object value);
+        public Task<T>? PutAsync<T>(string path, HttpContent value);
     }
 }

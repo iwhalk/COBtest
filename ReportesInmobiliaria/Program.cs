@@ -799,10 +799,14 @@ app.MapPost("/ReceptionCertificate", async (ReceptionCertificate receptionCertif
 
 
 
-app.MapPut("/ReceptionCertificate", async (ReceptionCertificate receptionCertificate, IReceptionCertificates _receptionCertificates, ILogger<Program> _logger) =>
+app.MapPut("/ReceptionCertificate/{Id}", async (int Id, ReceptionCertificate receptionCertificate, IReceptionCertificates _receptionCertificates, ILogger<Program> _logger) =>
 {
     try
     {
+        if (receptionCertificate.IdReceptionCertificate != Id)
+        {
+            return Results.BadRequest();
+        }
         var res = await _receptionCertificates.UpdateReceptionCertificateAsync(receptionCertificate);
         return Results.Ok(res);
     }

@@ -51,7 +51,6 @@ namespace FrontEnd.Pages
         public string ColorSelect { get; set; } = "";
         public string StatusSelect { get; set; } = "";
 
-
         public bool ShowModalRooms { get; set; } = false;
         public bool ShowModalComponents { get; set; } = false;
         public bool ShowModalCopyValues { get; set; } = false;
@@ -80,7 +79,8 @@ namespace FrontEnd.Pages
         public List<Inventory> InventoriesList { get; set; } = new();
         public List<DtoDescription> dtoDescriptions { get; set; } = new();
 
-        public int[] FeaturesIds { get; set; } = { 2, 7, 11, 15, 25, 30, 33, 60};
+        public int[] FeaturesIds { get; set; } = { 2, 5, 7, 11, 15, 25, 30, 33, 60};
+        public int LastInventoryAdded;
 
         public void ChangeOpenModalRooms() => ShowModalRooms = ShowModalRooms ? false : true;
         public void ChangeOpenModalComponents() => ShowModalComponents = ShowModalComponents ? false : true;
@@ -208,14 +208,15 @@ namespace FrontEnd.Pages
 
             var res = await _inventoryService.PostInventoryAsync(CurrentInventory);
             CurrentInventory.IdInventory = res.IdInventory;
-            if (FormBlob.CurrentBlobFile.Blob.IdBlobs != null && FormBlob.CurrentBlobFile.Blob.IdBlobs != 0)
-            {
-                BlobsInventory.IdBlobs = FormBlob.CurrentBlobFile.Blob.IdBlobs;
-                BlobsInventory.IdInventory = CurrentInventory.IdInventory;
-                BlobsInventory.IdProperty = _context.CurrentReceptionCertificate.IdProperty;
-                _blobsInventoryService.PostBlobsInventoryAsync(BlobsInventory);
-                NewBlob = new();
-            }
+            LastInventoryAdded = res.IdInventory;
+            //if (FormBlob.CurrentBlobFile.Blob.IdBlobs != null && FormBlob.CurrentBlobFile.Blob.IdBlobs != 0)
+            //{
+            //    BlobsInventory.IdBlobs = FormBlob.CurrentBlobFile.Blob.IdBlobs;
+            //    BlobsInventory.IdInventory = CurrentInventory.IdInventory;
+            //    BlobsInventory.IdProperty = _context.CurrentReceptionCertificate.IdProperty;
+            //    _blobsInventoryService.PostBlobsInventoryAsync(BlobsInventory);
+            //    NewBlob = new();
+            //}
 
             //var bres = await _blobService.PostBlobAsync(FormBlob.CurrentBlobFile);
             //BlobsInventory.IdBlobs = bres.IdBlobs;
@@ -246,14 +247,16 @@ namespace FrontEnd.Pages
 
             var res = await _inventoryService.PostInventoryAsync(CurrentInventory);
             CurrentInventory.IdInventory = res.IdInventory;
-            if (FormBlob.CurrentBlobFile.Blob.IdBlobs != null && FormBlob.CurrentBlobFile.Blob.IdBlobs != 0)
-            {
-                BlobsInventory.IdBlobs = FormBlob.CurrentBlobFile.Blob.IdBlobs;
-                BlobsInventory.IdInventory = CurrentInventory.IdInventory;
-                BlobsInventory.IdProperty = _context.CurrentReceptionCertificate.IdProperty;
-                _blobsInventoryService.PostBlobsInventoryAsync(BlobsInventory);
-                NewBlob = new();
-            }
+            LastInventoryAdded = res.IdInventory;
+
+            //if (FormBlob.CurrentBlobFile.Blob.IdBlobs != null && FormBlob.CurrentBlobFile.Blob.IdBlobs != 0)
+            //{
+            //    BlobsInventory.IdBlobs = FormBlob.CurrentBlobFile.Blob.IdBlobs;
+            //    BlobsInventory.IdInventory = CurrentInventory.IdInventory;
+            //    BlobsInventory.IdProperty = _context.CurrentReceptionCertificate.IdProperty;
+            //    _blobsInventoryService.PostBlobsInventoryAsync(BlobsInventory);
+            //    NewBlob = new();
+            //}
             CurrentInventory = new();
             DescriptionsList = new();
             StateHasChanged();
@@ -265,6 +268,13 @@ namespace FrontEnd.Pages
         public void RemoveService(int IdService)
         {
             ServicesList.Remove(CurrentService);
+        }
+        public void AddInventoryBlob(int IdBlob)
+        {
+            BlobsInventory.IdBlobs = IdBlob;
+            BlobsInventory.IdInventory = LastInventoryAdded;
+            BlobsInventory.IdProperty = _context.CurrentReceptionCertificate.IdProperty;
+            _blobsInventoryService.PostBlobsInventoryAsync(BlobsInventory);
         }
         public class DtoDescription
         {

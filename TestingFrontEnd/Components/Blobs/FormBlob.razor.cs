@@ -14,6 +14,8 @@ namespace FrontEnd.Components.Blobs
         public string[] AllowedExtensions { get; set; } = new[] { ".png", ".jpg" };
         [Parameter]
         public int MaxAllowedSize { get; set; } = 2097152;
+        [Parameter]
+        public EventCallback<int> AddedBlob { get; set; }
 
 
         private readonly IBlobService _blobService;
@@ -65,6 +67,7 @@ namespace FrontEnd.Components.Blobs
                 if (res != null)
                 {
                     CurrentBlobFile.Blob.IdBlobs = res.IdBlobs;
+                    await AddedBlob.InvokeAsync(res.IdBlobs);
                 }
                 //BlobService.BlobFiles.Add(CurrentBlobFile);
             }

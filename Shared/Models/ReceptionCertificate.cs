@@ -26,10 +26,8 @@ namespace SharedLibrary.Models
         [StringLength(150)]
         [Unicode(false)]
         public string Observation { get; set; }
-        [StringLength(200)]
         [Unicode(false)]
         public string ApprovarPathLessor { get; set; }
-        [StringLength(200)]
         [Unicode(false)]
         public string ApprovalPathTenant { get; set; }
         [StringLength(200)]

@@ -99,7 +99,7 @@
          "ObjectType": 1
       }
    ],
-   "UiHint": "prosisdev.prosisdb_3",
+   "UiHint": "arisoft2245.prosisdb_3",
    "UseBoolPropertiesWithoutDefaultSql": false,
    "UseDatabaseNames": false,
    "UseDbContextSplitting": false,

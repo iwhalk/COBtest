@@ -40,7 +40,7 @@ namespace SharedLibrary.Data
             modelBuilder.Entity<Area>(entity =>
             {
                 entity.HasKey(e => e.IdArea)
-                    .HasName("PK__Areas__42A5C44C0FE9F5F8");
+                    .HasName("PK__Areas__42A5C44CA684BD2C");
             });
 
             modelBuilder.Entity<AreaService>(entity =>
@@ -65,13 +65,13 @@ namespace SharedLibrary.Data
             modelBuilder.Entity<Blob>(entity =>
             {
                 entity.HasKey(e => e.IdBlobs)
-                    .HasName("PK__Blobs__DED4FFECA37A54E1");
+                    .HasName("PK__Blobs__DED4FFECE2BD9BCB");
             });
 
             modelBuilder.Entity<BlobsInventory>(entity =>
             {
                 entity.HasKey(e => e.IdBlobsInventory)
-                    .HasName("PK__BlobsInv__1A3C40D35F4BF0DF");
+                    .HasName("PK__BlobsInv__1A3C40D3748599FF");
 
                 entity.HasOne(d => d.IdBlobsNavigation)
                     .WithMany(p => p.BlobsInventories)
@@ -95,7 +95,7 @@ namespace SharedLibrary.Data
             modelBuilder.Entity<Description>(entity =>
             {
                 entity.HasKey(e => e.IdDescription)
-                    .HasName("PK__Descript__145EFCBCD37C2D36");
+                    .HasName("PK__Descript__145EFCBCDBFCDD5E");
 
                 entity.HasOne(d => d.IdFeatureNavigation)
                     .WithMany(p => p.Descriptions)
@@ -107,7 +107,7 @@ namespace SharedLibrary.Data
             modelBuilder.Entity<Feature>(entity =>
             {
                 entity.HasKey(e => e.IdFeature)
-                    .HasName("PK__Features__F3A163F1C20C0900");
+                    .HasName("PK__Features__F3A163F1A43CEEE9");
 
                 entity.HasOne(d => d.IdServiceNavigation)
                     .WithMany(p => p.Features)
@@ -143,13 +143,13 @@ namespace SharedLibrary.Data
             modelBuilder.Entity<Lessor>(entity =>
             {
                 entity.HasKey(e => e.IdLessor)
-                    .HasName("PK__Lessor__67381F3FD281D2EE");
+                    .HasName("PK__Lessors__67381F3FADDB6F38");
             });
 
             modelBuilder.Entity<Property>(entity =>
             {
                 entity.HasKey(e => e.IdProperty)
-                    .HasName("PK__Property__4C63EAA07AD6FF59");
+                    .HasName("PK__Properti__4C63EAA03C35CB01");
 
                 entity.HasOne(d => d.IdLessorNavigation)
                     .WithMany(p => p.Properties)
@@ -184,13 +184,13 @@ namespace SharedLibrary.Data
             modelBuilder.Entity<PropertyType>(entity =>
             {
                 entity.HasKey(e => e.IdPropertyType)
-                    .HasName("PK__Property__EC791A66ACFA202D");
+                    .HasName("PK__Property__EC791A66D11D7F33");
             });
 
             modelBuilder.Entity<ReceptionCertificate>(entity =>
             {
                 entity.HasKey(e => e.IdReceptionCertificate)
-                    .HasName("PK__Actas__4EE6FB68E33B8ACA");
+                    .HasName("PK__Receptio__EA57197C45E9F91C");
 
                 entity.HasOne(d => d.IdAgentNavigation)
                     .WithMany(p => p.ReceptionCertificates)
@@ -213,13 +213,13 @@ namespace SharedLibrary.Data
             modelBuilder.Entity<Service>(entity =>
             {
                 entity.HasKey(e => e.IdService)
-                    .HasName("PK__Services__8C3D4AEFF7ABC97F");
+                    .HasName("PK__Services__8C3D4AEF226DDD96");
             });
 
             modelBuilder.Entity<Tenant>(entity =>
             {
                 entity.HasKey(e => e.IdTenant)
-                    .HasName("PK__Tenant__609A42186A15AA67");
+                    .HasName("PK__Tenants__609A421865AB7F36");
             });
 
             OnModelCreatingGeneratedProcedures(modelBuilder);

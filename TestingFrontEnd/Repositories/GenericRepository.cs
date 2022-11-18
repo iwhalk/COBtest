@@ -50,13 +50,13 @@ namespace FrontEnd.Repositories
             using HttpResponseMessage httpResponse = await _httpClient.PostAsJsonAsync(path, value);
             return await ParseHttpResponseAsync<T>(httpResponse);
         }
-        public async Task<T>? PutAsync<T>(string path, object value)
+        public async Task<T>? PutAsync<T>(string path, T value)
         {
             using HttpResponseMessage httpResponse = await _httpClient.PutAsJsonAsync(path, value);
             return await ParseHttpResponseAsync<T>(httpResponse);
         }
 
-        public async Task<T>? PutAsync<T>(string path, T value)
+        public async Task<T>? PutAsync<T>(string path, HttpContent value)
         {
             using HttpResponseMessage httpResponse = await _httpClient.PutAsJsonAsync(path, value as HttpContent);
             return await ParseHttpResponseAsync<T>(httpResponse);
