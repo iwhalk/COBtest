@@ -29,6 +29,7 @@ namespace FrontEnd.Components
             _context.CurrentLessor = null;
             _context.CurrentPropertys = null;
             _context.CurrentTenant = null;
+            _navigationManager.NavigateTo("/");
         }
 
     }
