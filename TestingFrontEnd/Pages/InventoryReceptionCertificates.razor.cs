@@ -65,6 +65,7 @@ namespace FrontEnd.Pages
 
         private Inventory CurrentInventory { get; set; } = new();
         private Area CurrentArea { get; set; } = new();
+        public List<AreaService>? areaServices { get; private set; }
         private Service CurrentService { get; set; } = new();
         private Description CurrentDescription { get; set; } = new();
         private Feature CurrentFeature { get; set; } = new();
@@ -129,6 +130,11 @@ namespace FrontEnd.Pages
 
 
             AreasList = (await _areaService.GetAreaAsync())?.Take(4).ToList();
+            CurrentArea = AreasList.FirstOrDefault();
+            foreach (var service in Services.Take(4))
+            {
+                CurrentArea.AreaServices.Add(new() { IdService = service.IdService, IdArea = CurrentArea.IdArea });
+            }
             //ServicesList = (await _servicesService.GetServicesAsync())?.Take(3).ToList();
         }
         public void AgregarAreas()
@@ -145,10 +151,18 @@ namespace FrontEnd.Pages
         {
             CurrentArea = AreasList.FirstOrDefault(x => x.IdArea == idArea);
 
-            var areaServices = (await _areaService.GetAreaServicesAsync())?.Where(x=>x.IdArea==idArea).Take(4);
+            if (CurrentArea.AreaServices.Count == 0)
+            {
+                foreach (var service in Services.Take(4))
+                {
+                    CurrentArea.AreaServices.Add(new() { IdService = service.IdService, IdArea = CurrentArea.IdArea });
+                }
+            }
+            //CurrentArea.AreaServices.Add();
+            //areaServices = (await _areaService.GetAreaServicesAsync())?.Where(x=>x.IdArea==idArea).Take(4).ToList();
 
-            ServicesList = Services.Where(x => areaServices.Any(y => x.IdService.Equals(y.IdService))).ToList();
-            //ServicesList = Services.Where(x => CurrentArea.AreaServices.Any(y => x.IdService.Equals(y.IdService))).ToList();
+            //ServicesList = Services.Where(x => areaServices.Any(y => x.IdService.Equals(y.IdService))).ToList();
+            ServicesList = Services.Where(x => CurrentArea.AreaServices.Any(y => x.IdService.Equals(y.IdService))).ToList();
         }
         public void AgregarServicios()
         {
@@ -158,10 +172,10 @@ namespace FrontEnd.Pages
                     ServicesList.Add(selectedService);
             }
 
-            //foreach (var serviceSelected in ServicesList)
-            //{
-            //    CurrentArea.AreaServices.Add(new() { IdService = serviceSelected.IdService});
-            //}
+            foreach (var serviceSelected in ServicesList)
+            {
+                CurrentArea.AreaServices.Add(new() { IdService = serviceSelected.IdService, IdArea = CurrentArea.IdArea });
+            }
             modalServices.SelectedValues = new();
 
             ShowModalComponents = false;
