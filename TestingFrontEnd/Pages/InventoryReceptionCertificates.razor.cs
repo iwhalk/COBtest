@@ -284,6 +284,15 @@ namespace FrontEnd.Pages
             }
             ShowModalRooms = false;
         }
+        public async void HandlePostNewMedidor(string nameMedidor)
+        {
+            Feature? newFeature = new Feature { FeatureName = nameMedidor, IdService = 13 };
+            newFeature = await _featuresService.PostFeaturesAsync(newFeature);
+            if(newFeature != null)
+            {
+                FeaturesList.Add(newFeature);
+            }            
+        }
         public void RemoveArea(int IdArea)
         {
             AreasList.Remove(CurrentArea);
