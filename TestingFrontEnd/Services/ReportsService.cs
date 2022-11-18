@@ -11,9 +11,9 @@ namespace FrontEnd.Services
             _repository = repository;
         }
 
-        public async Task<byte[]> GetReportFeature(int IdProperty)
+        public async Task<byte[]> GetReporteReceptionCertificate(int IdReceptionCertificate)
         {
-            return await _repository.GetAsync<byte[]>($"api/reportes/ReporteReceptionCertificate?IdProperty={IdProperty}");
+            return await _repository.GetAsync<byte[]>($"api/reportes/ReporteReceptionCertificate?IdProperty={IdReceptionCertificate}");
         }
     }
 }
