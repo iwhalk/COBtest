@@ -185,10 +185,10 @@
                                         <tr class="m-10 border h-10">
                                             <td class="p-2">@feature.FeatureName</td>
                                             <td class="pl-3 pr-3">
-                                                <input value="@(dtoDescriptions.FirstOrDefault(x => x.IdFeature == feature.IdFeature)?.Note)" @onchange="@((ChangeEventArgs e) => DescriptionNoteInput(@feature.IdFeature, e))" type="number" class="w-full" />
+                                                <input disabled="@Convert.ToBoolean(feature.IdFeature != FeatureMedidorCurrent && FeatureMedidorCurrent > 0)" value="@(dtoDescriptions.FirstOrDefault(x => x.IdFeature == feature.IdFeature)?.Note)" @onchange="@((ChangeEventArgs e) => DescriptionNoteInput(@feature.IdFeature, e))" type="number" class="w-full @(feature.IdFeature != FeatureMedidorCurrent && FeatureMedidorCurrent > 0 ? "bg-gray-400" : ""))" />
                                             </td>
                                             <td class="pl-3 pr-3">
-                                                <input value="@(dtoDescriptions.FirstOrDefault(x => x.IdFeature == feature.IdFeature)?.Observation)" @onchange="@((ChangeEventArgs e) => DescriptionObservationInput(@feature.IdFeature, e))" type="number" class="w-full" />
+                                                <input disabled="@Convert.ToBoolean(feature.IdFeature != FeatureMedidorCurrent && FeatureMedidorCurrent > 0)" value="@(dtoDescriptions.FirstOrDefault(x => x.IdFeature == feature.IdFeature)?.Observation)" @onchange="@((ChangeEventArgs e) => DescriptionObservationInput(@feature.IdFeature, e))" type="text" class="w-full @(feature.IdFeature != FeatureMedidorCurrent && FeatureMedidorCurrent > 0 ? "bg-gray-400" : "")) " />
                                                 @*<input @bind-value="CurrentInventory.Observation" type="text" class="border-2 bg-slate-100 ml-5  flex justify-end">*@
                                             </td>
                                         </tr>
