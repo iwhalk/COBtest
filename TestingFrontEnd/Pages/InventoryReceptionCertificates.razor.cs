@@ -10,6 +10,7 @@ using FrontEnd.Components.Blobs;
 using System.Runtime.CompilerServices;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.EntityFrameworkCore.ChangeTracking.Internal;
+using System.Reflection.Metadata.Ecma335;
 
 namespace FrontEnd.Pages
 {
@@ -96,13 +97,11 @@ namespace FrontEnd.Pages
             ServiceButtonClicked(13);
             ShowModalGauges = ShowModalGauges ? false : true;
         }
-
         public void ChangeOpenModalKeys()
         {
             ServiceButtonClicked(14);
             ShowModalkeys = ShowModalkeys ? false : true;
         }
-
         public void ChangeButtonsShow(string newButtonsShow)
         {
             TypeButtonsInventory = newButtonsShow;
@@ -114,11 +113,9 @@ namespace FrontEnd.Pages
             if (newButtonsShow == "EstadoGeneral")
                 StatusSelect = "";
         }
-
         public void SetColor(string newColor) => ColorSelect = newColor;
         public void SetMaterial(string newMaterial) => MaterialSelect = newMaterial;
         public void SetStatus(string newStatus) => StatusSelect = newStatus;
-
         protected override async Task OnInitializedAsync()
         {
             Services = await _servicesService.GetServicesAsync();
@@ -193,7 +190,6 @@ namespace FrontEnd.Pages
             DescriptionsList = (await _descriptionService.GetDescriptionAsync())?.Where(x => x.IdFeature == IdFeature)?.ToList();
             StateHasChanged();
         }
-
         public async void DescriptionNoteInput(int IdFeature, ChangeEventArgs e)
         {
             dtoDescriptions.FirstOrDefault(x => x.IdFeature == IdFeature).Note = e.Value.ToString();
@@ -230,6 +226,24 @@ namespace FrontEnd.Pages
             CurrentInventory = new();
             DescriptionsList = new();
             StateHasChanged();
+        }
+        public async void DescriptionObservationInput(int IdFeature, ChangeEventArgs e)
+        {
+
+            //var currentDTO = dtoDescriptions.FirstOrDefault(x => x.IdFeature == IdFeature).Note = e.Value.ToString();
+            //InventoriesList.FirstOrDefault(x => x.IdInventory == );
+            //if (currentDTO != null)
+            //{
+            //    //Ya se cereo un DTO Dedes Note + su inventario
+            //}
+            //else
+            //{
+
+            //}
+            
+
+            
+
         }
         public async void DescriptionButtonClicked(int idDescription)
         {
@@ -338,7 +352,7 @@ namespace FrontEnd.Pages
             _navigate.NavigateTo("/ReceptionCertificate/Signatures");
         }
         public class DtoDescription
-        {
+        {            
             public int IdDescription { get; set; }
             public int IdService { get; set; }
             public int IdFeature { get; set; }
