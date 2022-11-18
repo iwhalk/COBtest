@@ -203,7 +203,7 @@ namespace FrontEnd.Pages
             CurrentInventory.Note = e.Value.ToString();
             CurrentInventory.IdProperty = _context.CurrentReceptionCertificate.IdProperty;
             CurrentInventory.IdArea = CurrentArea.IdArea;
-            CurrentInventory.IdDescription = DescriptionsList.FirstOrDefault()?.IdDescription ?? 1;
+            CurrentInventory.IdDescription = DescriptionsList.FirstOrDefault()?.IdDescription ?? 1;            
 
             InventoriesList.Add(CurrentInventory);
 
@@ -231,7 +231,6 @@ namespace FrontEnd.Pages
             DescriptionsList = new();
             StateHasChanged();
         }
-
         public async void DescriptionButtonClicked(int idDescription)
         {
             var name = Descriptions?.FirstOrDefault(x => x.IdDescription == idDescription)?.DescriptionName;
@@ -239,7 +238,7 @@ namespace FrontEnd.Pages
             //CurrentInventory = new();
             CurrentInventory.IdProperty = _context.CurrentReceptionCertificate.IdProperty;
             CurrentInventory.IdArea = CurrentArea.IdArea;
-            CurrentInventory.IdDescription = idDescription;
+            CurrentInventory.IdDescription = idDescription;            
             //CurrentInventory.Note = name;
 
             //var newInventory = new Inventory { IdArea = CurrentArea.IdArea, IdProperty = 2, IdDescription = idDescription, Note = name, };
@@ -345,6 +344,7 @@ namespace FrontEnd.Pages
             public int IdFeature { get; set; }
             public string Description { get; set; }
             public string Note { get; set; }
+            public string Observation { get; set; }
         }
     }
 }
