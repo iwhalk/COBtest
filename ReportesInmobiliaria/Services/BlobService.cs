@@ -24,7 +24,7 @@ namespace ReportesInmobiliaria.Services
             var blob = await _dbContext.Blobs.FindAsync(id);
             if (blob == null) return null;
 
-            var blobContainerClient = _blobServiceClient.GetBlobContainerClient("inventories");
+            var blobContainerClient = _blobServiceClient.GetBlobContainerClient("inventoryblobs");
             var blobClient = blobContainerClient.GetBlobClient(blob.BlodName);
 
             var blobFile = await blobClient.DownloadAsync();
@@ -36,7 +36,7 @@ namespace ReportesInmobiliaria.Services
             
             try
             {
-                var blobContainerClient = _blobServiceClient.GetBlobContainerClient("inventories");
+                var blobContainerClient = _blobServiceClient.GetBlobContainerClient("inventoryblobs");
                 var blobClient = blobContainerClient.GetBlobClient(name);
 
                 var newBlob = new Blob
