@@ -1,4 +1,5 @@
 ﻿using FrontEnd.Interfaces;
+using FrontEnd.Stores;
 using Microsoft.AspNetCore.Components;
 using SharedLibrary.Models;
 using System.Collections;
@@ -9,9 +10,11 @@ namespace FrontEnd.Components
     {
 
         private readonly IAreaService _areaService;
-        public ModalAreas(IAreaService areaService)
+        private readonly ApplicationContext _context;
+        public ModalAreas(ApplicationContext context,IAreaService areaService)
         {
             _areaService = areaService;
+            _context = context;
         }
 
         [Parameter]
@@ -20,16 +23,25 @@ namespace FrontEnd.Components
         public List<Area> Areas { get; set; } = new();
         public List<Area> SelectedValues { get; set; } = new();
         [Parameter]
-        public Area Area { get; set; } = new();
-        [Parameter]
-        public bool ShowModal { get; set; } = false;
+        public Area Area { get; set; } = new();        
         [Parameter]
         public EventCallback OnClick { get; set; }
         [Parameter]
         public EventCallback AgregarOnClick { get; set; }
+        [Parameter]
+        public EventCallback<string> PostNewArea { get; set; }
+        public string NameArea { get; set; }
         protected override async Task OnInitializedAsync()
         {
             Areas = await _areaService.GetAreaAsync();
+        }
+        private async void CleanBeforePostArea()
+        {
+            await PostNewArea.InvokeAsync(NameArea);
+            NameArea = "";
+            //await OnClick.InvokeAsync();
+            //_context.Area = null;          
+            //Areas = await _areaService.GetAreaAsync();
         }
         public void CheckboxClicked(Area aSelectedId, object aChecked)
         {
