@@ -21,7 +21,7 @@ namespace FrontEnd.Components.Propertys
         public EditContext PropertyEditContext;
         protected override void OnInitialized()
         {
-            PropertyEditContext = new EditContext(CurrentProperty);
+            PropertyEditContext = new EditContext(CurrentProperty);            
         }
     }
 }
