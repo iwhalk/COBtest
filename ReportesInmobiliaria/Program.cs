@@ -24,7 +24,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 
 var builder = WebApplication.CreateBuilder(args);
-var connectionString = "Server=prosisdev.database.windows.net;Database=prosisdb_3;User=PROSIS_DEVELOPER;Password=PR0515_D3ev3l0p3r;MultipleActiveResultSets=true";
+var connectionString = "Server=arisoft2245.database.windows.net;Database=prosisdb_3;User=PROSIS_DEVELOPER;Password=PR0515_D3ev3l0p3r;MultipleActiveResultSets=true";
 var secretKey = builder.Configuration.GetValue<string>("SecretKey");
 var key = Encoding.ASCII.GetBytes(secretKey);
 
