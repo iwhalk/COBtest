@@ -19,6 +19,10 @@ namespace FrontEnd.Components.Blobs
         [Parameter]
         public EventCallback<int> AddedBlob { get; set; }
 
+        [Parameter]
+        public string HeigthContent { get; set; }
+        [Parameter]
+        public string SizeImg { get; set; }
 
         private readonly IBlobService _blobService;
         public BlobFile CurrentBlobFile { get; set; }
