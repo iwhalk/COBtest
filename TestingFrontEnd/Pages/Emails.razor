@@ -24,9 +24,9 @@
         </div>
     </div>
     <div id="Botones" class="flex justify-center -my-14">
-        <button @onclick="HandlePreviewPdf" class="py-2 my-4 w-48 border rounded-lg text-white text-xl shadow-xl" style="background-color: #2B286F;">Previsualizar</button>
+            <button disabled="@DisablePreView" @onclick="HandlePreviewPdf" class="py-2 my-4 w-48 border rounded-lg text-white text-xl shadow-xl @(DisablePreView ? "bg-gray-400" : "bg-[#2B286F]")">Previsualizar</button>
         <button @onclick="HandleSaveReceptionCertificate" class="py-2 my-4 w-48 border rounded-lg text-white text-xl shadow-xl" style="background-color: #2B286F;">Guardar</button>
-            <button @onclick="SendMenssage" class="py-2 my-4 w-48 border rounded-lg text-white text-xl shadow-xl" style="background-color: #2B286F;">Enviar</button>
+        <button @onclick="SendMenssage" class="py-2 my-4 w-48 border rounded-lg text-white text-xl shadow-xl" style="background-color: #2B286F;">Enviar</button>
     </div>   
         <ModalCreateReceptionCertificates ShowModal="@ShowModalSend"></ModalCreateReceptionCertificates>
     </div>
