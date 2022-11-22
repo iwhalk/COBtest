@@ -435,8 +435,8 @@ namespace ReportesInmobiliaria.Utilities
             //Image img = Image.FromStream(ms);
             //var asda = "base64:" + System.Convert.ToBase64String(plainTextBytes);
 
-            rowF1.Cells[0].AddImage(ImageSource.FromStream("Firma Arrendador", () => streamArrendador));
-            rowF1.Cells[1].AddImage(ImageSource.FromStream("Firma Arrendatario", () => streamArrendatario));
+            rowF1.Cells[0].AddParagraph().AddImage(ImageSource.FromStream("Firma Arrendador", () => streamArrendador)).Width = "4.8cm";
+            rowF1.Cells[0].AddParagraph().AddImage(ImageSource.FromStream("Firma Arrendatario", () => streamArrendatario)).Width = "4.8cm";
             Row rowF2 = tablaFirmas.AddRow();
             rowF2.Format.Font.Size = 12;
             rowF2.VerticalAlignment = VerticalAlignment.Center;
