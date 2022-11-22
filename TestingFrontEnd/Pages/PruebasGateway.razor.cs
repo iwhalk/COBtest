@@ -16,8 +16,7 @@ namespace FrontEnd.Pages
 
         protected override async Task OnInitializedAsync()
         {
-            Console.WriteLine("si llego aca");
-            ListArea = await _reception.GetReceptionCertificatesAsync(null, null, null, null, null, null, null, null, null, null, null);            
+            Console.WriteLine("si llego aca");       
         }
     }
 }

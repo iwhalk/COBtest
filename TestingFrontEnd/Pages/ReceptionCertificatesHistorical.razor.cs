@@ -31,8 +31,8 @@ namespace FrontEnd.Pages
         {
             TypeTableHistoricalOrPending = _context.TypeHistoricalOrPending;
             currentPage = 1;
-            rowNumberForPage = 10;                                                        
-            actasRecepcions = await _reception.GetReceptionCertificatesAsync(null, null, null, null, null, null, null, null, null, currentPage, rowNumberForPage);
+            rowNumberForPage = 8;                                                        
+            actasRecepcions = await _reception.GetReceptionCertificatesAsync(null, null, null, null, null, null, null, null, null, currentPage, rowNumberForPage, _context.Completed);
             maxNumberPage = _context.MaxNumberPagination;
             _context.CurrentFilterPagination = new FilterReceptionCertificate();
             _context.ListPageInPaginate = CreatePaginationNumber();
@@ -48,13 +48,13 @@ namespace FrontEnd.Pages
             {
                 string auxS = filterReception.StartDay.Value.Date.ToString("yyyy-MM-dd");
                 string auxE = filterReception.EndDay.Value.Date.ToString("yyyy-MM-dd");
-                actasRecepcions = await _reception.GetReceptionCertificatesAsync(auxS, auxE, filterReception.CertificateType, filterReception.PropertyType, filterReception.NumberOfRooms, filterReception.Lessor, filterReception.Tenant, filterReception.Delegation, filterReception.Agent, currentPage, rowNumberForPage);                                
+                actasRecepcions = await _reception.GetReceptionCertificatesAsync(auxS, auxE, filterReception.CertificateType, filterReception.PropertyType, filterReception.NumberOfRooms, filterReception.Lessor, filterReception.Tenant, filterReception.Delegation, filterReception.Agent, currentPage, rowNumberForPage, _context.Completed);                                
                 maxNumberPage = _context.MaxNumberPagination;
                 _context.ListPageInPaginate = CreatePaginationNumber();
             }
             else
             {
-                actasRecepcions = await _reception.GetReceptionCertificatesAsync(null, null, filterReception.CertificateType, filterReception.PropertyType, filterReception.NumberOfRooms, filterReception.Lessor, filterReception.Tenant, filterReception.Delegation, filterReception.Agent, currentPage, rowNumberForPage);                                
+                actasRecepcions = await _reception.GetReceptionCertificatesAsync(null, null, filterReception.CertificateType, filterReception.PropertyType, filterReception.NumberOfRooms, filterReception.Lessor, filterReception.Tenant, filterReception.Delegation, filterReception.Agent, currentPage, rowNumberForPage, _context.Completed);                                
                 maxNumberPage = _context.MaxNumberPagination;
                 _context.ListPageInPaginate = CreatePaginationNumber();
             }
@@ -100,13 +100,13 @@ namespace FrontEnd.Pages
             {
                 string auxS = filterReception.StartDay.Value.Date.ToString("yyyy-MM-dd");
                 string auxE = filterReception.EndDay.Value.Date.ToString("yyyy-MM-dd");
-                actasRecepcions = await _reception.GetReceptionCertificatesAsync(auxS, auxE, filterReception.CertificateType, filterReception.PropertyType, filterReception.NumberOfRooms, filterReception.Lessor, filterReception.Tenant, filterReception.Delegation, filterReception.Agent, currentPage, rowNumberForPage);
+                actasRecepcions = await _reception.GetReceptionCertificatesAsync(auxS, auxE, filterReception.CertificateType, filterReception.PropertyType, filterReception.NumberOfRooms, filterReception.Lessor, filterReception.Tenant, filterReception.Delegation, filterReception.Agent, currentPage, rowNumberForPage, _context.Completed);
                 maxNumberPage = _context.MaxNumberPagination;
                 _context.ListPageInPaginate = CreatePaginationNumber();
             }
             else
             {
-                actasRecepcions = await _reception.GetReceptionCertificatesAsync(null, null, filterReception.CertificateType, filterReception.PropertyType, filterReception.NumberOfRooms, filterReception.Lessor, filterReception.Tenant, filterReception.Delegation, filterReception.Agent, currentPage, rowNumberForPage);
+                actasRecepcions = await _reception.GetReceptionCertificatesAsync(null, null, filterReception.CertificateType, filterReception.PropertyType, filterReception.NumberOfRooms, filterReception.Lessor, filterReception.Tenant, filterReception.Delegation, filterReception.Agent, currentPage, rowNumberForPage, _context.Completed);
                 maxNumberPage = _context.MaxNumberPagination;
                 _context.ListPageInPaginate = CreatePaginationNumber();
             }
@@ -125,21 +125,21 @@ namespace FrontEnd.Pages
             {
                 string auxS = filterReception.StartDay.Value.Date.ToString("yyyy-MM-dd");
                 string auxE = filterReception.EndDay.Value.Date.ToString("yyyy-MM-dd");
-                actasRecepcions = await _reception.GetReceptionCertificatesAsync(auxS, auxE, filterReception.CertificateType, filterReception.PropertyType, filterReception.NumberOfRooms, filterReception.Lessor, filterReception.Tenant, filterReception.Delegation, filterReception.Agent, currentPage, rowNumberForPage);
+                actasRecepcions = await _reception.GetReceptionCertificatesAsync(auxS, auxE, filterReception.CertificateType, filterReception.PropertyType, filterReception.NumberOfRooms, filterReception.Lessor, filterReception.Tenant, filterReception.Delegation, filterReception.Agent, currentPage, rowNumberForPage, _context.Completed);
                 maxNumberPage = _context.MaxNumberPagination;
                 _context.ListPageInPaginate = CreatePaginationNumber();
             }
             else
             {
-                actasRecepcions = await _reception.GetReceptionCertificatesAsync(null, null, filterReception.CertificateType, filterReception.PropertyType, filterReception.NumberOfRooms, filterReception.Lessor, filterReception.Tenant, filterReception.Delegation, filterReception.Agent, currentPage, rowNumberForPage);
+                actasRecepcions = await _reception.GetReceptionCertificatesAsync(null, null, filterReception.CertificateType, filterReception.PropertyType, filterReception.NumberOfRooms, filterReception.Lessor, filterReception.Tenant, filterReception.Delegation, filterReception.Agent, currentPage, rowNumberForPage, _context.Completed);
                 maxNumberPage = _context.MaxNumberPagination;
                 _context.ListPageInPaginate = CreatePaginationNumber();
             }
             StateHasChanged();
         }
-        public async void HandlePreviewPdf(int IdProperty)
+        public async void HandlePreviewPdf(int IdReceptionCertificate)
         {            
-            BlobPDFPreview = await _reportService.GetReportFeature(IdProperty);
+            BlobPDFPreview = await _reportService.GetReporteReceptionCertificate(IdReceptionCertificate);
             if (BlobPDFPreview != null)
             {
                 showModalPDFPreview = true;

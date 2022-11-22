@@ -37,13 +37,11 @@
             <div class="flex my-2 lg:mb-3">
                 <label class="w-44 lg:w-32 text-left text-sm lg:text-md">Tipo de Inmueble</label>
                     <div>
-                        <select class="w-36 lg:w-32 ml-2 px-2 rounded-lg text-black" @bind="@CurrentProperty.IdPropertyType">
-
+                        <select class="w-36 lg:w-32 ml-2 px-2 rounded-lg text-black @(IsFormPropertyExit ? "bg-[#666495]" : "")" @bind="@CurrentProperty.IdPropertyType" disabled="@IsFormPropertyExit">
                             @foreach (var property in PropertyTypes)
                             {
                                 <option value="@property.IdPropertyType">@(property.PropertyTypeName)</option>
                             }
-
                         </select>
                     @*<InputNumber @bind-Value="CurrentProperty.IdPropertyType" disabled="@IsFormPropertyExit" class="w-36 lg:w-32 ml-2 px-2 rounded-lg text-black"/>*@
                     <div class="text-xs"><ValidationMessage class="text-xs" For="@(() => CurrentProperty.IdPropertyType)" /></div>

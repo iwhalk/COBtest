@@ -75,12 +75,13 @@ namespace FrontEnd.Pages
         {
             if (CurrentReceptionCertificate != null)
             {                
-                var IdProperty = CurrentReceptionCertificate.IdProperty;                
-                BlobPDFPreview = await _reportService.GetReportFeature(IdProperty);
+                var IdReceptionCertificate = CurrentReceptionCertificate.IdReceptionCertificate;                
+                BlobPDFPreview = await _reportService.GetReporteReceptionCertificate(IdReceptionCertificate);
                 if (BlobPDFPreview != null)
                 {
                     ShowModalPreview = true;
-                    PdfName = "PDFPreview.pdf";                    
+                    PdfName = "PDFPreview.pdf";
+                    StateHasChanged();
                 }
             }        
         }

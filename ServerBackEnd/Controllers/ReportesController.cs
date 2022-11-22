@@ -30,9 +30,9 @@ namespace ApiGateway.Controllers
         }
 
         [HttpGet("ReporteReceptionCertificate")]
-        public async Task<ActionResult> GetReporteReceptionCertificate(int idProperty)
+        public async Task<ActionResult> GetReporteReceptionCertificate(int IdReceptionCertificate)
         {
-            var result = await _resportesService.GEetReporteReceptionCertificateAsync(idProperty);
+            var result = await _resportesService.GEetReporteReceptionCertificateAsync(IdReceptionCertificate);
 
             if (result.Succeeded)
             {

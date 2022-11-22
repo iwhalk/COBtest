@@ -63,12 +63,12 @@ builder.Services.AddAuthentication(options =>
     });
 
 builder.Services.AddAuthentication();
-builder.Services.AddAuthorization(cfg =>
-{
-    cfg.FallbackPolicy = new AuthorizationPolicyBuilder()
-        .RequireAuthenticatedUser()
-        .Build();
-});
+//builder.Services.AddAuthorization(cfg =>
+//{
+//    cfg.FallbackPolicy = new AuthorizationPolicyBuilder()
+//        .RequireAuthenticatedUser()
+//        .Build();
+//});
 
 builder.Services.AddLogging(loggingBuilder =>
 {
@@ -113,7 +113,7 @@ app.UseSwaggerUI();
 
 app.UseAuthentication();
 
-//app.UseAuthorization();
+app.UseAuthorization();
 
 //app.UseHttpsRedirection();
 
@@ -541,7 +541,7 @@ app.MapGet("/ReporteActaEntrega", async (string idProperty, IReporteActaEntregaS
     try
 
     {
-        var newModule = await _reportesService.GetActaEntrega(idProperty);
+        var newModule = await _reportesService.GetActaEntrega(idReceptionCertificate);
         if (newModule == null) return Results.NoContent();
         //System.IO.File.WriteAllBytes("ReporteTransaccionesCrucesTotales.pdf", newModule);
         return Results.File(newModule, "application/pdf");

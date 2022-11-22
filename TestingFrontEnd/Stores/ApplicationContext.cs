@@ -31,6 +31,7 @@ namespace FrontEnd.Stores
         private List<AspNetUser> listUserAsp;
         private AspNetUser currentUser;
         private List<Area> currentAreasList;
+        private bool completed;
 
         public List<AspNetUser> ListUserAsp
         {
@@ -258,6 +259,16 @@ namespace FrontEnd.Stores
             set
             {
                 errorMessage = value;
+                NotifyStateChanged();
+            }
+        }
+
+        public bool Completed
+        {
+            get => completed;
+            set
+            {
+                completed = value;
                 NotifyStateChanged();
             }
         }

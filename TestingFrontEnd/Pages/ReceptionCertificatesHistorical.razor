@@ -2,7 +2,7 @@
 @attribute [Authorize]
 <PageTitle>Actas</PageTitle>
 
-<body class="flex flex-column min-h-screen bg-[url('/assets/img/fondocasa.png')] imgfondo">   
+<body class="flex flex-column min-h-screen bg-[url('/assets/img/fondocasa.png')] imgfondo">
     <div class="my-auto">
         <div id="TituloActas" class="flex justify-center">
             @if(_context.TypeHistoricalOrPending == "Historical")
@@ -15,7 +15,11 @@
             }
         </div>            
         <HeaderReceptionCertificatePendingOrHistorical ChageFilters="Filter"></HeaderReceptionCertificatePendingOrHistorical>
-        <ReceptionCertificatesPedingOrHistorical PreviewPdf="@HandlePreviewPdf" ActasRecepcions="actasRecepcions" TypeTableReception="TypeTableHistoricalOrPending"></ReceptionCertificatesPedingOrHistorical>
+        <div class="pb-30">
+
+            <ReceptionCertificatesPedingOrHistorical PreviewPdf="@HandlePreviewPdf" ActasRecepcions="actasRecepcions" TypeTableReception="TypeTableHistoricalOrPending"></ReceptionCertificatesPedingOrHistorical>
+
+        </div>
         <PaginationReceptionCertificate ChangePagination="HandlePaginationAction" ChangePaginationForNumber="HandlePaginationForPage" CurrentPage="currentPage" NumberPage="rowNumberForPage" MaxNumberPages="maxNumberPage"></PaginationReceptionCertificate>
     </div>
     @if (showModalPDFPreview)

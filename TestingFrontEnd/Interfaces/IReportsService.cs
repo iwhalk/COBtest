@@ -4,6 +4,6 @@ namespace FrontEnd.Interfaces
 {
     public interface IReportsService
     {
-        Task<byte[]> GetReportFeature(int Id);
+        Task<byte[]> GetReporteReceptionCertificate(int IdReceptionCertificate);
     }
 }

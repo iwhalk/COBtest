@@ -91,8 +91,8 @@ namespace FrontEnd.Pages
             lessorValid = formLessor.LessorEditContext.GetValidationMessages();
             tenantValid = formTenant.TenantEditContext.GetValidationMessages();
             propertyValid = formProperty.PropertyEditContext.GetValidationMessages();            
-            //if (lessorValid && tenantValid && propertyValid)
-            //{
+            if (!string.IsNullOrEmpty(NewReceptionCertificate.ContractNumber)) 
+            {
                 try
                 {
                     MyProperty = 10;
@@ -140,7 +140,8 @@ namespace FrontEnd.Pages
                 {
                     Console.WriteLine(ex.Message);
                 }
-            //}            
+            }
+            return;
         }
         protected override async Task OnInitializedAsync()
         {
@@ -149,6 +150,7 @@ namespace FrontEnd.Pages
             properties = await _propertyService.GetPropertyAsync();
             users = await _userService.GetUsersAsync();
             propertyTypes = await _propertyTypeService.GetPropertyTypeAsync();
+            CurrentProperty.IdPropertyType = propertyTypes[0].IdPropertyType;
 
             var authstate = await _getAuthenticationStateAsync.GetAuthenticationStateAsync();
             UserId = authstate.User.Claims.FirstOrDefault(x => x.Type.Equals("sub")).Value;

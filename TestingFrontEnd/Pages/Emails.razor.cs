@@ -1,4 +1,6 @@
-﻿using FrontEnd.Interfaces;
+﻿using FrontEnd.Components;
+using FrontEnd.Interfaces;
+using FrontEnd.Services;
 using FrontEnd.Stores;
 using Microsoft.AspNetCore.Components;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
@@ -14,13 +16,15 @@ namespace FrontEnd.Pages
         private readonly ILessorService _lessorService;
         private readonly ITenantService _tenantService;
         private readonly IPropertyService _propertyService;
-        public Emails(IMailAriService mailAriService, ApplicationContext context, ILessorService lessorService, ITenantService tenantService, IPropertyService propertyService)
+        private readonly IReportsService _reportService;
+        public Emails(IMailAriService mailAriService, ApplicationContext context, ILessorService lessorService, ITenantService tenantService, IPropertyService propertyService, IReportsService reportService)
         {
             _mailAriService = mailAriService;
             _context = context;
             _lessorService = lessorService;
             _tenantService = tenantService;
             _propertyService = propertyService;
+            _reportService = reportService;
         }
 
         public bool ShowModalSend { get; set; }
@@ -43,6 +47,11 @@ namespace FrontEnd.Pages
         private bool? agenciaCheck { get; set; } = null;
         private bool? agenteCheck { get; set; } = null;
         private bool? otroCheck { get; set; } = null;
+        public bool ShowModalPreview { get; set; }
+        public string PdfName { get; set; } = null;
+        public byte[] BlobPDFPreview { get; set; }
+
+        public void ChangeOpenModalPreview() => ShowModalPreview = ShowModalPreview ? false : true;
 
         protected override async Task OnInitializedAsync()
         {
@@ -61,7 +70,24 @@ namespace FrontEnd.Pages
             //property = properties.FirstOrDefault(x => x.IdLessor == _context.CurrentReceptionCertificate.IdProperty);
             //lessor = lessors.FirstOrDefault(x => x.IdLessor == property.IdLessor).EmailAddress;
         }
-
+        public async void HandleSaveReceptionCertificate()
+        {
+            SendMenssage();
+        }
+        public async void HandlePreviewPdf()
+        {
+            if (_context.CurrentReceptionCertificate != null)
+            {
+                var IdReceptionCertificate = _context.CurrentReceptionCertificate.IdReceptionCertificate;
+                BlobPDFPreview = await _reportService.GetReporteReceptionCertificate(IdReceptionCertificate);
+                if (BlobPDFPreview != null)
+                {
+                    ShowModalPreview = true;
+                    PdfName = "PDFPreview.pdf";
+                    StateHasChanged();
+                }
+            }
+        }
         private async Task SendMenssage()
         {
             int idProperty = _context.CurrentReceptionCertificate.IdProperty;

@@ -319,6 +319,8 @@ namespace ReportesInmobiliaria.Utilities
                     if (j == 3)
                         break;
                     string currentUri = blobUris.ElementAt(j);
+                    if (currentUri.Contains(".webp"))
+                        continue;
                     var currentImage = new BlobClient(new Uri(currentUri)).DownloadContent();
                     rowI.Cells[j].Format.Alignment = ParagraphAlignment.Center;
                     rowI.Cells[j].VerticalAlignment = VerticalAlignment.Center;
@@ -387,6 +389,8 @@ namespace ReportesInmobiliaria.Utilities
                     if (j == 3)
                         break;
                     string currentUri = blobUris.ElementAt(j);
+                    if (currentUri.Contains(".webp"))
+                        continue;
                     var currentImage = new BlobClient(new Uri(currentUri)).DownloadContent();                    
                     rowI.Cells[j].Format.Alignment = ParagraphAlignment.Center;
                     rowI.Cells[j].VerticalAlignment = VerticalAlignment.Center;
