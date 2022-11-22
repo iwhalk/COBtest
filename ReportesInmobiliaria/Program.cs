@@ -24,7 +24,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 
 var builder = WebApplication.CreateBuilder(args);
-var connectionString = "Server=prosisdev.database.windows.net;Database=prosisdb_3;User=PROSIS_DEVELOPER;Password=PR0515_D3ev3l0p3r;MultipleActiveResultSets=true";
+var connectionString = "Server=arisoft2245.database.windows.net;Database=prosisdb_3;User=PROSIS_DEVELOPER;Password=PR0515_D3ev3l0p3r;MultipleActiveResultSets=true";
 var secretKey = builder.Configuration.GetValue<string>("SecretKey");
 var key = Encoding.ASCII.GetBytes(secretKey);
 
@@ -536,7 +536,7 @@ app.MapPost("/Feature", async (Feature feature, IFeaturesService _featuresServic
 #endregion Features
 
 #region ReportesPDF
-app.MapGet("/ReporteActaEntrega", async (int idProperty, IReporteActaEntregaService _reportesService, ILogger<Program> _logger) =>
+app.MapGet("/ReporteActaEntrega", async (string idProperty, IReporteActaEntregaService _reportesService, ILogger<Program> _logger) =>
 {
     try
 
@@ -826,7 +826,7 @@ app.MapPut("/ReceptionCertificate/{Id}", async (int Id, ReceptionCertificate rec
 #endregion
 
 #region Mail
-app.MapGet("/SendReceptionCertificate", async (int idProperty, string email, IReporteActaEntregaService _reportesService, IMailService _mailService, ILogger<Program> _logger) =>
+app.MapGet("/SendReceptionCertificate", async (string idProperty, string email, IReporteActaEntregaService _reportesService, IMailService _mailService, ILogger<Program> _logger) =>
 {
     try
 

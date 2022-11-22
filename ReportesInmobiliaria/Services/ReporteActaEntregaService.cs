@@ -26,11 +26,11 @@ namespace ReportesInmobiliaria.Services
             _reportesFactory = reportesFactory;
         }
 
-        public async Task<byte[]> GetActaEntrega(int idProperty)
+        public async Task<byte[]> GetActaEntrega(string idProperty)
         {
             ReporteActaEntrega reporteActaEntrega = new()
             {
-                header = await _dbContext.Procedures.SP_GET_AERI_HEADERAsync(idProperty),
+                header = await _dbContext.Procedures.SP_GET_AERI_HEADERAsync(Int32.Parse(idProperty)),
                 areas = await _dbContext.Procedures.SP_GET_AERI_AREASAsync(idProperty),
                 deliverables = await _dbContext.Procedures.SP_GET_AERI_DELIVERABLESAsync(idProperty)
             };
