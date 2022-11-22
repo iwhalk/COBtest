@@ -13,7 +13,7 @@ namespace FrontEnd.Services
 
         public async Task<byte[]> GetReporteReceptionCertificate(int IdReceptionCertificate)
         {
-            return await _repository.GetAsync<byte[]>($"api/reportes/ReporteReceptionCertificate?IdProperty={IdReceptionCertificate}");
+            return await _repository.GetAsync<byte[]>($"api/reportes/ReporteReceptionCertificate?IdReceptionCertificate={IdReceptionCertificate}");
         }
     }
 }

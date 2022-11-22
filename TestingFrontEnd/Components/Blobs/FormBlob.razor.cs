@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Components;
 using SharedLibrary.Models;
 using FrontEnd.Models;
 using FrontEnd.Interfaces;
+using System.Text;
+using System.Reflection.Metadata.Ecma335;
 
 namespace FrontEnd.Components.Blobs
 {
@@ -17,11 +19,16 @@ namespace FrontEnd.Components.Blobs
         [Parameter]
         public EventCallback<int> AddedBlob { get; set; }
 
+        [Parameter]
+        public string HeigthContent { get; set; }
+        [Parameter]
+        public string SizeImg { get; set; }
 
         private readonly IBlobService _blobService;
-
         public BlobFile CurrentBlobFile { get; set; }
         public EditContext CurrentBlobFileEditContext;
+
+        public List<string> ListBase64Blobs { get; set; } = new();
 
         private string FileName = "";
 
@@ -55,9 +62,8 @@ namespace FrontEnd.Components.Blobs
                 using var stream = eventArgs.File.OpenReadStream();
                 using var memoryStream = new MemoryStream();
                 await stream.CopyToAsync(memoryStream);
-
+                
                 CurrentBlobFile.FileStream = new MemoryStream(memoryStream.ToArray());
-
                 CurrentBlobFile.Blob.BlodName = eventArgs.File.Name;
                 CurrentBlobFile.Blob.BlobSize = CurrentBlobFile.FileStream.Length.ToString();
                 CurrentBlobFile.Blob.BlodTypeId = "1";
@@ -65,7 +71,8 @@ namespace FrontEnd.Components.Blobs
 
                 var res = await _blobService.PostBlobAsync(CurrentBlobFile);
                 if (res != null)
-                {
+                {                    
+                    ListBase64Blobs.Add("data:image/jpeg;base64," + Convert.ToBase64String(memoryStream.ToArray()));
                     CurrentBlobFile.Blob.IdBlobs = res.IdBlobs;
                     await AddedBlob.InvokeAsync(res.IdBlobs);
                 }
