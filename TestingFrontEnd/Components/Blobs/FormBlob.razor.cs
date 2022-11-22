@@ -4,6 +4,7 @@ using SharedLibrary.Models;
 using FrontEnd.Models;
 using FrontEnd.Interfaces;
 using System.Text;
+using System.Reflection.Metadata.Ecma335;
 
 namespace FrontEnd.Components.Blobs
 {
@@ -22,6 +23,8 @@ namespace FrontEnd.Components.Blobs
         private readonly IBlobService _blobService;
         public BlobFile CurrentBlobFile { get; set; }
         public EditContext CurrentBlobFileEditContext;
+
+        public List<string> ListBase64Blobs { get; set; } = new();
 
         private string FileName = "";
 
@@ -64,8 +67,8 @@ namespace FrontEnd.Components.Blobs
 
                 var res = await _blobService.PostBlobAsync(CurrentBlobFile);
                 if (res != null)
-                {
-                    var base64Blod = Convert.ToBase64String(memoryStream.ToArray());
+                {                    
+                    ListBase64Blobs.Add("data:image/jpeg;base64," + Convert.ToBase64String(memoryStream.ToArray()));
                     CurrentBlobFile.Blob.IdBlobs = res.IdBlobs;
                     await AddedBlob.InvokeAsync(res.IdBlobs);
                 }

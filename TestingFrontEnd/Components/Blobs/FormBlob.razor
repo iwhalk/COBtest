@@ -10,11 +10,19 @@ else
         <div class="form-group">
             <InputFile OnChange="@((InputFileChangeEventArgs args) => OnChangeAsync(args))" />
             <ValidationMessage For="() => CurrentBlobFile.BrowserFile" />
-            <h6>@CurrentBlobFile.Blob.BlodName</h6>
-            <h6>@CurrentBlobFile.Blob.BlobSize</h6>
-            @if (InputBlob.Uri != null)
+            @*<h6>@CurrentBlobFile.Blob.BlodName</h6>*@
+            @*<h6>@CurrentBlobFile.Blob.BlobSize</h6>*@     
+        </div>
+        <div class="h-72 overflow-y-auto">
+            @if (ListBase64Blobs.Count > 0)
             {
-                <NavLink href="@InputBlob.Uri">View</NavLink>
+
+                <div class="grid grid-cols-4 gap-1 w-full">
+                    @foreach (var base64 in ListBase64Blobs)
+                    {
+                        <div><img class="w-32 h-32" src="@base64" /></div>
+                    }
+                </div>
             }
         </div>
 
