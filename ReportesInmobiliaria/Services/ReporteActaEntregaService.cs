@@ -26,13 +26,13 @@ namespace ReportesInmobiliaria.Services
             _reportesFactory = reportesFactory;
         }
 
-        public async Task<byte[]> GetActaEntrega(int idProperty)
+        public async Task<byte[]> GetActaEntrega(int idReceptionCertificate)
         {
             ReporteActaEntrega reporteActaEntrega = new()
             {
-                header = await _dbContext.Procedures.SP_GET_AERI_HEADERAsync(idProperty),
-                areas = await _dbContext.Procedures.SP_GET_AERI_AREASAsync(idProperty),
-                deliverables = await _dbContext.Procedures.SP_GET_AERI_DELIVERABLESAsync(idProperty)
+                header = await _dbContext.Procedures.SP_GET_AERI_HEADERAsync(idReceptionCertificate),
+                areas = await _dbContext.Procedures.SP_GET_AERI_AREASAsync(idReceptionCertificate.ToString()),
+                deliverables = await _dbContext.Procedures.SP_GET_AERI_DELIVERABLESAsync(idReceptionCertificate.ToString())
             };
             return _reportesFactory.CrearPdf(reporteActaEntrega);
         }

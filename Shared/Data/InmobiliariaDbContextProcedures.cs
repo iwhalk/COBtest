@@ -77,7 +77,7 @@ namespace SharedLibrary.Data
             return _;
         }
 
-        public virtual async Task<List<SP_GET_AERI_AREASResult>> SP_GET_AERI_AREASAsync(int? IDProperty, OutputParameter<int> returnValue = null, CancellationToken cancellationToken = default)
+        public virtual async Task<List<SP_GET_AERI_AREASResult>> SP_GET_AERI_AREASAsync(string ID_ReceptionCertificate, OutputParameter<int> returnValue = null, CancellationToken cancellationToken = default)
         {
             var parameterreturnValue = new SqlParameter
             {
@@ -90,20 +90,21 @@ namespace SharedLibrary.Data
             {
                 new SqlParameter
                 {
-                    ParameterName = "IDProperty",
-                    Value = IDProperty ?? Convert.DBNull,
-                    SqlDbType = System.Data.SqlDbType.Int,
+                    ParameterName = "ID_ReceptionCertificate",
+                    Size = -1,
+                    Value = ID_ReceptionCertificate ?? Convert.DBNull,
+                    SqlDbType = System.Data.SqlDbType.VarChar,
                 },
                 parameterreturnValue,
             };
-            var _ = await _context.SqlQueryAsync<SP_GET_AERI_AREASResult>("EXEC @returnValue = [dbo].[SP_GET_AERI_AREAS] @IDProperty", sqlParameters, cancellationToken);
+            var _ = await _context.SqlQueryAsync<SP_GET_AERI_AREASResult>("EXEC @returnValue = [dbo].[SP_GET_AERI_AREAS] @ID_ReceptionCertificate", sqlParameters, cancellationToken);
 
             returnValue?.SetValue(parameterreturnValue.Value);
 
             return _;
         }
 
-        public virtual async Task<List<SP_GET_AERI_DELIVERABLESResult>> SP_GET_AERI_DELIVERABLESAsync(int? IDProperty, OutputParameter<int> returnValue = null, CancellationToken cancellationToken = default)
+        public virtual async Task<List<SP_GET_AERI_DELIVERABLESResult>> SP_GET_AERI_DELIVERABLESAsync(string ID_ReceptionCertificate, OutputParameter<int> returnValue = null, CancellationToken cancellationToken = default)
         {
             var parameterreturnValue = new SqlParameter
             {
@@ -116,20 +117,21 @@ namespace SharedLibrary.Data
             {
                 new SqlParameter
                 {
-                    ParameterName = "IDProperty",
-                    Value = IDProperty ?? Convert.DBNull,
-                    SqlDbType = System.Data.SqlDbType.Int,
+                    ParameterName = "ID_ReceptionCertificate",
+                    Size = -1,
+                    Value = ID_ReceptionCertificate ?? Convert.DBNull,
+                    SqlDbType = System.Data.SqlDbType.VarChar,
                 },
                 parameterreturnValue,
             };
-            var _ = await _context.SqlQueryAsync<SP_GET_AERI_DELIVERABLESResult>("EXEC @returnValue = [dbo].[SP_GET_AERI_DELIVERABLES] @IDProperty", sqlParameters, cancellationToken);
+            var _ = await _context.SqlQueryAsync<SP_GET_AERI_DELIVERABLESResult>("EXEC @returnValue = [dbo].[SP_GET_AERI_DELIVERABLES] @ID_ReceptionCertificate", sqlParameters, cancellationToken);
 
             returnValue?.SetValue(parameterreturnValue.Value);
 
             return _;
         }
 
-        public virtual async Task<List<SP_GET_AERI_HEADERResult>> SP_GET_AERI_HEADERAsync(int? IDProperty, OutputParameter<int> returnValue = null, CancellationToken cancellationToken = default)
+        public virtual async Task<List<SP_GET_AERI_HEADERResult>> SP_GET_AERI_HEADERAsync(int? ID_ReceptionCertificate, OutputParameter<int> returnValue = null, CancellationToken cancellationToken = default)
         {
             var parameterreturnValue = new SqlParameter
             {
@@ -142,13 +144,13 @@ namespace SharedLibrary.Data
             {
                 new SqlParameter
                 {
-                    ParameterName = "IDProperty",
-                    Value = IDProperty ?? Convert.DBNull,
+                    ParameterName = "ID_ReceptionCertificate",
+                    Value = ID_ReceptionCertificate ?? Convert.DBNull,
                     SqlDbType = System.Data.SqlDbType.Int,
                 },
                 parameterreturnValue,
             };
-            var _ = await _context.SqlQueryAsync<SP_GET_AERI_HEADERResult>("EXEC @returnValue = [dbo].[SP_GET_AERI_HEADER] @IDProperty", sqlParameters, cancellationToken);
+            var _ = await _context.SqlQueryAsync<SP_GET_AERI_HEADERResult>("EXEC @returnValue = [dbo].[SP_GET_AERI_HEADER] @ID_ReceptionCertificate", sqlParameters, cancellationToken);
 
             returnValue?.SetValue(parameterreturnValue.Value);
 
