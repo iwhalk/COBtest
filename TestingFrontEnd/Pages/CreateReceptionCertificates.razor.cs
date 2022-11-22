@@ -150,6 +150,7 @@ namespace FrontEnd.Pages
             properties = await _propertyService.GetPropertyAsync();
             users = await _userService.GetUsersAsync();
             propertyTypes = await _propertyTypeService.GetPropertyTypeAsync();
+            CurrentProperty.IdPropertyType = propertyTypes[0].IdPropertyType;
 
             var authstate = await _getAuthenticationStateAsync.GetAuthenticationStateAsync();
             UserId = authstate.User.Claims.FirstOrDefault(x => x.Type.Equals("sub")).Value;
