@@ -328,8 +328,8 @@ namespace ReportesInmobiliaria.Utilities
                 blobUris.Clear();
             }
 
-            document.LastSection.AddPageBreak();
 
+            int contadorTabla = 0;
             for (int i = 0; i < reporteActaEntrega.deliverables.Count; i++)
             {
                 string tableTitle = reporteActaEntrega.deliverables.ElementAt(i).Entregable;
@@ -372,7 +372,7 @@ namespace ReportesInmobiliaria.Utilities
                     row2.Cells[2].AddParagraph("Cantidad");
                     i = FillGenericContentMedidores(reporteActaEntrega.deliverables, tableEntregables, i, tableTitle) - 1;
                 }
-
+                contadorTabla++;
 
                 //A partir de la primera fila de elementos combina las celdas de la tercer columna
                 if (tableTitle != "Medidores")
@@ -411,6 +411,9 @@ namespace ReportesInmobiliaria.Utilities
                 }
                 blobUris.Clear();
 
+                if (contadorTabla == 1)
+                    document.LastSection.AddPageBreak();
+
                 //rowI.Cells[0].Format.Alignment = ParagraphAlignment.Center;
                 //rowI.Cells[0].VerticalAlignment = VerticalAlignment.Center;
                 //rowI.Cells[0].AddParagraph().AddImage(ImageSource.FromFile(Environment.CurrentDirectory + @"\Imagenes\key.jpg")).Width = "4.2cm";
@@ -443,6 +446,23 @@ namespace ReportesInmobiliaria.Utilities
             Row rowF1 = tablaFirmas.AddRow();
             rowF1.Format.Font.Size = 68;
             rowF1.VerticalAlignment = VerticalAlignment.Center;
+
+            string base64Arrendador;
+            string base64Arrendatario;
+
+            if (!string.IsNullOrWhiteSpace(reporteActaEntrega.header.ElementAt(0).FirmaArrendatario))
+            {
+                base64Arrendador = reporteActaEntrega.header.ElementAt(0).FirmaArrendatario.Split(',')[1];
+                Stream? streamArrendador = new MemoryStream(Convert.FromBase64String(base64Arrendador));
+                rowF1.Cells[0].AddParagraph().AddImage(ImageSource.FromStream("Firma Arrendatario", () => streamArrendador)).Width = "10cm";
+            }
+            if (!string.IsNullOrWhiteSpace(reporteActaEntrega.header.ElementAt(0).FirmaArrendador))
+            {
+                base64Arrendatario = reporteActaEntrega.header.ElementAt(0).FirmaArrendador.Split(',')[1];
+                Stream? streamArrendatario = new MemoryStream(Convert.FromBase64String(base64Arrendatario));
+                rowF1.Cells[1].AddParagraph().AddImage(ImageSource.FromStream("Firma Arrendador", () => streamArrendatario)).Width = "10cm";
+            }
+
             Row rowF2 = tablaFirmas.AddRow();
             rowF2.Format.Font.Size = 12;
             rowF2.VerticalAlignment = VerticalAlignment.Center;
