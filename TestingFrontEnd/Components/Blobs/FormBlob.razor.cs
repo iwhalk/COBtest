@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Components;
 using SharedLibrary.Models;
 using FrontEnd.Models;
 using FrontEnd.Interfaces;
+using System.Text;
 
 namespace FrontEnd.Components.Blobs
 {
@@ -19,7 +20,6 @@ namespace FrontEnd.Components.Blobs
 
 
         private readonly IBlobService _blobService;
-
         public BlobFile CurrentBlobFile { get; set; }
         public EditContext CurrentBlobFileEditContext;
 
@@ -55,9 +55,8 @@ namespace FrontEnd.Components.Blobs
                 using var stream = eventArgs.File.OpenReadStream();
                 using var memoryStream = new MemoryStream();
                 await stream.CopyToAsync(memoryStream);
-
+                
                 CurrentBlobFile.FileStream = new MemoryStream(memoryStream.ToArray());
-
                 CurrentBlobFile.Blob.BlodName = eventArgs.File.Name;
                 CurrentBlobFile.Blob.BlobSize = CurrentBlobFile.FileStream.Length.ToString();
                 CurrentBlobFile.Blob.BlodTypeId = "1";
@@ -66,6 +65,7 @@ namespace FrontEnd.Components.Blobs
                 var res = await _blobService.PostBlobAsync(CurrentBlobFile);
                 if (res != null)
                 {
+                    var base64Blod = Convert.ToBase64String(memoryStream.ToArray());
                     CurrentBlobFile.Blob.IdBlobs = res.IdBlobs;
                     await AddedBlob.InvokeAsync(res.IdBlobs);
                 }
