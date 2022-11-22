@@ -272,7 +272,9 @@ namespace FrontEnd.Pages
 
             if(!string.IsNullOrEmpty(currentDTO.Note) && !string.IsNullOrEmpty(currentDTO.Observation)) //Si tiene nota no insertar el inventory
             {
-                CurrentInventory.Observation = e.Value.ToString();
+
+                CurrentInventory.Observation = currentDTO.Observation;
+                CurrentInventory.Note = currentDTO.Note;
                 CurrentInventory.IdProperty = _context.CurrentReceptionCertificate.IdProperty;
                 CurrentInventory.IdArea = CurrentArea.IdArea;
                 CurrentInventory.IdDescription = DescriptionsList.FirstOrDefault()?.IdDescription ?? 1;
