@@ -215,8 +215,8 @@ namespace FrontEnd.Pages
             CurrentFeature = FeaturesList.FirstOrDefault(x => x.IdFeature == IdFeature);
             DescriptionsList = (await _descriptionService.GetDescriptionAsync())?.Where(x => x.IdFeature == IdFeature)?.ToList();
 
-            if (!string.IsNullOrEmpty(CurrentDTO.Observation))
-            {
+            //if (!string.IsNullOrEmpty(CurrentDTO.Observation))
+            //{
 
                 CurrentInventory.Note = e.Value.ToString();
                 CurrentInventory.IdProperty = _context.CurrentReceptionCertificate.IdProperty;
@@ -247,22 +247,30 @@ namespace FrontEnd.Pages
                 //BlobsInventory.IdProperty = _context.CurrentPropertys.IdProperty;
                 CurrentInventory = new();
                 DescriptionsList = new();
-                FeatureMedidorCurrent = 0;//Reinicamos el FEatureBAndera para desbloqeuar todos lo input                
-            }
-            StateHasChanged();
-            return;
+                //FeatureMedidorCurrent = 0;//Reinicamos el FEatureBAndera para desbloqeuar todos lo input                
+            //}
+            //StateHasChanged();
+            //return;
         }
-        public async void DescriptionObservationInput(int IdFeature, ChangeEventArgs e)
+        public async void DescriptionModalInput(int IdFeature, string type, ChangeEventArgs e)
         {
             FeatureMedidorCurrent = IdFeature;
             StateHasChanged();
 
             var currentDTO = dtoDescriptions.FirstOrDefault(x => x.IdFeature == IdFeature);
-            currentDTO.Observation = e.Value.ToString();
+            if(type == "Note")
+            {
+                currentDTO.Note = e.Value.ToString();
+            }
+            else
+            {
+                currentDTO.Observation = e.Value.ToString();
+            }
+
             CurrentFeature = FeaturesList.FirstOrDefault(x => x.IdFeature == IdFeature);
             DescriptionsList = (await _descriptionService.GetDescriptionAsync())?.Where(x => x.IdFeature == IdFeature)?.ToList();
 
-            if(!string.IsNullOrEmpty(currentDTO.Note)) //Si tiene nota no insertar el inventory
+            if(!string.IsNullOrEmpty(currentDTO.Note) && !string.IsNullOrEmpty(currentDTO.Observation)) //Si tiene nota no insertar el inventory
             {
                 CurrentInventory.Observation = e.Value.ToString();
                 CurrentInventory.IdProperty = _context.CurrentReceptionCertificate.IdProperty;
