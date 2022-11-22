@@ -27,7 +27,6 @@ namespace SharedLibrary.Models
         [Column(TypeName = "datetime")]
         public DateTime DateModified { get; set; }
         [Required]
-        [StringLength(20)]
         [Unicode(false)]
         public string BlodName { get; set; }
         [Required]
