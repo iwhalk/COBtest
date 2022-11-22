@@ -777,6 +777,30 @@ app.MapGet("/ReceptionCertificate", async (string? startDay, string? endDay, int
 .Produces<HttpValidationProblemDetails>(StatusCodes.Status400BadRequest, "application/problem+json")
 .Produces<HttpValidationProblemDetails>(StatusCodes.Status500InternalServerError, "application/problem+json");
 
+app.MapGet("/ReceptionCertificates", async (int? id, IReceptionCertificates _receptionCertificateService, AuxiliaryMethods _auxiliaryMethods, ILogger<Program> _logger) =>
+{
+    try
+
+    {
+        var listCertificates = await _receptionCertificateService.GetReceptionCertificatesAsync(id);
+        if (listCertificates == null) return Results.NoContent();
+        //System.IO.File.WriteAllBytes("ReporteTransaccionesCrucesTotales.pdf", newModule);
+        return Results.Ok(listCertificates);
+    }
+    catch (Exception e)
+    {
+        _logger.LogError(e, e.Message);
+        if (e.GetType() == typeof(ValidationException))
+            return Results.Problem(e.Message, statusCode: 400);
+        return Results.Problem(e.Message);
+    }
+
+})
+.WithName("GetReceptionCertificates")
+.Produces<IResult>(StatusCodes.Status200OK, "application/pdf")
+.Produces<HttpValidationProblemDetails>(StatusCodes.Status400BadRequest, "application/problem+json")
+.Produces<HttpValidationProblemDetails>(StatusCodes.Status500InternalServerError, "application/problem+json");
+
 app.MapPost("/ReceptionCertificate", async (ReceptionCertificate receptionCertificate, IReceptionCertificates _receptionCertificates, ILogger<Program> _logger) =>
 {
     try

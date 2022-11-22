@@ -77,6 +77,20 @@ namespace ApiGateway.Controllers
             return BadRequest(result);
         }
 
+
+        //[HttpGet]
+        //public async Task<ActionResult> GetReceptionCertificatess(int? id)
+        //{
+        //    var result = await _receptionCertificateService.GetReceptionCertificateAsync(id);
+
+        //    if (result.Succeeded)
+        //    {
+        //        return Ok(result);
+        //    }
+
+        //    return BadRequest(result);
+        //}
+
         [HttpPost]
         public async Task<ActionResult> PostReceptionCertificates(ReceptionCertificate reception)
         {
