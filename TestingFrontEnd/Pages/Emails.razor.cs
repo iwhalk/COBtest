@@ -78,7 +78,7 @@ namespace FrontEnd.Pages
         {
             if (_context.CurrentReceptionCertificate != null)
             {
-                var IdReceptionCertificate = _context.CurrentReceptionCertificate.IdProperty;
+                var IdReceptionCertificate = _context.CurrentReceptionCertificate.IdReceptionCertificate;
                 BlobPDFPreview = await _reportService.GetReporteReceptionCertificate(IdReceptionCertificate);
                 if (BlobPDFPreview != null)
                 {
