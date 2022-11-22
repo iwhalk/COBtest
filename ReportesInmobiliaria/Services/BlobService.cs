@@ -36,7 +36,8 @@ namespace ReportesInmobiliaria.Services
             try
             {
                 var blobContainerClient = _blobServiceClient.GetBlobContainerClient("inventoryblobs");
-                var blobName = Guid.NewGuid().ToString() + "." + file.ContentType?.Split('/')[1];
+                var extensionFile = file.ContentType == null ? "jpg" : file.ContentType.Split("/")[1];
+                var blobName = Guid.NewGuid().ToString() + "." + extensionFile;
                 var blobClient = blobContainerClient.GetBlobClient(blobName);
 
                 var newBlob = new Blob
