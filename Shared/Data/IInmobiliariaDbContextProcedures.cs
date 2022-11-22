@@ -13,9 +13,9 @@ namespace SharedLibrary.Data
     public partial interface IInmobiliariaDbContextProcedures
     {
         Task<List<SP_GET_AERIResult>> SP_GET_AERIAsync(int? IDProperty, OutputParameter<int> returnValue = null, CancellationToken cancellationToken = default);
-        Task<List<SP_GET_AERI_AREASResult>> SP_GET_AERI_AREASAsync(int? IDProperty, OutputParameter<int> returnValue = null, CancellationToken cancellationToken = default);
-        Task<List<SP_GET_AERI_DELIVERABLESResult>> SP_GET_AERI_DELIVERABLESAsync(int? IDProperty, OutputParameter<int> returnValue = null, CancellationToken cancellationToken = default);
-        Task<List<SP_GET_AERI_HEADERResult>> SP_GET_AERI_HEADERAsync(int? IDProperty, OutputParameter<int> returnValue = null, CancellationToken cancellationToken = default);
+        Task<List<SP_GET_AERI_AREASResult>> SP_GET_AERI_AREASAsync(string ID_ReceptionCertificate, OutputParameter<int> returnValue = null, CancellationToken cancellationToken = default);
+        Task<List<SP_GET_AERI_DELIVERABLESResult>> SP_GET_AERI_DELIVERABLESAsync(string ID_ReceptionCertificate, OutputParameter<int> returnValue = null, CancellationToken cancellationToken = default);
+        Task<List<SP_GET_AERI_HEADERResult>> SP_GET_AERI_HEADERAsync(int? ID_ReceptionCertificate, OutputParameter<int> returnValue = null, CancellationToken cancellationToken = default);
         Task<List<SP_GET_AERIImagesResult>> SP_GET_AERIImagesAsync(int? IDProperty, OutputParameter<int> returnValue = null, CancellationToken cancellationToken = default);
     }
 }

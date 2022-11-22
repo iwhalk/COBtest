@@ -24,7 +24,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 
 var builder = WebApplication.CreateBuilder(args);
-var connectionString = "Server=prosisdev.database.windows.net;Database=prosisdb_3;User=PROSIS_DEVELOPER;Password=PR0515_D3ev3l0p3r;MultipleActiveResultSets=true";
+var connectionString = "Server=arisoft2245.database.windows.net;Database=prosisdb_3;User=PROSIS_DEVELOPER;Password=PR0515_D3ev3l0p3r;MultipleActiveResultSets=true";
 var secretKey = builder.Configuration.GetValue<string>("SecretKey");
 var key = Encoding.ASCII.GetBytes(secretKey);
 
@@ -63,12 +63,12 @@ builder.Services.AddAuthentication(options =>
     });
 
 builder.Services.AddAuthentication();
-builder.Services.AddAuthorization(cfg =>
-{
-    cfg.FallbackPolicy = new AuthorizationPolicyBuilder()
-        .RequireAuthenticatedUser()
-        .Build();
-});
+//builder.Services.AddAuthorization(cfg =>
+//{
+//    cfg.FallbackPolicy = new AuthorizationPolicyBuilder()
+//        .RequireAuthenticatedUser()
+//        .Build();
+//});
 
 builder.Services.AddLogging(loggingBuilder =>
 {
@@ -113,7 +113,7 @@ app.UseSwaggerUI();
 
 app.UseAuthentication();
 
-app.UseAuthorization();
+//app.UseAuthorization();
 
 //app.UseHttpsRedirection();
 
@@ -536,12 +536,12 @@ app.MapPost("/Feature", async (Feature feature, IFeaturesService _featuresServic
 #endregion Features
 
 #region ReportesPDF
-app.MapGet("/ReporteActaEntrega", async (int idProperty, IReporteActaEntregaService _reportesService, ILogger<Program> _logger) =>
+app.MapGet("/ReporteActaEntrega", async (int idReceptionCertificate, IReporteActaEntregaService _reportesService, ILogger<Program> _logger) =>
 {
     try
 
     {
-        var newModule = await _reportesService.GetActaEntrega(idProperty);
+        var newModule = await _reportesService.GetActaEntrega(idReceptionCertificate);
         if (newModule == null) return Results.NoContent();
         //System.IO.File.WriteAllBytes("ReporteTransaccionesCrucesTotales.pdf", newModule);
         return Results.File(newModule, "application/pdf");
