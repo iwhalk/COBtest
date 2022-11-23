@@ -57,6 +57,7 @@ namespace ReportesInmobiliaria.Services
             {
                 list.Add(new ActasRecepcion()
                 {
+                    IdReceptionCertificate = certificate.IdReceptionCertificate,
                     Fecha = certificate.CreationDate,
                     Acta = certificate.IdTypeRecord == 1 ? "Entrada" : "Salida",
                     Inmueble = certificate.IdPropertyNavigation.IdPropertyTypeNavigation.PropertyTypeName ?? "",

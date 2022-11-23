@@ -92,7 +92,8 @@ namespace FrontEnd.Pages
         }
         public async void HandleSaveReceptionCertificate()
         {
-            HandleInsertSignatures();
+            _navigate.NavigateTo("/");
+            //HandleInsertSignatures();
         }
         public async void HandleInsertSignatures()
         {

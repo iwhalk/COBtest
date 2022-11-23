@@ -11,6 +11,7 @@ using System.Runtime.CompilerServices;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.EntityFrameworkCore.ChangeTracking.Internal;
 using System.Reflection.Metadata.Ecma335;
+using System;
 
 namespace FrontEnd.Pages
 {
@@ -124,20 +125,30 @@ namespace FrontEnd.Pages
             Services = await _servicesService.GetServicesAsync();
             Descriptions = await _descriptionService.GetDescriptionAsync();
 
+            var NewAreasList =  (await _areaService.GetAreaAsync())?.ToList();
 
-            CurrentReceptionCertificateId = _context.CurrentReceptionCertificate?.IdReceptionCertificate;
-            if (CurrentReceptionCertificateId != null)
+            if (_context.ReceptionCertificateExist != null)
             {
+                var inventorys = (await _inventoryService.GetInventoryAsync()).ToList();
+                inventorys = inventorys.Where(x => x.IdReceptionCertificate == _context.CurrentReceptionCertificate.IdReceptionCertificate).ToList();                
+                var ListIdAreas = inventorys.GroupBy(p => p.IdArea).Select(g => g.FirstOrDefault().IdArea).ToList();
+                List<Area> ListAreasInter = new();
 
+                foreach(var idArea in ListIdAreas)
+                {
+                    AreasList.Add(NewAreasList.First(x => x.IdArea == idArea));
+                }
+            }            
+            else {
+                //CurrentPropertyId = _context.CurrentReceptionCertificate.IdProperty;
+                AreasList = NewAreasList.Take(4).ToList();
+                CurrentArea = AreasList.FirstOrDefault();
+                foreach (var service in Services.Take(4))
+                {
+                    CurrentArea.AreaServices.Add(new() { IdService = service.IdService, IdArea = CurrentArea.IdArea });
+                }
+                //ServicesList = (await _servicesService.GetServicesAsync())?.Take(3).ToList();
             }
-
-            AreasList = (await _areaService.GetAreaAsync())?.Take(4).ToList();
-            CurrentArea = AreasList.FirstOrDefault();
-            foreach (var service in Services.Take(4))
-            {
-                CurrentArea.AreaServices.Add(new() { IdService = service.IdService, IdArea = CurrentArea.IdArea });
-            }
-            //ServicesList = (await _servicesService.GetServicesAsync())?.Take(3).ToList();
         }
         public void AgregarAreas()
         {
@@ -211,10 +222,7 @@ namespace FrontEnd.Pages
             StateHasChanged();
         }
         public async void DescriptionNoteInput(int IdFeature, ChangeEventArgs e)
-        {
-            FeatureMedidorCurrent = IdFeature;
-            StateHasChanged();
-
+        {                        
             var CurrentDTO = dtoDescriptions.FirstOrDefault(x => x.IdFeature == IdFeature);
             CurrentDTO.Note = e.Value.ToString();
             CurrentFeature = FeaturesList.FirstOrDefault(x => x.IdFeature == IdFeature);

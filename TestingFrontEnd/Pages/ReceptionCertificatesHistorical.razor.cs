@@ -11,9 +11,11 @@ namespace FrontEnd.Pages
     public partial class ReceptionCertificatesHistorical : ComponentBase
     {
         private readonly ApplicationContext _context;
+        private readonly NavigationManager _navigationManager;
         private readonly IReceptionCertificateService _reception;
         private readonly IReportsService _reportService;
         public List<ActasRecepcion>? actasRecepcions { get; set; }
+        public List<ReceptionCertificate> receptionCertificatesList { get; set; }
         public bool showModalPDFPreview { get; set; }
         public byte[] BlobPDFPreview { get; set; }
         public string PdfName { get; set; }
@@ -21,11 +23,18 @@ namespace FrontEnd.Pages
         public int rowNumberForPage { get; set; }
         public int maxNumberPage { get; set; }
         public string TypeTableHistoricalOrPending { get; set; }
-        public ReceptionCertificatesHistorical(ApplicationContext context, IReceptionCertificateService reception, IReportsService reportsService)
+        public ReceptionCertificatesHistorical(ApplicationContext context, NavigationManager navigationManager, IReceptionCertificateService reception, IReportsService reportsService)
         {
             _context = context;
             _reception = reception;
             _reportService = reportsService;
+            _navigationManager = navigationManager;
+        }          
+        public async Task RedirectInfoGeneral(int idReception)
+        {
+            //var currentCertificate = receptionCertificatesList.Where(x => x.IdReceptionCertificate == idReception).FirstOrDefault();
+            _context.ReceptionCertificateExist = receptionCertificatesList.Where(x => x.IdReceptionCertificate == idReception).FirstOrDefault();
+            _navigationManager.NavigateTo("/ReceptionCertificates/Create");
         }
         protected override async Task OnInitializedAsync()
         {
@@ -36,6 +45,7 @@ namespace FrontEnd.Pages
             maxNumberPage = _context.MaxNumberPagination;
             _context.CurrentFilterPagination = new FilterReceptionCertificate();
             _context.ListPageInPaginate = CreatePaginationNumber();
+            receptionCertificatesList = await _reception.GetReceptionCertificatesListAsync(0);
         }        
         public async Task Filter(FilterReceptionCertificate filterReception)
         {

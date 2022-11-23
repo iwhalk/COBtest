@@ -120,6 +120,7 @@ namespace FrontEnd.Pages
                 }
                 ChangeOpenModalSend();
             }
+
             return;            
         }
     }
