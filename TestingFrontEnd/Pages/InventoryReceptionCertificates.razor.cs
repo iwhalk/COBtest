@@ -129,7 +129,7 @@ namespace FrontEnd.Pages
             if (_context.ReceptionCertificateExist != null)
             {
                 var inventorys = (await _inventoryService.GetInventoryAsync()).ToList();
-                inventorys = inventorys.Where(x => x.IdReceptionCertificate == _context.CurrentReceptionCertificate.IdReceptionCertificate).ToList();                
+                inventorys = inventorys.Where(x => x.IdReceptionCertificate == _context.ReceptionCertificateExist.IdReceptionCertificate).ToList();                
                 var ListIdAreas = inventorys.GroupBy(p => p.IdArea).Select(g => g.FirstOrDefault().IdArea).ToList();
                 List<Area> ListAreasInter = new();
 
