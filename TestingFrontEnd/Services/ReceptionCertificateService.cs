@@ -72,6 +72,11 @@ namespace FrontEnd.Services
             return _context.ActasRecepcionList;
         }
 
+        public async Task<List<ReceptionCertificate>> GetReceptionCertificatesListAsync(int? id)
+        {
+            return await _repository.GetAsync<List<ReceptionCertificate>>($"api/ReceptionCertificates/ReceptionCertificatesList?id={id}");
+        }
+
         public async Task<ReceptionCertificate> PostReceptionCertificatesAsync(ReceptionCertificate receptionCertificate)
         {
             return await _repository.PostAsync("api/ReceptionCertificates", receptionCertificate);

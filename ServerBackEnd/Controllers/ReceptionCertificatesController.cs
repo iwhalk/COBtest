@@ -20,7 +20,7 @@ namespace ApiGateway.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult> GetReceptionCertificates(string? startDay, string? endDay, string? certificateType, string? propertyType, string? numberOfRooms, string? lessor, string? tenant, string? delegation, string? agent, string? currentPage, string? rowNumber, bool completed)
+        public async Task<ActionResult> GetActasRecepcion(string? startDay, string? endDay, string? certificateType, string? propertyType, string? numberOfRooms, string? lessor, string? tenant, string? delegation, string? agent, string? currentPage, string? rowNumber, bool completed)
         {
             startDay = GetNullableString(startDay);
             endDay = GetNullableString(endDay);
@@ -78,18 +78,18 @@ namespace ApiGateway.Controllers
         }
 
 
-        //[HttpGet]
-        //public async Task<ActionResult> GetReceptionCertificatess(int? id)
-        //{
-        //    var result = await _receptionCertificateService.GetReceptionCertificateAsync(id);
+        [HttpGet("ReceptionCertificatesList")]
+        public async Task<ActionResult> GetReceptionCertificates(int? id)
+        {
+            var result = await _receptionCertificateService.GetReceptionCertificateAsync(id);
 
-        //    if (result.Succeeded)
-        //    {
-        //        return Ok(result);
-        //    }
+            if (result.Succeeded)
+            {
+                return Ok(result);
+            }
 
-        //    return BadRequest(result);
-        //}t
+            return BadRequest(result);
+        }        
 
         [HttpPost]
         public async Task<ActionResult> PostReceptionCertificates(ReceptionCertificate reception)
