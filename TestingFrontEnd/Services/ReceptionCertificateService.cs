@@ -24,7 +24,12 @@ namespace FrontEnd.Services
             string? tenantS = null;
             string? currentPageS = null;
             string? rowNumberS = null;
+            string? agentS = null;
 
+            if (agent is not null || agent != "")
+            {
+                agentS = agent;
+            }
             if (certificateType is not null || certificateType > 0)
             {
                 certificateTypeS = certificateType.ToString();
@@ -56,8 +61,8 @@ namespace FrontEnd.Services
 
             if (_context.ActasRecepcionList == null)
             {
-                var response = await _repository.GetAsync<List<ActasRecepcion>>($"api/ReceptionCertificates?startDay={startDay}&endDay={endDay}&certificateType={certificateTypeS}&propertyType={propertyTypeS}&numberOfRooms={numberOfRoomsS}&lessor={lessorS}&tenant={tenantS}&delegation={delegation}&agent={agent}&currentPage={currentPageS}&rowNumber={rowNumberS}&completed={completed}");
-                var responseCount = await _repository.GetAsync<List<ActasRecepcion>>($"api/ReceptionCertificates?startDay={startDay}&endDay={endDay}&certificateType={certificateTypeS}&propertyType={propertyTypeS}&numberOfRooms={numberOfRoomsS}&lessor={lessorS}&tenant={tenantS}&delegation={delegation}&agent={agent}&currentPage={null}&rowNumber={null}&completed={completed}");
+                var response = await _repository.GetAsync<List<ActasRecepcion>>($"api/ReceptionCertificates?startDay={startDay}&endDay={endDay}&certificateType={certificateTypeS}&propertyType={propertyTypeS}&numberOfRooms={numberOfRoomsS}&lessor={lessorS}&tenant={tenantS}&delegation={delegation}&agent={agentS}&currentPage={currentPageS}&rowNumber={rowNumberS}&completed={completed}");
+                var responseCount = await _repository.GetAsync<List<ActasRecepcion>>($"api/ReceptionCertificates?startDay={startDay}&endDay={endDay}&certificateType={certificateTypeS}&propertyType={propertyTypeS}&numberOfRooms={numberOfRoomsS}&lessor={lessorS}&tenant={tenantS}&delegation={delegation}&agent={agentS}&currentPage={null}&rowNumber={null}&completed={completed}");
 
                 if (response != null)
                 {
@@ -71,12 +76,10 @@ namespace FrontEnd.Services
             _context.MaxNumberPagination = 0;
             return _context.ActasRecepcionList;
         }
-
         public async Task<List<ReceptionCertificate>> GetReceptionCertificatesListAsync(int? id)
         {
             return await _repository.GetAsync<List<ReceptionCertificate>>($"api/ReceptionCertificates/ReceptionCertificatesList?id={id}");
         }
-
         public async Task<ReceptionCertificate> PostReceptionCertificatesAsync(ReceptionCertificate receptionCertificate)
         {
             return await _repository.PostAsync("api/ReceptionCertificates", receptionCertificate);
