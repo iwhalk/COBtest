@@ -30,9 +30,9 @@ namespace ReportesInmobiliaria.Services
         {
             ReporteActaEntrega reporteActaEntrega = new()
             {
-                header = await _dbContext.Procedures.SP_GET_AERI_HEADERAsync(idReceptionCertificate),
-                areas = await _dbContext.Procedures.SP_GET_AERI_AREASAsync(idReceptionCertificate.ToString()),
-                deliverables = await _dbContext.Procedures.SP_GET_AERI_DELIVERABLESAsync(idReceptionCertificate.ToString())
+                header = await _dbContext.Procedures.SP_GET_AERI_HEADERAsync(idReceptionCertificate.ToString()),
+                areas = await _dbContext.Procedures.SP_GET_AERI_AREASAsync(idReceptionCertificate),
+                deliverables = await _dbContext.Procedures.SP_GET_AERI_DELIVERABLESAsync(idReceptionCertificate)
             };
             return _reportesFactory.CrearPdf(reporteActaEntrega);
         }
