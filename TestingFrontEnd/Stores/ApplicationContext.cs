@@ -16,6 +16,7 @@ namespace FrontEnd.Stores
         private Lessor lessor;
         private Property property;
         private ReceptionCertificate receptionCertificate;
+        private ReceptionCertificate receptionCertificateExist;
         private List<Area> areasList;
         private List<Description> descriptionsList;
         private List<Feature> featuresList;
@@ -213,6 +214,15 @@ namespace FrontEnd.Stores
                 receptionCertificate = value;
                 NotifyStateChanged();
             }
+        }        
+        public ReceptionCertificate ReceptionCertificateExist
+        {
+            get => receptionCertificateExist;
+            set
+            {
+                receptionCertificateExist = value;
+                NotifyStateChanged();
+            }
         }
 
         public List<ActasRecepcion> ActasRecepcionList
@@ -223,7 +233,7 @@ namespace FrontEnd.Stores
                 actasRecepcionsList = value;
                 NotifyStateChanged();
             }
-        }
+        }        
 
         public List<Blob> Blobs
         {

@@ -57,12 +57,13 @@ namespace ReportesInmobiliaria.Services
             {
                 list.Add(new ActasRecepcion()
                 {
+                    IdReceptionCertificate = certificate.IdReceptionCertificate,
                     Fecha = certificate.CreationDate,
                     Acta = certificate.IdTypeRecord == 1 ? "Entrada" : "Salida",
                     Inmueble = certificate.IdPropertyNavigation.IdPropertyTypeNavigation.PropertyTypeName ?? "",
                     Habitaciones = certificate.IdPropertyNavigation.NumberOfRooms,
                     Arrendador = certificate.IdPropertyNavigation.IdLessorNavigation.Name + " " + certificate.IdPropertyNavigation.IdLessorNavigation.LastName,
-                    Arrendatario = certificate.IdTenantNavigation.Name + " " + certificate.IdTenantNavigation.Name,
+                    Arrendatario = certificate.IdTenantNavigation.Name + " " + certificate.IdTenantNavigation.LastName,
                     Delegacion = certificate.IdPropertyNavigation.Delegation ?? "",
                     Agente = aspNetUsers.FirstOrDefault(x => x.Id == certificate.IdAgent).Name + " " + aspNetUsers.FirstOrDefault(x => x.Id == certificate.IdAgent).LastName,
                     IdProperty = certificate.IdProperty
