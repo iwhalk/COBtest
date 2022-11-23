@@ -49,7 +49,7 @@ namespace FrontEnd.Pages
         private List<Feature> features { get; set; }
         private List<PropertyType> propertyTypes { get; set; }
         private ReceptionCertificate CurrentReceptionCertificate { get; set; }
-        public byte[]? BlobPDFPreview { get; set; } 
+        public byte[]? BlobPDFPreview { get; set; }
         public string PdfName { get; set; }
         public bool ShowModalPreview { get; set; } = false;
         public bool DisablePreView { get; set; } = false;
@@ -59,6 +59,11 @@ namespace FrontEnd.Pages
         public SignaturesLessor signaturesLessorComponent;
         public SignaturesTenant signaturesTenantComponent;
         public void ChangeOpenModalPreview() => ShowModalPreview = ShowModalPreview ? false : true;
+
+        public string nameTenant { get; set; }
+        public string nameLessor { get; set; }
+        public string dateAct { get; set; }
+
         protected override async Task OnInitializedAsync()
         {
             tenants = await _tenantService.GetTenantAsync();
@@ -70,17 +75,28 @@ namespace FrontEnd.Pages
             descriptions = await _descriptionService.GetDescriptionAsync();
             features = await _featuresService.GetFeaturesAsync();
             propertyTypes = await _propertyTypeService.GetPropertyTypeAsync();
-            CurrentReceptionCertificate = _context.CurrentReceptionCertificate ?? new();                            
+            CurrentReceptionCertificate = _context.CurrentReceptionCertificate ?? new();
+
+            var nameT = tenants.FirstOrDefault(x => x.IdTenant.Equals(_context.CurrentReceptionCertificate.IdTenant)).Name;
+            var lastNameT = tenants.FirstOrDefault(x => x.IdTenant.Equals(_context.CurrentReceptionCertificate.IdTenant)).LastName;
+            nameTenant = nameT + " " + lastNameT;
+
+            var aux = properties.FirstOrDefault(x => x.IdProperty.Equals(_context.CurrentReceptionCertificate.IdProperty)).IdLessor;
+            var nameL = lessors.FirstOrDefault(x => x.IdLessor.Equals(aux)).Name;
+            var lastNameL = lessors.FirstOrDefault(x => x.IdLessor.Equals(aux)).LastName;
+            nameLessor = nameL + " " + lastNameL;
+
+            dateAct = _context.CurrentReceptionCertificate.CreationDate.ToString("dd-MM-yyyy HH:mm:ss");
         }
         public async void HandlePreviewPdf()
         {
             DisablePreView = true;
             if (CurrentReceptionCertificate != null)
-            {                
-                var IdReceptionCertificate = CurrentReceptionCertificate.IdReceptionCertificate;                
-                BlobPDFPreview = await _reportService.GetReporteReceptionCertificate(IdReceptionCertificate);                
+            {
+                var IdReceptionCertificate = CurrentReceptionCertificate.IdReceptionCertificate;
+                BlobPDFPreview = await _reportService.GetReporteReceptionCertificate(IdReceptionCertificate);
                 if (BlobPDFPreview != null)
-                {                    
+                {
                     PdfName = "PDFPreview.pdf";
                     Thread.Sleep(5000);
                 }
@@ -105,11 +121,11 @@ namespace FrontEnd.Pages
             CurrentReceptionCertificate = await _receptionCertificateService.PutReceptionCertificatesAsync(CurrentReceptionCertificate);
 
             if (CurrentReceptionCertificate is null)
-            {                
+            {
                 _navigate.NavigateTo("/Emails");
             }
             else
-            {                
+            {
                 _context.CurrentReceptionCertificate = CurrentReceptionCertificate;
                 _navigate.NavigateTo("/Emails");
             }
