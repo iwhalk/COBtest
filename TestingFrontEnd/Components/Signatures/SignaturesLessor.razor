@@ -7,7 +7,7 @@
 @*<button @onclick="ToggleColorAsync" style="color:@clr">Toggle color between black and red</button>
 <button @onclick="ClearAsync" style="color:@clr">CLEAR</button>*@
 @* <button @onclick="ImageAsync" style="color:@clr">image</button> *@
-<label for="" class="text-start text-xl text-blue-900 font-semibold mb-2">Firma Arrendedor/Agente</label>
+<label for="" class="text-start text-xl text-blue-900 font-semibold mb-2">Firma Arrendedor/Agente (@NameLessor @DateAct)</label>
 <div @ref="container">
     <Canvas @ref="_context"
             @onmousemove="MouseMoveCanvasAsync"
@@ -35,6 +35,11 @@
     private double mousey;
     private bool mousedown = false;
     public string clr = "black";
+
+    [Parameter]
+    public string NameLessor { get; set; }
+    [Parameter]
+    public string DateAct { get; set; }
 
     //public EditContext SignatureLessorEditContext;
 
