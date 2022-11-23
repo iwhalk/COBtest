@@ -13,7 +13,7 @@ namespace FrontEnd.Components.Blobs
         [Parameter]
         public Blob InputBlob { get; set; }
         [Parameter]
-        public string[] AllowedExtensions { get; set; } = new[] { ".png", ".jpg" };
+        public string[] AllowedExtensions { get; set; } = new[] { ".png", ".jpg", ".jpeg" };
         [Parameter]
         public int MaxAllowedSize { get; set; } = 2097152;
         [Parameter]

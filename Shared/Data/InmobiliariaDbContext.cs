@@ -138,6 +138,11 @@ namespace SharedLibrary.Data
                     .HasForeignKey(d => d.IdProperty)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_Inventory_ID_Property");
+
+                entity.HasOne(d => d.IdReceptionCertificateNavigation)
+                    .WithMany(p => p.Inventories)
+                    .HasForeignKey(d => d.IdReceptionCertificate)
+                    .HasConstraintName("FK_INVENTORIES_ID_ReceptionCertificate");
             });
 
             modelBuilder.Entity<Lessor>(entity =>
