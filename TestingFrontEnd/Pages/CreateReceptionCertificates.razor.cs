@@ -90,7 +90,14 @@ namespace FrontEnd.Pages
             MyProperty = 1000;
             lessorValid = formLessor.LessorEditContext.GetValidationMessages();
             tenantValid = formTenant.TenantEditContext.GetValidationMessages();
-            propertyValid = formProperty.PropertyEditContext.GetValidationMessages();            
+            propertyValid = formProperty.PropertyEditContext.GetValidationMessages();
+
+            if (NewReceptionCertificate.IdReceptionCertificate != 0)
+            {
+                _navigation.NavigateTo("/ReceptionCertificates/Inventory");
+                return;
+            }
+
             if (!string.IsNullOrEmpty(NewReceptionCertificate.ContractNumber)) 
             {
                 try
@@ -126,9 +133,7 @@ namespace FrontEnd.Pages
                             return;
                         }
                         _context.TenantList.Add(CurrentTenant);
-                    }
-                    //var authUser = await authenticationStateTask;                    
-
+                    }                                
                     NewReceptionCertificate.IdTenant = CurrentTenant.IdTenant;
                     NewReceptionCertificate.IdProperty = CurrentProperty.IdProperty;
                     NewReceptionCertificate.IdTypeRecord = _context.TypeReceptionCertificate; //For ReceptionCertificate (1)In or (2)Out
