@@ -95,31 +95,33 @@ namespace FrontEnd.Pages
         }
         private async Task SendMenssage()
         {
-            int idProperty = _context.CurrentReceptionCertificate.IdProperty;
-            if (idProperty > 0)
+            int idReceptionCertificate = _context.CurrentReceptionCertificate.IdReceptionCertificate;
+            if (idReceptionCertificate > 0)
             {
                 if (tenantCheck == true)
                 {
-                    _mailAriService.GetMailAsync(idProperty, tenant);
+                    _mailAriService.GetMailAsync(idReceptionCertificate, tenant);
                 }
                 if (lessorCheck == true)
                 {                    
-                    _mailAriService.GetMailAsync(idProperty, lessor);
+                    _mailAriService.GetMailAsync(idReceptionCertificate, lessor);
                 }
                 if (agenciaCheck == true)
                 {
-                    _mailAriService.GetMailAsync(idProperty, agencia);
+                    _mailAriService.GetMailAsync(idReceptionCertificate, agencia);
                 }
                 if (agenteCheck == true)
                 {
-                    _mailAriService.GetMailAsync(idProperty, agente);
+                    _mailAriService.GetMailAsync(idReceptionCertificate, agente);
+                    Console.WriteLine("se envio el mensaje" + idReceptionCertificate);
                 }
                 if (otroCheck == true)
                 {
-                    _mailAriService.GetMailAsync(idProperty, otro);
+                    _mailAriService.GetMailAsync(idReceptionCertificate, otro);
                 }
                 ChangeOpenModalSend();
             }
+
             return;            
         }
     }

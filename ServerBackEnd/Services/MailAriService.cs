@@ -20,13 +20,13 @@ namespace ApiGateway.Services
 
         }
 
-        public async Task<ApiResponse> GetMailAsync(int idProperty, string email)
+        public async Task<ApiResponse> GetMailAsync(int idReceptionCertificate, string email)
         {
             Dictionary<string, string> parameters = new();
 
-            if (idProperty != null)
+            if (idReceptionCertificate != null)
             {
-                parameters.Add("idProperty", idProperty.ToString());
+                parameters.Add("idReceptionCertificate", idReceptionCertificate.ToString());
             }
             if (!string.IsNullOrEmpty(email))
             {
