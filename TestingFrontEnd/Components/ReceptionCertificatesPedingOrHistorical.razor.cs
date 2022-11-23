@@ -33,6 +33,5 @@ namespace FrontEnd.Components
         [Parameter]
         public EventCallback<int> RedirectReception { get; set; }
 
-
     }
 }

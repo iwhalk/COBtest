@@ -32,8 +32,8 @@ namespace FrontEnd.Pages
         }          
         public async Task RedirectInfoGeneral(int idReception)
         {
-            var currentCertificate = receptionCertificatesList.Where(x => x.IdReceptionCertificate == idReception).FirstOrDefault();
-            _context.CurrentReceptionCertificate = currentCertificate;
+            //var currentCertificate = receptionCertificatesList.Where(x => x.IdReceptionCertificate == idReception).FirstOrDefault();
+            _context.ReceptionCertificateExist = receptionCertificatesList.Where(x => x.IdReceptionCertificate == idReception).FirstOrDefault();
             _navigationManager.NavigateTo("/ReceptionCertificates/Create");
         }
         protected override async Task OnInitializedAsync()

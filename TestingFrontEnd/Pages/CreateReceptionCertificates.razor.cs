@@ -156,9 +156,9 @@ namespace FrontEnd.Pages
             users = await _userService.GetUsersAsync();
             propertyTypes = await _propertyTypeService.GetPropertyTypeAsync();            
 
-            if (_context.CurrentReceptionCertificate != null)
+            if (_context.ReceptionCertificateExist != null)
             {
-                NewReceptionCertificate = _context.CurrentReceptionCertificate;
+                NewReceptionCertificate = _context.ReceptionCertificateExist;
                 SetPropertyForm(NewReceptionCertificate.IdProperty);
                 SetTenantForm(NewReceptionCertificate.IdTenant);
                 SetLessorForm(CurrentProperty.IdLessor);

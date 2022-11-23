@@ -126,7 +126,7 @@ namespace FrontEnd.Pages
 
             var NewAreasList =  (await _areaService.GetAreaAsync())?.ToList();
 
-            if (_context.CurrentReceptionCertificate != null)
+            if (_context.ReceptionCertificateExist != null)
             {
                 var inventorys = (await _inventoryService.GetInventoryAsync()).ToList();
                 inventorys = inventorys.Where(x => x.IdReceptionCertificate == _context.CurrentReceptionCertificate.IdReceptionCertificate).ToList();                
@@ -137,7 +137,6 @@ namespace FrontEnd.Pages
                 {
                     AreasList.Add(NewAreasList.First(x => x.IdArea == idArea));
                 }
-
             }            
             else {
                 //CurrentPropertyId = _context.CurrentReceptionCertificate.IdProperty;
