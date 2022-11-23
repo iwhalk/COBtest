@@ -168,7 +168,6 @@ namespace FrontEnd.Pages
             else
             {
                 CurrentProperty.IdPropertyType = propertyTypes[0].IdPropertyType;
-
                 var authstate = await _getAuthenticationStateAsync.GetAuthenticationStateAsync();
                 UserId = authstate.User.Claims.FirstOrDefault(x => x.Type.Equals("sub")).Value;
                 _context.CurrentUser = users.FirstOrDefault(x => x.Id == UserId);
