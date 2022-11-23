@@ -79,6 +79,7 @@ namespace FrontEnd.Pages
 
         private List<Service> Services { get; set; } = new();
         private List<Description> Descriptions { get; set; } = new();
+        public int? CurrentReceptionCertificateId { get; private set; }
         private List<Inventory> inventories { get; set; }
         private List<Service> ServicesList { get; set; } = new();
         public List<Area> AreasList { get; set; } = new();
@@ -124,8 +125,11 @@ namespace FrontEnd.Pages
             Descriptions = await _descriptionService.GetDescriptionAsync();
 
 
-            //CurrentPropertyId = _context.CurrentReceptionCertificate.IdProperty;
+            CurrentReceptionCertificateId = _context.CurrentReceptionCertificate?.IdReceptionCertificate;
+            if (CurrentReceptionCertificateId != null)
+            {
 
+            }
 
             AreasList = (await _areaService.GetAreaAsync())?.Take(4).ToList();
             CurrentArea = AreasList.FirstOrDefault();
