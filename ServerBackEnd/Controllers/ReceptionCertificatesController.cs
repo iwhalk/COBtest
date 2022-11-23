@@ -89,7 +89,7 @@ namespace ApiGateway.Controllers
         //    }
 
         //    return BadRequest(result);
-        //}
+        //}t
 
         [HttpPost]
         public async Task<ActionResult> PostReceptionCertificates(ReceptionCertificate reception)

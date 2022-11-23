@@ -207,10 +207,7 @@ namespace FrontEnd.Pages
             StateHasChanged();
         }
         public async void DescriptionNoteInput(int IdFeature, ChangeEventArgs e)
-        {
-            FeatureMedidorCurrent = IdFeature;
-            StateHasChanged();
-
+        {                        
             var CurrentDTO = dtoDescriptions.FirstOrDefault(x => x.IdFeature == IdFeature);
             CurrentDTO.Note = e.Value.ToString();
             CurrentFeature = FeaturesList.FirstOrDefault(x => x.IdFeature == IdFeature);
