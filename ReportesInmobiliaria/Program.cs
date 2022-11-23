@@ -536,7 +536,7 @@ app.MapPost("/Feature", async (Feature feature, IFeaturesService _featuresServic
 #endregion Features
 
 #region ReportesPDF
-app.MapGet("/ReporteActaEntrega", async (string idProperty, IReporteActaEntregaService _reportesService, ILogger<Program> _logger) =>
+app.MapGet("/ReporteActaEntrega", async (int idReceptionCertificate, IReporteActaEntregaService _reportesService, ILogger<Program> _logger) =>
 {
     try
 

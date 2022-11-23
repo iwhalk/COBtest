@@ -2,6 +2,6 @@
 {
     public interface IReporteActaEntregaService
     {
-        Task<byte[]> GetActaEntrega(string idProperty);
+        Task<byte[]> GetActaEntrega(int idProperty);
     }
 }
