@@ -83,16 +83,17 @@ namespace FrontEnd.Pages
                 {                    
                     PdfName = "PDFPreview.pdf";
                     Thread.Sleep(5000);
-                    ShowModalPreview = true;
-                    StateHasChanged();
                 }
                 StateHasChanged();
             }
             DisablePreView = false;
+            ShowModalPreview = true;
+            StateHasChanged();
         }
         public async void HandleSaveReceptionCertificate()
         {
-            HandleInsertSignatures();
+            _navigate.NavigateTo("/");
+            //HandleInsertSignatures();
         }
         public async void HandleInsertSignatures()
         {

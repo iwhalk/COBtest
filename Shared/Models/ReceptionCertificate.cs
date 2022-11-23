@@ -10,6 +10,11 @@ namespace SharedLibrary.Models
 {
     public partial class ReceptionCertificate
     {
+        public ReceptionCertificate()
+        {
+            Inventories = new HashSet<Inventory>();
+        }
+
         [Key]
         [Column("ID_ReceptionCertificate")]
         public int IdReceptionCertificate { get; set; }
@@ -48,5 +53,7 @@ namespace SharedLibrary.Models
         [ForeignKey("IdTenant")]
         [InverseProperty("ReceptionCertificates")]
         public virtual Tenant IdTenantNavigation { get; set; }
+        [InverseProperty("IdReceptionCertificateNavigation")]
+        public virtual ICollection<Inventory> Inventories { get; set; }
     }
 }

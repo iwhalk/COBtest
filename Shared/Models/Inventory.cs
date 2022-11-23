@@ -30,6 +30,8 @@ namespace SharedLibrary.Models
         [StringLength(150)]
         [Unicode(false)]
         public string Observation { get; set; }
+        [Column("ID_ReceptionCertificate")]
+        public int? IdReceptionCertificate { get; set; }
 
         [ForeignKey("IdArea")]
         [InverseProperty("Inventories")]
@@ -40,6 +42,9 @@ namespace SharedLibrary.Models
         [ForeignKey("IdProperty")]
         [InverseProperty("Inventories")]
         public virtual Property IdPropertyNavigation { get; set; }
+        [ForeignKey("IdReceptionCertificate")]
+        [InverseProperty("Inventories")]
+        public virtual ReceptionCertificate IdReceptionCertificateNavigation { get; set; }
         [InverseProperty("IdInventoryNavigation")]
         public virtual ICollection<BlobsInventory> BlobsInventories { get; set; }
     }

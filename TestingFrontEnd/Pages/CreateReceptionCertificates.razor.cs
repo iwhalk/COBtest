@@ -90,7 +90,14 @@ namespace FrontEnd.Pages
             MyProperty = 1000;
             lessorValid = formLessor.LessorEditContext.GetValidationMessages();
             tenantValid = formTenant.TenantEditContext.GetValidationMessages();
-            propertyValid = formProperty.PropertyEditContext.GetValidationMessages();            
+            propertyValid = formProperty.PropertyEditContext.GetValidationMessages();
+
+            if (NewReceptionCertificate.IdReceptionCertificate != 0)
+            {
+                _navigation.NavigateTo("/ReceptionCertificates/Inventory");
+                return;
+            }
+
             if (!string.IsNullOrEmpty(NewReceptionCertificate.ContractNumber)) 
             {
                 try
@@ -126,9 +133,7 @@ namespace FrontEnd.Pages
                             return;
                         }
                         _context.TenantList.Add(CurrentTenant);
-                    }
-                    //var authUser = await authenticationStateTask;                    
-
+                    }                                
                     NewReceptionCertificate.IdTenant = CurrentTenant.IdTenant;
                     NewReceptionCertificate.IdProperty = CurrentProperty.IdProperty;
                     NewReceptionCertificate.IdTypeRecord = _context.TypeReceptionCertificate; //For ReceptionCertificate (1)In or (2)Out
@@ -149,12 +154,24 @@ namespace FrontEnd.Pages
             lessors = await _lessorService.GetLessorAsync();
             properties = await _propertyService.GetPropertyAsync();
             users = await _userService.GetUsersAsync();
-            propertyTypes = await _propertyTypeService.GetPropertyTypeAsync();
-            CurrentProperty.IdPropertyType = propertyTypes[0].IdPropertyType;
+            propertyTypes = await _propertyTypeService.GetPropertyTypeAsync();            
 
-            var authstate = await _getAuthenticationStateAsync.GetAuthenticationStateAsync();
-            UserId = authstate.User.Claims.FirstOrDefault(x => x.Type.Equals("sub")).Value;
-            _context.CurrentUser = users.FirstOrDefault(x => x.Id == UserId);
+            if (_context.ReceptionCertificateExist != null)
+            {
+                NewReceptionCertificate = _context.ReceptionCertificateExist;
+                SetPropertyForm(NewReceptionCertificate.IdProperty);
+                SetTenantForm(NewReceptionCertificate.IdTenant);
+                SetLessorForm(CurrentProperty.IdLessor);
+                UserId = NewReceptionCertificate.IdAgent;
+                _context.CurrentUser = users.FirstOrDefault(x => x.Id == NewReceptionCertificate.IdAgent);
+            }
+            else
+            {
+                CurrentProperty.IdPropertyType = propertyTypes[0].IdPropertyType;
+                var authstate = await _getAuthenticationStateAsync.GetAuthenticationStateAsync();
+                UserId = authstate.User.Claims.FirstOrDefault(x => x.Type.Equals("sub")).Value;
+                _context.CurrentUser = users.FirstOrDefault(x => x.Id == UserId);
+            }
         }
     }
 }

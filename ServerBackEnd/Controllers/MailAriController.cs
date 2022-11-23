@@ -18,16 +18,16 @@ namespace ApiGateway.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult> GetMail(string idProperty, string email)
+        public async Task<ActionResult> GetMail(string idReceptionCertificate, string email)
         {
-            idProperty = GetNullableString(idProperty);
+            idReceptionCertificate = GetNullableString(idReceptionCertificate);
             email = GetNullableString(email);
 
             int idPropertyInt = 0;
 
-            if (!string.IsNullOrWhiteSpace(idProperty))
+            if (!string.IsNullOrWhiteSpace(idReceptionCertificate))
             {
-                idPropertyInt = Convert.ToInt16(idProperty);
+                idPropertyInt = Convert.ToInt16(idReceptionCertificate);
             }
          
             var result = await _service.GetMailAsync(idPropertyInt, email);

@@ -11,6 +11,7 @@ using System.Runtime.CompilerServices;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.EntityFrameworkCore.ChangeTracking.Internal;
 using System.Reflection.Metadata.Ecma335;
+using System;
 
 namespace FrontEnd.Pages
 {
@@ -79,6 +80,7 @@ namespace FrontEnd.Pages
 
         private List<Service> Services { get; set; } = new();
         private List<Description> Descriptions { get; set; } = new();
+        public int? CurrentReceptionCertificateId { get; private set; }
         private List<Inventory> inventories { get; set; }
         private List<Service> ServicesList { get; set; } = new();
         public List<Area> AreasList { get; set; } = new();
@@ -123,17 +125,30 @@ namespace FrontEnd.Pages
             Services = await _servicesService.GetServicesAsync();
             Descriptions = await _descriptionService.GetDescriptionAsync();
 
+            var NewAreasList =  (await _areaService.GetAreaAsync())?.ToList();
 
-            //CurrentPropertyId = _context.CurrentReceptionCertificate.IdProperty;
-
-
-            AreasList = (await _areaService.GetAreaAsync())?.Take(4).ToList();
-            CurrentArea = AreasList.FirstOrDefault();
-            foreach (var service in Services.Take(4))
+            if (_context.ReceptionCertificateExist != null)
             {
-                CurrentArea.AreaServices.Add(new() { IdService = service.IdService, IdArea = CurrentArea.IdArea });
+                var inventorys = (await _inventoryService.GetInventoryAsync()).ToList();
+                inventorys = inventorys.Where(x => x.IdReceptionCertificate == _context.CurrentReceptionCertificate.IdReceptionCertificate).ToList();                
+                var ListIdAreas = inventorys.GroupBy(p => p.IdArea).Select(g => g.FirstOrDefault().IdArea).ToList();
+                List<Area> ListAreasInter = new();
+
+                foreach(var idArea in ListIdAreas)
+                {
+                    AreasList.Add(NewAreasList.First(x => x.IdArea == idArea));
+                }
+            }            
+            else {
+                //CurrentPropertyId = _context.CurrentReceptionCertificate.IdProperty;
+                AreasList = NewAreasList.Take(4).ToList();
+                CurrentArea = AreasList.FirstOrDefault();
+                foreach (var service in Services.Take(4))
+                {
+                    CurrentArea.AreaServices.Add(new() { IdService = service.IdService, IdArea = CurrentArea.IdArea });
+                }
+                //ServicesList = (await _servicesService.GetServicesAsync())?.Take(3).ToList();
             }
-            //ServicesList = (await _servicesService.GetServicesAsync())?.Take(3).ToList();
         }
         public void AgregarAreas()
         {
@@ -181,6 +196,7 @@ namespace FrontEnd.Pages
         }
         public async void ServiceButtonClicked(int idService)
         {
+            CurrentInventory = new();
             ////var bres = await _blobService.PostBlobAsync(FormBlob.CurrentBlobFile);
             //if (FormBlob.CurrentBlobFile.Blob.IdBlobs != null && FormBlob.CurrentBlobFile.Blob.IdBlobs != 0)
             //{
@@ -206,10 +222,7 @@ namespace FrontEnd.Pages
             StateHasChanged();
         }
         public async void DescriptionNoteInput(int IdFeature, ChangeEventArgs e)
-        {
-            FeatureMedidorCurrent = IdFeature;
-            StateHasChanged();
-
+        {                        
             var CurrentDTO = dtoDescriptions.FirstOrDefault(x => x.IdFeature == IdFeature);
             CurrentDTO.Note = e.Value.ToString();
             CurrentFeature = FeaturesList.FirstOrDefault(x => x.IdFeature == IdFeature);
@@ -218,35 +231,36 @@ namespace FrontEnd.Pages
             //if (!string.IsNullOrEmpty(CurrentDTO.Observation))
             //{
 
-                CurrentInventory.Note = e.Value.ToString();
-                CurrentInventory.IdProperty = _context.CurrentReceptionCertificate.IdProperty;
-                CurrentInventory.IdArea = CurrentArea.IdArea;
-                CurrentInventory.IdDescription = DescriptionsList.FirstOrDefault()?.IdDescription ?? 1;
+            CurrentInventory.Note = e.Value.ToString();
+            CurrentInventory.IdProperty = _context.CurrentReceptionCertificate.IdProperty;
+            CurrentInventory.IdArea = CurrentFeature?.IdService == 14 ? 11 : CurrentArea.IdArea;
+            CurrentInventory.IdDescription = DescriptionsList.FirstOrDefault()?.IdDescription ?? 1;
+            CurrentInventory.IdReceptionCertificate = _context.CurrentReceptionCertificate.IdReceptionCertificate;
 
-                InventoriesList.Add(CurrentInventory);
+            InventoriesList.Add(CurrentInventory);
 
-                //dtoDescriptions.FirstOrDefault(x => x.IdFeature == CurrentFeature.IdFeature).IdDescription = idDescription;
-                //dtoDescriptions.FirstOrDefault(x => x.IdDescription == idDescription).Note = name;
-                //DescriptionsList = new();
+            //dtoDescriptions.FirstOrDefault(x => x.IdFeature == CurrentFeature.IdFeature).IdDescription = idDescription;
+            //dtoDescriptions.FirstOrDefault(x => x.IdDescription == idDescription).Note = name;
+            //DescriptionsList = new();
 
-                var res = await _inventoryService.PostInventoryAsync(CurrentInventory);
-                CurrentInventory.IdInventory = res.IdInventory;
-                LastInventoryAdded = res.IdInventory;
-                //if (FormBlob.CurrentBlobFile.Blob.IdBlobs != null && FormBlob.CurrentBlobFile.Blob.IdBlobs != 0)
-                //{
-                //    BlobsInventory.IdBlobs = FormBlob.CurrentBlobFile.Blob.IdBlobs;
-                //    BlobsInventory.IdInventory = CurrentInventory.IdInventory;
-                //    BlobsInventory.IdProperty = _context.CurrentReceptionCertificate.IdProperty;
-                //    _blobsInventoryService.PostBlobsInventoryAsync(BlobsInventory);
-                //    NewBlob = new();
-                //}
+            var res = await _inventoryService.PostInventoryAsync(CurrentInventory);
+            CurrentInventory.IdInventory = res.IdInventory;
+            LastInventoryAdded = res.IdInventory;
+            //if (FormBlob.CurrentBlobFile.Blob.IdBlobs != null && FormBlob.CurrentBlobFile.Blob.IdBlobs != 0)
+            //{
+            //    BlobsInventory.IdBlobs = FormBlob.CurrentBlobFile.Blob.IdBlobs;
+            //    BlobsInventory.IdInventory = CurrentInventory.IdInventory;
+            //    BlobsInventory.IdProperty = _context.CurrentReceptionCertificate.IdProperty;
+            //    _blobsInventoryService.PostBlobsInventoryAsync(BlobsInventory);
+            //    NewBlob = new();
+            //}
 
-                //var bres = await _blobService.PostBlobAsync(FormBlob.CurrentBlobFile);
-                //BlobsInventory.IdBlobs = bres.IdBlobs;
-                //BlobsInventory.IdInventory = res.IdInventory;
-                //BlobsInventory.IdProperty = _context.CurrentPropertys.IdProperty;
-                CurrentInventory = new();
-                DescriptionsList = new();
+            //var bres = await _blobService.PostBlobAsync(FormBlob.CurrentBlobFile);
+            //BlobsInventory.IdBlobs = bres.IdBlobs;
+            //BlobsInventory.IdInventory = res.IdInventory;
+            //BlobsInventory.IdProperty = _context.CurrentPropertys.IdProperty;
+            CurrentInventory = new();
+            DescriptionsList = new();
                 //FeatureMedidorCurrent = 0;//Reinicamos el FEatureBAndera para desbloqeuar todos lo input                
             //}
             //StateHasChanged();
@@ -276,8 +290,9 @@ namespace FrontEnd.Pages
                 CurrentInventory.Observation = currentDTO.Observation;
                 CurrentInventory.Note = currentDTO.Note;
                 CurrentInventory.IdProperty = _context.CurrentReceptionCertificate.IdProperty;
-                CurrentInventory.IdArea = CurrentArea.IdArea;
+                CurrentInventory.IdArea = 11;
                 CurrentInventory.IdDescription = DescriptionsList.FirstOrDefault()?.IdDescription ?? 1;
+                CurrentInventory.IdReceptionCertificate = _context.CurrentReceptionCertificate.IdReceptionCertificate;
 
                 InventoriesList.Add(CurrentInventory);          
 
@@ -300,7 +315,8 @@ namespace FrontEnd.Pages
             //CurrentInventory = new();
             CurrentInventory.IdProperty = _context.CurrentReceptionCertificate.IdProperty;
             CurrentInventory.IdArea = CurrentArea.IdArea;
-            CurrentInventory.IdDescription = idDescription;            
+            CurrentInventory.IdDescription = idDescription;
+            CurrentInventory.IdReceptionCertificate = _context.CurrentReceptionCertificate.IdReceptionCertificate;
             //CurrentInventory.Note = name;
 
             //var newInventory = new Inventory { IdArea = CurrentArea.IdArea, IdProperty = 2, IdDescription = idDescription, Note = name, };
@@ -386,6 +402,7 @@ namespace FrontEnd.Pages
         public void RemoveService(int IdService)
         {
             ServicesList.Remove(CurrentService);
+            CurrentArea.AreaServices.Remove(CurrentArea.AreaServices.FirstOrDefault(x=>x.IdService==IdService));
         }
         public void AddInventoryBlob(int IdBlob)
         {

@@ -14,16 +14,16 @@ namespace FrontEnd.Services
             _context = context;
         }
 
-        public async Task<List<ActasRecepcion>> GetMailAsync(int? idProperty, string? email)
+        public async Task<List<ActasRecepcion>> GetMailAsync(int? idReceptionCertificate, string? email)
         {
-            string idPropertyS = null;
+            string idReceptionCertificateS = null;
 
-            if (idProperty is not null && idProperty > 0)
+            if (idReceptionCertificate is not null && idReceptionCertificate > 0)
             {
-                idPropertyS = idProperty.ToString();
+                idReceptionCertificateS = idReceptionCertificate.ToString();
             }
 
-            return await _repository.GetAsync<List<ActasRecepcion>>($"api/MailAri?idProperty={idPropertyS}&email={email}");
+            return await _repository.GetAsync<List<ActasRecepcion>>($"api/MailAri?idReceptionCertificate={idReceptionCertificateS}&email={email}");
         }
     }
 }
