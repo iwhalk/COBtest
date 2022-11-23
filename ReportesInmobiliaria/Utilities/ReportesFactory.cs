@@ -333,6 +333,10 @@ namespace ReportesInmobiliaria.Utilities
             for (int i = 0; i < reporteActaEntrega.deliverables.Count; i++)
             {
                 string tableTitle = reporteActaEntrega.deliverables.ElementAt(i).Entregable;
+                //if (tableTitle.Contains("Llaves"))
+                //    tableTitle = "Llaves de habitación";
+                //else if (tableTitle.Contains("Medidores"))
+                //    tableTitle = "Medidores";
                 paragraph = section.AddParagraph();
                 if (i != 0)
                     paragraph.Format.SpaceBefore = "1.0cm";
