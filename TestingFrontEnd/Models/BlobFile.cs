@@ -21,7 +21,7 @@ namespace FrontEnd.Models
         public string[] AllowedExtensions { get; set; }
 
         [Required]
-        [FileValidation(new[] { ".png", ".jpg" })]
+        [FileValidation(new[] { ".png", ".jpg", ".jpeg" })]
         public IBrowserFile BrowserFile { get; set; }
     }
 

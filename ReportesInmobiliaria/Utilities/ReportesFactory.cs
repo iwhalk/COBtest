@@ -329,10 +329,15 @@ namespace ReportesInmobiliaria.Utilities
                 }
                 blobUris.Clear();
             }
+            
             int contadorTabla = 0;
             for (int i = 0; i < reporteActaEntrega.deliverables.Count; i++)
             {
                 string tableTitle = reporteActaEntrega.deliverables.ElementAt(i).Entregable;
+                //if (tableTitle.Contains("Llaves"))
+                //    tableTitle = "Llaves de habitación";
+                //else if (tableTitle.Contains("Medidores"))
+                //    tableTitle = "Medidores";
                 paragraph = section.AddParagraph();
                 if (i != 0)
                     paragraph.Format.SpaceBefore = "1.0cm";
@@ -358,15 +363,28 @@ namespace ReportesInmobiliaria.Utilities
                 row2.Format.Font.Bold = true;
                 row2.Format.Font.Size = 10;
                 row2.Shading.Color = TableColor;
-                row2.Cells[0].AddParagraph("Area/Servicio");
-                row2.Cells[1].AddParagraph("Cantidad");
-                row2.Cells[2].AddParagraph("Observaciones");
+                if (!tableTitle.Contains("Medidores"))
+                {
+                    row2.Cells[0].AddParagraph("Area");
+                    row2.Cells[1].AddParagraph("Cantidad");
+                    row2.Cells[2].AddParagraph("Observaciones");
+                    i = FillGenericContent(reporteActaEntrega.deliverables, tableEntregables, i, tableTitle) - 1;
+                }
+                else
+                {
+                    row2.Cells[0].AddParagraph("Servicio");
+                    row2.Cells[1].AddParagraph("No. Serie");
+                    row2.Cells[2].AddParagraph("Cantidad");
+                    i = FillGenericContentMedidores(reporteActaEntrega.deliverables, tableEntregables, i, tableTitle) - 1;
+                }
                 contadorTabla++;
-                i = FillGenericContent(reporteActaEntrega.deliverables, tableEntregables, i, tableTitle) - 1;
-
+                
                 //A partir de la primera fila de elementos combina las celdas de la tercer columna
-                Row elementsRow = tableEntregables.Rows[1];
-                elementsRow.Cells[2].MergeDown = tableEntregables.Rows.Count - 2;
+                if (!tableTitle.Contains("Medidores"))
+                {
+                    Row elementsRow = tableEntregables.Rows[1];
+                    elementsRow.Cells[2].MergeDown = tableEntregables.Rows.Count - 2;
+                }
 
                 paragraph = section.AddParagraph();
                 paragraph.Format.SpaceBefore = "0.6cm";
@@ -539,6 +557,71 @@ namespace ReportesInmobiliaria.Utilities
                         {
                             string currentUri = prop.GetValue(item, null)?.ToString();
                             if(currentUri != null)
+                                if (currentUri.Contains("http"))
+                                {
+                                    blobUris.Add(currentUri);
+                                }
+                        }
+                    }
+            }
+            return value.Count;
+        }
+
+        int FillGenericContentMedidores<T>(List<T> value, Table table, int tableIndex, string title, int fontSize = 8)
+        {
+            Table _table = table;
+            //foreach (var item in value)
+            for (int i = tableIndex; i < value.Count; i++)
+            {
+                var item = value.ElementAt(i);
+                Row row = _table.AddRow();
+                row.Format.Font.Size = (Unit)fontSize;
+                row.VerticalAlignment = VerticalAlignment.Center;
+                if (item != null)
+                    foreach (var (prop, index) in item.GetType().GetProperties().Select((v, i) => (v, i)))
+                    {
+                        var type = Nullable.GetUnderlyingType(prop.PropertyType) ?? prop.PropertyType;
+                        if (index == 2)
+                        {
+                            string currentTitle = prop.GetValue(item, null)?.ToString();
+                            if (currentTitle != title)
+                            {
+                                row.Format.Font.Size = (Unit)0;
+                                return i;
+                            }
+                        }
+                        if (index >= 3 && index <= 5)
+                        {
+                            int indexChanged = 3;
+                            if (index == 4)
+                                indexChanged = 5;
+                            else if (index == 5)
+                                indexChanged = 4;
+                            if (type == typeof(DateTime))
+                            {
+                                row.Cells[indexChanged - 3].AddParagraph(((DateTime?)prop.GetValue(item, null))?.ToString("dd/MM/yyyy hh:mm:ss tt") ?? "");
+                            }
+                            if (type == typeof(string))
+                            {
+                                row.Cells[indexChanged - 3].AddParagraph(prop.GetValue(item, null)?.ToString());
+                            }
+                            if (type == typeof(bool))
+                            {
+                                row.Cells[indexChanged - 3].AddParagraph((bool?)prop.GetValue(item, null) ?? false ? "SI" : "NO");
+                            }
+                            if (type == typeof(int))
+                            {
+                                row.Cells[indexChanged - 3].AddParagraph(prop.GetValue(item, null)?.ToString());
+                            }
+                            if (type == typeof(long))
+                            {
+                                row.Cells[indexChanged - 3].AddParagraph(prop.GetValue(item, null)?.ToString());
+                            }
+                        }
+                        if (index == 6)
+                        {
+                            string currentUri = prop.GetValue(item, null)?.ToString();
+                            if (currentUri != null)
                                 if (currentUri.Contains("http"))
                                 {
                                     blobUris.Add(currentUri);

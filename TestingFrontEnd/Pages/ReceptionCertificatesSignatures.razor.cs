@@ -52,6 +52,7 @@ namespace FrontEnd.Pages
         public byte[]? BlobPDFPreview { get; set; } 
         public string PdfName { get; set; }
         public bool ShowModalPreview { get; set; } = false;
+        public bool DisablePreView { get; set; } = false;
         public string ImageBase64Lessor { get; set; }
         public string ImageBase64Tenant { get; set; }
         public string Observaciones { get; set; }
@@ -73,17 +74,21 @@ namespace FrontEnd.Pages
         }
         public async void HandlePreviewPdf()
         {
+            DisablePreView = true;
             if (CurrentReceptionCertificate != null)
             {                
                 var IdReceptionCertificate = CurrentReceptionCertificate.IdReceptionCertificate;                
-                BlobPDFPreview = await _reportService.GetReporteReceptionCertificate(IdReceptionCertificate);
+                BlobPDFPreview = await _reportService.GetReporteReceptionCertificate(IdReceptionCertificate);                
                 if (BlobPDFPreview != null)
-                {
-                    ShowModalPreview = true;
+                {                    
                     PdfName = "PDFPreview.pdf";
-                    StateHasChanged();
+                    Thread.Sleep(5000);
                 }
-            }        
+                StateHasChanged();
+            }
+            DisablePreView = false;
+            ShowModalPreview = true;
+            StateHasChanged();
         }
         public async void HandleSaveReceptionCertificate()
         {

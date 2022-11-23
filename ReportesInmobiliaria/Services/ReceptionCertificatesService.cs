@@ -97,6 +97,19 @@ namespace ReportesInmobiliaria.Services
                 throw;
             }
             return receptionCertificate;
-        }   
+        }
+
+        public async Task<List<ReceptionCertificate?>> GetReceptionCertificatesAsync(int? idReceptionCertificate)
+        {
+            if (idReceptionCertificate != null)
+            {
+                var certificates = _dbContext.ReceptionCertificates.Where(x => x.IdReceptionCertificate == idReceptionCertificate);
+                if (certificates.Any())
+                {
+                    return await certificates.ToListAsync();
+                }
+            }
+            return await _dbContext.ReceptionCertificates.ToListAsync();
+        }
     }
 }
