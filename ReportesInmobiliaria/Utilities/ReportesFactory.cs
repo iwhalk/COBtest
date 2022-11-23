@@ -401,6 +401,8 @@ namespace ReportesInmobiliaria.Utilities
                 columnI.Format.Alignment = ParagraphAlignment.Center;
                 columnI = tableImages.AddColumn("5cm");
                 columnI.Format.Alignment = ParagraphAlignment.Center;
+                columnI = tableImages.AddColumn("5cm");
+                columnI.Format.Alignment = ParagraphAlignment.Center;
                 Row rowI = tableImages.AddRow();
 
                 for (int j = 0; j < blobUris.Count; j++)
@@ -461,7 +463,7 @@ namespace ReportesInmobiliaria.Utilities
             {
                 base64Arrendador = reporteActaEntrega.header.ElementAt(0).FirmaArrendatario.Split(',')[1];
                 Stream? streamArrendador = new MemoryStream(Convert.FromBase64String(base64Arrendador));
-                rowF1.Cells[0].AddParagraph().AddImage(ImageSource.FromStream("Firma Arrendatario", () => streamArrendador)).Width = "8cm";
+                rowF1.Cells[0].AddParagraph().AddImage(ImageSource.FromStream("Firma Arrendatario", () => streamArrendador)).Width = "6.5cm";
             }
             if (!string.IsNullOrWhiteSpace(reporteActaEntrega.header.ElementAt(0).FirmaArrendador))
             {
@@ -479,7 +481,7 @@ namespace ReportesInmobiliaria.Utilities
                 }
                 img.Save(Environment.CurrentDirectory + "\\Images\\FirmaSello.png");
                 //rowF1.Cells[1].AddParagraph().AddImage(ImageSource.FromStream("Firma Arrendador", () => streamArrendatario)).Width = "10cm";
-                rowF1.Cells[1].AddParagraph().AddImage(ImageSource.FromFile(Environment.CurrentDirectory + @"\Images\FirmaSello.png")).Width = "8cm";
+                rowF1.Cells[1].AddParagraph().AddImage(ImageSource.FromFile(Environment.CurrentDirectory + @"\Images\FirmaSello.png")).Width = "6.5cm";
             }
 
             Row rowF2 = tablaFirmas.AddRow();
