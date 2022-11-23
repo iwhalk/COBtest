@@ -27,7 +27,8 @@ using Row = MigraDocCore.DocumentObjectModel.Tables.Row;
 using Table = MigraDocCore.DocumentObjectModel.Tables.Table;
 using Azure.Storage.Blobs;
 using Microsoft.EntityFrameworkCore.Scaffolding;
-using Microsoft.VisualBasic;
+using System.Drawing;
+using Color = MigraDocCore.DocumentObjectModel.Color;
 
 namespace ReportesInmobiliaria.Utilities
 {
@@ -400,6 +401,8 @@ namespace ReportesInmobiliaria.Utilities
                 columnI.Format.Alignment = ParagraphAlignment.Center;
                 columnI = tableImages.AddColumn("5cm");
                 columnI.Format.Alignment = ParagraphAlignment.Center;
+                columnI = tableImages.AddColumn("5cm");
+                columnI.Format.Alignment = ParagraphAlignment.Center;
                 Row rowI = tableImages.AddRow();
 
                 for (int j = 0; j < blobUris.Count; j++)
@@ -451,6 +454,7 @@ namespace ReportesInmobiliaria.Utilities
             Row rowF1 = tablaFirmas.AddRow();
             rowF1.Format.Font.Size = 68;
             rowF1.VerticalAlignment = VerticalAlignment.Center;
+            //rowF1.Cells[1].AddParagraph().AddImage(ImageSource.FromFile(Environment.CurrentDirectory + @"\Images\pngegg.png")).Width = "4.2cm";
 
             string base64Arrendador;
             string base64Arrendatario;
@@ -459,13 +463,25 @@ namespace ReportesInmobiliaria.Utilities
             {
                 base64Arrendador = reporteActaEntrega.header.ElementAt(0).FirmaArrendatario.Split(',')[1];
                 Stream? streamArrendador = new MemoryStream(Convert.FromBase64String(base64Arrendador));
-                rowF1.Cells[0].AddParagraph().AddImage(ImageSource.FromStream("Firma Arrendatario", () => streamArrendador)).Width = "10cm";
+                rowF1.Cells[0].AddParagraph().AddImage(ImageSource.FromStream("Firma Arrendatario", () => streamArrendador)).Width = "6.5cm";
             }
             if (!string.IsNullOrWhiteSpace(reporteActaEntrega.header.ElementAt(0).FirmaArrendador))
             {
                 base64Arrendatario = reporteActaEntrega.header.ElementAt(0).FirmaArrendador.Split(',')[1];
-                Stream? streamArrendatario = new MemoryStream(Convert.FromBase64String(base64Arrendatario));                
-                rowF1.Cells[1].AddParagraph().AddImage(ImageSource.FromStream("Firma Arrendador", () => streamArrendatario)).Width = "10cm";
+                Stream? streamArrendatario = new MemoryStream(Convert.FromBase64String(base64Arrendatario));
+                Image imageBackground = Image.FromFile(Environment.CurrentDirectory + @"\Images\pngegg.png");
+                Image arrentatarioImg = Image.FromStream(streamArrendatario);
+                Image img = new Bitmap(arrentatarioImg.Width, 400);
+                Rectangle limit = new Rectangle((arrentatarioImg.Width - imageBackground.Width) / 2, 0, 400, 400);
+                Rectangle limit2 = new Rectangle(0, (img.Height - arrentatarioImg.Height)/2, arrentatarioImg.Width, arrentatarioImg.Height);
+                using (Graphics gr = Graphics.FromImage(img))
+                {
+                    gr.DrawImage(imageBackground,limit);
+                    gr.DrawImage(arrentatarioImg,limit2);
+                }
+                img.Save(Environment.CurrentDirectory + "\\Images\\FirmaSello.png");
+                //rowF1.Cells[1].AddParagraph().AddImage(ImageSource.FromStream("Firma Arrendador", () => streamArrendatario)).Width = "10cm";
+                rowF1.Cells[1].AddParagraph().AddImage(ImageSource.FromFile(Environment.CurrentDirectory + @"\Images\FirmaSello.png")).Width = "6.5cm";
             }
 
             Row rowF2 = tablaFirmas.AddRow();
