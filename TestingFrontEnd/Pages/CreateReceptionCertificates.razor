@@ -13,7 +13,7 @@
                             <div class="flex my-3 lg:mb-3">
                                 <label class="w-44 lg:w-52 text-left text-sm lg:text-md">Fecha y Hora de Realizacion</label>
                                 <div>
-                                    <InputDate @bind-Value="NewReceptionCertificate.CreationDate" Type="InputDateType.DateTimeLocal" class="w-44 lg:w-52 ml-2 rounded-lg text-black" />
+                                    <InputDate @bind-Value="NewReceptionCertificate.CreationDate" max=@DateTime.Today.ToString("yyyy'-'MM'-'dd") Type="InputDateType.DateTimeLocal" class="w-44 lg:w-52 ml-2 rounded-lg text-black" />
                                     <div class="text-xs"><ValidationMessage class="text-xs" For="@(() => NewReceptionCertificate.CreationDate)" /></div>
                                 </div>
                             </div>
