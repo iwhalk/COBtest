@@ -6,7 +6,7 @@ namespace ApiGateway.Interfaces
 {
     public interface IMailAriService
     {
-        Task<ApiResponse> GetMailAsync(int idProperty, string email);
+        Task<ApiResponse> GetMailAsync(int idReceptionCertificate, string email);
         bool MailSender(MimeMessage email);
     }
 }

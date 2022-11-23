@@ -4,6 +4,6 @@ namespace FrontEnd.Interfaces
 {
     public interface IMailAriService
     {
-        Task<List<ActasRecepcion>> GetMailAsync(int? idProperty, string? email);
+        Task<List<ActasRecepcion>> GetMailAsync(int? idReceptionCertificate, string? email);
     }
 }
