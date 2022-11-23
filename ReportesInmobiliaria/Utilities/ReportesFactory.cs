@@ -358,7 +358,7 @@ namespace ReportesInmobiliaria.Utilities
                 row2.Format.Font.Bold = true;
                 row2.Format.Font.Size = 10;
                 row2.Shading.Color = TableColor;
-                if (tableTitle != "Medidores")
+                if (!tableTitle.Contains("Medidores"))
                 {
                     row2.Cells[0].AddParagraph("Area");
                     row2.Cells[1].AddParagraph("Cantidad");
@@ -375,7 +375,7 @@ namespace ReportesInmobiliaria.Utilities
                 contadorTabla++;
 
                 //A partir de la primera fila de elementos combina las celdas de la tercer columna
-                if (tableTitle != "Medidores")
+                if (!tableTitle.Contains("Medidores"))
                 {
                     Row elementsRow = tableEntregables.Rows[1];
                     elementsRow.Cells[2].MergeDown = tableEntregables.Rows.Count - 2;
