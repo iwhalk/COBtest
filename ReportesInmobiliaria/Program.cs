@@ -850,12 +850,13 @@ app.MapPut("/ReceptionCertificate/{Id}", async (int Id, ReceptionCertificate rec
 #endregion
 
 #region Mail
-app.MapGet("/SendReceptionCertificate", async (string idProperty, string email, IReporteActaEntregaService _reportesService, IMailService _mailService, ILogger<Program> _logger) =>
+
+app.MapGet("/SendReceptionCertificate", async (int idReceptionCertificate, string email, IReporteActaEntregaService _reportesService, IMailService _mailService, ILogger<Program> _logger) =>
 {
     try
 
     {
-        var reporte = await _reportesService.GetActaEntrega(idProperty);
+        var reporte = await _reportesService.GetActaEntrega(idReceptionCertificate);
         if (reporte == null) return Results.NoContent();
         var mail = await _mailService.SendReceptionCertificate(reporte, email);
         if (mail == false) return Results.NotFound();
