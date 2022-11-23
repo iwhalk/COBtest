@@ -850,6 +850,7 @@ app.MapPut("/ReceptionCertificate/{Id}", async (int Id, ReceptionCertificate rec
 #endregion
 
 #region Mail
+
 app.MapGet("/SendReceptionCertificate", async (int idReceptionCertificate, string email, IReporteActaEntregaService _reportesService, IMailService _mailService, ILogger<Program> _logger) =>
 {
     try

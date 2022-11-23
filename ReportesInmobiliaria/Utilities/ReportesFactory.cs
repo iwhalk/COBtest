@@ -27,6 +27,7 @@ using Row = MigraDocCore.DocumentObjectModel.Tables.Row;
 using Table = MigraDocCore.DocumentObjectModel.Tables.Table;
 using Azure.Storage.Blobs;
 using Microsoft.EntityFrameworkCore.Scaffolding;
+using Microsoft.VisualBasic;
 
 namespace ReportesInmobiliaria.Utilities
 {
@@ -323,12 +324,12 @@ namespace ReportesInmobiliaria.Utilities
                     var currentImage = new BlobClient(new Uri(currentUri)).DownloadContent();
                     rowI.Cells[j].Format.Alignment = ParagraphAlignment.Center;
                     rowI.Cells[j].VerticalAlignment = VerticalAlignment.Center;
-                    rowI.Cells[j].AddParagraph().AddImage(ImageSource.FromStream("imagen" + i + j, currentImage.Value.Content.ToStream)).Width = "4.8cm";
+                    if (currentImage.Value.Details.ContentType != "image/webp")
+                        rowI.Cells[j].AddParagraph().AddImage(ImageSource.FromStream("imagen" + i + j, currentImage.Value.Content.ToStream)).Width = "4.8cm";
                 }
                 blobUris.Clear();
             }
-
-
+            
             int contadorTabla = 0;
             for (int i = 0; i < reporteActaEntrega.deliverables.Count; i++)
             {
@@ -377,7 +378,7 @@ namespace ReportesInmobiliaria.Utilities
                     i = FillGenericContentMedidores(reporteActaEntrega.deliverables, tableEntregables, i, tableTitle) - 1;
                 }
                 contadorTabla++;
-
+                
                 //A partir de la primera fila de elementos combina las celdas de la tercer columna
                 if (!tableTitle.Contains("Medidores"))
                 {
@@ -463,7 +464,7 @@ namespace ReportesInmobiliaria.Utilities
             if (!string.IsNullOrWhiteSpace(reporteActaEntrega.header.ElementAt(0).FirmaArrendador))
             {
                 base64Arrendatario = reporteActaEntrega.header.ElementAt(0).FirmaArrendador.Split(',')[1];
-                Stream? streamArrendatario = new MemoryStream(Convert.FromBase64String(base64Arrendatario));
+                Stream? streamArrendatario = new MemoryStream(Convert.FromBase64String(base64Arrendatario));                
                 rowF1.Cells[1].AddParagraph().AddImage(ImageSource.FromStream("Firma Arrendador", () => streamArrendatario)).Width = "10cm";
             }
 
