@@ -40,7 +40,7 @@ namespace FrontEnd.Pages
         {
             TypeTableHistoricalOrPending = _context.TypeHistoricalOrPending;
             currentPage = 1;
-            rowNumberForPage = 8;                                                        
+            rowNumberForPage = 10;                                                        
             actasRecepcions = await _reception.GetReceptionCertificatesAsync(null, null, null, null, null, null, null, null, null, currentPage, rowNumberForPage, _context.Completed);
             maxNumberPage = _context.MaxNumberPagination;
             _context.CurrentFilterPagination = new FilterReceptionCertificate();
