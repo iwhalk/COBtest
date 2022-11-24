@@ -167,7 +167,8 @@ namespace ReportesInmobiliaria.Utilities
             dataParametersFrameRight = section.AddTextFrame();
             dataParametersFrameRight.Height = "2.0cm";
             dataParametersFrameRight.Width = "6.5cm";
-            dataParametersFrameRight.Left = ShapePosition.Right;
+            //dataParametersFrameRight.Left = ShapePosition.Right;
+            dataParametersFrameRight.Left = "10.3cm";
             dataParametersFrameRight.RelativeHorizontal = RelativeHorizontal.Margin;
             dataParametersFrameRight.Top = "4.0cm";
             dataParametersFrameRight.RelativeVertical = RelativeVertical.Page;
@@ -182,7 +183,7 @@ namespace ReportesInmobiliaria.Utilities
 
             dataValuesFrameRight = section.AddTextFrame();
             dataValuesFrameRight.Width = "6.5cm";
-            dataValuesFrameRight.Left = "12.5cm";//"3.5cm"
+            dataValuesFrameRight.Left = "13.0cm";//"3.5cm"
             dataValuesFrameRight.RelativeHorizontal = RelativeHorizontal.Margin;
             dataValuesFrameRight.Top = "4.0cm";
             dataValuesFrameRight.RelativeVertical = RelativeVertical.Page;
