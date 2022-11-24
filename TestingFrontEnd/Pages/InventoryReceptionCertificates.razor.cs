@@ -95,7 +95,11 @@ namespace FrontEnd.Pages
 
         public void ChangeOpenModalRooms() => ShowModalRooms = ShowModalRooms ? false : true;
         public void ChangeOpenModalComponents() => ShowModalComponents = ShowModalComponents ? false : true;
-        public void ChangeOpenModalCopyValues() => ShowModalCopyValues = ShowModalCopyValues ? false : true;
+        public void ChangeOpenModalCopyValues()
+        {
+            ShowModalCopyValues = ShowModalCopyValues ? false : true;
+        }
+
         public void ChangeOpenModalGauges()
         {
             //ServicesList = Services.Where(x => CurrentArea.IdServices.Any(y => x.IdService.Equals(y.IdService))).ToList();
@@ -230,6 +234,7 @@ namespace FrontEnd.Pages
         public async void ServiceButtonClicked(int idService)
         {
             CurrentInventory = new();
+            var features = await _featuresService.GetFeaturesAsync();
             ////var bres = await _blobService.PostBlobAsync(FormBlob.CurrentBlobFile);
             //if (FormBlob.CurrentBlobFile.Blob.IdBlobs != null && FormBlob.CurrentBlobFile.Blob.IdBlobs != 0)
             //{
@@ -240,12 +245,14 @@ namespace FrontEnd.Pages
             //}
 
             CurrentService = ServicesList.FirstOrDefault(x => x.IdService == idService);
-            FeaturesList = (await _featuresService.GetFeaturesAsync())?.Where(x => x.IdService == idService)?.ToList();
+            FeaturesList = features?.Where(x => x.IdService == idService)?.ToList();
+            if(idService == 14)
+                FeaturesList = FeaturesList.Where(x => AreasList.Any(y => x.FeatureName.Equals(y.AreaName))).ToList();
             //if(dtoDescriptions.Count < 1)
             foreach (var feature in FeaturesList)
             {          
                 if(dtoDescriptions.FirstOrDefault(x => x.IdFeature == feature.IdFeature) == null)
-                dtoDescriptions.Add(new() { IdFeature = feature.IdFeature, IdService = idService });
+                dtoDescriptions.Add(new() { IdFeature = feature.IdFeature, IdService = idService, IdArea = CurrentArea.IdArea });
             }            
             StateHasChanged();
         }
@@ -271,7 +278,7 @@ namespace FrontEnd.Pages
             CurrentInventory.IdArea = CurrentFeature?.IdService == 14 ? 11 : CurrentArea.IdArea;
             CurrentInventory.IdDescription = DescriptionsList.FirstOrDefault()?.IdDescription ?? 1;
             CurrentInventory.IdReceptionCertificate = CurrentReceptionCertificate.IdReceptionCertificate;
-            CurrentInventory.IdService = CurrentService.IdService;
+            CurrentInventory.IdService = CurrentService?.IdService ?? 14;
             CurrentInventory.IdFeature = IdFeature;
 
             InventoriesList.Add(CurrentInventory);
@@ -457,11 +464,17 @@ namespace FrontEnd.Pages
             _context.CurrentAreasList = AreasList;
             _navigate.NavigateTo("/ReceptionCertificate/Signatures");
         }
+        public async void HandleSaveReceptionCertificate()
+        {
+            _navigate.NavigateTo("/");
+            //HandleInsertSignatures();
+        }
         public class DtoDescription
         {            
             public int IdDescription { get; set; }
             public int IdService { get; set; }
             public int IdFeature { get; set; }
+            public int IdArea { get; set; }
             public string Description { get; set; }
             public string Note { get; set; }
             public string Observation { get; set; }

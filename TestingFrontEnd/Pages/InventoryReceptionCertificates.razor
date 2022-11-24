@@ -91,7 +91,7 @@
             </div>
         </div>
         <div id="Botones" class="flex justify-center -my-8">
-            <button class="py-2 w-48 border rounded-lg text-white text-xl shadow-xl" style="background-color: #2B286F;">Guardar</button>
+            <button onclick="@HandleSaveReceptionCertificate" class="py-2 w-48 border rounded-lg text-white text-xl shadow-xl" style="background-color: #2B286F;">Guardar</button>
             <a><button @onclick="@GenerarActa" class="py-2 w-48 border rounded-lg text-white text-xl shadow-xl" style="background-color: #2B286F;">Generar Acta</button></a>
         </div>
 
@@ -241,7 +241,7 @@
                                     <input @bind="NameMedidor" class="w-full border boder-blue-700 h-9 pl-14" placeholder="Agregar nuevo elemento" />
                                 </div>
                             </div>
-                            <div class="mx-auto w-96 text-center my-3 px-3 pr-2">
+                            <div class="overflow-y-auto mx-auto w-96 text-center my-3 px-3 pr-2">
                                 <table class="w-full  text-sm">
                                     <tr class="bg-[#2B286F] text-white text-sm h-10">
                                         <th class="w-64">Elemento</th>
