@@ -29,6 +29,7 @@ using Azure.Storage.Blobs;
 using Microsoft.EntityFrameworkCore.Scaffolding;
 using System.Drawing;
 using Color = MigraDocCore.DocumentObjectModel.Color;
+using System.Drawing.Imaging;
 
 namespace ReportesInmobiliaria.Utilities
 {
@@ -478,7 +479,11 @@ namespace ReportesInmobiliaria.Utilities
             {
                 base64Arrendatario = reporteActaEntrega.header.ElementAt(0).FirmaArrendador.Split(',')[1];
                 Stream? streamArrendatario = new MemoryStream(Convert.FromBase64String(base64Arrendatario));
-                Image imageBackground = Image.FromFile(Environment.CurrentDirectory + @"\Images\pngegg.png");
+                //Image imageBackground = Image.FromFile(Environment.CurrentDirectory + @"\Images\pngegg.png");
+                WebClient client = new WebClient();
+                MemoryStream stream = new MemoryStream(client.DownloadData("https://aeriblobs.blob.core.windows.net/inventoryblobs/pngegg.png"));
+                Image imageBackground = Image.FromStream(stream);
+
                 Image arrentatarioImg = Image.FromStream(streamArrendatario);
                 Image img = new Bitmap(arrentatarioImg.Width, 400);
                 Rectangle limit = new Rectangle((arrentatarioImg.Width - imageBackground.Width) / 2, 0, 400, 400);
@@ -488,9 +493,14 @@ namespace ReportesInmobiliaria.Utilities
                     gr.DrawImage(imageBackground,limit);
                     gr.DrawImage(arrentatarioImg,limit2);
                 }
-                img.Save(Environment.CurrentDirectory + "\\Images\\FirmaSello.png");
+                //img.Save(Environment.CurrentDirectory + "\\Images\\FirmaSello.png");
+
+                var stream1 = new System.IO.MemoryStream();
+                img.Save(stream1, ImageFormat.Png);
+                stream1.Position = 0;
+
                 //rowF1.Cells[1].AddParagraph().AddImage(ImageSource.FromStream("Firma Arrendador", () => streamArrendatario)).Width = "10cm";
-                rowF1.Cells[1].AddParagraph().AddImage(ImageSource.FromFile(Environment.CurrentDirectory + @"\Images\FirmaSello.png")).Width = "6.5cm";
+                rowF1.Cells[1].AddParagraph().AddImage(ImageSource.FromStream("Firma Agente",() => stream1)).Width = "6.5cm";
             }
 
             Row rowF2 = tablaFirmas.AddRow();
