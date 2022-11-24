@@ -33,7 +33,17 @@ namespace FrontEnd.Stores
         private AspNetUser currentUser;
         private List<Area> currentAreasList;
         private bool completed;
+        private int numPage;
 
+        public int NumPage
+        {
+            get => numPage;
+            set
+            {
+                numPage = value;
+                NotifyStateChanged();
+            }  
+        }
         public List<AspNetUser> ListUserAsp
         {
             get => listUserAsp;

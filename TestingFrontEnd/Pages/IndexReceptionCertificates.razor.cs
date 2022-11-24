@@ -18,6 +18,7 @@ namespace FrontEnd.Pages
 
         public void RedirectRecptionPending()
         {
+            _context.NumPage = 0;
             _context.TypeHistoricalOrPending = "Pending";
             _context.ActasRecepcionList = null;
             _context.Completed = false;

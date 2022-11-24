@@ -16,6 +16,7 @@ namespace FrontEnd.Pages
 
         public void RedirectRecptionHistorical()
         {            
+            _context.NumPage = 0;
             _context.TypeHistoricalOrPending = "Historical";
             _context.ActasRecepcionList = null;
             _context.Completed = true;
