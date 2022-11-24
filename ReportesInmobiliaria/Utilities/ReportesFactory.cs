@@ -70,7 +70,7 @@ namespace ReportesInmobiliaria.Utilities
         Section section;
 
         PageSetup pageSetup;
-
+        string obserbations = "";
         /// <summary>
         /// Initializes a new instance of the class BillFrom and opens the specified XML document.
         /// </summary>
@@ -301,10 +301,12 @@ namespace ReportesInmobiliaria.Utilities
                 
 
                 i = FillGenericContent(reporteActaEntrega.areas, tableAreas, i, tableTitle) - 1;
-                //A partir de la primera fila de elementos combina las celdas de la tercer columna
-                Row elementsRow = tableAreas.Rows[1];
+                //A partir de la primera fila de elementos combina las celdas de la tercer columna e inserta la observación del servicio
+                Row elementsRow = tableAreas.Rows[1];                
+                elementsRow.Cells[2].AddParagraph(obserbations);                
                 elementsRow.Cells[2].MergeDown = tableAreas.Rows.Count - 2;
-
+                elementsRow.Cells[2].VerticalAlignment = VerticalAlignment.Center;
+                obserbations = "";
                 //Agrega un espacio y una imagen de la ruta especificada
                 paragraph = section.AddParagraph();
                 paragraph.Format.SpaceBefore = "0.6cm";
@@ -391,12 +393,15 @@ namespace ReportesInmobiliaria.Utilities
                 }                
 
                 contadorTabla++;
-                
-                //A partir de la primera fila de elementos combina las celdas de la tercer columna
+
+                //A partir de la primera fila de elementos combina las celdas de la tercer columna e inserta la observación del servicio
                 if (!tableTitle.Contains("Medidores"))
                 {
                     Row elementsRow = tableEntregables.Rows[1];
+                    elementsRow.Cells[2].AddParagraph(obserbations);
                     elementsRow.Cells[2].MergeDown = tableEntregables.Rows.Count - 2;
+                    elementsRow.Cells[2].VerticalAlignment = VerticalAlignment.Center;
+                    obserbations = "";
                 }
 
                 paragraph = section.AddParagraph();
@@ -599,6 +604,10 @@ namespace ReportesInmobiliaria.Utilities
                             if (type == typeof(long))
                             {
                                 row.Cells[index - 3].AddParagraph(prop.GetValue(item, null)?.ToString());
+                            }
+                            if (index == 5 && prop.GetValue(item, null)?.ToString() != "") 
+                            {
+                                obserbations = prop.GetValue(item, null)?.ToString();
                             }
                         }
                         if (index == 6)
