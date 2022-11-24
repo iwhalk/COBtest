@@ -377,7 +377,7 @@ namespace ReportesInmobiliaria.Utilities
                 row2.Shading.Color = TableColor;
                 if (!tableTitle.Contains("Medidores"))
                 {
-                    row2.Cells[0].AddParagraph("Area");
+                    row2.Cells[0].AddParagraph("Habitación");
                     row2.Cells[1].AddParagraph("Cantidad");
                     row2.Cells[2].AddParagraph("Observaciones");
                     i = FillGenericContent(reporteActaEntrega.deliverables, tableEntregables, i, tableTitle) - 1;

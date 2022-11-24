@@ -63,12 +63,12 @@ builder.Services.AddAuthentication(options =>
     });
 
 builder.Services.AddAuthentication();
-//builder.Services.AddAuthorization(cfg =>
-//{
-//    cfg.FallbackPolicy = new AuthorizationPolicyBuilder()
-//        .RequireAuthenticatedUser()
-//        .Build();
-//});
+builder.Services.AddAuthorization(cfg =>
+{
+    cfg.FallbackPolicy = new AuthorizationPolicyBuilder()
+        .RequireAuthenticatedUser()
+        .Build();
+});
 
 builder.Services.AddLogging(loggingBuilder =>
 {
@@ -113,7 +113,7 @@ app.UseSwaggerUI();
 
 app.UseAuthentication();
 
-//app.UseAuthorization();
+app.UseAuthorization();
 
 //app.UseHttpsRedirection();
 
