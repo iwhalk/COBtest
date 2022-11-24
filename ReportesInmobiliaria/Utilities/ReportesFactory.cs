@@ -243,7 +243,7 @@ namespace ReportesInmobiliaria.Utilities
             paragraph.AddText(reporteActaEntrega.header.ElementAt(0).Agente);
 
             paragraph = dataValuesFrameRight.AddParagraph();
-            paragraph.AddText(reporteActaEntrega.header.ElementAt(0).FechaHora.ToString());
+            paragraph.AddText(reporteActaEntrega.header.ElementAt(0).FechaHora.ToString("dd/MM/yyyy hh:mm tt"));
             paragraph.AddLineBreak();
             paragraph.AddText(reporteActaEntrega.header.ElementAt(0).TipoInmueble);
             paragraph.AddLineBreak();
@@ -469,15 +469,15 @@ namespace ReportesInmobiliaria.Utilities
             string base64Arrendador;
             string base64Arrendatario;
 
-            if (!string.IsNullOrWhiteSpace(reporteActaEntrega.header.ElementAt(0).FirmaArrendatario))
+            if (!string.IsNullOrWhiteSpace(reporteActaEntrega.header.ElementAt(0).FirmaArrendador))
             {
-                base64Arrendador = reporteActaEntrega.header.ElementAt(0).FirmaArrendatario.Split(',')[1];
+                base64Arrendador = reporteActaEntrega.header.ElementAt(0).FirmaArrendador.Split(',')[1];
                 Stream? streamArrendador = new MemoryStream(Convert.FromBase64String(base64Arrendador));
                 rowF1.Cells[0].AddParagraph().AddImage(ImageSource.FromStream("Firma Arrendatario", () => streamArrendador)).Width = "6.5cm";
             }
-            if (!string.IsNullOrWhiteSpace(reporteActaEntrega.header.ElementAt(0).FirmaArrendador))
+            if (!string.IsNullOrWhiteSpace(reporteActaEntrega.header.ElementAt(0).FirmaArrendatario))
             {
-                base64Arrendatario = reporteActaEntrega.header.ElementAt(0).FirmaArrendador.Split(',')[1];
+                base64Arrendatario = reporteActaEntrega.header.ElementAt(0).FirmaArrendatario.Split(',')[1];
                 Stream? streamArrendatario = new MemoryStream(Convert.FromBase64String(base64Arrendatario));
                 //Image imageBackground = Image.FromFile(Environment.CurrentDirectory + @"\Images\pngegg.png");
                 WebClient client = new WebClient();
@@ -546,8 +546,9 @@ namespace ReportesInmobiliaria.Utilities
         int FillGenericContent<T>(List<T> value, Table table, int tableIndex, string title, int fontSize = 8)
         {
             Table _table = table;
+            string lastService = "";
             //foreach (var item in value)
-            for(int i = tableIndex; i < value.Count; i++)
+            for (int i = tableIndex; i < value.Count; i++)
             {
                 var item = value.ElementAt(i);
                 Row row = _table.AddRow();
@@ -564,6 +565,18 @@ namespace ReportesInmobiliaria.Utilities
                                 row.Format.Font.Size = (Unit)0;
                                 return i;
                             }                                
+                        }
+                        //Quita las entradas repetidas del EP
+                        if (index == 3)
+                        {
+                            string currentService = prop.GetValue(item, null)?.ToString();
+                            if (currentService == lastService)
+                            {
+                                _table.Rows.RemoveObjectAt(_table.Rows.Count - 1);
+                                continue;
+                            }
+                            else
+                                lastService = currentService;
                         }
                         if (index >= 3 && index <= 5)
                         {                            
@@ -605,6 +618,7 @@ namespace ReportesInmobiliaria.Utilities
         int FillGenericContentMedidores<T>(List<T> value, Table table, int tableIndex, string title, int fontSize = 8)
         {
             Table _table = table;
+            string lastService = "";
             //foreach (var item in value)
             for (int i = tableIndex; i < value.Count; i++)
             {
@@ -624,6 +638,18 @@ namespace ReportesInmobiliaria.Utilities
                                 row.Format.Font.Size = (Unit)0;
                                 return i;
                             }
+                        }
+                        //Quita las entradas repetidas del EP
+                        if (index == 3)
+                        {
+                            string currentService = prop.GetValue(item, null)?.ToString();
+                            if (currentService == lastService)
+                            {
+                                _table.Rows.RemoveObjectAt(_table.Rows.Count-1);
+                                continue;
+                            }
+                            else
+                                lastService = currentService;
                         }
                         if (index >= 3 && index <= 5)
                         {
