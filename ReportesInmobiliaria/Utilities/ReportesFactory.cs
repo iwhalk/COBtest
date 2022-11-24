@@ -174,14 +174,14 @@ namespace ReportesInmobiliaria.Utilities
 
             // Create the text frame for the data values
             dataValuesFrame = section.AddTextFrame();
-            dataValuesFrame.Width = "7.0cm";
-            dataValuesFrame.Left = "2.2cm";//"3.5cm"
+            dataValuesFrame.Width = "7.5cm";
+            dataValuesFrame.Left = "2.1cm";//"3.5cm"
             dataValuesFrame.RelativeHorizontal = RelativeHorizontal.Margin;
             dataValuesFrame.Top = "4.0cm";
             dataValuesFrame.RelativeVertical = RelativeVertical.Page;
 
             dataValuesFrameRight = section.AddTextFrame();
-            dataValuesFrameRight.Width = "7.0cm";
+            dataValuesFrameRight.Width = "6.5cm";
             dataValuesFrameRight.Left = "12.5cm";//"3.5cm"
             dataValuesFrameRight.RelativeHorizontal = RelativeHorizontal.Margin;
             dataValuesFrameRight.Top = "4.0cm";
@@ -208,6 +208,9 @@ namespace ReportesInmobiliaria.Utilities
             paragraph.AddLineBreak();
             paragraph.AddText("Dirección: ");
             paragraph.AddLineBreak();
+            //int l = reporteActaEntrega.header.ElementAt(0).Direccion.Length;
+            //if (l >= 48)
+            //    paragraph.AddLineBreak();
             paragraph.AddText("Arrendador: ");
             paragraph.AddLineBreak();
             paragraph.AddText("Arrendatario: ");
@@ -332,8 +335,12 @@ namespace ReportesInmobiliaria.Utilities
             }
             
             int contadorTabla = 0;
+            if(reporteActaEntrega.deliverables.Count < 4 && reporteActaEntrega.deliverables.Count > 0)
+                document.LastSection.AddPageBreak();
             for (int i = 0; i < reporteActaEntrega.deliverables.Count; i++)
             {
+                if (contadorTabla == 1)
+                    document.LastSection.AddPageBreak();
                 string tableTitle = reporteActaEntrega.deliverables.ElementAt(i).Entregable;
                 //if (tableTitle.Contains("Llaves"))
                 //    tableTitle = "Llaves de habitación";
@@ -377,7 +384,8 @@ namespace ReportesInmobiliaria.Utilities
                     row2.Cells[1].AddParagraph("No. Serie");
                     row2.Cells[2].AddParagraph("Cantidad");
                     i = FillGenericContentMedidores(reporteActaEntrega.deliverables, tableEntregables, i, tableTitle) - 1;
-                }
+                }                
+
                 contadorTabla++;
                 
                 //A partir de la primera fila de elementos combina las celdas de la tercer columna
@@ -417,10 +425,7 @@ namespace ReportesInmobiliaria.Utilities
                     rowI.Cells[j].VerticalAlignment = VerticalAlignment.Center;
                     rowI.Cells[j].AddParagraph().AddImage(ImageSource.FromStream("imagenD" + i + j, currentImage.Value.Content.ToStream)).Width = "4.8cm";
                 }
-                blobUris.Clear();
-
-                if (contadorTabla == 1)
-                    document.LastSection.AddPageBreak();
+                blobUris.Clear();                
 
                 //rowI.Cells[0].Format.Alignment = ParagraphAlignment.Center;
                 //rowI.Cells[0].VerticalAlignment = VerticalAlignment.Center;
@@ -449,8 +454,9 @@ namespace ReportesInmobiliaria.Utilities
             Row rowF = tablaFirmas.AddRow();
             rowF.Format.Font.Size = 10;
             rowF.VerticalAlignment = VerticalAlignment.Center;
-            rowF.Cells[0].AddParagraph(DateTime.Now.ToString("dd/MM/yyyy hh:mm tt"));
-            rowF.Cells[1].AddParagraph(DateTime.Now.ToString("dd/MM/yyyy hh:mm tt"));
+            //rowF.Cells[0].AddParagraph(DateTime.Now.ToString("dd/MM/yyyy hh:mm tt"));
+            rowF.Cells[0].AddParagraph(reporteActaEntrega.header.ElementAt(0).FechaHora.ToString("dd/MM/yyyy hh:mm tt"));
+            rowF.Cells[1].AddParagraph(reporteActaEntrega.header.ElementAt(0).FechaHora.ToString("dd/MM/yyyy hh:mm tt"));
             Row rowF1 = tablaFirmas.AddRow();
             rowF1.Format.Font.Size = 68;
             rowF1.VerticalAlignment = VerticalAlignment.Center;
@@ -488,7 +494,7 @@ namespace ReportesInmobiliaria.Utilities
             rowF2.Format.Font.Size = 12;
             rowF2.VerticalAlignment = VerticalAlignment.Center;
             rowF2.Cells[0].AddParagraph(reporteActaEntrega.header.ElementAt(0).Arrendatario + " (Arrendatario)");
-            rowF2.Cells[1].AddParagraph(reporteActaEntrega.header.ElementAt(0).Arrendador + " (Arrendador)");
+            rowF2.Cells[1].AddParagraph(reporteActaEntrega.header.ElementAt(0).Agente + " (Agente)");
         }
 
         void CreateLayout<T>(T reporte)
