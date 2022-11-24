@@ -123,18 +123,18 @@ namespace ReportesInmobiliaria.Utilities
             // Because all styles are derived from Normal, the next line changes the 
             // font of the whole document. Or, more exactly, it changes the font of
             // all styles and paragraphs that do not redefine the font.
-            style.Font.Name = "Calibri";
+            style.Font.Name = "Times New Roman";
 
             style = document.Styles[StyleNames.Header];
-            style.ParagraphFormat.AddTabStop("16cm", TabAlignment.Right);
+            style.ParagraphFormat.AddTabStop("10cm", TabAlignment.Right);
 
             style = document.Styles[StyleNames.Footer];
             style.ParagraphFormat.AddTabStop("8cm", TabAlignment.Center);
 
             // Create a new style called Table based on style Normal
             style = document.Styles.AddStyle("Table", "Normal");
-            style.Font.Name = "Calibri";
-            style.Font.Size = 8;
+            style.Font.Name = "Times New Roman";
+            style.Font.Size = 9;
 
             // Create a new style called Reference based on style Normal
             style = document.Styles.AddStyle("Reference", "Normal");
@@ -176,14 +176,14 @@ namespace ReportesInmobiliaria.Utilities
             // Create the text frame for the data values
             dataValuesFrame = section.AddTextFrame();
             dataValuesFrame.Width = "7.5cm";
-            dataValuesFrame.Left = "2.1cm";//"3.5cm"
+            dataValuesFrame.Left = "2.3cm";//"3.5cm"
             dataValuesFrame.RelativeHorizontal = RelativeHorizontal.Margin;
             dataValuesFrame.Top = "4.0cm";
             dataValuesFrame.RelativeVertical = RelativeVertical.Page;
 
             dataValuesFrameRight = section.AddTextFrame();
             dataValuesFrameRight.Width = "6.5cm";
-            dataValuesFrameRight.Left = "13.0cm";//"3.5cm"
+            dataValuesFrameRight.Left = "13.2cm";//"3.5cm"
             dataValuesFrameRight.RelativeHorizontal = RelativeHorizontal.Margin;
             dataValuesFrameRight.Top = "4.0cm";
             dataValuesFrameRight.RelativeVertical = RelativeVertical.Page;
@@ -197,7 +197,7 @@ namespace ReportesInmobiliaria.Utilities
 
             // Put header in header frame
             Paragraph paragraph = headerFrame.AddParagraph("Acta Entrega Recepción de Inmueble");//Titulo
-            paragraph.Format.Font.Name = "Calibri";
+            paragraph.Format.Font.Name = "Times New Roman";
             paragraph.Format.Font.Size = 20;
             paragraph.Format.Font.Bold = true;
             paragraph.Format.Alignment = ParagraphAlignment.Center;
@@ -205,6 +205,7 @@ namespace ReportesInmobiliaria.Utilities
             // Put parameters in data Frame
             paragraph = dataParametersFrameLeft.AddParagraph();
             paragraph.Format.Font.Bold = true;
+            paragraph.Format.Font.Size = 10;
             paragraph.AddText("No. Contrato: ");
             paragraph.AddLineBreak();
             paragraph.AddText("Dirección: ");
@@ -220,6 +221,7 @@ namespace ReportesInmobiliaria.Utilities
 
             paragraph = dataParametersFrameRight.AddParagraph();
             paragraph.Format.Font.Bold = true;
+            paragraph.Format.Font.Size = 10;
             paragraph.AddText("Fecha y Hora: ");
             paragraph.AddLineBreak();
             paragraph.AddText("Tipo de Inmueble: ");
