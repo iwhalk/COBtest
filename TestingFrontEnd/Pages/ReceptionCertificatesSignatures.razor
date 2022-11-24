@@ -2,46 +2,58 @@
 @attribute [Authorize]
 <PageTitle>Firmas</PageTitle>
 
-<body class="pt-12 pb-12 flex flex-column min-h-screen bg-[url('/assets/img/fondocasa.png')] imgfondo">
-    <div id="ContenedorInventario" class="flex">
-        <div id="ListActas" class="flex ml-4">
-            @*<LeftListActas TypeList="Habitaciones"></LeftListActas>*@    
-            <ListAreas Areas="@_context.CurrentAreasList" TypeList="Habitaciones"></ListAreas>
-        </div>
-        <div id="ContenedorElementos" class="my-12 relative border-1 border-black rounded-lg p-2 mr-6 w-full" style="height: 42rem">
-            <div id="Recuadros" class="my-12 flex flex-col">
-                <div id="RecuadroObservaciones" class="mb-12 ml-8 flex">
-                    <div class="flex flex-col">
-                        <label for="" class="text-start text-xl text-blue-900 font-semibold mb-2">Oberservaciones</label>
-                        <input @bind="Observaciones" type="text" class="border-2 bg-slate-100 h-48" style="width: 42rem">
+@if (tenants != null && lessors != null)
+{
+    <body class="pt-12 pb-12 flex flex-column min-h-screen bg-[url('/assets/img/fondocasa.png')] imgfondo">
+        <div id="ContenedorInventario" class="flex">
+            <div id="ListActas" class="flex ml-4">
+                @*<LeftListActas TypeList="Habitaciones"></LeftListActas>*@
+                <ListAreas Areas="@_context.CurrentAreasList" TypeList="Habitaciones"></ListAreas>
+            </div>
+            <div id="ContenedorElementos" class="my-12 relative border-1 border-black rounded-lg p-2 mr-6 w-full" style="height: 42rem">
+                <div id="Recuadros" class="my-12 flex flex-col">
+                    <div id="RecuadroObservaciones" class="mb-12 ml-8 flex">
+                        <div class="flex flex-col">
+                            <label for="" class="text-start text-xl text-blue-900 font-semibold mb-2">Oberservaciones</label>
+                            <input @bind="Observaciones" type="text" class="border-2 bg-slate-100 h-48" style="width: 42rem">
+                        </div>
                     </div>
-                </div>                                                
-                <div id="RecuadroObservaciones" class="mt-12 ml-8 flex">
-                    <div class="mr-20">                                
-                        <SignaturesTenant @ref="signaturesTenantComponent" NameTenant="@nameTenant" DateAct="@dateAct"></SignaturesTenant>
-                    </div>
-                    <div class="ml-20">                   
-                        <SignaturesLessor @ref="signaturesLessorComponent" NameLessor="@nameLessor" DateAct="@dateAct"></SignaturesLessor>
+                    <div id="RecuadroObservaciones" class="mt-12 ml-8 flex">
+                        <div class="mr-20">
+                            <SignaturesTenant @ref="signaturesTenantComponent" NameTenant="@nameTenant" DateAct="@dateAct"></SignaturesTenant>
+                        </div>
+                        <div class="ml-20">
+                            <SignaturesLessor @ref="signaturesLessorComponent" NameLessor="@nameLessor" DateAct="@dateAct"></SignaturesLessor>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-    <div id="Botones" class="flex justify-center -my-5">
-        <button disabled="@DisablePreView" onclick="@HandlePreviewPdf" class="py-2 my-4 w-48 border rounded-lg text-white text-xl shadow-xl @(DisablePreView ? "bg-gray-400" : "bg-[#2B286F]")" >Previsualizar</button>
-        <button onclick="@HandleSaveReceptionCertificate" class="py-2 my-4 w-48 border rounded-lg text-white text-xl shadow-xl" style="background-color: #2B286F;">Guardar</button>
-        <button onclick="@HandleInsertSignatures" class="py-2 my-4 w-48 border rounded-lg text-white text-xl shadow-xl" style="background-color: #2B286F;">Firmar</button>
-    </div>    
-    @if (DisablePreView)
-    {
-        <div style="margin: 0; position: absolute; top: 50%; left: 50%; width: auto; height: auto;">
+        <div id="Botones" class="flex justify-center -my-5">
+            <button disabled="@DisablePreView" onclick="@HandlePreviewPdf" class="py-2 my-4 w-48 border rounded-lg text-white text-xl shadow-xl @(DisablePreView ? "bg-gray-400" : "bg-[#2B286F]")">Previsualizar</button>
+            <button onclick="@HandleSaveReceptionCertificate" class="py-2 my-4 w-48 border rounded-lg text-white text-xl shadow-xl" style="background-color: #2B286F;">Guardar</button>
+            <button onclick="@HandleInsertSignatures" class="py-2 my-4 w-48 border rounded-lg text-white text-xl shadow-xl" style="background-color: #2B286F;">Firmar</button>
+        </div>
+        @if (DisablePreView)
+        {
+            <div style="margin: 0; position: absolute; top: 50%; left: 50%; width: auto; height: auto;">
+                <FluentProgressRing style="width: 102px; height: 102px;"></FluentProgressRing>
+            </div>
+        }
+        @if (ShowModalPreview)
+        {
+            <ModalPreviewPDF CloseModalLessor="ChangeOpenModalPreview" Content="BlobPDFPreview" PdfName="PdfName" ShowModal="ShowModalPreview"></ModalPreviewPDF>
+        }
+    </body>
+}
+else
+{
+    <div class="d-flex justify-content-center vh-100">
+        <div class="d-flex flex-column justify-content-center">
             <FluentProgressRing style="width: 102px; height: 102px;"></FluentProgressRing>
         </div>
-    }
-    @if (ShowModalPreview)
-    {  
-            <ModalPreviewPDF CloseModalLessor="ChangeOpenModalPreview" Content="BlobPDFPreview" PdfName="PdfName" ShowModal="ShowModalPreview"></ModalPreviewPDF>               
-    }
-</body>
+    </div>
+}
+
 <Navbar></Navbar>
 <Footer></Footer>

@@ -2,54 +2,56 @@
 @attribute [Authorize]
 <PageTitle>Inventario</PageTitle>
 
-<body class="pb-12 flex flex-column min-h-screen bg-[url('/assets/img/fondocasa.png')] imgfondo">
-    <div class="my-auto">
-        <div class="flex inline-flex">
-            <div id="ListActas" class="flex ml-4" style="height: 48rem">
-                <ListAreas OnAreaClick="AreaButtonClicked" Areas="@AreasList" OnClick="ChangeOpenModalRooms" OnMinusClick="RemoveArea" OpenModalGauges="ChangeOpenModalGauges" OpenModalKeys="ChangeOpenModalKeys" TypeList="Habitaciones"></ListAreas>
-            </div>
-            <div class="pt-9">
-                <div class="flex w-full">
-                    <div id="ListActas" class="flex" style="height: 45.8rem">
-                        <ListServices OnServiceClick="ServiceButtonClicked" Services="@ServicesList" OnClick="ChangeOpenModalComponents" OnMinusClick="RemoveService" TypeList="Componentes"></ListServices>
-                    </div>
-                    <div id="ContenedorElementos" class="my-12 flex justify-around relative border-1 border-black rounded-lg p-2 -ml-2 mr-6" style="width: 87rem">
-                        <div id="ComponteInputs" class="flex p-2">
-                            <div class="flex">
-                                <div>
-                                    <div class="flex flex-col">
-                                        @foreach (var feature in FeaturesList)
-                                        {
-                                            @if (FeaturesIds.Contains(feature.IdFeature))
+@if (Services != null)
+{
+    <body class="pb-12 flex flex-column min-h-screen bg-[url('/assets/img/fondocasa.png')] imgfondo">
+        <div class="my-auto">
+            <div class="flex inline-flex">
+                <div id="ListActas" class="flex ml-4" style="height: 48rem">
+                    <ListAreas OnAreaClick="AreaButtonClicked" Areas="@AreasList" OnClick="ChangeOpenModalRooms" OnMinusClick="RemoveArea" OpenModalGauges="ChangeOpenModalGauges" OpenModalKeys="ChangeOpenModalKeys" TypeList="Habitaciones"></ListAreas>
+                </div>
+                <div class="pt-9">
+                    <div class="flex w-full">
+                        <div id="ListActas" class="flex" style="height: 45.8rem">
+                            <ListServices OnServiceClick="ServiceButtonClicked" Services="@ServicesList" OnClick="ChangeOpenModalComponents" OnMinusClick="RemoveService" TypeList="Componentes"></ListServices>
+                        </div>
+                        <div id="ContenedorElementos" class="my-12 flex justify-around relative border-1 border-black rounded-lg p-2 -ml-2 mr-6" style="width: 87rem">
+                            <div id="ComponteInputs" class="flex p-2">
+                                <div class="flex">
+                                    <div>
+                                        <div class="flex flex-col">
+                                            @foreach (var feature in FeaturesList)
                                             {
-                                                <span class="flex my-2">
-                                                    <label for="" class="text-blue-900 w-32">
-                                                        @feature.FeatureName
-                                                    </label>
-                                                    <input value="@(dtoDescriptions.FirstOrDefault(x => x.IdFeature == feature.IdFeature)?.Note)" @onchange="@((ChangeEventArgs e) => DescriptionNoteInput(@feature.IdFeature, e))" class="border-2 bg-slate-100 ml-5 w-3/6 flex justify-end">
-                                                </span>
+                                                @if (FeaturesIds.Contains(feature.IdFeature))
+                                                {
+                                                    <span class="flex my-2">
+                                                        <label for="" class="text-blue-900 w-32">
+                                                            @feature.FeatureName
+                                                        </label>
+                                                        <input value="@(dtoDescriptions.FirstOrDefault(x => x.IdFeature == feature.IdFeature)?.Note)" @onchange="@((ChangeEventArgs e) => DescriptionNoteInput(@feature.IdFeature, e))" class="border-2 bg-slate-100 ml-5 w-3/6 flex justify-end">
+                                                    </span>
+                                                }
+                                                else
+                                                {
+                                                    <span class="flex my-2">
+                                                        <label for="" class="text-blue-900 w-32">
+                                                            @feature.FeatureName
+                                                        </label>
+                                                        <button @onclick="@(() => FeatureButtonClicked(@feature.IdFeature))" class="border-2 bg-slate-100 ml-5 w-3/6 flex justify-end h-7 w-24">
+                                                            @dtoDescriptions.FirstOrDefault(x => x.IdFeature == feature.IdFeature)?.Description
+                                                        </button>
+                                                    </span>
+                                                }
                                             }
-                                            else
-                                            {
-                                                <span class="flex my-2">
-                                                    <label for="" class="text-blue-900 w-32">
-                                                        @feature.FeatureName
-                                                    </label>
-                                                    <button @onclick="@(() => FeatureButtonClicked(@feature.IdFeature))" class="border-2 bg-slate-100 ml-5 w-3/6 flex justify-end h-7 w-24">
-                                                        @dtoDescriptions.FirstOrDefault(x => x.IdFeature == feature.IdFeature)?.Description
-                                                    </button>
-                                                </span>
-                                            }
-                                        }
+                                        </div>
+                                    </div>
+                                    <div class="mx-5">
+                                        <li class="py-2 flex text-blue-900">Copiar Valores<input @onclick="ChangeOpenModalCopyValues" type="checkbox" class="border-2 w-1/4"></li>
                                     </div>
                                 </div>
-                                <div class="mx-5">
-                                    <li class="py-2 flex text-blue-900">Copiar Valores<input @onclick="ChangeOpenModalCopyValues" type="checkbox" class="border-2 w-1/4"></li>
-                                </div>
                             </div>
-                        </div>
-                        <ButtonsDescriptions OnClick="DescriptionButtonClicked" DescriptionsList="DescriptionsList"></ButtonsDescriptions>
-                        @*@if(TypeButtonsInventory == "Material" && MaterialSelect == "")
+                            <ButtonsDescriptions OnClick="DescriptionButtonClicked" DescriptionsList="DescriptionsList"></ButtonsDescriptions>
+                            @*@if(TypeButtonsInventory == "Material" && MaterialSelect == "")
                         {
                         <DynamicComponentInventory OnClick="SetMaterial"></DynamicComponentInventory>
                         }
@@ -62,16 +64,16 @@
                         <StatusInventory OnClick="SetStatus"></StatusInventory>
                         }*@
 
-                        @*<BoxesInventory></BoxesInventory>*@
-                        <div id="ComponenteRecuadros" class="p-2">
-                            <div>
-                                <label for="" class="text-center text-xl text-blue-900 font-semibold mb-2">Oberservaciones</label>
-                                <input @bind-value="CurrentInventory.Observation" type="text" class="border-2 bg-slate-100 ml-5 w-96 h-48 flex justify-end">
-                            </div>
-                            <div class="my-4">
-                                <label for="" class="text-xl text-blue-900 font-semibold">Fotografias</label>
-                                <div class=" relative border bg-slate-100 mx-auto ml-5 w-96 h-64 flex justify-center block flex">
-                                    @*<input class="border-2 bg-slate-100 mx-auto ml-5 w-80 h-40 flex justify-end inset-0 absolute opacity-0 cursor-pointer" type="file" multiple>
+                            @*<BoxesInventory></BoxesInventory>*@
+                            <div id="ComponenteRecuadros" class="p-2">
+                                <div>
+                                    <label for="" class="text-center text-xl text-blue-900 font-semibold mb-2">Oberservaciones</label>
+                                    <input @bind-value="CurrentInventory.Observation" type="text" class="border-2 bg-slate-100 ml-5 w-96 h-48 flex justify-end">
+                                </div>
+                                <div class="my-4">
+                                    <label for="" class="text-xl text-blue-900 font-semibold">Fotografias</label>
+                                    <div class=" relative border bg-slate-100 mx-auto ml-5 w-96 h-64 flex justify-center block flex">
+                                        @*<input class="border-2 bg-slate-100 mx-auto ml-5 w-80 h-40 flex justify-end inset-0 absolute opacity-0 cursor-pointer" type="file" multiple>
                                     <div class="block text-center my-auto">
                                     <div class="flex justify-center">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" fill="#2B286F" class="bi bi-plus-lg" viewBox="0 0 16 16">
@@ -79,211 +81,220 @@
                                     </svg>
                                     </div>
                                     </div>*@
-                                    @if (LastInventoryAdded != 0)
-                                    {
-                                        <FormBlob @ref="FormBlob" HeigthContent="220px" SizeImg="128px" AddedBlob="AddInventoryBlob" InputBlob="@NewBlob"></FormBlob>
-                                    }
+                                        @if (LastInventoryAdded != 0)
+                                        {
+                                            <FormBlob @ref="FormBlob" HeigthContent="220px" SizeImg="128px" AddedBlob="AddInventoryBlob" InputBlob="@NewBlob"></FormBlob>
+                                        }
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <div id="Botones" class="flex justify-center -my-8">
-            <button onclick="@HandleSaveReceptionCertificate" class="py-2 w-48 border rounded-lg text-white text-xl shadow-xl" style="background-color: #2B286F;">Guardar</button>
-            <a><button @onclick="@GenerarActa" class="py-2 w-48 border rounded-lg text-white text-xl shadow-xl" style="background-color: #2B286F;">Generar Acta</button></a>
-        </div>
+            <div id="Botones" class="flex justify-center -my-8">
+                <button onclick="@HandleSaveReceptionCertificate" class="py-2 w-48 border rounded-lg text-white text-xl shadow-xl" style="background-color: #2B286F;">Guardar</button>
+                <a><button @onclick="@GenerarActa" class="py-2 w-48 border rounded-lg text-white text-xl shadow-xl" style="background-color: #2B286F;">Generar Acta</button></a>
+            </div>
 
-        @if (ShowModalRooms)
-        {
-            <ModalAreas @ref="modalAreas" PostNewArea="HandlePostNewArea" OnClick="ChangeOpenModalRooms" AgregarOnClick="AgregarAreas" TitleTable="Habitaciones"></ModalAreas>
-        }
-        @if (ShowModalComponents)
-        {
-            <ModalServices @ref="modalServices" PostNewService="HandlePostNewService" OnClick="ChangeOpenModalComponents" AgregarOnClick="AgregarServicios" TitleTable="Componentes"></ModalServices>
-        }
-        @*<ModalRoomsOrComponents OnClick="ChangeOpenModalCopyValues" TitleTable="Habitaciones" ShowModal="@ShowModalCopyValues" Areas="AreasList"></ModalRoomsOrComponents>*@
-        @*<ModalGaugesOrKeys OnClick="ChangeOpenModalGauges" TitleModal="Medidores" ShowModal="@ShowModalGauges"></ModalGaugesOrKeys>
+            @if (ShowModalRooms)
+            {
+                <ModalAreas @ref="modalAreas" PostNewArea="HandlePostNewArea" OnClick="ChangeOpenModalRooms" AgregarOnClick="AgregarAreas" TitleTable="Habitaciones"></ModalAreas>
+            }
+            @if (ShowModalComponents)
+            {
+                <ModalServices @ref="modalServices" PostNewService="HandlePostNewService" OnClick="ChangeOpenModalComponents" AgregarOnClick="AgregarServicios" TitleTable="Componentes"></ModalServices>
+            }
+            @*<ModalRoomsOrComponents OnClick="ChangeOpenModalCopyValues" TitleTable="Habitaciones" ShowModal="@ShowModalCopyValues" Areas="AreasList"></ModalRoomsOrComponents>*@
+            @*<ModalGaugesOrKeys OnClick="ChangeOpenModalGauges" TitleModal="Medidores" ShowModal="@ShowModalGauges"></ModalGaugesOrKeys>
         <ModalGaugesOrKeys OnClick="ChangeOpenModalKeys" TitleModal="Llaves" ShowModal="@ShowModalkeys"></ModalGaugesOrKeys>*@
 
-        @if (ShowModalCopyValues)
-        {
-            <div class="relative z-10" aria-labelledby="modal-title" role="dialog" aria-modal="true">
-                <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"></div>
-                <div class="fixed inset-0 z-10 overflow-y-auto">
-                    <div class="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
-                        <div class="mx-auto bg-white md:max-w-2xl sm:max-w-sm mt-20 h-96 rounded-lg border border-grey-300 drop-shadow-lg border-2">
-                            <div class="relative">
-                                <button @onclick="@(() => ChangeOpenModalCopyValues())" type="button" class="absolute top-3 right-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-red-600 rounded-full border border-2 ">
-                                    <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
-                                </button>
+            @if (ShowModalCopyValues)
+            {
+                <div class="relative z-10" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+                    <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"></div>
+                    <div class="fixed inset-0 z-10 overflow-y-auto">
+                        <div class="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
+                            <div class="mx-auto bg-white md:max-w-2xl sm:max-w-sm mt-20 h-96 rounded-lg border border-grey-300 drop-shadow-lg border-2">
+                                <div class="relative">
+                                    <button @onclick="@(() => ChangeOpenModalCopyValues())" type="button" class="absolute top-3 right-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-red-600 rounded-full border border-2 ">
+                                        <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
+                                    </button>
+                                </div>
+                                <div class="overflow-y-auto h-48 mx-auto w-96 text-center mt-10 px-3 pr-2 mt-5">
+                                    <table class="w-full overflow text-sm">
+                                        <tr class="bg-[#2B286F] text-white text-sm h-10">
+                                            <th class="w-10"></th>
+                                            <th class="w-80">Habitaciones</th>
+                                        </tr>
+                                        @if (AreasList != null)
+                                        {
+                                            @foreach (var item in AreasList)
+                                            {
+                                                <tr class="m-10 border h-10">
+                                                    <td class="p-2"><input type="checkbox" /></td>
+                                                    <td class="p-2">@item.AreaName</td>
+                                                </tr>
+                                            }
+                                        }
+                                        else
+                                        {
+                                            <div style="margin: 0; position: absolute; top: 50%; left: 50%; width: auto; height: auto;">
+                                                <FluentProgressRing style="width: 51px; height: 51px;"></FluentProgressRing>
+                                            </div>
+                                        }
+                                    </table>
+                                </div>
+                                <button class="py-2 mt-20 w-48 border rounded-lg text-white text-xl shadow-xl" style="background-color: #2B286F;" @onclick="ChangeOpenModalCopyValues">Agregar</button>
                             </div>
-                            <div class="overflow-y-auto h-48 mx-auto w-96 text-center mt-10 px-3 pr-2 mt-5">
-                                <table class="w-full overflow text-sm">
-                                    <tr class="bg-[#2B286F] text-white text-sm h-10">
-                                        <th class="w-10"></th>
-                                        <th class="w-80">Habitaciones</th>
-                                    </tr>
-                                    @if (AreasList != null)
-                                    {
-                                        @foreach (var item in AreasList)
+                        </div>
+                    </div>
+                </div>
+            }
+
+            @if (ShowModalGauges && FeaturesList.Count() > 0)
+            {
+                <div class="relative z-10" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+                    <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"></div>
+                    <div class="fixed inset-0 z-10 overflow-y-auto">
+                        <div class="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
+                            <div class="mx-auto bg-white h-[600px] md:max-w-2xl sm:max-w-sm mt-20 rounded-lg border border-grey-300 drop-shadow-lg border-2">
+                                <div class="relative">
+                                    <button @onclick="@(() => ChangeOpenModalGauges())" type="button" class="absolute top-3 right-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-red-600 rounded-full border border-2 ">
+                                        <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
+                                    </button>
+                                </div>
+                                <div class="text-center text-gray-400 text-xl pt-3 mb-10">Lista de Medidores</div>
+                                <div class=" inline-flex">
+                                    <button onclick="@HandlePostNewMedidor" class="text-blue-700">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="#2B286F" class="bi bi-plus-lg" viewBox="0 0 16 16">
+                                            <path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2Z" />
+                                        </svg>
+                                    </button>
+                                    <div class="w-80 pt-1">
+                                        <input @bind="NameMedidor" class="w-full border boder-blue-700 h-9 pl-14" placeholder="Agregar nuevo elemento" />
+                                    </div>
+                                </div>
+                                <div class="overflow-y-auto h-48 mx-auto w-96 text-center my-3 px-3 pr-2">
+                                    <table class="w-full text-sm">
+                                        <tr class="bg-[#2B286F] text-white text-sm h-10">
+                                            <th class="w-64">Elemento</th>
+                                            <th class="w-32">Cantidad</th>
+                                            <th class="w-32">Numero Serie</th>
+                                        </tr>
+                                        @foreach (var feature in FeaturesList)
                                         {
                                             <tr class="m-10 border h-10">
-                                                <td class="p-2"><input type="checkbox" /></td>
-                                                <td class="p-2">@item.AreaName</td>
+                                                <td class="p-2">@feature.FeatureName</td>
+                                                <td class="pl-3 pr-3">
+                                                    <input disabled="@Convert.ToBoolean(feature.IdFeature != FeatureMedidorCurrent && FeatureMedidorCurrent > 0)" value="@(dtoDescriptions.FirstOrDefault(x => x.IdFeature == feature.IdFeature)?.Note)" @onchange="@((ChangeEventArgs e) => DescriptionModalInput(@feature.IdFeature, "Note", e))" type="number" class="w-full @(feature.IdFeature != FeatureMedidorCurrent && FeatureMedidorCurrent > 0 ? "bg-gray-400" : ""))" />
+                                                </td>
+                                                <td class="pl-3 pr-3">
+                                                    <input disabled="@Convert.ToBoolean(feature.IdFeature != FeatureMedidorCurrent && FeatureMedidorCurrent > 0)" value="@(dtoDescriptions.FirstOrDefault(x => x.IdFeature == feature.IdFeature)?.Observation)" @onchange="@((ChangeEventArgs e) => DescriptionModalInput(@feature.IdFeature, "Observation", e))" type="text" class="w-full @(feature.IdFeature != FeatureMedidorCurrent && FeatureMedidorCurrent > 0 ? "bg-gray-400" : "")) " />
+                                                    @*<input @bind-value="CurrentInventory.Observation" type="text" class="border-2 bg-slate-100 ml-5  flex justify-end">*@
+                                                </td>
                                             </tr>
                                         }
-                                    }
-                                    else
-                                    {
-                                        <div style="margin: 0; position: absolute; top: 50%; left: 50%; width: auto; height: auto;">
-                                            <FluentProgressRing style="width: 51px; height: 51px;"></FluentProgressRing>
+                                    </table>
+                                </div>
+                                <div class="mt-8 relative border bg-slate-100 mx-auto ml-2 w-80 h-40 flex justify-center block">
+                                    @*<input class="border-2 bg-slate-100 mx-auto ml-5 w-80 h-40 flex justify-end inset-0 absolute opacity-0 cursor-pointer" type="file" multiple>*@
+                                    <div class="block text-center">
+                                        <label for="" class="text-xl text-blue-900 font-semibold">Fotografias</label>
+                                        <div class="flex justify-center">
+                                            @if (LastInventoryAdded != 0)
+                                            {
+                                                <FormBlob @ref="FormBlob" HeigthContent="100px" SizeImg="80px" AddedBlob="AddInventoryBlob" InputBlob="@NewBlob"></FormBlob>
+                                            }
+                                            @*<svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" fill="#2B286F" class="bi bi-plus-lg" viewBox="0 0 16 16">
+                                    <path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2Z" />
+                                    </svg>*@
                                         </div>
-                                    }
-                                </table>
-                            </div>
-                            <button class="py-2 mt-20 w-48 border rounded-lg text-white text-xl shadow-xl" style="background-color: #2B286F;" @onclick="ChangeOpenModalCopyValues">Agregar</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        }
-
-        @if (ShowModalGauges && FeaturesList.Count() > 0)
-        {
-            <div class="relative z-10" aria-labelledby="modal-title" role="dialog" aria-modal="true">
-                <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"></div>
-                <div class="fixed inset-0 z-10 overflow-y-auto">
-                    <div class="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
-                        <div class="mx-auto bg-white h-[600px] md:max-w-2xl sm:max-w-sm mt-20 rounded-lg border border-grey-300 drop-shadow-lg border-2">
-                            <div class="relative">
-                                <button @onclick="@(() => ChangeOpenModalGauges())" type="button" class="absolute top-3 right-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-red-600 rounded-full border border-2 ">
-                                    <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
-                                </button>
-                            </div>
-                            <div class="text-center text-gray-400 text-xl pt-3 mb-10">Lista de Medidores</div>
-                            <div class=" inline-flex">
-                                <button onclick="@HandlePostNewMedidor" class="text-blue-700">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="#2B286F" class="bi bi-plus-lg" viewBox="0 0 16 16">
-                                        <path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2Z" />
-                                    </svg>
-                                </button>
-                                <div class="w-80 pt-1">
-                                    <input @bind="NameMedidor" class="w-full border boder-blue-700 h-9 pl-14" placeholder="Agregar nuevo elemento" />
-                                </div>
-                            </div>
-                            <div class="overflow-y-auto h-48 mx-auto w-96 text-center my-3 px-3 pr-2">
-                                <table class="w-full text-sm">
-                                    <tr class="bg-[#2B286F] text-white text-sm h-10">
-                                        <th class="w-64">Elemento</th>
-                                        <th class="w-32">Cantidad</th>
-                                        <th class="w-32">Numero Serie</th>
-                                    </tr>
-                                    @foreach (var feature in FeaturesList)
-                                    {
-                                        <tr class="m-10 border h-10">
-                                            <td class="p-2">@feature.FeatureName</td>
-                                            <td class="pl-3 pr-3">
-                                                <input disabled="@Convert.ToBoolean(feature.IdFeature != FeatureMedidorCurrent && FeatureMedidorCurrent > 0)" value="@(dtoDescriptions.FirstOrDefault(x => x.IdFeature == feature.IdFeature)?.Note)" @onchange="@((ChangeEventArgs e) => DescriptionModalInput(@feature.IdFeature, "Note", e))" type="number" class="w-full @(feature.IdFeature != FeatureMedidorCurrent && FeatureMedidorCurrent > 0 ? "bg-gray-400" : ""))" />
-                                            </td>
-                                            <td class="pl-3 pr-3">
-                                                <input disabled="@Convert.ToBoolean(feature.IdFeature != FeatureMedidorCurrent && FeatureMedidorCurrent > 0)" value="@(dtoDescriptions.FirstOrDefault(x => x.IdFeature == feature.IdFeature)?.Observation)" @onchange="@((ChangeEventArgs e) => DescriptionModalInput(@feature.IdFeature, "Observation", e))" type="text" class="w-full @(feature.IdFeature != FeatureMedidorCurrent && FeatureMedidorCurrent > 0 ? "bg-gray-400" : "")) " />
-                                                @*<input @bind-value="CurrentInventory.Observation" type="text" class="border-2 bg-slate-100 ml-5  flex justify-end">*@
-                                            </td>
-                                        </tr>
-                                    }
-                                </table>
-                            </div>
-                            <div class="mt-8 relative border bg-slate-100 mx-auto ml-2 w-80 h-40 flex justify-center block">
-                                @*<input class="border-2 bg-slate-100 mx-auto ml-5 w-80 h-40 flex justify-end inset-0 absolute opacity-0 cursor-pointer" type="file" multiple>*@
-                                <div class="block text-center">
-                                    <label for="" class="text-xl text-blue-900 font-semibold">Fotografias</label>
-                                    <div class="flex justify-center">
-                                        @if (LastInventoryAdded != 0)
-                                        {
-                                            <FormBlob @ref="FormBlob" HeigthContent="100px" SizeImg="80px" AddedBlob="AddInventoryBlob" InputBlob="@NewBlob"></FormBlob>
-                                        }
-                                        @*<svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" fill="#2B286F" class="bi bi-plus-lg" viewBox="0 0 16 16">
-                                    <path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2Z" />
-                                    </svg>*@
                                     </div>
                                 </div>
-                            </div>
-                            <div class="absolute bottom-0 left-0 right-0 justify-center">
-                                <button @onclick="@(() => ChangeOpenModalGauges())" class="py-2 w-48 border rounded-lg text-white text-xl shadow-xl" style="background-color: #2B286F;">Agregar</button>
+                                <div class="absolute bottom-0 left-0 right-0 justify-center">
+                                    <button @onclick="@(() => ChangeOpenModalGauges())" class="py-2 w-48 border rounded-lg text-white text-xl shadow-xl" style="background-color: #2B286F;">Agregar</button>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        }
-        @if (ShowModalkeys && FeaturesList.Count() > 0)
-        {
-            <div class="relative z-10" aria-labelledby="modal-title" role="dialog" aria-modal="true">
-                <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"></div>
-                <div class="fixed inset-0 z-10 overflow-y-auto">
-                    <div class="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
-                        <div class="mx-auto bg-white h-[600px] md:max-w-2xl sm:max-w-sm mt-20 rounded-lg border border-grey-300 drop-shadow-lg border-2">
-                            <div class="relative">
-                                <button @onclick="@(() => ChangeOpenModalKeys())" type="button" class="absolute top-3 right-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-red-600 rounded-full border border-2 ">
-                                    <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
-                                </button>
-                            </div>
-                            <div class="text-center text-gray-400 text-xl pt-3 mb-10">Lista de Llaves</div>
-                            <div class=" inline-flex">
-                                <button onclick="@HandlePostNewMedidor" class="text-blue-700">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="#2B286F" class="bi bi-plus-lg" viewBox="0 0 16 16">
-                                        <path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2Z" />
-                                    </svg>
-                                </button>
-                                <div class="w-80 pt-1">
-                                    <input @bind="NameMedidor" class="w-full border boder-blue-700 h-9 pl-14" placeholder="Agregar nuevo elemento" />
+            }
+            @if (ShowModalkeys && FeaturesList.Count() > 0)
+            {
+                <div class="relative z-10" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+                    <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"></div>
+                    <div class="fixed inset-0 z-10 overflow-y-auto">
+                        <div class="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
+                            <div class="mx-auto bg-white h-[600px] md:max-w-2xl sm:max-w-sm mt-20 rounded-lg border border-grey-300 drop-shadow-lg border-2">
+                                <div class="relative">
+                                    <button @onclick="@(() => ChangeOpenModalKeys())" type="button" class="absolute top-3 right-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-red-600 rounded-full border border-2 ">
+                                        <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
+                                    </button>
                                 </div>
-                            </div>
-                            <div class="overflow-y-auto mx-auto w-96 text-center my-3 px-3 pr-2">
-                                <table class="w-full  text-sm">
-                                    <tr class="bg-[#2B286F] text-white text-sm h-10">
-                                        <th class="w-64">Elemento</th>
-                                        <th class="w-64">Cantidad</th>
-                                    </tr>
-                                    @foreach (var feature in FeaturesList)
-                                    {
-                                        <tr class="m-10 border h-10">
-                                            <td class="p-2">@feature.FeatureName</td>
-                                            <td class="pl-3 pr-3">
-                                                <input value="@(dtoDescriptions.FirstOrDefault(x => x.IdFeature == feature.IdFeature)?.Note)" @onchange="@((ChangeEventArgs e) => DescriptionNoteInput(@feature.IdFeature, e))" type="number" class="w-full" />
-                                            </td>
-                                        </tr>
-                                    }
-                                </table>
-                            </div>
-                            <div class="mt-8 relative border bg-slate-100 mx-auto ml-2 w-80 h-40 flex justify-center block">
-                                @*<input class="border-2 bg-slate-100 mx-auto ml-5 w-80 h-40 flex justify-end inset-0 absolute opacity-0 cursor-pointer" type="file" multiple>*@
-                                <div class="block text-center">
-                                    <label for="" class="text-xl text-blue-900 font-semibold">Fotografias</label>
-                                    <div class="flex justify-center mt-10">
-                                        @if (LastInventoryAdded != 0)
-                                        {
-                                            <FormBlob @ref="FormBlob" AddedBlob="AddInventoryBlob" InputBlob="@NewBlob"></FormBlob>
-                                        }
-                                        @*<svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" fill="#2B286F" class="bi bi-plus-lg" viewBox="0 0 16 16">
-                                    <path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2Z" />
-                                    </svg>*@
+                                <div class="text-center text-gray-400 text-xl pt-3 mb-10">Lista de Llaves</div>
+                                <div class=" inline-flex">
+                                    <button onclick="@HandlePostNewMedidor" class="text-blue-700">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="#2B286F" class="bi bi-plus-lg" viewBox="0 0 16 16">
+                                            <path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2Z" />
+                                        </svg>
+                                    </button>
+                                    <div class="w-80 pt-1">
+                                        <input @bind="NameMedidor" class="w-full border boder-blue-700 h-9 pl-14" placeholder="Agregar nuevo elemento" />
                                     </div>
                                 </div>
-                            </div>
-                            <div class="absolute bottom-0 left-0 right-0 justify-center">
-                                <button @onclick="@(() => ChangeOpenModalKeys())" class="py-2 w-48 border rounded-lg text-white text-xl shadow-xl" style="background-color: #2B286F;">Agregar</button>
+                                <div class="overflow-y-auto mx-auto w-96 text-center my-3 px-3 pr-2">
+                                    <table class="w-full  text-sm">
+                                        <tr class="bg-[#2B286F] text-white text-sm h-10">
+                                            <th class="w-64">Elemento</th>
+                                            <th class="w-64">Cantidad</th>
+                                        </tr>
+                                        @foreach (var feature in FeaturesList)
+                                        {
+                                            <tr class="m-10 border h-10">
+                                                <td class="p-2">@feature.FeatureName</td>
+                                                <td class="pl-3 pr-3">
+                                                    <input value="@(dtoDescriptions.FirstOrDefault(x => x.IdFeature == feature.IdFeature)?.Note)" @onchange="@((ChangeEventArgs e) => DescriptionNoteInput(@feature.IdFeature, e))" type="number" class="w-full" />
+                                                </td>
+                                            </tr>
+                                        }
+                                    </table>
+                                </div>
+                                <div class="mt-8 relative border bg-slate-100 mx-auto ml-2 w-80 h-40 flex justify-center block">
+                                    @*<input class="border-2 bg-slate-100 mx-auto ml-5 w-80 h-40 flex justify-end inset-0 absolute opacity-0 cursor-pointer" type="file" multiple>*@
+                                    <div class="block text-center">
+                                        <label for="" class="text-xl text-blue-900 font-semibold">Fotografias</label>
+                                        <div class="flex justify-center mt-10">
+                                            @if (LastInventoryAdded != 0)
+                                            {
+                                                <FormBlob @ref="FormBlob" AddedBlob="AddInventoryBlob" InputBlob="@NewBlob"></FormBlob>
+                                            }
+                                            @*<svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" fill="#2B286F" class="bi bi-plus-lg" viewBox="0 0 16 16">
+                                    <path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2Z" />
+                                    </svg>*@
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="absolute bottom-0 left-0 right-0 justify-center">
+                                    <button @onclick="@(() => ChangeOpenModalKeys())" class="py-2 w-48 border rounded-lg text-white text-xl shadow-xl" style="background-color: #2B286F;">Agregar</button>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        }
+            }
 
+        </div>
+    </body>
+}
+else
+{
+    <div class="d-flex justify-content-center vh-100">
+        <div class="d-flex flex-column justify-content-center">
+            <FluentProgressRing style="width: 102px; height: 102px;"></FluentProgressRing>
+        </div>
     </div>
-</body>
+}
 
 <Navbar></Navbar>
 <Footer></Footer>
