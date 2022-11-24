@@ -133,6 +133,11 @@ namespace SharedLibrary.Data
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_Inventory_ID_Description");
 
+                entity.HasOne(d => d.IdFeatureNavigation)
+                    .WithMany(p => p.Inventories)
+                    .HasForeignKey(d => d.IdFeature)
+                    .HasConstraintName("FK_Inventories_Features");
+
                 entity.HasOne(d => d.IdPropertyNavigation)
                     .WithMany(p => p.Inventories)
                     .HasForeignKey(d => d.IdProperty)
@@ -143,6 +148,11 @@ namespace SharedLibrary.Data
                     .WithMany(p => p.Inventories)
                     .HasForeignKey(d => d.IdReceptionCertificate)
                     .HasConstraintName("FK_INVENTORIES_ID_ReceptionCertificate");
+
+                entity.HasOne(d => d.IdServiceNavigation)
+                    .WithMany(p => p.Inventories)
+                    .HasForeignKey(d => d.IdService)
+                    .HasConstraintName("FK_Inventories_Services");
             });
 
             modelBuilder.Entity<Lessor>(entity =>

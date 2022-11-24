@@ -80,6 +80,7 @@ namespace FrontEnd.Pages
 
         private List<Service> Services { get; set; } = new();
         private List<Description> Descriptions { get; set; } = new();
+        public ReceptionCertificate CurrentReceptionCertificate { get; private set; }
         public int? CurrentReceptionCertificateId { get; private set; }
         private List<Inventory> inventories { get; set; }
         private List<Service> ServicesList { get; set; } = new();
@@ -124,22 +125,53 @@ namespace FrontEnd.Pages
         {
             Services = await _servicesService.GetServicesAsync();
             Descriptions = await _descriptionService.GetDescriptionAsync();
-
+            CurrentReceptionCertificate = _context.CurrentReceptionCertificate ?? _context.ReceptionCertificateExist;
             var NewAreasList =  (await _areaService.GetAreaAsync())?.ToList();
 
             if (_context.ReceptionCertificateExist != null)
             {
                 var inventorys = (await _inventoryService.GetInventoryAsync()).ToList();
                 inventorys = inventorys.Where(x => x.IdReceptionCertificate == _context.ReceptionCertificateExist.IdReceptionCertificate).ToList();                
-                var ListIdAreas = inventorys.GroupBy(p => p.IdArea).Select(g => g.FirstOrDefault().IdArea).ToList();                
+                var ListIdAreas = inventorys.GroupBy(p => p.IdArea).Select(g => g.FirstOrDefault().IdArea).ToList();
+                var ListIdServices = inventorys.GroupBy(p => p.IdService).Select(g => g.FirstOrDefault()).ToList();
+                //foreach (var item in ListIdServices)
+                //{
+                //    Area newArea = NewAreasList.FirstOrDefault(x => x.IdArea == item.IdArea);
+                //    newArea.AreaServices.Add(new() { IdService = (int)item.IdService, IdArea = item.IdArea });
 
-                foreach(var idArea in ListIdAreas)
+                //    AreasList.Add(newArea);
+                //}
+
+                foreach (var idArea in ListIdAreas)
                 {
-                    AreasList.Add(NewAreasList.First(x => x.IdArea == idArea));
+                    Area newArea = NewAreasList.FirstOrDefault(x => x.IdArea == idArea);
+                    foreach (var item in inventorys.Where(x=>x.IdArea==idArea))
+                    {
+                        newArea.AreaServices.Add(new() { IdService = (int)item.IdService, IdArea = item.IdArea });
+                    }
+
+                    AreasList.Add(newArea);
                 }
+                foreach (var item in inventorys)
+                {
+                    DtoDescription dto = new()
+                    {
+                        IdDescription = item.IdDescription,
+                        IdService = (int)item.IdService,
+                        IdFeature = (int)item.IdFeature,
+                        Observation = item.Observation,
+                        Note = item.Note,
+                        Description = Descriptions.FirstOrDefault(x => x.IdFeature == item.IdFeature).DescriptionName
+                    };
+                    dtoDescriptions.Add(dto);
+                }
+                //foreach (var idArea in ListIdAreas)
+                //{
+                //    AreasList.Add(NewAreasList.First(x => x.IdArea == idArea));
+                //}
 
 
-            }            
+            }
             else {
                 //CurrentPropertyId = _context.CurrentReceptionCertificate.IdProperty;
                 AreasList = NewAreasList.Take(4).ToList();
@@ -209,8 +241,10 @@ namespace FrontEnd.Pages
 
             CurrentService = ServicesList.FirstOrDefault(x => x.IdService == idService);
             FeaturesList = (await _featuresService.GetFeaturesAsync())?.Where(x => x.IdService == idService)?.ToList();
+            //if(dtoDescriptions.Count < 1)
             foreach (var feature in FeaturesList)
-            {                
+            {          
+                if(dtoDescriptions.FirstOrDefault(x => x.IdFeature == feature.IdFeature) == null)
                 dtoDescriptions.Add(new() { IdFeature = feature.IdFeature, IdService = idService });
             }            
             StateHasChanged();
@@ -233,10 +267,12 @@ namespace FrontEnd.Pages
             //{
 
             CurrentInventory.Note = e.Value.ToString();
-            CurrentInventory.IdProperty = _context.CurrentReceptionCertificate.IdProperty;
+            CurrentInventory.IdProperty = CurrentReceptionCertificate.IdProperty;
             CurrentInventory.IdArea = CurrentFeature?.IdService == 14 ? 11 : CurrentArea.IdArea;
             CurrentInventory.IdDescription = DescriptionsList.FirstOrDefault()?.IdDescription ?? 1;
-            CurrentInventory.IdReceptionCertificate = _context.CurrentReceptionCertificate.IdReceptionCertificate;
+            CurrentInventory.IdReceptionCertificate = CurrentReceptionCertificate.IdReceptionCertificate;
+            CurrentInventory.IdService = CurrentService.IdService;
+            CurrentInventory.IdFeature = IdFeature;
 
             InventoriesList.Add(CurrentInventory);
 
@@ -290,10 +326,12 @@ namespace FrontEnd.Pages
 
                 CurrentInventory.Observation = currentDTO.Observation;
                 CurrentInventory.Note = currentDTO.Note;
-                CurrentInventory.IdProperty = _context.CurrentReceptionCertificate.IdProperty;
+                CurrentInventory.IdProperty = CurrentReceptionCertificate.IdProperty;
                 CurrentInventory.IdArea = 11;
                 CurrentInventory.IdDescription = DescriptionsList.FirstOrDefault()?.IdDescription ?? 1;
-                CurrentInventory.IdReceptionCertificate = _context.CurrentReceptionCertificate.IdReceptionCertificate;
+                CurrentInventory.IdReceptionCertificate = CurrentReceptionCertificate.IdReceptionCertificate;
+                CurrentInventory.IdService = 13;
+                CurrentInventory.IdFeature = IdFeature;
 
                 InventoriesList.Add(CurrentInventory);          
 
@@ -314,10 +352,12 @@ namespace FrontEnd.Pages
             var name = Descriptions?.FirstOrDefault(x => x.IdDescription == idDescription)?.DescriptionName;
 
             //CurrentInventory = new();
-            CurrentInventory.IdProperty = _context.CurrentReceptionCertificate.IdProperty;
+            CurrentInventory.IdProperty = CurrentReceptionCertificate.IdProperty;
             CurrentInventory.IdArea = CurrentArea.IdArea;
             CurrentInventory.IdDescription = idDescription;
-            CurrentInventory.IdReceptionCertificate = _context.CurrentReceptionCertificate.IdReceptionCertificate;
+            CurrentInventory.IdReceptionCertificate = CurrentReceptionCertificate.IdReceptionCertificate;
+            CurrentInventory.IdService = CurrentService.IdService;
+            CurrentInventory.IdFeature = CurrentFeature.IdFeature;
             //CurrentInventory.Note = name;
 
             //var newInventory = new Inventory { IdArea = CurrentArea.IdArea, IdProperty = 2, IdDescription = idDescription, Note = name, };
@@ -409,7 +449,7 @@ namespace FrontEnd.Pages
         {
             BlobsInventory.IdBlobs = IdBlob;
             BlobsInventory.IdInventory = LastInventoryAdded;
-            BlobsInventory.IdProperty = _context.CurrentReceptionCertificate.IdProperty;
+            BlobsInventory.IdProperty = CurrentReceptionCertificate.IdProperty;
             _blobsInventoryService.PostBlobsInventoryAsync(BlobsInventory);
         }
         public void GenerarActa()

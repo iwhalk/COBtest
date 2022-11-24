@@ -75,18 +75,18 @@ namespace FrontEnd.Pages
             descriptions = await _descriptionService.GetDescriptionAsync();
             features = await _featuresService.GetFeaturesAsync();
             propertyTypes = await _propertyTypeService.GetPropertyTypeAsync();
-            CurrentReceptionCertificate = _context.CurrentReceptionCertificate ?? new();
+            CurrentReceptionCertificate = _context.CurrentReceptionCertificate ?? _context.ReceptionCertificateExist;
 
-            var nameT = tenants.FirstOrDefault(x => x.IdTenant.Equals(_context.CurrentReceptionCertificate.IdTenant)).Name;
-            var lastNameT = tenants.FirstOrDefault(x => x.IdTenant.Equals(_context.CurrentReceptionCertificate.IdTenant)).LastName;
+            var nameT = tenants.FirstOrDefault(x => x.IdTenant.Equals(CurrentReceptionCertificate.IdTenant)).Name;
+            var lastNameT = tenants.FirstOrDefault(x => x.IdTenant.Equals(CurrentReceptionCertificate.IdTenant)).LastName;
             nameTenant = nameT + " " + lastNameT;
 
-            var aux = properties.FirstOrDefault(x => x.IdProperty.Equals(_context.CurrentReceptionCertificate.IdProperty)).IdLessor;
+            var aux = properties.FirstOrDefault(x => x.IdProperty.Equals(CurrentReceptionCertificate.IdProperty)).IdLessor;
             var nameL = lessors.FirstOrDefault(x => x.IdLessor.Equals(aux)).Name;
             var lastNameL = lessors.FirstOrDefault(x => x.IdLessor.Equals(aux)).LastName;
             nameLessor = nameL + " " + lastNameL;
 
-            dateAct = _context.CurrentReceptionCertificate.CreationDate.ToString("dd-MM-yyyy HH:mm:ss");
+            dateAct = CurrentReceptionCertificate.CreationDate.ToString("dd-MM-yyyy HH:mm:ss");
         }
         public async void HandlePreviewPdf()
         {

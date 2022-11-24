@@ -26,7 +26,7 @@ namespace FrontEnd.Services
             string? rowNumberS = null;
             string? agentS = null;
 
-            if (agent is not null || agent != "")
+            if (agent != null || agent != "" || !agent.Equals("0"))
             {
                 agentS = agent;
             }

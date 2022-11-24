@@ -58,13 +58,13 @@ namespace FrontEnd.Pages
             {
                 string auxS = filterReception.StartDay.Value.Date.ToString("yyyy-MM-dd");
                 string auxE = filterReception.EndDay.Value.Date.ToString("yyyy-MM-dd");
-                actasRecepcions = await _reception.GetReceptionCertificatesAsync(auxS, auxE, filterReception.CertificateType, filterReception.PropertyType, filterReception.NumberOfRooms, filterReception.Lessor, filterReception.Tenant, filterReception.Delegation, filterReception.Agent, currentPage, rowNumberForPage, _context.Completed);                                
+                actasRecepcions = await _reception.GetReceptionCertificatesAsync(auxS, auxE, filterReception.CertificateType, filterReception.PropertyType, filterReception.NumberOfRooms, filterReception.Lessor, filterReception.Tenant, filterReception.Delegation, filterReception.Agent.Equals("0") ? null : filterReception.Agent, currentPage, rowNumberForPage, _context.Completed);                                
                 maxNumberPage = _context.MaxNumberPagination;
                 _context.ListPageInPaginate = CreatePaginationNumber();
             }
             else
             {
-                actasRecepcions = await _reception.GetReceptionCertificatesAsync(null, null, filterReception.CertificateType, filterReception.PropertyType, filterReception.NumberOfRooms, filterReception.Lessor, filterReception.Tenant, filterReception.Delegation, filterReception.Agent, currentPage, rowNumberForPage, _context.Completed);                                
+                actasRecepcions = await _reception.GetReceptionCertificatesAsync(null, null, filterReception.CertificateType, filterReception.PropertyType, filterReception.NumberOfRooms, filterReception.Lessor, filterReception.Tenant, filterReception.Delegation, filterReception.Agent.Equals("0") ? null : filterReception.Agent, currentPage, rowNumberForPage, _context.Completed);                                
                 maxNumberPage = _context.MaxNumberPagination;
                 _context.ListPageInPaginate = CreatePaginationNumber();
             }
@@ -110,13 +110,13 @@ namespace FrontEnd.Pages
             {
                 string auxS = filterReception.StartDay.Value.Date.ToString("yyyy-MM-dd");
                 string auxE = filterReception.EndDay.Value.Date.ToString("yyyy-MM-dd");
-                actasRecepcions = await _reception.GetReceptionCertificatesAsync(auxS, auxE, filterReception.CertificateType, filterReception.PropertyType, filterReception.NumberOfRooms, filterReception.Lessor, filterReception.Tenant, filterReception.Delegation, filterReception.Agent, currentPage, rowNumberForPage, _context.Completed);
+                actasRecepcions = await _reception.GetReceptionCertificatesAsync(auxS, auxE, filterReception.CertificateType, filterReception.PropertyType, filterReception.NumberOfRooms, filterReception.Lessor, filterReception.Tenant, filterReception.Delegation, filterReception.Agent.Equals("0") ? null : filterReception.Agent, currentPage, rowNumberForPage, _context.Completed);
                 maxNumberPage = _context.MaxNumberPagination;
                 _context.ListPageInPaginate = CreatePaginationNumber();
             }
             else
             {
-                actasRecepcions = await _reception.GetReceptionCertificatesAsync(null, null, filterReception.CertificateType, filterReception.PropertyType, filterReception.NumberOfRooms, filterReception.Lessor, filterReception.Tenant, filterReception.Delegation, filterReception.Agent, currentPage, rowNumberForPage, _context.Completed);
+                actasRecepcions = await _reception.GetReceptionCertificatesAsync(null, null, filterReception.CertificateType, filterReception.PropertyType, filterReception.NumberOfRooms, filterReception.Lessor, filterReception.Tenant, filterReception.Delegation, filterReception.Agent.Equals("0") ? null : filterReception.Agent, currentPage, rowNumberForPage, _context.Completed);
                 maxNumberPage = _context.MaxNumberPagination;
                 _context.ListPageInPaginate = CreatePaginationNumber();
             }
@@ -135,13 +135,13 @@ namespace FrontEnd.Pages
             {
                 string auxS = filterReception.StartDay.Value.Date.ToString("yyyy-MM-dd");
                 string auxE = filterReception.EndDay.Value.Date.ToString("yyyy-MM-dd");
-                actasRecepcions = await _reception.GetReceptionCertificatesAsync(auxS, auxE, filterReception.CertificateType, filterReception.PropertyType, filterReception.NumberOfRooms, filterReception.Lessor, filterReception.Tenant, filterReception.Delegation, filterReception.Agent, currentPage, rowNumberForPage, _context.Completed);
+                actasRecepcions = await _reception.GetReceptionCertificatesAsync(auxS, auxE, filterReception.CertificateType, filterReception.PropertyType, filterReception.NumberOfRooms, filterReception.Lessor, filterReception.Tenant, filterReception.Delegation, filterReception.Agent.Equals("0") ? null : filterReception.Agent, currentPage, rowNumberForPage, _context.Completed);
                 maxNumberPage = _context.MaxNumberPagination;
                 _context.ListPageInPaginate = CreatePaginationNumber();
             }
             else
             {
-                actasRecepcions = await _reception.GetReceptionCertificatesAsync(null, null, filterReception.CertificateType, filterReception.PropertyType, filterReception.NumberOfRooms, filterReception.Lessor, filterReception.Tenant, filterReception.Delegation, filterReception.Agent, currentPage, rowNumberForPage, _context.Completed);
+                actasRecepcions = await _reception.GetReceptionCertificatesAsync(null, null, filterReception.CertificateType, filterReception.PropertyType, filterReception.NumberOfRooms, filterReception.Lessor, filterReception.Tenant, filterReception.Delegation, filterReception.Agent.Equals("0") ? null : filterReception.Agent, currentPage, rowNumberForPage, _context.Completed);
                 maxNumberPage = _context.MaxNumberPagination;
                 _context.ListPageInPaginate = CreatePaginationNumber();
             }

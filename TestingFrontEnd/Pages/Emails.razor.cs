@@ -51,21 +51,24 @@ namespace FrontEnd.Pages
         public bool DisablePreView { get; set; } = false;
         public string PdfName { get; set; } = null;
         public byte[] BlobPDFPreview { get; set; }
+        public ReceptionCertificate CurrentReceptionCertificate;
 
         public void ChangeOpenModalPreview() => ShowModalPreview = ShowModalPreview ? false : true;
 
         protected override async Task OnInitializedAsync()
         {
-            await GetLessorTenantAddress();                                  
+            await GetLessorTenantAddress();
         }
         private async Task GetLessorTenantAddress()
         {
+            CurrentReceptionCertificate = _context.CurrentReceptionCertificate ?? _context.ReceptionCertificateExist;
+
             lessors = await _lessorService.GetLessorAsync();
             tenants = await _tenantService.GetTenantAsync();
             properties = await _propertyService.GetPropertyAsync();
-            tenant = _context.CurrentTenant.EmailAddress;
-            property = _context.CurrentPropertys;
-            lessor = _context.CurrentLessor.EmailAddress;
+            tenant = tenants.FirstOrDefault(x=>x.IdTenant == CurrentReceptionCertificate.IdTenant).EmailAddress;
+            property = properties.FirstOrDefault(x=>x.IdProperty == CurrentReceptionCertificate.IdProperty);
+            lessor = lessors.FirstOrDefault(x=>x.IdLessor == property.IdLessor).EmailAddress;
             agente = _context.CurrentUser.Email;
             //tenant = tenants.FirstOrDefault(x => x.IdTenant == _context.CurrentReceptionCertificate.IdTenant).EmailAddress;
             //property = properties.FirstOrDefault(x => x.IdLessor == _context.CurrentReceptionCertificate.IdProperty);
@@ -78,9 +81,9 @@ namespace FrontEnd.Pages
         public async void HandlePreviewPdf()
         {
             DisablePreView = true;
-            if (_context.CurrentReceptionCertificate != null)
+            if (CurrentReceptionCertificate != null)
             {
-                var IdReceptionCertificate = _context.CurrentReceptionCertificate.IdReceptionCertificate;
+                var IdReceptionCertificate = CurrentReceptionCertificate.IdReceptionCertificate;
                 BlobPDFPreview = await _reportService.GetReporteReceptionCertificate(IdReceptionCertificate);
                 if (BlobPDFPreview != null)
                 {                   
@@ -95,7 +98,7 @@ namespace FrontEnd.Pages
         }
         private async Task SendMenssage()
         {
-            int idReceptionCertificate = _context.CurrentReceptionCertificate.IdReceptionCertificate;
+            int idReceptionCertificate = CurrentReceptionCertificate.IdReceptionCertificate;
             if (idReceptionCertificate > 0)
             {
                 if (tenantCheck == true)

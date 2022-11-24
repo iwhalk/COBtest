@@ -13,6 +13,7 @@ namespace SharedLibrary.Models
         public Feature()
         {
             Descriptions = new HashSet<Description>();
+            Inventories = new HashSet<Inventory>();
         }
 
         [Key]
@@ -30,5 +31,7 @@ namespace SharedLibrary.Models
         public virtual Service IdServiceNavigation { get; set; }
         [InverseProperty("IdFeatureNavigation")]
         public virtual ICollection<Description> Descriptions { get; set; }
+        [InverseProperty("IdFeatureNavigation")]
+        public virtual ICollection<Inventory> Inventories { get; set; }
     }
 }
