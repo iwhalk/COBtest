@@ -5,7 +5,10 @@
         @*<button class="py-2 text-white border" style="background-color: #2B286F;">Entrada</button>*@
         @foreach (var service in Services)
         {
-            <button @onclick="@(() => OnClicked(service.IdService))" style="@((SelectedService == service.IdService) ? "background-color: #2B286F;" : "")" class="py-2 text-white border-1 border-blue-800 hover:bg-violet-600 active:bg-violet-700 focus:outline-none">@service?.ServiceName</button>
+            @if (service.IdService != 13 && service.IdService != 14)
+            {
+                <button @onclick="@(() => OnClicked(service.IdService))" style="@((SelectedService == service.IdService) ? "background-color: #2B286F;" : "")" class="py-2 text-white border-1 border-blue-800 hover:bg-violet-600 active:bg-violet-700 focus:outline-none">@service?.ServiceName</button>
+            }
         }
         <br>
     </div>

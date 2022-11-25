@@ -6,7 +6,8 @@
     <div class="my-auto">
     <div id="ContenedorInventario" class="flex">
         <div id="ListActas" class="flex ml-4">
-        <LeftListActas></LeftListActas>
+                @*<LeftListActas></LeftListActas>*@
+                <ListAreas Areas="@_context.CurrentAreasList" TypeList="Habitaciones"></ListAreas>
         </div>
         <div id="ContenedorElementos" class="my-12 relative border-1 border-black rounded-lg p-2 mr-6 w-full" style="height: 42rem">
             <div class="flex justify-center">

@@ -18,33 +18,37 @@
                             <div class="flex">
                                 <div>
                                     <div class="flex flex-col">
-                                        @foreach (var feature in FeaturesList)
+                                        @if (FeaturesList.Count > 1 && CurrentService.IdService != 13 && CurrentService.IdService != 14)
                                         {
-                                            @if (FeaturesIds.Contains(feature.IdFeature))
+                                            @foreach (var feature in FeaturesList)
                                             {
-                                                <span class="flex my-2">
-                                                    <label for="" class="text-blue-900 w-32">
-                                                        @feature.FeatureName
-                                                    </label>
-                                                    <input value="@(dtoDescriptions.FirstOrDefault(x => x.IdFeature == feature.IdFeature)?.Note)" @onchange="@((ChangeEventArgs e) => DescriptionNoteInput(@feature.IdFeature, e))" class="border-2 bg-slate-100 ml-5 w-3/6 flex justify-end">
-                                                </span>
+                                                @if (FeaturesIds.Contains(feature.IdFeature))
+                                                {
+                                                    <span class="flex my-2">
+                                                        <label for="" class="text-blue-900 w-32">
+                                                            @feature.FeatureName
+                                                        </label>
+                                                        <input value="@(dtoDescriptions.FirstOrDefault(x => x.IdFeature == feature.IdFeature&& x.IdService == CurrentService.IdService && x.IdArea == CurrentArea.IdArea)?.Note)" @onchange="@((ChangeEventArgs e) => DescriptionNoteInput(@feature.IdFeature, e))" class="border-2 bg-slate-100 ml-5 w-3/6 flex justify-end">
+                                                    </span>
+                                                }
+                                                else
+                                                {
+                                                    <span class="flex my-2">
+                                                        <label for="" class="text-blue-900 w-32">
+                                                            @feature.FeatureName
+                                                        </label>
+                                                        <button @onclick="@(() => FeatureButtonClicked(@feature.IdFeature))" class="border-2 bg-slate-100 ml-5 w-3/6 flex justify-end h-7 w-24">
+                                                            @dtoDescriptions.FirstOrDefault(x => x.IdFeature == feature.IdFeature&& x.IdService == CurrentService.IdService && x.IdArea == CurrentArea.IdArea)?.Description
+                                                        </button>
+                                                    </span>
+                                                }
                                             }
-                                            else
-                                            {
-                                                <span class="flex my-2">
-                                                    <label for="" class="text-blue-900 w-32">
-                                                        @feature.FeatureName
-                                                    </label>
-                                                    <button @onclick="@(() => FeatureButtonClicked(@feature.IdFeature))" class="border-2 bg-slate-100 ml-5 w-3/6 flex justify-end h-7 w-24">
-                                                        @dtoDescriptions.FirstOrDefault(x => x.IdFeature == feature.IdFeature)?.Description
-                                                    </button>
-                                                </span>
-                                            }
+
                                         }
                                     </div>
                                 </div>
                                 <div class="mx-5">
-                                    <li class="py-2 flex text-blue-900">Copiar Valores<input @onclick="ChangeOpenModalCopyValues" type="checkbox" class="border-2 w-1/4"></li>
+                                    <button @onclick="ChangeOpenModalCopyValues" class="py-2 w-48 border rounded-lg text-white text-xl shadow-xl">Copiar Valores</button>
                                 </div>
                             </div>
                         </div>
@@ -130,7 +134,7 @@
                                         @foreach (var item in AreasList)
                                         {
                                             <tr class="m-10 border h-10">
-                                                <td class="p-2"><input type="checkbox" /></td>
+                                                <td class="p-2"><input @onchange="eventArgs => { CheckboxClicked(item, eventArgs.Value); }" type="checkbox" /></td>
                                                 <td class="p-2">@item.AreaName</td>
                                             </tr>
                                         }
@@ -143,7 +147,7 @@
                                     }
                                 </table>
                             </div>
-                            <button class="py-2 mt-20 w-48 border rounded-lg text-white text-xl shadow-xl" style="background-color: #2B286F;" @onclick="ChangeOpenModalCopyValues">Agregar</button>
+                            <button class="py-2 mt-20 w-48 border rounded-lg text-white text-xl shadow-xl" style="background-color: #2B286F;" @onclick="OnClickCopyValues">Agregar</button>
                         </div>
                     </div>
                 </div>

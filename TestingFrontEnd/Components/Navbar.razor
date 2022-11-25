@@ -1,6 +1,6 @@
 ﻿<nav class="fixed inset-x-0 top-0 bg-cover bg-center bg-no-repeat h-20 w-screen bg-[url('/assets/img/navbar.png')]">
     <div class="container-fluid navbarBG flex lg:justify-between">
-        <a class="hidden lg:block navbar-brand" href="#">
+        <a class="hidden lg:block navbar-brand" @onclick="OnLogoClick">
             <img src="/assets/img/logosoft2245.png" class="logo" width="10%">
         </a>
         <button type="submit" @onclick="ChageShowBurguer">
