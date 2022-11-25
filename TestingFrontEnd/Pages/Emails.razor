@@ -2,45 +2,56 @@
 @attribute [Authorize]
 <PageTitle>Correos</PageTitle>
 
-<body class="pb-12 flex flex-column min-h-screen bg-[url('/assets/img/fondocasa.png')] imgfondo">
-    <div class="my-auto">
-    <div id="ContenedorInventario" class="flex">
-        <div id="ListActas" class="flex ml-4">
+@if (tenant != null)
+{
+    <body class="pb-12 flex flex-column min-h-screen bg-[url('/assets/img/fondocasa.png')] imgfondo">
+        <div class="my-auto">
+            <div id="ContenedorInventario" class="flex">
+                <div id="ListActas" class="flex ml-4">
                 @*<LeftListActas></LeftListActas>*@
                 <ListAreas Areas="@_context.CurrentAreasList" TypeList="Habitaciones"></ListAreas>
-        </div>
-        <div id="ContenedorElementos" class="my-12 relative border-1 border-black rounded-lg p-2 mr-6 w-full" style="height: 42rem">
-            <div class="flex justify-center">
-                <label for="" class="text-3xl text-blue-900 font-semibold my-16">Correos Electronicos</label>
-            </div>
-            <div class="flex justify-center">                
-                <div id="InputsEmail" class="flex flex-col">
-                        <span class="flex my-4"><input type="checkbox" class="w-8" @bind-value="tenantCheck"><label class="pl-2 text-2xl text-blue-900 w-32">Arrendatario</label><input type="email" name="" id="" placeholder="@tenant" class="w-72 ml-24 px-2 rounded-lg border-2 border-gray-300" value="@tenant"></span>
-                        <span class="flex my-4"><input type="checkbox" class="w-8" @bind-value="lessorCheck"><label class="pl-2 text-2xl text-blue-900 w-32">Arrendador</label><input type="email" name="" id="" placeholder="@lessor" class="w-72 ml-24 px-2 rounded-lg border-2 border-gray-300" value="@lessor"></span>
-                        <span class="flex my-4"><input type="checkbox" class="w-8" @bind-value="agenciaCheck"><label class="pl-2 text-2xl text-blue-900 w-32">Agencia</label><input type="text" name="" id="" placeholder="ejemplo@gmail.com" class="w-72 ml-24 px-2 rounded-lg border-2 border-gray-300" @bind-value="agencia"></span>
-                        <span class="flex my-4"><input type="checkbox" class="w-8" @bind-value="agenteCheck"><label class="pl-2 text-2xl text-blue-900 w-32">Agente</label><input type="text" name="" id="" placeholder="ejemplo@gmail.com" class="w-72 ml-24 px-2 rounded-lg border-2 border-gray-300" @bind-value="agente"></span>
-                        <span class="flex my-4"><input type="checkbox" class="w-8" @bind-value="otroCheck"><label class="pl-2 text-2xl text-blue-900 w-32">Otro</label><input type="text" name="" id="" placeholder="ejemplo@gmail.com" class="w-72 ml-24 px-2 rounded-lg border-2 border-gray-300" @bind-value="otro"></span>
                 </div>
-            </div>            
+                <div id="ContenedorElementos" class="my-12 relative border-1 border-black rounded-lg p-2 mr-6 w-full" style="height: 42rem">
+                    <div class="flex justify-center">
+                        <label for="" class="text-3xl text-blue-900 font-semibold my-16">Correos Electronicos</label>
+                    </div>
+                    <div class="flex justify-center">
+                        <div id="InputsEmail" class="flex flex-col">
+                            <span class="flex my-4"><input type="checkbox" class="w-8" @bind-value="tenantCheck"><label class="pl-2 text-2xl text-blue-900 w-32">Arrendatario</label><input type="email" name="" id="" placeholder="@tenant" class="w-72 ml-24 px-2 rounded-lg border-2 border-gray-300" value="@tenant"></span>
+                            <span class="flex my-4"><input type="checkbox" class="w-8" @bind-value="lessorCheck"><label class="pl-2 text-2xl text-blue-900 w-32">Arrendador</label><input type="email" name="" id="" placeholder="@lessor" class="w-72 ml-24 px-2 rounded-lg border-2 border-gray-300" value="@lessor"></span>
+                            <span class="flex my-4"><input type="checkbox" class="w-8" @bind-value="agenciaCheck"><label class="pl-2 text-2xl text-blue-900 w-32">Agencia</label><input type="text" name="" id="" placeholder="ejemplo@gmail.com" class="w-72 ml-24 px-2 rounded-lg border-2 border-gray-300" @bind-value="agencia"></span>
+                            <span class="flex my-4"><input type="checkbox" class="w-8" @bind-value="agenteCheck"><label class="pl-2 text-2xl text-blue-900 w-32">Agente</label><input type="text" name="" id="" placeholder="ejemplo@gmail.com" class="w-72 ml-24 px-2 rounded-lg border-2 border-gray-300" @bind-value="agente"></span>
+                            <span class="flex my-4"><input type="checkbox" class="w-8" @bind-value="otroCheck"><label class="pl-2 text-2xl text-blue-900 w-32">Otro</label><input type="text" name="" id="" placeholder="ejemplo@gmail.com" class="w-72 ml-24 px-2 rounded-lg border-2 border-gray-300" @bind-value="otro"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="Botones" class="flex justify-center -my-14">
+                <button disabled="@DisablePreView" @onclick="HandlePreviewPdf" class="py-2 my-4 w-48 border rounded-lg text-white text-xl shadow-xl @(DisablePreView ? "bg-gray-400" : "bg-[#2B286F]")">Previsualizar</button>
+                <button @onclick="HandleSaveReceptionCertificate" class="py-2 my-4 w-48 border rounded-lg text-white text-xl shadow-xl" style="background-color: #2B286F;">Guardar</button>
+                <button @onclick="SendMenssage" class="py-2 my-4 w-48 border rounded-lg text-white text-xl shadow-xl" style="background-color: #2B286F;">Enviar</button>
+            </div>
+            <ModalCreateReceptionCertificates ShowModal="@ShowModalSend"></ModalCreateReceptionCertificates>
         </div>
-    </div>
-    <div id="Botones" class="flex justify-center -my-14">
-            <button disabled="@DisablePreView" @onclick="HandlePreviewPdf" class="py-2 my-4 w-48 border rounded-lg text-white text-xl shadow-xl @(DisablePreView ? "bg-gray-400" : "bg-[#2B286F]")">Previsualizar</button>
-        <button @onclick="HandleSaveReceptionCertificate" class="py-2 my-4 w-48 border rounded-lg text-white text-xl shadow-xl" style="background-color: #2B286F;">Guardar</button>
-        <button @onclick="SendMenssage" class="py-2 my-4 w-48 border rounded-lg text-white text-xl shadow-xl" style="background-color: #2B286F;">Enviar</button>
-    </div>   
-        <ModalCreateReceptionCertificates ShowModal="@ShowModalSend"></ModalCreateReceptionCertificates>
-    </div>
-    @if (DisablePreView)
-    {
-        <div style="margin: 0; position: absolute; top: 50%; left: 50%; width: auto; height: auto;">
+        @if (DisablePreView)
+        {
+            <div style="margin: 0; position: absolute; top: 50%; left: 50%; width: auto; height: auto;">
+                <FluentProgressRing style="width: 102px; height: 102px;"></FluentProgressRing>
+            </div>
+        }
+        @if (ShowModalPreview)
+        {
+            <ModalPreviewPDF CloseModalLessor="ChangeOpenModalPreview" Content="BlobPDFPreview" PdfName="PdfName" ShowModal="ShowModalPreview"></ModalPreviewPDF>
+        }
+    </body>
+}
+else
+{
+    <div class="d-flex justify-content-center vh-100">
+        <div class="d-flex flex-column justify-content-center">
             <FluentProgressRing style="width: 102px; height: 102px;"></FluentProgressRing>
         </div>
-    }
-    @if (ShowModalPreview)
-    {
-        <ModalPreviewPDF CloseModalLessor="ChangeOpenModalPreview" Content="BlobPDFPreview" PdfName="PdfName" ShowModal="ShowModalPreview"></ModalPreviewPDF>
-    }
-</body>
+    </div>
+}
 <Navbar></Navbar>
 <Footer></Footer>

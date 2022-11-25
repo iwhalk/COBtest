@@ -302,10 +302,11 @@ namespace ReportesInmobiliaria.Utilities
 
                 i = FillGenericContent(reporteActaEntrega.areas, tableAreas, i, tableTitle) - 1;
                 //A partir de la primera fila de elementos combina las celdas de la tercer columna e inserta la observación del servicio
-                Row elementsRow = tableAreas.Rows[1];                
-                elementsRow.Cells[2].AddParagraph(obserbations);                
+                Row elementsRow = tableAreas.Rows[1];
+                if(obserbations != "")
+                    elementsRow.Cells[2].AddParagraph(obserbations);                
                 elementsRow.Cells[2].MergeDown = tableAreas.Rows.Count - 2;
-                elementsRow.Cells[2].VerticalAlignment = VerticalAlignment.Center;
+                //elementsRow.Cells[2].VerticalAlignment = VerticalAlignment.Center;
                 obserbations = "";
                 //Agrega un espacio y una imagen de la ruta especificada
                 paragraph = section.AddParagraph();
@@ -552,6 +553,7 @@ namespace ReportesInmobiliaria.Utilities
         {
             Table _table = table;
             string lastService = "";
+            int contadorIndex = 0;
             //foreach (var item in value)
             for (int i = tableIndex; i < value.Count; i++)
             {
@@ -605,7 +607,7 @@ namespace ReportesInmobiliaria.Utilities
                             {
                                 row.Cells[index - 3].AddParagraph(prop.GetValue(item, null)?.ToString());
                             }
-                            if (index == 5 && prop.GetValue(item, null)?.ToString() != "") 
+                            if (index == 5 && prop.GetValue(item, null)?.ToString() != "" && contadorIndex != 0) 
                             {
                                 obserbations = prop.GetValue(item, null)?.ToString();
                             }
@@ -620,6 +622,7 @@ namespace ReportesInmobiliaria.Utilities
                                 }
                         }
                     }
+                contadorIndex++;
             }
             return value.Count;
         }
