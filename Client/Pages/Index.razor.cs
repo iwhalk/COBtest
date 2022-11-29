@@ -10,19 +10,14 @@ namespace Client.Pages
     {
         private readonly NavigationManager _navigationManager;
         private readonly ApplicationContext _context;
-        private readonly IAreaService _areaService;
-        public Index(NavigationManager navigationManager, ApplicationContext context, IAreaService areaService)
+        public Index(NavigationManager navigationManager, ApplicationContext context)
         {
             _navigationManager = navigationManager;
             _context = context;
-            _areaService = areaService;
         }
-
-        public List<AreaService> Areas { get; private set; }
 
         protected override async Task OnInitializedAsync()
         {
-            Areas = await _areaService.GetAreaServicesAsync();
         }
     }
 }

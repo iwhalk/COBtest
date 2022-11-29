@@ -40,7 +40,6 @@ builder.Services.AddFluentUIComponents();
 builder.Services.AddScoped<ApplicationContext>();
 builder.Services.AddScoped<IGenericRepository, GenericRepository>();
 
-builder.Services.AddScoped<IAreaService, AreasService>();
 
 // Supply HttpClient instances that include access tokens when making requests to the server project.
 //builder.Services.AddScoped(provider =>
