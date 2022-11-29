@@ -1,12 +1,12 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using ReportesInmobiliaria.Interfaces;
+using ReportesObra.Interfaces;
 using SharedLibrary.Data;
 using SharedLibrary.Models;
 using System.ComponentModel.DataAnnotations;
 using System.DirectoryServices.ActiveDirectory;
 using System.Security.Claims;
 
-namespace ReportesInmobiliaria.Services
+namespace ReportesObra.Services
 {
     public class LessorService : ILessorService
     {

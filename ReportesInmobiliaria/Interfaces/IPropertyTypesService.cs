@@ -1,6 +1,6 @@
 ﻿using SharedLibrary.Models;
 
-namespace ReportesInmobiliaria.Interfaces
+namespace ReportesObra.Interfaces
 {
     public interface IPropertyTypesService
     {
@@ -8,7 +8,7 @@ namespace ReportesInmobiliaria.Interfaces
         Task<PropertyType?> GetPropertyTypeAsync(int id);
         Task<PropertyType?> GetPropertyTypeAsync(string name);
         Task<PropertyType?> CreatePropertyTypeAsync(PropertyType propertyType);
-        Task<bool> UpdatePropertyTypeAsync(PropertyType propertyType);        
+        Task<bool> UpdatePropertyTypeAsync(PropertyType propertyType);
         Task<bool> DeletePropertyTypeAsync(string name);
     }
 }

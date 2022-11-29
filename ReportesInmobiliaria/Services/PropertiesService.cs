@@ -1,11 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using ReportesInmobiliaria.Interfaces;
+using ReportesObra.Interfaces;
 using SharedLibrary.Data;
 using SharedLibrary.Models;
 using SharedLibrary.Models;
 using System.DirectoryServices.ActiveDirectory;
 
-namespace ReportesInmobiliaria.Services
+namespace ReportesObra.Services
 {
     public class PropertiesService : IPropertiesService
     {

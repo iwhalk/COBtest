@@ -1,6 +1,6 @@
 ﻿using SharedLibrary.Models;
 
-namespace ReportesInmobiliaria.Interfaces
+namespace ReportesObra.Interfaces
 {
     public interface ILessorService
     {

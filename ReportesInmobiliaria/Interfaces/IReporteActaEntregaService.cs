@@ -1,4 +1,4 @@
-﻿namespace ReportesInmobiliaria.Interfaces
+﻿namespace ReportesObra.Interfaces
 {
     public interface IReporteActaEntregaService
     {

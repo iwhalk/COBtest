@@ -1,9 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using ReportesInmobiliaria.Interfaces;
+using ReportesObra.Interfaces;
 using SharedLibrary.Data;
 using SharedLibrary.Models;
 
-namespace ReportesInmobiliaria.Services
+namespace ReportesObra.Services
 {
     public class AreasService : IAreasService
     {

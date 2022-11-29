@@ -1,5 +1,4 @@
 ﻿using SharedLibrary.Data;
-using ReportesInmobiliaria.Interfaces;
 using System.ComponentModel.DataAnnotations;
 using System.Security.Claims;
 using Microsoft.EntityFrameworkCore;
@@ -7,8 +6,9 @@ using SharedLibrary.Models;
 using System.Diagnostics;
 using SharedLibrary.Models;
 using NuGet.Packaging.Signing;
+using ReportesObra.Interfaces;
 
-namespace ReportesInmobiliaria.Services
+namespace ReportesObra.Services
 {
     public class ReceptionCertificatesService : IReceptionCertificates
     {
@@ -29,12 +29,12 @@ namespace ReportesInmobiliaria.Services
                                                                                 .Include(x => x.IdPropertyNavigation)
                                                                                 .ThenInclude(x => x.IdPropertyTypeNavigation)
                                                                                 .Include(x => x.IdPropertyNavigation)
-                                                                                .ThenInclude(x => x.IdLessorNavigation);            
+                                                                                .ThenInclude(x => x.IdLessorNavigation);
             if (dates != null)
                 receptionCertificates = receptionCertificates.Where(d => d.CreationDate.Date >= dates.StartDate && d.CreationDate <= dates.EndDate);
             if (completed != null && completed != false)
                 receptionCertificates = receptionCertificates.Where(x => !string.IsNullOrEmpty(x.ApprovalPathTenant) && !string.IsNullOrEmpty(x.ApprovalPathTenant));
-            else if (completed == false || completed ==  null)
+            else if (completed == false || completed == null)
                 receptionCertificates = receptionCertificates.Where(x => string.IsNullOrEmpty(x.ApprovalPathTenant) && string.IsNullOrEmpty(x.ApprovalPathTenant));
             if (propertyType != null)
                 receptionCertificates = receptionCertificates.Where(x => x.IdPropertyNavigation.IdPropertyTypeNavigation.IdPropertyType == propertyType);
@@ -92,8 +92,8 @@ namespace ReportesInmobiliaria.Services
             try
             {
                 await _dbContext.SaveChangesAsync();
-            }   
-            catch(DbUpdateConcurrencyException)
+            }
+            catch (DbUpdateConcurrencyException)
             {
                 throw;
             }

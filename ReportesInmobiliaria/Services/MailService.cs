@@ -1,15 +1,14 @@
 ﻿using MailKit;
 using MimeKit;
 using MailKit.Net.Smtp;
-using ReportesInmobiliaria.Interfaces;
 using SharedLibrary.Data;
-using ReportesInmobiliaria.Utilities;
 using SharedLibrary.Models;
 using Microsoft.EntityFrameworkCore;
+using ReportesObra.Utilities;
 
-namespace ReportesInmobiliaria.Services
+namespace ReportesObra.Services
 {
-    public class MailService : ReportesInmobiliaria.Interfaces.IMailService
+    public class MailService : Interfaces.IMailService
     {
         private readonly InmobiliariaDbContext _dbContext;
         private readonly MailFactory _mailFactory;
@@ -31,8 +30,8 @@ namespace ReportesInmobiliaria.Services
                 var bodyBuilder = new BodyBuilder();
                 bodyBuilder.HtmlBody = "<p><font size=\"5\">Se ha generado una acta de Entrega Recepción en el Sistema ARI, se adjuntó el archivo correspondiente en este correo.<br>" +
                     "Saludos Cordiales.</font></p>";
-                    //"<hr>" +
-                    //"<p><font size=\"4\">Archivo adjunto:</font></p>";
+                //"<hr>" +
+                //"<p><font size=\"4\">Archivo adjunto:</font></p>";
                 bodyBuilder.Attachments.Add("Acta_Entrega", reporte, new ContentType("application", "pdf"));
                 mimeMessage.Body = bodyBuilder.ToMessageBody();
                 _mailFactory.MailSender(mimeMessage);

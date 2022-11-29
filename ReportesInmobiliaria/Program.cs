@@ -9,9 +9,6 @@ using System.Globalization;
 using System.Security.Cryptography;
 using System.Text;
 using System.Text.RegularExpressions;
-using ReportesInmobiliaria.Interfaces;
-using ReportesInmobiliaria.Services;
-using ReportesInmobiliaria.Utilities;
 using Microsoft.AspNetCore.Http;
 using SixLabors.Fonts.Tables.AdvancedTypographic;
 using System.DirectoryServices.ActiveDirectory;
@@ -21,7 +18,9 @@ using System.Reflection.Metadata;
 using Microsoft.AspNetCore.Mvc;
 using Azure.Core;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
-
+using ReportesObra.Interfaces;
+using ReportesObra.Services;
+using ReportesObra.Utilities;
 
 var builder = WebApplication.CreateBuilder(args);
 var connectionString = "Server=arisoft2245.database.windows.net;Database=prosisdb_3;User=PROSIS_DEVELOPER;Password=PR0515_D3ev3l0p3r;MultipleActiveResultSets=true";

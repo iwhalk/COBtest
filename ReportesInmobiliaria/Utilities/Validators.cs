@@ -1,4 +1,4 @@
-﻿namespace ReportesInmobiliaria.Utilities
+﻿namespace ReportesObra.Utilities
 {
     public class Validators
     {

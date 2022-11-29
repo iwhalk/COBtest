@@ -1,11 +1,11 @@
 ﻿using SharedLibrary.Data;
-using ReportesInmobiliaria.Interfaces;
 using System.ComponentModel.DataAnnotations;
 using System.Security.Claims;
 using Microsoft.EntityFrameworkCore;
 using SharedLibrary.Models;
+using ReportesObra.Interfaces;
 
-namespace ReportesInmobiliaria.Services
+namespace ReportesObra.Services
 {
     public class TenantService : ITenantService
     {

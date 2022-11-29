@@ -1,12 +1,12 @@
 ﻿using Azure.Storage.Blobs;
 using Azure.Storage.Blobs.Models;
 using Microsoft.EntityFrameworkCore;
-using ReportesInmobiliaria.Interfaces;
+using ReportesObra.Interfaces;
 using SharedLibrary.Data;
 using SharedLibrary.Models;
 using System.IO;
 
-namespace ReportesInmobiliaria.Services
+namespace ReportesObra.Services
 {
     public class BlobService : IBlobService
     {
@@ -29,10 +29,10 @@ namespace ReportesInmobiliaria.Services
 
             var blobFile = await blobClient.DownloadAsync();
             return blobFile;
-        }        
+        }
         public async Task<Blob?> CreateBlobAsync(string name, IFormFile file)
         {
-            
+
             try
             {
                 var blobContainerClient = _blobServiceClient.GetBlobContainerClient("inventoryblobs");
@@ -68,7 +68,7 @@ namespace ReportesInmobiliaria.Services
             catch (DbUpdateConcurrencyException)
             {
                 throw;
-            }            
+            }
         }
 
         public async Task<bool> UpdateBlobAsync(Blob blob)

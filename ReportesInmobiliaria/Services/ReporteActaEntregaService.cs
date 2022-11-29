@@ -1,7 +1,7 @@
 ﻿using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
-using ReportesInmobiliaria.Interfaces;
-using ReportesInmobiliaria.Utilities;
+using ReportesObra.Interfaces;
+using ReportesObra.Utilities;
 using SharedLibrary.Data;
 using SharedLibrary.Models;
 using StoredProcedureEFCore;
@@ -10,7 +10,7 @@ using System.Data.Common;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 
-namespace ReportesInmobiliaria.Services
+namespace ReportesObra.Services
 {
     public class ReporteActaEntregaService : IReporteActaEntregaService
     {

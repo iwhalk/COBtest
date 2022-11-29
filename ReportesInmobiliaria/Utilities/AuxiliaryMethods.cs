@@ -1,7 +1,7 @@
 ﻿using SharedLibrary.Models;
 using System.Globalization;
 
-namespace ReportesInmobiliaria.Utilities
+namespace ReportesObra.Utilities
 {
     public class AuxiliaryMethods
     {
@@ -19,8 +19,8 @@ namespace ReportesInmobiliaria.Utilities
             {
                 string[] dateSection = month.Split('-');
 
-                DateTime startDate = new DateTime(Int32.Parse(dateSection[0]), Int32.Parse(dateSection[1]), 1);
-                DateTime endDate = new DateTime(Int32.Parse(dateSection[0]), Int32.Parse(dateSection[1]), DateTime.DaysInMonth(Int32.Parse(dateSection[0]), Int32.Parse(dateSection[1])));
+                DateTime startDate = new DateTime(int.Parse(dateSection[0]), int.Parse(dateSection[1]), 1);
+                DateTime endDate = new DateTime(int.Parse(dateSection[0]), int.Parse(dateSection[1]), DateTime.DaysInMonth(int.Parse(dateSection[0]), int.Parse(dateSection[1])));
 
                 dates.StartDate = startDate;
                 dates.EndDate = endDate.AddHours(23).AddMinutes(59);
@@ -28,7 +28,7 @@ namespace ReportesInmobiliaria.Utilities
             else if (!string.IsNullOrEmpty(week))
             {
                 string[] dateSection = week.Split("-W");
-                DateTime startDate = FirstDateOfWeek(Int32.Parse(dateSection[0]), Int32.Parse(dateSection[1]));
+                DateTime startDate = FirstDateOfWeek(int.Parse(dateSection[0]), int.Parse(dateSection[1]));
                 DateTime endDate = startDate.AddDays(6);
 
                 dates.StartDate = startDate;

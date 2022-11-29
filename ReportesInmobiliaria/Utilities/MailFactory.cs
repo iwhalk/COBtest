@@ -4,7 +4,7 @@ using MimeKit;
 using static System.Net.Mime.MediaTypeNames;
 using System.Net.Mail;
 
-namespace ReportesInmobiliaria.Utilities
+namespace ReportesObra.Utilities
 {
     public class MailFactory
     {

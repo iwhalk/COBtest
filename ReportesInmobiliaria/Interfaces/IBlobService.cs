@@ -1,7 +1,7 @@
 ﻿using Azure.Storage.Blobs.Models;
 using SharedLibrary.Models;
 
-namespace ReportesInmobiliaria.Interfaces
+namespace ReportesObra.Interfaces
 {
     public interface IBlobService
     {
