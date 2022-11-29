@@ -23,11 +23,11 @@ namespace SharedLibrary.Models
         [ForeignKey("IdBlobs")]
         [InverseProperty("BlobsInventories")]
         public virtual Blob IdBlobsNavigation { get; set; }
-        [ForeignKey("IdInventory")]
-        [InverseProperty("BlobsInventories")]
-        public virtual Inventory IdInventoryNavigation { get; set; }
-        [ForeignKey("IdProperty")]
-        [InverseProperty("BlobsInventories")]
-        public virtual Property IdPropertyNavigation { get; set; }
+        //[ForeignKey("IdInventory")]
+        //[InverseProperty("BlobsInventories")]
+        //public virtual Inventory IdInventoryNavigation { get; set; }
+        //[ForeignKey("IdProperty")]
+        //[InverseProperty("BlobsInventories")]
+        //public virtual Property IdPropertyNavigation { get; set; }
     }
 }
