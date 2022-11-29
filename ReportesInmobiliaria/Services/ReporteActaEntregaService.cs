@@ -26,15 +26,15 @@ namespace ReportesObra.Services
             _reportesFactory = reportesFactory;
         }
 
-        public async Task<byte[]> GetActaEntrega(int idReceptionCertificate)
-        {
-            ReporteActaEntrega reporteActaEntrega = new()
-            {
-                header = await _dbContext.Procedures.SP_GET_AERI_HEADERAsync(idReceptionCertificate),
-                areas = await _dbContext.Procedures.SP_GET_AERI_AREASAsync(idReceptionCertificate.ToString()),
-                deliverables = await _dbContext.Procedures.SP_GET_AERI_DELIVERABLESAsync(idReceptionCertificate.ToString())
-            };
-            return _reportesFactory.CrearPdf(reporteActaEntrega);
-        }
+        //public async Task<byte[]> GetActaEntrega(int idReceptionCertificate)
+        //{
+        //    ReporteActaEntrega reporteActaEntrega = new()
+        //    {
+        //        header = await _dbContext.Procedures.SP_GET_AERI_HEADERAsync(idReceptionCertificate),
+        //        areas = await _dbContext.Procedures.SP_GET_AERI_AREASAsync(idReceptionCertificate.ToString()),
+        //        deliverables = await _dbContext.Procedures.SP_GET_AERI_DELIVERABLESAsync(idReceptionCertificate.ToString())
+        //    };
+        //    return _reportesFactory.CrearPdf(reporteActaEntrega);
+        //}
     }
 }

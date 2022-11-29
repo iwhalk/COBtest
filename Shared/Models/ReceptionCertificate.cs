@@ -12,7 +12,7 @@ namespace SharedLibrary.Models
     {
         public ReceptionCertificate()
         {
-            Inventories = new HashSet<Inventory>();
+            //Inventories = new HashSet<Inventory>();
         }
 
         [Key]
@@ -47,13 +47,13 @@ namespace SharedLibrary.Models
         [ForeignKey("IdAgent")]
         [InverseProperty("ReceptionCertificates")]
         public virtual AspNetUser IdAgentNavigation { get; set; }
-        [ForeignKey("IdProperty")]
-        [InverseProperty("ReceptionCertificates")]
-        public virtual Property IdPropertyNavigation { get; set; }
-        [ForeignKey("IdTenant")]
-        [InverseProperty("ReceptionCertificates")]
-        public virtual Tenant IdTenantNavigation { get; set; }
-        [InverseProperty("IdReceptionCertificateNavigation")]
-        public virtual ICollection<Inventory> Inventories { get; set; }
+        //[ForeignKey("IdProperty")]
+        //[InverseProperty("ReceptionCertificates")]
+        //public virtual Property IdPropertyNavigation { get; set; }
+        //[ForeignKey("IdTenant")]
+        //[InverseProperty("ReceptionCertificates")]
+        //public virtual Tenant IdTenantNavigation { get; set; }
+        //[InverseProperty("IdReceptionCertificateNavigation")]
+        //public virtual ICollection<Inventory> Inventories { get; set; }
     }
 }

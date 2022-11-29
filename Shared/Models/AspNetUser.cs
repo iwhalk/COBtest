@@ -12,7 +12,7 @@ namespace SharedLibrary.Models
     {
         public AspNetUser()
         {
-            ReceptionCertificates = new HashSet<ReceptionCertificate>();
+            //ReceptionCertificates = new HashSet<ReceptionCertificate>();
         }
 
         [Key]
@@ -44,7 +44,7 @@ namespace SharedLibrary.Models
         public string LastName { get; set; }
         public bool? Active { get; set; }
 
-        [InverseProperty("IdAgentNavigation")]
-        public virtual ICollection<ReceptionCertificate> ReceptionCertificates { get; set; }
+        //[InverseProperty("IdAgentNavigation")]
+        //public virtual ICollection<ReceptionCertificate> ReceptionCertificates { get; set; }
     }
 }
