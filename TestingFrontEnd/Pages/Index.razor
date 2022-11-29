@@ -2,49 +2,11 @@
 @attribute [Authorize]
 <PageTitle>Index</PageTitle>
 
-
-<body class="pt-20 pb-12 flex flex-column min-h-screen bg-[url('/assets/img/imgFondo.png')] imgfondo">
-    <div id="ContenedorHome" class="my-auto">
-        <div class="flex justify-center pt-12">
-            <label for="" class="font-sans font-semibold text-center text-3xl lg:text-4xl text-blue-900">Acta Entrega Recepción de Inmueble</label>
-        </div>
-        <div class="md:flex md:justify-around md:py-20">
-            <div class="scale-50 md:scale-75 lg:scale-100 flex justify-center md:py-20">
-                <ButtonLink TypeIcon="Actas"></ButtonLink>
-            </div>
-            <div class="scale-50 md:scale-75 lg:scale-100 flex justify-center md:py-20">
-                <button onclick="@RedirectRecptionHistorical">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="403" height="407" viewBox="0 0 568 589.238">
-                        <g id="Grupo_337" data-name="Grupo 337" transform="translate(-1079 -284.762)">
-                            <g id="Grupo_21" data-name="Grupo 21" transform="translate(-11 52)">
-                                <ellipse id="Elipse_4" data-name="Elipse 4" cx="284" cy="281.5" rx="284" ry="281.5" transform="translate(1090 259)" fill="#e3f2f6" />
-                                <text id="Histórico" transform="translate(1304 725)" fill="#707070" class="text-5xl" font-family="Helvetica"><tspan x="-10" y="10">Histórico</tspan></text>
-                            </g>
-                            <g id="Trazado_75" data-name="Trazado 75" transform="translate(1159 284.762)" fill="none">
-                                <path d="M0,0H381V336.31H0Z" stroke="none" />
-                                <path d="M 1 0.999969482421875 L 1 335.3100280761719 L 380 335.3100280761719 L 380 0.999969482421875 L 1 0.999969482421875 M 0 -3.0517578125e-05 L 381 -3.0517578125e-05 L 381 336.3100280761719 L 0 336.3100280761719 L 0 -3.0517578125e-05 Z" stroke="none" fill="rgba(0,0,0,0)" />
-                            </g>
-                            <path id="Icon_metro-files-empty" data-name="Icon metro-files-empty" d="M245.657,108.392a266.571,266.571,0,0,0-24.624-29.727,260.872,260.872,0,0,0-28.161-25.992C178.3,41.4,171.238,40.092,167.19,40.092H63.248c-12.46,0-22.6,10.7-22.6,23.852V283.386c0,13.152,10.136,23.852,22.6,23.852h171.73c12.459,0,22.6-10.7,22.6-23.852V135.5c0-4.273-1.235-11.732-11.918-27.109ZM208.251,92.157a256.28,256.28,0,0,1,20.5,24.262H185.267V70.52a251.241,251.241,0,0,1,22.984,21.638ZM239.5,283.386a4.713,4.713,0,0,1-4.519,4.77H63.248a4.713,4.713,0,0,1-4.519-4.77V63.944a4.713,4.713,0,0,1,4.519-4.77H167.19V125.96a9.3,9.3,0,0,0,9.038,9.541H239.5ZM156.718,14.509C142.151,3.232,135.085,1.928,131.036,1.928H27.095c-12.459,0-22.6,10.7-22.6,23.852V245.222c0,11.518,7.775,21.156,18.077,23.372V25.78a4.713,4.713,0,0,1,4.519-4.77H164.613c-2.724-2.361-5.374-4.55-7.9-6.5Z" transform="translate(1255.963 410.416)" fill="none" stroke="#2a6983" stroke-width="8" />
-                            <g id="Elipse_8" data-name="Elipse 8" transform="translate(1387 579)" fill="#e3f2f6" stroke="#2a6983" stroke-width="8">
-                                <ellipse cx="76.5" cy="72" rx="76.5" ry="72" stroke="none" />
-                                <ellipse cx="76.5" cy="72" rx="72.5" ry="68" fill="none" />
-                            </g>
-                            <g id="Grupo_105" data-name="Grupo 105" transform="translate(821.037 -22.428)">
-                                <line id="Línea_17" data-name="Línea 17" x2="32.038" y2="31.072" transform="translate(591.462 693.928)" fill="none" stroke="#2a6983" stroke-width="8" />
-                                <line id="Línea_18" data-name="Línea 18" x1="74" y2="81.5" transform="translate(618.5 643.5)" fill="none" stroke="#2a6983" stroke-width="8" />
-                            </g>
-                        </g>
-                    </svg>
-                </button>
-            </div>
-        </div>
-    </div>
-</body>
-@*<body class="pt-20 pb-12 min-h-screen bg-[url('/assets/img/fondocasa.png')] imgfondo">
+<body class="pt-20 pb-12 min-h-screen bg-[url('/assets/img/imgFondo.png')] imgfondo">
     <div id="Contenedor" class="">        
         <div class="grid grid-cols-2 py-32">
             <div class="flex justify-center">
-                <a href="">
+                <a href="/ProjectTracking">
                     <svg xmlns="http://www.w3.org/2000/svg" width="567" height="541" viewBox="0 0 567 541">
                         <g id="Grupo_847" data-name="Grupo 847" transform="translate(-313 -270)">
                             <g id="Grupo_408" data-name="Grupo 408" transform="translate(61)">
@@ -60,7 +22,7 @@
                 </a>
             </div>
             <div class="flex justify-center">
-                <a href="">
+                <a href="/ProjectReports">
                     <svg xmlns="http://www.w3.org/2000/svg" width="567" height="541" viewBox="0 0 567 541">
                         <g id="Grupo_848" data-name="Grupo 848" transform="translate(-1134 -270)">
                             <g id="Grupo_409" data-name="Grupo 409" transform="translate(-28)">
@@ -77,6 +39,6 @@
             </div>
         </div>
     </div>
-</body>*@
+</body>
 <Navbar></Navbar>
 <Footer></Footer>
