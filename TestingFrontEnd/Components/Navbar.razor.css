@@ -5,12 +5,3 @@
     width: 150px;
     height: 120px;
 }
-
-.navbarBG {
-    background-image: url(../Assets/nvbar.png);
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    height: 60px;
-    margin-bottom: -10px;
-}
