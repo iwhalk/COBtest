@@ -12,9 +12,9 @@ namespace ApiGateway.Services.User
     public class UserRegisterEventHandler : IRequestHandler<UserCreateCommand, IdentityResult>
     {
         private readonly UserManager<ApplicationUser> _userManager;
-        private readonly IMailAriService _mail;
+        private readonly IMailObraService _mail;
 
-        public UserRegisterEventHandler(UserManager<ApplicationUser> userManager, IMailAriService mail)
+        public UserRegisterEventHandler(UserManager<ApplicationUser> userManager, IMailObraService mail)
         {
             _userManager = userManager;
             _mail = mail;

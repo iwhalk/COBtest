@@ -24,7 +24,7 @@ namespace FrontEnd.Components.Blobs
         [Parameter]
         public string SizeImg { get; set; }
 
-        private readonly IBlobService _blobService;
+        private readonly IBlobsService _blobService;
         public BlobFile CurrentBlobFile { get; set; }
         public EditContext CurrentBlobFileEditContext;
 
@@ -32,7 +32,7 @@ namespace FrontEnd.Components.Blobs
 
         private string FileName = "";
 
-        public FormBlob(IBlobService blobService)
+        public FormBlob(IBlobsService blobService)
         {
             _blobService = blobService;
         }
