@@ -11,7 +11,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using Microsoft.AspNetCore.Http;
 using SixLabors.Fonts.Tables.AdvancedTypographic;
-using System.DirectoryServices.ActiveDirectory;
+//using System.DirectoryServices.ActiveDirectory;
 using Azure.Storage.Blobs;
 using System.Configuration;
 using System.Reflection.Metadata;
@@ -21,6 +21,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using ReportesObra.Interfaces;
 using ReportesObra.Services;
 using ReportesObra.Utilities;
+using ReportesObra.Endpoints;
 
 var builder = WebApplication.CreateBuilder(args);
 var connectionString = "Server=arisoft2245.database.windows.net;Database=prosisdb_3;User=PROSIS_DEVELOPER;Password=PR0515_D3ev3l0p3r;MultipleActiveResultSets=true";
@@ -431,25 +432,28 @@ app.MapPost("/Property", async (SharedLibrary.Models.Property property, IPropert
 #endregion
 
 #region Areas
-app.MapGet("/Areas", async (IAreasService _areasService, ILogger<Program> _logger) =>
-{
-    try
-    {
-        var areas = await _areasService.GetAreasAsync();
-        return Results.Ok(areas);
-    }
-    catch (Exception e)
-    {
-        _logger.LogError(e, e.Message);
-        if (e.GetType() == typeof(ValidationException))
-            return Results.Problem(e.Message, statusCode: 400);
-        return Results.Problem(e.Message);
-    }
-})
-.WithName("GetAreas")
-.Produces<IResult>(StatusCodes.Status200OK, "application/pdf")
-.Produces<HttpValidationProblemDetails>(StatusCodes.Status400BadRequest, "application/problem+json")
-.Produces<HttpValidationProblemDetails>(StatusCodes.Status500InternalServerError, "application/problem+json");
+
+app.MapAreaEndpoints();
+
+//app.MapGet("/Areas", async (IAreasService _areasService, ILogger<Program> _logger) =>
+//{
+//    try
+//    {
+//        var areas = await _areasService.GetAreasAsync();
+//        return Results.Ok(areas);
+//    }
+//    catch (Exception e)
+//    {
+//        _logger.LogError(e, e.Message);
+//        if (e.GetType() == typeof(ValidationException))
+//            return Results.Problem(e.Message, statusCode: 400);
+//        return Results.Problem(e.Message);
+//    }
+//})
+//.WithName("GetAreas")
+//.Produces<IResult>(StatusCodes.Status200OK, "application/pdf")
+//.Produces<HttpValidationProblemDetails>(StatusCodes.Status400BadRequest, "application/problem+json")
+//.Produces<HttpValidationProblemDetails>(StatusCodes.Status500InternalServerError, "application/problem+json");
 
 app.MapGet("/AreaServices", async (IAreasService _areasService, ILogger<Program> _logger) =>
 {

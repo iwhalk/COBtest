@@ -3,7 +3,7 @@ using ReportesObra.Interfaces;
 using SharedLibrary.Data;
 using SharedLibrary.Models;
 using System.ComponentModel.DataAnnotations;
-using System.DirectoryServices.ActiveDirectory;
+//using System.DirectoryServices.ActiveDirectory;
 using System.Security.Claims;
 
 namespace ReportesObra.Services
