@@ -11,13 +11,13 @@ namespace FrontEnd.Pages
 {
     public partial class Emails : ComponentBase
     {
-        private readonly IMailAriService _mailAriService;
+        private readonly IMailObraService _mailAriService;
         private readonly ApplicationContext _context;
         private readonly ILessorService _lessorService;
         private readonly ITenantService _tenantService;
         private readonly IPropertyService _propertyService;
         private readonly IReportsService _reportService;
-        public Emails(IMailAriService mailAriService, ApplicationContext context, ILessorService lessorService, ITenantService tenantService, IPropertyService propertyService, IReportsService reportService)
+        public Emails(IMailObraService mailAriService, ApplicationContext context, ILessorService lessorService, ITenantService tenantService, IPropertyService propertyService, IReportsService reportService)
         {
             _mailAriService = mailAriService;
             _context = context;

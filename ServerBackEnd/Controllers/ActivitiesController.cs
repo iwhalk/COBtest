@@ -5,7 +5,7 @@ namespace ApiGateway.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class FeaturesController : ControllerBase
+    public class ActivitiesController : ControllerBase
     {
     }
 }

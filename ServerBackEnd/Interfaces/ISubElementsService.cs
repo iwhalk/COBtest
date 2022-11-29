@@ -1,6 +1,6 @@
 ﻿namespace ApiGateway.Interfaces
 {
-    public interface IFeaturesService
+    public interface ISubElementsService
     {
     }
 }

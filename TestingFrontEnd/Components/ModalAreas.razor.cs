@@ -9,9 +9,9 @@ namespace FrontEnd.Components
     public partial class ModalAreas : ComponentBase
     {
 
-        private readonly IAreaService _areaService;
+        private readonly IAreasService _areaService;
         private readonly ApplicationContext _context;
-        public ModalAreas(ApplicationContext context,IAreaService areaService)
+        public ModalAreas(ApplicationContext context,IAreasService areaService)
         {
             _areaService = areaService;
             _context = context;

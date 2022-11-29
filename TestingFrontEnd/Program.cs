@@ -39,20 +39,11 @@ builder.Services.AddFluentUIComponents();
 builder.Services.AddScoped<ApplicationContext>();
 builder.Services.AddScoped<IGenericRepository, GenericRepository>();
 
-builder.Services.AddScoped<ILessorService, LessorService>();
-builder.Services.AddScoped<ITenantService, TenantService>();
-builder.Services.AddScoped<IPropertyService, PropertyService>();
-builder.Services.AddScoped<IPropertyTypeService, PropertyTypeService>();
-builder.Services.AddScoped<IServicesService, ServicesService>();
-builder.Services.AddScoped<IAreaService, AreasService>();
+builder.Services.AddScoped<IAreasService, AreasService>();
 builder.Services.AddScoped<IFeaturesService, FeaturesService>();
-builder.Services.AddScoped<IDescriptionService, DescriptionService>();
-builder.Services.AddScoped<IInventoryService, InventoryService>();
-builder.Services.AddScoped<IReceptionCertificateService, ReceptionCertificateService>();
-builder.Services.AddScoped<IBlobService, BlobService>();
-builder.Services.AddScoped<IBlobsInventoryService, BlobsInventoryService>();
-builder.Services.AddScoped<IReportsService, ReportsService>();
-builder.Services.AddScoped<IMailAriService, MailAriService>();
+builder.Services.AddScoped<IDescriptionsService, DescriptionsService>();
+builder.Services.AddScoped<IBlobsService, BlobsService>();
+builder.Services.AddScoped<IMailObraService, MailObraService>();
 builder.Services.AddScoped<IUserService, UserService>();
 
 

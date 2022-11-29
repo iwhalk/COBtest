@@ -1,6 +1,6 @@
 ﻿namespace ApiGateway.Services
 {
-    public class FeaturesService
+    public class ElementsService
     {
     }
 }
