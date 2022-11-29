@@ -1,6 +1,6 @@
 ﻿using ApiGateway.Interfaces;
 using ApiGateway.Proxies;
-using FrontEnd.Models;
+using ApiGateway.Models;
 using SharedLibrary;
 using SharedLibrary.Models;
 

@@ -11,7 +11,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using Microsoft.AspNetCore.Http;
 using SixLabors.Fonts.Tables.AdvancedTypographic;
-using System.DirectoryServices.ActiveDirectory;
+//using System.DirectoryServices.ActiveDirectory;
 using Azure.Storage.Blobs;
 using System.Configuration;
 using System.Reflection.Metadata;
@@ -21,6 +21,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using ReportesObra.Interfaces;
 using ReportesObra.Services;
 using ReportesObra.Utilities;
+using ReportesObra.Endpoints;
 
 var builder = WebApplication.CreateBuilder(args);
 var connectionString = "Server=arisoft2245.database.windows.net;Database=prosisdb_3;User=PROSIS_DEVELOPER;Password=PR0515_D3ev3l0p3r;MultipleActiveResultSets=true";
