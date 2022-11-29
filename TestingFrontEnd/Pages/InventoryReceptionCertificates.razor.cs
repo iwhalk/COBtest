@@ -56,6 +56,7 @@ namespace FrontEnd.Pages
         public string ColorSelect { get; set; } = "";
         public string StatusSelect { get; set; } = "";
 
+        public bool DisableButton { get; set; } = false;
         public bool ShowModalRooms { get; set; } = false;
         public bool ShowModalComponents { get; set; } = false;
         public bool ShowModalCopyValues { get; set; } = false;
@@ -68,6 +69,7 @@ namespace FrontEnd.Pages
 
         private Inventory CurrentInventory { get; set; } = new();
         public List<Feature> Features { get; private set; }
+        public List<Inventory> Inventories { get; private set; }
         private Area CurrentArea { get; set; } = new();
         public List<AreaService>? areaServices { get; private set; }
         private Service CurrentService { get; set; } = new();
@@ -120,12 +122,29 @@ namespace FrontEnd.Pages
                         Description = dto.Description
                     };
                     newDtos.Add(newDto);
-                                    }
+                }
             }
             foreach (var item in newDtos)
             {
+                //if(dtoDescriptions.FirstOrDefault(x=>x.IdArea == item.IdArea && x.IdService == item.IdService && x.IdFeature == item.IdService) == null)
                 dtoDescriptions.Add(item);
             }
+            foreach (var item in newDtos)
+            {
+                InventoriesList.Add(new()
+                {
+                    IdService = item.IdService,
+                    IdArea = item.IdArea,
+                    IdFeature = item.IdFeature,
+                    IdDescription = item.IdDescription != 0 ? item.IdDescription : 1,
+                    IdReceptionCertificate = CurrentReceptionCertificate.IdReceptionCertificate,
+                    Note = item.Note,
+                    Observation = item.Observation,
+                    IdProperty = CurrentReceptionCertificate.IdProperty,
+                });
+            }
+            SelectedValues = new();
+            ShowModalCopyValues = false;
         }
         public void ChangeOpenModalGauges()
         {
@@ -157,14 +176,16 @@ namespace FrontEnd.Pages
             Services = await _servicesService.GetServicesAsync();
             Descriptions = await _descriptionService.GetDescriptionAsync();
             Features = await _featuresService.GetFeaturesAsync();
+            Inventories = await _inventoryService.GetInventoryAsync();
+
             CurrentReceptionCertificate = _context.CurrentReceptionCertificate ?? _context.ReceptionCertificateExist;
             var NewAreasList =  (await _areaService.GetAreaAsync())?.ToList();
             CurrentArea = NewAreasList.FirstOrDefault(x => x.IdArea == 11);
 
             if (_context.ReceptionCertificateExist != null)
             {
-                var inventorys = (await _inventoryService.GetInventoryAsync()).ToList();
-                inventorys = inventorys.Where(x => x.IdReceptionCertificate == _context.ReceptionCertificateExist.IdReceptionCertificate).ToList();                
+                //var inventorys = (await _inventoryService.GetInventoryAsync()).ToList();
+                var inventorys = Inventories.Where(x => x.IdReceptionCertificate == CurrentReceptionCertificate.IdReceptionCertificate).ToList();                
                 var ListIdAreas = inventorys.GroupBy(p => p.IdArea).Select(g => g.FirstOrDefault().IdArea).ToList();
                 var ListIdServices = inventorys.GroupBy(p => p.IdService).Select(g => g.FirstOrDefault()).ToList();
                 //foreach (var item in ListIdServices)
@@ -195,7 +216,7 @@ namespace FrontEnd.Pages
                         IdArea = item.IdArea,
                         Observation = item.Observation,
                         Note = item.Note,
-                        Description = Descriptions.FirstOrDefault(x => x.IdFeature == item.IdFeature)?.DescriptionName
+                        Description = Descriptions.FirstOrDefault(x => x.IdFeature == item.IdFeature && x.IdDescription == item.IdDescription)?.DescriptionName
                     };
                     dtoDescriptions.Add(dto);
                 }
@@ -310,7 +331,8 @@ namespace FrontEnd.Pages
             StateHasChanged();
         }
         public async void DescriptionNoteInput(int IdFeature, ChangeEventArgs e)
-        {                        
+        {
+            DescriptionsList = (await _descriptionService.GetDescriptionAsync())?.Where(x => x.IdFeature == IdFeature)?.ToList();
             var CurrentDTO = dtoDescriptions.FirstOrDefault(x => x.IdFeature == IdFeature && x.IdService == CurrentService.IdService && x.IdArea == CurrentArea.IdArea);
             if (CurrentDTO != null)
             {
@@ -318,12 +340,11 @@ namespace FrontEnd.Pages
             }
             else
             {
-                dtoDescriptions.Add(new() { IdFeature = IdFeature, IdService = CurrentService.IdService, IdArea = CurrentArea.IdArea });
+                dtoDescriptions.Add(new() { IdFeature = IdFeature, IdService = CurrentService.IdService, IdArea = CurrentArea.IdArea, IdDescription = DescriptionsList?.FirstOrDefault()?.IdDescription ?? 1 });
                 CurrentDTO = dtoDescriptions.FirstOrDefault(x => x.IdFeature == IdFeature && x.IdService == CurrentService.IdService && x.IdArea == CurrentArea.IdArea);
                 CurrentDTO.Note = e.Value.ToString();
             }
             CurrentFeature = FeaturesList.FirstOrDefault(x => x.IdFeature == IdFeature);
-            DescriptionsList = (await _descriptionService.GetDescriptionAsync())?.Where(x => x.IdFeature == IdFeature)?.ToList();
 
             //if (!string.IsNullOrEmpty(CurrentDTO.Observation))
             //{
@@ -336,7 +357,7 @@ namespace FrontEnd.Pages
             CurrentInventory.IdService = CurrentService?.IdService ?? 14;
             CurrentInventory.IdFeature = IdFeature;
 
-            InventoriesList.Add(CurrentInventory);
+            //InventoriesList.Add(CurrentInventory);
 
             //dtoDescriptions.FirstOrDefault(x => x.IdFeature == CurrentFeature.IdFeature).IdDescription = idDescription;
             //dtoDescriptions.FirstOrDefault(x => x.IdDescription == idDescription).Note = name;
@@ -395,7 +416,7 @@ namespace FrontEnd.Pages
                 CurrentInventory.IdService = 13;
                 CurrentInventory.IdFeature = IdFeature;
 
-                InventoriesList.Add(CurrentInventory);          
+                //InventoriesList.Add(CurrentInventory);          
 
                 var res = await _inventoryService.PostInventoryAsync(CurrentInventory);
                 CurrentInventory.IdInventory = res.IdInventory;
@@ -424,7 +445,7 @@ namespace FrontEnd.Pages
 
             //var newInventory = new Inventory { IdArea = CurrentArea.IdArea, IdProperty = 2, IdDescription = idDescription, Note = name, };
             //CurrentInventory = newInventory;
-            InventoriesList.Add(CurrentInventory);
+            //InventoriesList.Add(CurrentInventory);
 
             var dtoDesc = dtoDescriptions.FirstOrDefault(x => x.IdFeature == CurrentFeature.IdFeature && x.IdService == CurrentService.IdService && x.IdArea == CurrentArea.IdArea);
             if (dtoDesc != null)
@@ -456,6 +477,24 @@ namespace FrontEnd.Pages
             DescriptionsList = new();
             StateHasChanged();
         }
+
+        public async void ObservationInput(ChangeEventArgs e)
+        {
+            var observation = e?.Value?.ToString();
+            CurrentInventory.Observation = observation; 
+            
+            var dtoDesc = dtoDescriptions.FirstOrDefault(x => x.IdFeature == 0 && x.IdService == CurrentService.IdService && x.IdArea == CurrentArea.IdArea);
+            if (dtoDesc != null)
+            {
+                dtoDescriptions.FirstOrDefault(x => x.IdFeature == 0 && x.IdService == CurrentService.IdService && x.IdArea == CurrentArea.IdArea).Observation = observation;
+            }
+            else
+            {
+                dtoDescriptions.Add(new() { IdFeature = 0, IdService = CurrentService.IdService, IdArea = CurrentArea.IdArea });
+                dtoDescriptions.FirstOrDefault(x => x.IdFeature == 0 && x.IdService == CurrentService.IdService && x.IdArea == CurrentArea.IdArea).Observation = observation;
+            }
+        }
+
         public void CheckboxClicked(Area aSelectedId, object aChecked)
         {
             if ((bool)aChecked)
@@ -478,10 +517,42 @@ namespace FrontEnd.Pages
         {
             Service? newService = new Service { ServiceName = nameArea };
             newService = await _servicesService.PostServicesAsync(newService);
+            var newDescriptions = new List<Description>();
+            var newFeatures = new List<Feature>();
+
             if (newService != null)
             {
                 ServicesList.Add(newService);
+                foreach (var item in Features.Where(x => x.IdService == 1))
+                {
+                    var res = await _featuresService.PostFeaturesAsync(new() { IdService = newService.IdService, FeatureName = item.FeatureName });
+                    if (res != null)
+                    {
+                        newFeatures.Add(res);
+                        foreach (var item2 in Descriptions.Where(x => x.IdFeature == item.IdFeature))
+                        {
+                            var res2 = await _descriptionService.PostDescriptionAsync(new() { IdFeature = res.IdFeature, DescriptionName = item2.DescriptionName});
+                            if (res2 != null)
+                            {
+                                newDescriptions.Add(res2);
+                            }
+                        }
+                    }
+                }
+                _context.ServiceList.Add(newService);
+                CurrentArea.AreaServices.Add(new() { IdService = newService.IdService, IdArea = CurrentArea.IdArea });
             }
+            foreach (var item in newDescriptions)
+            {
+                _context.DescriptionList.Add(item);
+                //Descriptions.Add(item);
+            }
+            foreach (var item in newFeatures)
+            {
+                _context.FeatureList.Add(item);
+                //Features.Add(item);
+            }
+
             ShowModalComponents = false;
             StateHasChanged();
         }
@@ -542,13 +613,23 @@ namespace FrontEnd.Pages
             BlobsInventory.IdProperty = CurrentReceptionCertificate.IdProperty;
             _blobsInventoryService.PostBlobsInventoryAsync(BlobsInventory);
         }
-        public void GenerarActa()
+        public async void GenerarActa()
         {
+            DisableButton = true;
+            foreach (var item in InventoriesList)
+            {
+                await _inventoryService.PostInventoryAsync(item);
+            }
             _context.CurrentAreasList = AreasList;
             _navigate.NavigateTo("/ReceptionCertificate/Signatures");
         }
         public async void HandleSaveReceptionCertificate()
         {
+            DisableButton = true;
+            foreach (var item in InventoriesList)
+            {
+                await _inventoryService.PostInventoryAsync(item);
+            }
             _navigate.NavigateTo("/");
             //HandleInsertSignatures();
         }

@@ -1,8 +1,9 @@
 ﻿@page "/ReceptionCertificates/Inventory"
 @attribute [Authorize]
 <PageTitle>Inventario</PageTitle>
-
-<body class="pb-12 flex flex-column min-h-screen bg-[url('/assets/img/fondocasa.png')] imgfondo">
+@if (Services != null)
+{
+    <body class="pb-12 flex flex-column min-h-screen bg-[url('/assets/img/fondocasa.png')] imgfondo">
     <div class="my-auto">
         <div class="flex inline-flex">
             <div id="ListActas" class="flex ml-4" style="height: 48rem">
@@ -28,7 +29,7 @@
                                                         <label for="" class="text-blue-900 w-32">
                                                             @feature.FeatureName
                                                         </label>
-                                                        <input value="@(dtoDescriptions.FirstOrDefault(x => x.IdFeature == feature.IdFeature&& x.IdService == CurrentService.IdService && x.IdArea == CurrentArea.IdArea)?.Note)" @onchange="@((ChangeEventArgs e) => DescriptionNoteInput(@feature.IdFeature, e))" class="border-2 bg-slate-100 ml-5 w-3/6 flex justify-end">
+                                                            <input value="@(dtoDescriptions.FirstOrDefault(x => x.IdFeature == feature.IdFeature&& x.IdService == CurrentService.IdService && x.IdArea == CurrentArea.IdArea)?.Note)" @onchange="@((ChangeEventArgs e) => DescriptionNoteInput(@feature.IdFeature, e))" class="border-2 bg-slate-100 ml-5 w-3/6 flex justify-end h-7 w-24">
                                                     </span>
                                                 }
                                                 else
@@ -48,7 +49,10 @@
                                     </div>
                                 </div>
                                 <div class="mx-5">
-                                    <button @onclick="ChangeOpenModalCopyValues" class="py-2 w-48 border rounded-lg text-white text-xl shadow-xl">Copiar Valores</button>
+                                    @if (FeaturesList.Count > 1 && CurrentService.IdService != 13 && CurrentService.IdService != 14)
+                                    {                                    
+                                        <button @onclick="ChangeOpenModalCopyValues" class="py-2 w-40 border rounded-md text-white text-md shadow-md" style="background-color: #2B286F;">Copiar Valores</button>
+                                    }
                                 </div>
                             </div>
                         </div>
@@ -70,7 +74,7 @@
                             <div id="ComponenteRecuadros" class="p-2">
                                 <div>
                                     <label for="" class="text-center text-xl text-blue-900 font-semibold mb-2">Oberservaciones</label>
-                                    <input @bind-value="CurrentInventory.Observation" type="text" class="border-2 bg-slate-100 ml-5 w-96 h-48 flex justify-end">
+                                    <input value="@(dtoDescriptions.FirstOrDefault(x => x.IdFeature == 0 && x.IdService == CurrentService.IdService && x.IdArea == CurrentArea.IdArea)?.Observation)" @onchange="@((ChangeEventArgs e) => ObservationInput(e))" type="text" class="border-2 bg-slate-100 ml-5 w-96 h-48 flex justify-end">
                                 </div>
                                 <div class="my-4">
                                     <label for="" class="text-xl text-blue-900 font-semibold">Fotografias</label>
@@ -95,8 +99,8 @@
                 </div>
             </div>
             <div id="Botones" class="flex justify-center -my-8">
-                <button onclick="@HandleSaveReceptionCertificate" class="py-2 w-48 border rounded-lg text-white text-xl shadow-xl" style="background-color: #2B286F;">Guardar</button>
-                <a><button @onclick="@GenerarActa" class="py-2 w-48 border rounded-lg text-white text-xl shadow-xl" style="background-color: #2B286F;">Generar Acta</button></a>
+                <button disabled="@DisableButton" onclick="@HandleSaveReceptionCertificate" class="py-2 w-48 border rounded-lg text-white text-xl shadow-xl" style="background-color: #2B286F;">Guardar</button>
+                <a><button disabled="@DisableButton" @onclick="@GenerarActa" class="py-2 w-48 border rounded-lg text-white text-xl shadow-xl" style="background-color: #2B286F;">Generar Acta</button></a>
             </div>
 
             @if (ShowModalRooms)
@@ -133,10 +137,13 @@
                                     {
                                         @foreach (var item in AreasList)
                                         {
-                                            <tr class="m-10 border h-10">
-                                                <td class="p-2"><input @onchange="eventArgs => { CheckboxClicked(item, eventArgs.Value); }" type="checkbox" /></td>
-                                                <td class="p-2">@item.AreaName</td>
-                                            </tr>
+                                            @if (item.IdArea != 11)
+                                            {
+                                                <tr class="m-10 border h-10">
+                                                    <td class="p-2"><input @onchange="eventArgs => { CheckboxClicked(item, eventArgs.Value); }" type="checkbox" /></td>
+                                                    <td class="p-2">@item.AreaName</td>
+                                                </tr>
+                                            }
                                         }
                                     }
                                     else

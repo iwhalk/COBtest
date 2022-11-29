@@ -21,8 +21,9 @@ namespace FrontEnd.Pages
         private readonly IPropertyTypeService _propertyTypeService;
         private readonly IReceptionCertificateService _receptionCertificateService;
         private readonly IReportsService _reportService;
+        private readonly IUserService _userService;
 
-        public ReceptionCertificatesSignatures(ApplicationContext context, NavigationManager navigate, IReportsService reportsService, ITenantService tenantService, IPropertyService propertyService, ILessorService lessorService, IInventoryService inventoryService, IServicesService servicesService, IAreaService areaService, IDescriptionService descriptionService, IFeaturesService featuresService, IPropertyTypeService propertyTypeService, IReceptionCertificateService receptionCertificateService)
+        public ReceptionCertificatesSignatures(ApplicationContext context, NavigationManager navigate, IReportsService reportsService, ITenantService tenantService, IPropertyService propertyService, ILessorService lessorService, IInventoryService inventoryService, IServicesService servicesService, IAreaService areaService, IDescriptionService descriptionService, IFeaturesService featuresService, IPropertyTypeService propertyTypeService, IReceptionCertificateService receptionCertificateService, IUserService userService)
         {
             _context = context;
             _navigate = navigate;
@@ -37,6 +38,7 @@ namespace FrontEnd.Pages
             _propertyTypeService = propertyTypeService;
             _receptionCertificateService = receptionCertificateService;
             _reportService = reportsService;
+            _userService = userService;
         }
 
         private List<Tenant> tenants { get; set; }
@@ -49,6 +51,7 @@ namespace FrontEnd.Pages
         private List<Feature> features { get; set; }
         private List<PropertyType> propertyTypes { get; set; }
         private ReceptionCertificate CurrentReceptionCertificate { get; set; }
+        public List<AspNetUser> Agents { get; private set; }
         public byte[]? BlobPDFPreview { get; set; }
         public string PdfName { get; set; }
         public bool ShowModalPreview { get; set; } = false;
@@ -62,6 +65,7 @@ namespace FrontEnd.Pages
 
         public string nameTenant { get; set; }
         public string nameLessor { get; set; }
+        public string NameAgent { get; set; }
         public string dateAct { get; set; }
 
         protected override async Task OnInitializedAsync()
@@ -76,6 +80,7 @@ namespace FrontEnd.Pages
             features = await _featuresService.GetFeaturesAsync();
             propertyTypes = await _propertyTypeService.GetPropertyTypeAsync();
             CurrentReceptionCertificate = _context.CurrentReceptionCertificate ?? _context.ReceptionCertificateExist;
+            Agents = await _userService.GetUsersAsync();
 
             var nameT = tenants.FirstOrDefault(x => x.IdTenant.Equals(CurrentReceptionCertificate.IdTenant)).Name;
             var lastNameT = tenants.FirstOrDefault(x => x.IdTenant.Equals(CurrentReceptionCertificate.IdTenant)).LastName;
@@ -85,6 +90,9 @@ namespace FrontEnd.Pages
             var nameL = lessors.FirstOrDefault(x => x.IdLessor.Equals(aux)).Name;
             var lastNameL = lessors.FirstOrDefault(x => x.IdLessor.Equals(aux)).LastName;
             nameLessor = nameL + " " + lastNameL;
+
+            var agent = Agents.FirstOrDefault(x => x.Id == CurrentReceptionCertificate.IdAgent);
+            NameAgent = agent?.Name + " " + agent?.LastName;
 
             dateAct = CurrentReceptionCertificate.CreationDate.ToString("dd-MM-yyyy HH:mm:ss");
         }

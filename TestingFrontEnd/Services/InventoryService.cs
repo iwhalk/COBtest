@@ -16,18 +16,19 @@ namespace FrontEnd.Services
 
         public async Task<List<Inventory>> GetInventoryAsync()
         {
-            if (_context.Inventory == null)
-            {
-                var response = await _repository.GetAsync<List<Inventory>>("api/Inventory");
+            //if (_context.Inventory == null)
+            //{
+            //    var response = await _repository.GetAsync<List<Inventory>>("api/Inventory");
 
-                if (response != null)
-                {
-                    _context.Inventory = response;
-                    return _context.Inventory;
-                }
-            }
+            //    if (response != null)
+            //    {
+            //        _context.Inventory = response;
+            //        return _context.Inventory;
+            //    }
+            //}
 
-            return _context.Inventory;
+            //return _context.Inventory;
+            return await _repository.GetAsync<List<Inventory>>("api/Inventory");
         }
 
         public async Task<Inventory> PostInventoryAsync(Inventory inventory)

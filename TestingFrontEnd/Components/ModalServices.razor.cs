@@ -30,12 +30,15 @@ namespace FrontEnd.Components
         [Parameter]
         public EventCallback<string> PostNewService { get; set; }
         public string NameService { get; set; }
+        public bool ShowSpinner { get; set; } = false;
+
         protected override async Task OnInitializedAsync()
         {
             Services = await _servicesService.GetServicesAsync();
         }
         private async void CleanBeforePostService()
         {
+            ShowSpinner = true;
             await PostNewService.InvokeAsync(NameService);
             NameService = "";
             //await OnClick.InvokeAsync();            
