@@ -98,8 +98,7 @@ namespace ReportesObra.Utilities
             DefineStyles();
             CreateLayout(reporte);
 
-            //CrearReporteArrendadores(reporte as ReporteArrendadores);
-            CrearReporte(reporte as ReporteActaEntrega);
+            //CrearReporte(reporte as ReporteActaEntrega);
 
             PdfDocumentRenderer pdfRenderer = new(true)
             {
@@ -144,378 +143,377 @@ namespace ReportesObra.Utilities
             style.ParagraphFormat.TabStops.AddTabStop("16cm", TabAlignment.Right);
         }
 
-        //void CrearReporteArrendadores(ReporteArrendadores? reporteArrendadores)
-        void CrearReporte(ReporteActaEntrega? reporteActaEntrega)
-        {
-            section.PageSetup.Orientation = Orientation.Portrait;
+        //void CrearReporte(ReporteActaEntrega? reporteActaEntrega)
+        //{
+        //    section.PageSetup.Orientation = Orientation.Portrait;
 
-            headerFrame = section.AddTextFrame();
-            headerFrame.Width = "20.0cm";
-            headerFrame.Left = ShapePosition.Center;
-            headerFrame.RelativeHorizontal = RelativeHorizontal.Margin;
-            headerFrame.Top = "2.70cm";
-            headerFrame.RelativeVertical = RelativeVertical.Page;
+        //    headerFrame = section.AddTextFrame();
+        //    headerFrame.Width = "20.0cm";
+        //    headerFrame.Left = ShapePosition.Center;
+        //    headerFrame.RelativeHorizontal = RelativeHorizontal.Margin;
+        //    headerFrame.Top = "2.70cm";
+        //    headerFrame.RelativeVertical = RelativeVertical.Page;
 
-            // Create the text frame for the data parameters
-            dataParametersFrameLeft = section.AddTextFrame();
-            dataParametersFrameLeft.Height = "2.0cm";
-            dataParametersFrameLeft.Width = "7.0cm";
-            dataParametersFrameLeft.Left = ShapePosition.Left;
-            dataParametersFrameLeft.RelativeHorizontal = RelativeHorizontal.Margin;
-            dataParametersFrameLeft.Top = "4.0cm";
-            dataParametersFrameLeft.RelativeVertical = RelativeVertical.Page;
+        //    // Create the text frame for the data parameters
+        //    dataParametersFrameLeft = section.AddTextFrame();
+        //    dataParametersFrameLeft.Height = "2.0cm";
+        //    dataParametersFrameLeft.Width = "7.0cm";
+        //    dataParametersFrameLeft.Left = ShapePosition.Left;
+        //    dataParametersFrameLeft.RelativeHorizontal = RelativeHorizontal.Margin;
+        //    dataParametersFrameLeft.Top = "4.0cm";
+        //    dataParametersFrameLeft.RelativeVertical = RelativeVertical.Page;
 
-            dataParametersFrameRight = section.AddTextFrame();
-            dataParametersFrameRight.Height = "2.0cm";
-            dataParametersFrameRight.Width = "6.5cm";
-            //dataParametersFrameRight.Left = ShapePosition.Right;
-            dataParametersFrameRight.Left = "10.3cm";
-            dataParametersFrameRight.RelativeHorizontal = RelativeHorizontal.Margin;
-            dataParametersFrameRight.Top = "4.0cm";
-            dataParametersFrameRight.RelativeVertical = RelativeVertical.Page;
+        //    dataParametersFrameRight = section.AddTextFrame();
+        //    dataParametersFrameRight.Height = "2.0cm";
+        //    dataParametersFrameRight.Width = "6.5cm";
+        //    //dataParametersFrameRight.Left = ShapePosition.Right;
+        //    dataParametersFrameRight.Left = "10.3cm";
+        //    dataParametersFrameRight.RelativeHorizontal = RelativeHorizontal.Margin;
+        //    dataParametersFrameRight.Top = "4.0cm";
+        //    dataParametersFrameRight.RelativeVertical = RelativeVertical.Page;
 
-            // Create the text frame for the data values
-            dataValuesFrame = section.AddTextFrame();
-            dataValuesFrame.Width = "7.5cm";
-            dataValuesFrame.Left = "2.3cm";//"3.5cm"
-            dataValuesFrame.RelativeHorizontal = RelativeHorizontal.Margin;
-            dataValuesFrame.Top = "4.0cm";
-            dataValuesFrame.RelativeVertical = RelativeVertical.Page;
+        //    // Create the text frame for the data values
+        //    dataValuesFrame = section.AddTextFrame();
+        //    dataValuesFrame.Width = "7.5cm";
+        //    dataValuesFrame.Left = "2.3cm";//"3.5cm"
+        //    dataValuesFrame.RelativeHorizontal = RelativeHorizontal.Margin;
+        //    dataValuesFrame.Top = "4.0cm";
+        //    dataValuesFrame.RelativeVertical = RelativeVertical.Page;
 
-            dataValuesFrameRight = section.AddTextFrame();
-            dataValuesFrameRight.Width = "6.5cm";
-            dataValuesFrameRight.Left = "13.2cm";//"3.5cm"
-            dataValuesFrameRight.RelativeHorizontal = RelativeHorizontal.Margin;
-            dataValuesFrameRight.Top = "4.0cm";
-            dataValuesFrameRight.RelativeVertical = RelativeVertical.Page;
+        //    dataValuesFrameRight = section.AddTextFrame();
+        //    dataValuesFrameRight.Width = "6.5cm";
+        //    dataValuesFrameRight.Left = "13.2cm";//"3.5cm"
+        //    dataValuesFrameRight.RelativeHorizontal = RelativeHorizontal.Margin;
+        //    dataValuesFrameRight.Top = "4.0cm";
+        //    dataValuesFrameRight.RelativeVertical = RelativeVertical.Page;
 
-            dataValueTable = section.AddTextFrame();
-            dataValueTable.Width = "5.0cm";
-            dataValueTable.Left = ShapePosition.Left;
-            dataValueTable.RelativeHorizontal = RelativeHorizontal.Margin;
-            dataValueTable.Top = "6.6cm";
-            dataValueTable.RelativeVertical = RelativeVertical.Page;
+        //    dataValueTable = section.AddTextFrame();
+        //    dataValueTable.Width = "5.0cm";
+        //    dataValueTable.Left = ShapePosition.Left;
+        //    dataValueTable.RelativeHorizontal = RelativeHorizontal.Margin;
+        //    dataValueTable.Top = "6.6cm";
+        //    dataValueTable.RelativeVertical = RelativeVertical.Page;
 
-            // Put header in header frame
-            Paragraph paragraph = headerFrame.AddParagraph("Acta Entrega Recepción de Inmueble");//Titulo
-            paragraph.Format.Font.Name = "Times New Roman";
-            paragraph.Format.Font.Size = 20;
-            paragraph.Format.Font.Bold = true;
-            paragraph.Format.Alignment = ParagraphAlignment.Center;
+        //    // Put header in header frame
+        //    Paragraph paragraph = headerFrame.AddParagraph("Acta Entrega Recepción de Inmueble");//Titulo
+        //    paragraph.Format.Font.Name = "Times New Roman";
+        //    paragraph.Format.Font.Size = 20;
+        //    paragraph.Format.Font.Bold = true;
+        //    paragraph.Format.Alignment = ParagraphAlignment.Center;
 
-            // Put parameters in data Frame
-            paragraph = dataParametersFrameLeft.AddParagraph();
-            paragraph.Format.Font.Bold = true;
-            paragraph.Format.Font.Size = 10;
-            paragraph.AddText("No. Contrato: ");
-            paragraph.AddLineBreak();
-            paragraph.AddText("Dirección: ");
-            paragraph.AddLineBreak();
-            //int l = reporteActaEntrega.header.ElementAt(0).Direccion.Length;
-            //if (l >= 48)
-            //    paragraph.AddLineBreak();
-            paragraph.AddText("Arrendador: ");
-            paragraph.AddLineBreak();
-            paragraph.AddText("Arrendatario: ");
-            paragraph.AddLineBreak();
-            paragraph.AddText("Agente: ");
+        //    // Put parameters in data Frame
+        //    paragraph = dataParametersFrameLeft.AddParagraph();
+        //    paragraph.Format.Font.Bold = true;
+        //    paragraph.Format.Font.Size = 10;
+        //    paragraph.AddText("No. Contrato: ");
+        //    paragraph.AddLineBreak();
+        //    paragraph.AddText("Dirección: ");
+        //    paragraph.AddLineBreak();
+        //    //int l = reporteActaEntrega.header.ElementAt(0).Direccion.Length;
+        //    //if (l >= 48)
+        //    //    paragraph.AddLineBreak();
+        //    paragraph.AddText("Arrendador: ");
+        //    paragraph.AddLineBreak();
+        //    paragraph.AddText("Arrendatario: ");
+        //    paragraph.AddLineBreak();
+        //    paragraph.AddText("Agente: ");
 
-            paragraph = dataParametersFrameRight.AddParagraph();
-            paragraph.Format.Font.Bold = true;
-            paragraph.Format.Font.Size = 10;
-            paragraph.AddText("Fecha y Hora: ");
-            paragraph.AddLineBreak();
-            paragraph.AddText("Tipo de Inmueble: ");
-            paragraph.AddLineBreak();
-            paragraph.AddText("Habitaciones: ");
+        //    paragraph = dataParametersFrameRight.AddParagraph();
+        //    paragraph.Format.Font.Bold = true;
+        //    paragraph.Format.Font.Size = 10;
+        //    paragraph.AddText("Fecha y Hora: ");
+        //    paragraph.AddLineBreak();
+        //    paragraph.AddText("Tipo de Inmueble: ");
+        //    paragraph.AddLineBreak();
+        //    paragraph.AddText("Habitaciones: ");
 
-            // Put values in data Frame
-            paragraph = dataValuesFrame.AddParagraph();
-            //paragraph.AddText(reporteArrendadores.FechaGeneracion.ToString("dd/MM/yyyy hh:mm tt") ?? "");
-            paragraph.AddText(reporteActaEntrega.header.ElementAt(0).NoContrato);
-            paragraph.AddLineBreak();
-            paragraph.AddText(reporteActaEntrega.header.ElementAt(0).Direccion);
-            paragraph.AddLineBreak();
-            paragraph.AddText(reporteActaEntrega.header.ElementAt(0).Arrendador);
-            paragraph.AddLineBreak();
-            paragraph.AddText(reporteActaEntrega.header.ElementAt(0).Arrendatario);
-            paragraph.AddLineBreak();
-            paragraph.AddText(reporteActaEntrega.header.ElementAt(0).Agente);
+        //    // Put values in data Frame
+        //    paragraph = dataValuesFrame.AddParagraph();
+        //    //paragraph.AddText(reporteArrendadores.FechaGeneracion.ToString("dd/MM/yyyy hh:mm tt") ?? "");
+        //    paragraph.AddText(reporteActaEntrega.header.ElementAt(0).NoContrato);
+        //    paragraph.AddLineBreak();
+        //    paragraph.AddText(reporteActaEntrega.header.ElementAt(0).Direccion);
+        //    paragraph.AddLineBreak();
+        //    paragraph.AddText(reporteActaEntrega.header.ElementAt(0).Arrendador);
+        //    paragraph.AddLineBreak();
+        //    paragraph.AddText(reporteActaEntrega.header.ElementAt(0).Arrendatario);
+        //    paragraph.AddLineBreak();
+        //    paragraph.AddText(reporteActaEntrega.header.ElementAt(0).Agente);
 
-            paragraph = dataValuesFrameRight.AddParagraph();
-            paragraph.AddText(reporteActaEntrega.header.ElementAt(0).FechaHora.ToString("dd/MM/yyyy hh:mm tt"));
-            paragraph.AddLineBreak();
-            paragraph.AddText(reporteActaEntrega.header.ElementAt(0).TipoInmueble);
-            paragraph.AddLineBreak();
-            paragraph.AddText(reporteActaEntrega.header.ElementAt(0).Habitaciones.ToString());
-            //paragraph.AddText(reporteArrendadores.Arrendadores.Count().ToString() ?? "");
-            //paragraph = dataValueTable.AddParagraph();
-            //paragraph.Format.Font.Bold = true;
-            //paragraph.AddText(reporteActaEntrega.areas.ElementAt(0).Area);
-            paragraph = section.AddParagraph();
-            paragraph.Format.SpaceBefore = "3.0cm";//"2.0cm"
-            paragraph.Format.Font.Size = 10;
-            paragraph.Style = "Reference";
-            paragraph.AddFormattedText("", TextFormat.Bold);
+        //    paragraph = dataValuesFrameRight.AddParagraph();
+        //    paragraph.AddText(reporteActaEntrega.header.ElementAt(0).FechaHora.ToString("dd/MM/yyyy hh:mm tt"));
+        //    paragraph.AddLineBreak();
+        //    paragraph.AddText(reporteActaEntrega.header.ElementAt(0).TipoInmueble);
+        //    paragraph.AddLineBreak();
+        //    paragraph.AddText(reporteActaEntrega.header.ElementAt(0).Habitaciones.ToString());
+        //    //paragraph.AddText(reporteArrendadores.Arrendadores.Count().ToString() ?? "");
+        //    //paragraph = dataValueTable.AddParagraph();
+        //    //paragraph.Format.Font.Bold = true;
+        //    //paragraph.AddText(reporteActaEntrega.areas.ElementAt(0).Area);
+        //    paragraph = section.AddParagraph();
+        //    paragraph.Format.SpaceBefore = "3.0cm";//"2.0cm"
+        //    paragraph.Format.Font.Size = 10;
+        //    paragraph.Style = "Reference";
+        //    paragraph.AddFormattedText("", TextFormat.Bold);
 
-            //Control de NullReferenceException al llamar a las imágenes
-            if (ImageSource.ImageSourceImpl == null)
-            {
-                ImageSource.ImageSourceImpl = new ImageSharpImageSource<Rgba32>();
-            }
+        //    //Control de NullReferenceException al llamar a las imágenes
+        //    if (ImageSource.ImageSourceImpl == null)
+        //    {
+        //        ImageSource.ImageSourceImpl = new ImageSharpImageSource<Rgba32>();
+        //    }
 
-            for (int i = 0; i < reporteActaEntrega.areas.Count; i++)
-            {
-                string tableTitle = reporteActaEntrega.areas.ElementAt(i).Area;
-                // Add the data separation field
-                paragraph = section.AddParagraph();
-                paragraph.Format.SpaceBefore = "1.0cm";
-                paragraph.Format.Font.Size = 14;
-                paragraph.Style = "Reference";
-                paragraph.AddFormattedText(tableTitle, TextFormat.Bold);
+        //    for (int i = 0; i < reporteActaEntrega.areas.Count; i++)
+        //    {
+        //        string tableTitle = reporteActaEntrega.areas.ElementAt(i).Area;
+        //        // Add the data separation field
+        //        paragraph = section.AddParagraph();
+        //        paragraph.Format.SpaceBefore = "1.0cm";
+        //        paragraph.Format.Font.Size = 14;
+        //        paragraph.Style = "Reference";
+        //        paragraph.AddFormattedText(tableTitle, TextFormat.Bold);
 
-                // Create the item table
-                tableAreas = section.AddTable();
-                tableAreas.Style = "Table";
-                tableAreas.Borders.Color = TableBorder;
-                tableAreas.Borders.Width = 0.5;
-                tableAreas.Rows.LeftIndent = 0;
-                tableAreas.Rows.Alignment = RowAlignment.Center;
-                // Before you can add a row, you must define the columns
-                Column column = tableAreas.AddColumn("3cm");
-                column.Format.Alignment = ParagraphAlignment.Center;
-                column = tableAreas.AddColumn("4cm");
-                column.Format.Alignment = ParagraphAlignment.Center;
-                column = tableAreas.AddColumn("4cm");
-                column.Format.Alignment = ParagraphAlignment.Center;
-                // Create the header of the table
-                Row row = tableAreas.AddRow();
-                row.HeadingFormat = true;
-                row.Format.Alignment = ParagraphAlignment.Center;
-                row.Format.Font.Bold = true;
-                row.Format.Font.Size = 10;
-                row.Shading.Color = TableColor;
-                row.Cells[0].AddParagraph("Elemento");
-                row.Cells[1].AddParagraph("Cantidad/Descripción");
-                row.Cells[2].AddParagraph("Observaciones");
+        //        // Create the item table
+        //        tableAreas = section.AddTable();
+        //        tableAreas.Style = "Table";
+        //        tableAreas.Borders.Color = TableBorder;
+        //        tableAreas.Borders.Width = 0.5;
+        //        tableAreas.Rows.LeftIndent = 0;
+        //        tableAreas.Rows.Alignment = RowAlignment.Center;
+        //        // Before you can add a row, you must define the columns
+        //        Column column = tableAreas.AddColumn("3cm");
+        //        column.Format.Alignment = ParagraphAlignment.Center;
+        //        column = tableAreas.AddColumn("4cm");
+        //        column.Format.Alignment = ParagraphAlignment.Center;
+        //        column = tableAreas.AddColumn("4cm");
+        //        column.Format.Alignment = ParagraphAlignment.Center;
+        //        // Create the header of the table
+        //        Row row = tableAreas.AddRow();
+        //        row.HeadingFormat = true;
+        //        row.Format.Alignment = ParagraphAlignment.Center;
+        //        row.Format.Font.Bold = true;
+        //        row.Format.Font.Size = 10;
+        //        row.Shading.Color = TableColor;
+        //        row.Cells[0].AddParagraph("Elemento");
+        //        row.Cells[1].AddParagraph("Cantidad/Descripción");
+        //        row.Cells[2].AddParagraph("Observaciones");
 
 
-                i = FillGenericContent(reporteActaEntrega.areas, tableAreas, i, tableTitle) - 1;
-                //A partir de la primera fila de elementos combina las celdas de la tercer columna e inserta la observación del servicio
-                Row elementsRow = tableAreas.Rows[1];
-                if (obserbations != "")
-                    elementsRow.Cells[2].AddParagraph(obserbations);
-                elementsRow.Cells[2].MergeDown = tableAreas.Rows.Count - 2;
-                //elementsRow.Cells[2].VerticalAlignment = VerticalAlignment.Center;
-                obserbations = "";
-                //Agrega un espacio y una imagen de la ruta especificada
-                paragraph = section.AddParagraph();
-                paragraph.Format.SpaceBefore = "0.6cm";
-                paragraph.Format.Font.Size = 11;
-                paragraph.Style = "Reference";
-                paragraph.AddFormattedText("Fotografías", TextFormat.Bold);
+        //        i = FillGenericContent(reporteActaEntrega.areas, tableAreas, i, tableTitle) - 1;
+        //        //A partir de la primera fila de elementos combina las celdas de la tercer columna e inserta la observación del servicio
+        //        Row elementsRow = tableAreas.Rows[1];
+        //        if (obserbations != "")
+        //            elementsRow.Cells[2].AddParagraph(obserbations);
+        //        elementsRow.Cells[2].MergeDown = tableAreas.Rows.Count - 2;
+        //        //elementsRow.Cells[2].VerticalAlignment = VerticalAlignment.Center;
+        //        obserbations = "";
+        //        //Agrega un espacio y una imagen de la ruta especificada
+        //        paragraph = section.AddParagraph();
+        //        paragraph.Format.SpaceBefore = "0.6cm";
+        //        paragraph.Format.Font.Size = 11;
+        //        paragraph.Style = "Reference";
+        //        paragraph.AddFormattedText("Fotografías", TextFormat.Bold);
 
-                Table tableImages = section.AddTable();
-                tableImages.Style = "Table";
-                tableImages.Rows.LeftIndent = 0;
-                tableImages.Rows.Alignment = RowAlignment.Center;
-                Column columnI = tableImages.AddColumn("5cm");
-                columnI.Format.Alignment = ParagraphAlignment.Center;
-                columnI = tableImages.AddColumn("5cm");
-                columnI.Format.Alignment = ParagraphAlignment.Center;
-                columnI = tableImages.AddColumn("5cm");
-                columnI.Format.Alignment = ParagraphAlignment.Center;
-                Row rowI = tableImages.AddRow();
-                for (int j = 0; j < blobUris.Count; j++)
-                {
-                    if (j == 3)
-                        break;
-                    string currentUri = blobUris.ElementAt(j);
-                    if (currentUri.Contains(".webp"))
-                        continue;
-                    var currentImage = new BlobClient(new Uri(currentUri)).DownloadContent();
-                    rowI.Cells[j].Format.Alignment = ParagraphAlignment.Center;
-                    rowI.Cells[j].VerticalAlignment = VerticalAlignment.Center;
-                    if (currentImage.Value.Details.ContentType != "image/webp")
-                        rowI.Cells[j].AddParagraph().AddImage(ImageSource.FromStream("imagen" + i + j, currentImage.Value.Content.ToStream)).Width = "4.8cm";
-                }
-                blobUris.Clear();
-            }
+        //        Table tableImages = section.AddTable();
+        //        tableImages.Style = "Table";
+        //        tableImages.Rows.LeftIndent = 0;
+        //        tableImages.Rows.Alignment = RowAlignment.Center;
+        //        Column columnI = tableImages.AddColumn("5cm");
+        //        columnI.Format.Alignment = ParagraphAlignment.Center;
+        //        columnI = tableImages.AddColumn("5cm");
+        //        columnI.Format.Alignment = ParagraphAlignment.Center;
+        //        columnI = tableImages.AddColumn("5cm");
+        //        columnI.Format.Alignment = ParagraphAlignment.Center;
+        //        Row rowI = tableImages.AddRow();
+        //        for (int j = 0; j < blobUris.Count; j++)
+        //        {
+        //            if (j == 3)
+        //                break;
+        //            string currentUri = blobUris.ElementAt(j);
+        //            if (currentUri.Contains(".webp"))
+        //                continue;
+        //            var currentImage = new BlobClient(new Uri(currentUri)).DownloadContent();
+        //            rowI.Cells[j].Format.Alignment = ParagraphAlignment.Center;
+        //            rowI.Cells[j].VerticalAlignment = VerticalAlignment.Center;
+        //            if (currentImage.Value.Details.ContentType != "image/webp")
+        //                rowI.Cells[j].AddParagraph().AddImage(ImageSource.FromStream("imagen" + i + j, currentImage.Value.Content.ToStream)).Width = "4.8cm";
+        //        }
+        //        blobUris.Clear();
+        //    }
 
-            int contadorTabla = 0;
-            if (reporteActaEntrega.deliverables.Count < 4 && reporteActaEntrega.deliverables.Count > 0)
-                document.LastSection.AddPageBreak();
-            for (int i = 0; i < reporteActaEntrega.deliverables.Count; i++)
-            {
-                if (contadorTabla == 1)
-                    document.LastSection.AddPageBreak();
-                string tableTitle = reporteActaEntrega.deliverables.ElementAt(i).Entregable;
-                //if (tableTitle.Contains("Llaves"))
-                //    tableTitle = "Llaves de habitación";
-                //else if (tableTitle.Contains("Medidores"))
-                //    tableTitle = "Medidores";
-                paragraph = section.AddParagraph();
-                if (i != 0)
-                    paragraph.Format.SpaceBefore = "1.0cm";
-                paragraph.Format.Font.Size = 14;
-                paragraph.Style = "Reference";
-                paragraph.AddFormattedText(tableTitle, TextFormat.Bold);
-                //SECOND TABLE
-                tableEntregables = section.AddTable();
-                tableEntregables.Style = "Table";
-                tableEntregables.Borders.Color = TableBorder;
-                tableEntregables.Borders.Width = 0.5;
-                tableEntregables.Rows.LeftIndent = 0;
-                tableEntregables.Rows.Alignment = RowAlignment.Center;
-                Column column2 = tableEntregables.AddColumn("3cm");
-                column2.Format.Alignment = ParagraphAlignment.Center;
-                column2 = tableEntregables.AddColumn("4cm");
-                column2.Format.Alignment = ParagraphAlignment.Center;
-                column2 = tableEntregables.AddColumn("4cm");
-                column2.Format.Alignment = ParagraphAlignment.Center;
-                Row row2 = tableEntregables.AddRow();
-                row2.HeadingFormat = true;
-                row2.Format.Alignment = ParagraphAlignment.Center;
-                row2.Format.Font.Bold = true;
-                row2.Format.Font.Size = 10;
-                row2.Shading.Color = TableColor;
-                if (!tableTitle.Contains("Medidores"))
-                {
-                    row2.Cells[0].AddParagraph("Habitación");
-                    row2.Cells[1].AddParagraph("Cantidad");
-                    row2.Cells[2].AddParagraph("Observaciones");
-                    i = FillGenericContent(reporteActaEntrega.deliverables, tableEntregables, i, tableTitle) - 1;
-                }
-                else
-                {
-                    row2.Cells[0].AddParagraph("Servicio");
-                    row2.Cells[1].AddParagraph("No. Serie");
-                    row2.Cells[2].AddParagraph("Cantidad");
-                    i = FillGenericContentMedidores(reporteActaEntrega.deliverables, tableEntregables, i, tableTitle) - 1;
-                }
+        //    int contadorTabla = 0;
+        //    if (reporteActaEntrega.deliverables.Count < 4 && reporteActaEntrega.deliverables.Count > 0)
+        //        document.LastSection.AddPageBreak();
+        //    for (int i = 0; i < reporteActaEntrega.deliverables.Count; i++)
+        //    {
+        //        if (contadorTabla == 1)
+        //            document.LastSection.AddPageBreak();
+        //        string tableTitle = reporteActaEntrega.deliverables.ElementAt(i).Entregable;
+        //        //if (tableTitle.Contains("Llaves"))
+        //        //    tableTitle = "Llaves de habitación";
+        //        //else if (tableTitle.Contains("Medidores"))
+        //        //    tableTitle = "Medidores";
+        //        paragraph = section.AddParagraph();
+        //        if (i != 0)
+        //            paragraph.Format.SpaceBefore = "1.0cm";
+        //        paragraph.Format.Font.Size = 14;
+        //        paragraph.Style = "Reference";
+        //        paragraph.AddFormattedText(tableTitle, TextFormat.Bold);
+        //        //SECOND TABLE
+        //        tableEntregables = section.AddTable();
+        //        tableEntregables.Style = "Table";
+        //        tableEntregables.Borders.Color = TableBorder;
+        //        tableEntregables.Borders.Width = 0.5;
+        //        tableEntregables.Rows.LeftIndent = 0;
+        //        tableEntregables.Rows.Alignment = RowAlignment.Center;
+        //        Column column2 = tableEntregables.AddColumn("3cm");
+        //        column2.Format.Alignment = ParagraphAlignment.Center;
+        //        column2 = tableEntregables.AddColumn("4cm");
+        //        column2.Format.Alignment = ParagraphAlignment.Center;
+        //        column2 = tableEntregables.AddColumn("4cm");
+        //        column2.Format.Alignment = ParagraphAlignment.Center;
+        //        Row row2 = tableEntregables.AddRow();
+        //        row2.HeadingFormat = true;
+        //        row2.Format.Alignment = ParagraphAlignment.Center;
+        //        row2.Format.Font.Bold = true;
+        //        row2.Format.Font.Size = 10;
+        //        row2.Shading.Color = TableColor;
+        //        if (!tableTitle.Contains("Medidores"))
+        //        {
+        //            row2.Cells[0].AddParagraph("Habitación");
+        //            row2.Cells[1].AddParagraph("Cantidad");
+        //            row2.Cells[2].AddParagraph("Observaciones");
+        //            i = FillGenericContent(reporteActaEntrega.deliverables, tableEntregables, i, tableTitle) - 1;
+        //        }
+        //        else
+        //        {
+        //            row2.Cells[0].AddParagraph("Servicio");
+        //            row2.Cells[1].AddParagraph("No. Serie");
+        //            row2.Cells[2].AddParagraph("Cantidad");
+        //            i = FillGenericContentMedidores(reporteActaEntrega.deliverables, tableEntregables, i, tableTitle) - 1;
+        //        }
 
-                contadorTabla++;
+        //        contadorTabla++;
 
-                //A partir de la primera fila de elementos combina las celdas de la tercer columna e inserta la observación del servicio
-                if (!tableTitle.Contains("Medidores"))
-                {
-                    Row elementsRow = tableEntregables.Rows[1];
-                    elementsRow.Cells[2].AddParagraph(obserbations);
-                    elementsRow.Cells[2].MergeDown = tableEntregables.Rows.Count - 2;
-                    elementsRow.Cells[2].VerticalAlignment = VerticalAlignment.Center;
-                    obserbations = "";
-                }
+        //        //A partir de la primera fila de elementos combina las celdas de la tercer columna e inserta la observación del servicio
+        //        if (!tableTitle.Contains("Medidores"))
+        //        {
+        //            Row elementsRow = tableEntregables.Rows[1];
+        //            elementsRow.Cells[2].AddParagraph(obserbations);
+        //            elementsRow.Cells[2].MergeDown = tableEntregables.Rows.Count - 2;
+        //            elementsRow.Cells[2].VerticalAlignment = VerticalAlignment.Center;
+        //            obserbations = "";
+        //        }
 
-                paragraph = section.AddParagraph();
-                paragraph.Format.SpaceBefore = "0.6cm";
-                paragraph.Format.Font.Size = 11;
-                paragraph.Style = "Reference";
-                paragraph.AddFormattedText("Fotografías", TextFormat.Bold);
+        //        paragraph = section.AddParagraph();
+        //        paragraph.Format.SpaceBefore = "0.6cm";
+        //        paragraph.Format.Font.Size = 11;
+        //        paragraph.Style = "Reference";
+        //        paragraph.AddFormattedText("Fotografías", TextFormat.Bold);
 
-                Table tableImages = section.AddTable();
-                tableImages.Style = "Table";
-                tableImages.Rows.LeftIndent = 0;
-                tableImages.Rows.Alignment = RowAlignment.Center;
-                Column columnI = tableImages.AddColumn("5cm");
-                columnI.Format.Alignment = ParagraphAlignment.Center;
-                columnI = tableImages.AddColumn("5cm");
-                columnI.Format.Alignment = ParagraphAlignment.Center;
-                columnI = tableImages.AddColumn("5cm");
-                columnI.Format.Alignment = ParagraphAlignment.Center;
-                Row rowI = tableImages.AddRow();
+        //        Table tableImages = section.AddTable();
+        //        tableImages.Style = "Table";
+        //        tableImages.Rows.LeftIndent = 0;
+        //        tableImages.Rows.Alignment = RowAlignment.Center;
+        //        Column columnI = tableImages.AddColumn("5cm");
+        //        columnI.Format.Alignment = ParagraphAlignment.Center;
+        //        columnI = tableImages.AddColumn("5cm");
+        //        columnI.Format.Alignment = ParagraphAlignment.Center;
+        //        columnI = tableImages.AddColumn("5cm");
+        //        columnI.Format.Alignment = ParagraphAlignment.Center;
+        //        Row rowI = tableImages.AddRow();
 
-                for (int j = 0; j < blobUris.Count; j++)
-                {
-                    if (j == 3)
-                        break;
-                    string currentUri = blobUris.ElementAt(j);
-                    if (currentUri.Contains(".webp"))
-                        continue;
-                    var currentImage = new BlobClient(new Uri(currentUri)).DownloadContent();
-                    rowI.Cells[j].Format.Alignment = ParagraphAlignment.Center;
-                    rowI.Cells[j].VerticalAlignment = VerticalAlignment.Center;
-                    rowI.Cells[j].AddParagraph().AddImage(ImageSource.FromStream("imagenD" + i + j, currentImage.Value.Content.ToStream)).Width = "4.8cm";
-                }
-                blobUris.Clear();
+        //        for (int j = 0; j < blobUris.Count; j++)
+        //        {
+        //            if (j == 3)
+        //                break;
+        //            string currentUri = blobUris.ElementAt(j);
+        //            if (currentUri.Contains(".webp"))
+        //                continue;
+        //            var currentImage = new BlobClient(new Uri(currentUri)).DownloadContent();
+        //            rowI.Cells[j].Format.Alignment = ParagraphAlignment.Center;
+        //            rowI.Cells[j].VerticalAlignment = VerticalAlignment.Center;
+        //            rowI.Cells[j].AddParagraph().AddImage(ImageSource.FromStream("imagenD" + i + j, currentImage.Value.Content.ToStream)).Width = "4.8cm";
+        //        }
+        //        blobUris.Clear();
 
-                //rowI.Cells[0].Format.Alignment = ParagraphAlignment.Center;
-                //rowI.Cells[0].VerticalAlignment = VerticalAlignment.Center;
-                //rowI.Cells[0].AddParagraph().AddImage(ImageSource.FromFile(Environment.CurrentDirectory + @"\Imagenes\key.jpg")).Width = "4.2cm";
-                //rowI.Cells[1].Format.Alignment = ParagraphAlignment.Center;
-                //rowI.Cells[1].VerticalAlignment = VerticalAlignment.Center;
-                //rowI.Cells[1].AddParagraph().AddImage(ImageSource.FromFile(Environment.CurrentDirectory + @"\Imagenes\medidor.jpg")).Width = "4.2cm";
-            }
+        //        //rowI.Cells[0].Format.Alignment = ParagraphAlignment.Center;
+        //        //rowI.Cells[0].VerticalAlignment = VerticalAlignment.Center;
+        //        //rowI.Cells[0].AddParagraph().AddImage(ImageSource.FromFile(Environment.CurrentDirectory + @"\Imagenes\key.jpg")).Width = "4.2cm";
+        //        //rowI.Cells[1].Format.Alignment = ParagraphAlignment.Center;
+        //        //rowI.Cells[1].VerticalAlignment = VerticalAlignment.Center;
+        //        //rowI.Cells[1].AddParagraph().AddImage(ImageSource.FromFile(Environment.CurrentDirectory + @"\Imagenes\medidor.jpg")).Width = "4.2cm";
+        //    }
 
-            paragraph = section.AddParagraph();
-            paragraph.Format.SpaceBefore = "1.0cm";
-            paragraph.Format.Font.Size = 16;
-            paragraph.Style = "Reference";
-            paragraph.AddFormattedText("Firmas", TextFormat.Bold);
+        //    paragraph = section.AddParagraph();
+        //    paragraph.Format.SpaceBefore = "1.0cm";
+        //    paragraph.Format.Font.Size = 16;
+        //    paragraph.Style = "Reference";
+        //    paragraph.AddFormattedText("Firmas", TextFormat.Bold);
 
-            tablaFirmas = section.AddTable();
-            tablaFirmas.Style = "Table";
-            tablaFirmas.Borders.Color = TableBorder;
-            tablaFirmas.Borders.Width = 0.5;
-            tablaFirmas.Rows.LeftIndent = 0;
-            tablaFirmas.Rows.Alignment = RowAlignment.Center;
-            Column columnF = tablaFirmas.AddColumn("7cm");
-            columnF.Format.Alignment = ParagraphAlignment.Center;
-            columnF = tablaFirmas.AddColumn("7cm");
-            columnF.Format.Alignment = ParagraphAlignment.Center;
-            Row rowF = tablaFirmas.AddRow();
-            rowF.Format.Font.Size = 10;
-            rowF.VerticalAlignment = VerticalAlignment.Center;
-            //rowF.Cells[0].AddParagraph(DateTime.Now.ToString("dd/MM/yyyy hh:mm tt"));
-            rowF.Cells[0].AddParagraph(reporteActaEntrega.header.ElementAt(0).FechaHora.ToString("dd/MM/yyyy hh:mm tt"));
-            rowF.Cells[1].AddParagraph(reporteActaEntrega.header.ElementAt(0).FechaHora.ToString("dd/MM/yyyy hh:mm tt"));
-            Row rowF1 = tablaFirmas.AddRow();
-            rowF1.Format.Font.Size = 68;
-            rowF1.VerticalAlignment = VerticalAlignment.Center;
-            //rowF1.Cells[1].AddParagraph().AddImage(ImageSource.FromFile(Environment.CurrentDirectory + @"\Images\pngegg.png")).Width = "4.2cm";
+        //    tablaFirmas = section.AddTable();
+        //    tablaFirmas.Style = "Table";
+        //    tablaFirmas.Borders.Color = TableBorder;
+        //    tablaFirmas.Borders.Width = 0.5;
+        //    tablaFirmas.Rows.LeftIndent = 0;
+        //    tablaFirmas.Rows.Alignment = RowAlignment.Center;
+        //    Column columnF = tablaFirmas.AddColumn("7cm");
+        //    columnF.Format.Alignment = ParagraphAlignment.Center;
+        //    columnF = tablaFirmas.AddColumn("7cm");
+        //    columnF.Format.Alignment = ParagraphAlignment.Center;
+        //    Row rowF = tablaFirmas.AddRow();
+        //    rowF.Format.Font.Size = 10;
+        //    rowF.VerticalAlignment = VerticalAlignment.Center;
+        //    //rowF.Cells[0].AddParagraph(DateTime.Now.ToString("dd/MM/yyyy hh:mm tt"));
+        //    rowF.Cells[0].AddParagraph(reporteActaEntrega.header.ElementAt(0).FechaHora.ToString("dd/MM/yyyy hh:mm tt"));
+        //    rowF.Cells[1].AddParagraph(reporteActaEntrega.header.ElementAt(0).FechaHora.ToString("dd/MM/yyyy hh:mm tt"));
+        //    Row rowF1 = tablaFirmas.AddRow();
+        //    rowF1.Format.Font.Size = 68;
+        //    rowF1.VerticalAlignment = VerticalAlignment.Center;
+        //    //rowF1.Cells[1].AddParagraph().AddImage(ImageSource.FromFile(Environment.CurrentDirectory + @"\Images\pngegg.png")).Width = "4.2cm";
 
-            string base64Arrendador;
-            string base64Arrendatario;
+        //    string base64Arrendador;
+        //    string base64Arrendatario;
 
-            if (!string.IsNullOrWhiteSpace(reporteActaEntrega.header.ElementAt(0).FirmaArrendador))
-            {
-                base64Arrendador = reporteActaEntrega.header.ElementAt(0).FirmaArrendador.Split(',')[1];
-                Stream? streamArrendador = new MemoryStream(Convert.FromBase64String(base64Arrendador));
-                rowF1.Cells[0].AddParagraph().AddImage(ImageSource.FromStream("Firma Arrendatario", () => streamArrendador)).Width = "6.5cm";
-            }
-            if (!string.IsNullOrWhiteSpace(reporteActaEntrega.header.ElementAt(0).FirmaArrendatario))
-            {
-                base64Arrendatario = reporteActaEntrega.header.ElementAt(0).FirmaArrendatario.Split(',')[1];
-                Stream? streamArrendatario = new MemoryStream(Convert.FromBase64String(base64Arrendatario));
-                //Image imageBackground = Image.FromFile(Environment.CurrentDirectory + @"\Images\pngegg.png");
-                WebClient client = new WebClient();
-                MemoryStream stream = new MemoryStream(client.DownloadData("https://aeriblobs.blob.core.windows.net/inventoryblobs/pngegg.png"));
-                Image imageBackground = Image.FromStream(stream);
+        //    if (!string.IsNullOrWhiteSpace(reporteActaEntrega.header.ElementAt(0).FirmaArrendador))
+        //    {
+        //        base64Arrendador = reporteActaEntrega.header.ElementAt(0).FirmaArrendador.Split(',')[1];
+        //        Stream? streamArrendador = new MemoryStream(Convert.FromBase64String(base64Arrendador));
+        //        rowF1.Cells[0].AddParagraph().AddImage(ImageSource.FromStream("Firma Arrendatario", () => streamArrendador)).Width = "6.5cm";
+        //    }
+        //    if (!string.IsNullOrWhiteSpace(reporteActaEntrega.header.ElementAt(0).FirmaArrendatario))
+        //    {
+        //        base64Arrendatario = reporteActaEntrega.header.ElementAt(0).FirmaArrendatario.Split(',')[1];
+        //        Stream? streamArrendatario = new MemoryStream(Convert.FromBase64String(base64Arrendatario));
+        //        //Image imageBackground = Image.FromFile(Environment.CurrentDirectory + @"\Images\pngegg.png");
+        //        WebClient client = new WebClient();
+        //        MemoryStream stream = new MemoryStream(client.DownloadData("https://aeriblobs.blob.core.windows.net/inventoryblobs/pngegg.png"));
+        //        Image imageBackground = Image.FromStream(stream);
 
-                Image arrentatarioImg = Image.FromStream(streamArrendatario);
-                Image img = new Bitmap(arrentatarioImg.Width, 400);
-                Rectangle limit = new Rectangle((arrentatarioImg.Width - imageBackground.Width) / 2, 0, 400, 400);
-                Rectangle limit2 = new Rectangle(0, (img.Height - arrentatarioImg.Height) / 2, arrentatarioImg.Width, arrentatarioImg.Height);
-                using (Graphics gr = Graphics.FromImage(img))
-                {
-                    gr.DrawImage(imageBackground, limit);
-                    gr.DrawImage(arrentatarioImg, limit2);
-                }
-                //img.Save(Environment.CurrentDirectory + "\\Images\\FirmaSello.png");
+        //        Image arrentatarioImg = Image.FromStream(streamArrendatario);
+        //        Image img = new Bitmap(arrentatarioImg.Width, 400);
+        //        Rectangle limit = new Rectangle((arrentatarioImg.Width - imageBackground.Width) / 2, 0, 400, 400);
+        //        Rectangle limit2 = new Rectangle(0, (img.Height - arrentatarioImg.Height) / 2, arrentatarioImg.Width, arrentatarioImg.Height);
+        //        using (Graphics gr = Graphics.FromImage(img))
+        //        {
+        //            gr.DrawImage(imageBackground, limit);
+        //            gr.DrawImage(arrentatarioImg, limit2);
+        //        }
+        //        //img.Save(Environment.CurrentDirectory + "\\Images\\FirmaSello.png");
 
-                var stream1 = new MemoryStream();
-                img.Save(stream1, ImageFormat.Png);
-                stream1.Position = 0;
+        //        var stream1 = new MemoryStream();
+        //        img.Save(stream1, ImageFormat.Png);
+        //        stream1.Position = 0;
 
-                //rowF1.Cells[1].AddParagraph().AddImage(ImageSource.FromStream("Firma Arrendador", () => streamArrendatario)).Width = "10cm";
-                rowF1.Cells[1].AddParagraph().AddImage(ImageSource.FromStream("Firma Agente", () => stream1)).Width = "6.5cm";
-            }
+        //        //rowF1.Cells[1].AddParagraph().AddImage(ImageSource.FromStream("Firma Arrendador", () => streamArrendatario)).Width = "10cm";
+        //        rowF1.Cells[1].AddParagraph().AddImage(ImageSource.FromStream("Firma Agente", () => stream1)).Width = "6.5cm";
+        //    }
 
-            Row rowF2 = tablaFirmas.AddRow();
-            rowF2.Format.Font.Size = 12;
-            rowF2.VerticalAlignment = VerticalAlignment.Center;
-            rowF2.Cells[0].AddParagraph(reporteActaEntrega.header.ElementAt(0).Arrendatario + " (Arrendatario)");
-            rowF2.Cells[1].AddParagraph(reporteActaEntrega.header.ElementAt(0).Agente + " (Agente)");
-        }
+        //    Row rowF2 = tablaFirmas.AddRow();
+        //    rowF2.Format.Font.Size = 12;
+        //    rowF2.VerticalAlignment = VerticalAlignment.Center;
+        //    rowF2.Cells[0].AddParagraph(reporteActaEntrega.header.ElementAt(0).Arrendatario + " (Arrendatario)");
+        //    rowF2.Cells[1].AddParagraph(reporteActaEntrega.header.ElementAt(0).Agente + " (Agente)");
+        //}
 
         void CreateLayout<T>(T reporte)
         {
