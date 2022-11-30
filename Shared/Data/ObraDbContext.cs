@@ -22,6 +22,7 @@ namespace SharedLibrary.Data
         public virtual DbSet<Activity> Activities { get; set; }
         public virtual DbSet<Apartment> Apartments { get; set; }
         public virtual DbSet<Area> Areas { get; set; }
+        public virtual DbSet<AspNetUser> AspNetUsers { get; set; }
         public virtual DbSet<Blob> Blobs { get; set; }
         public virtual DbSet<Building> Buildings { get; set; }
         public virtual DbSet<Element> Elements { get; set; }
@@ -76,6 +77,11 @@ namespace SharedLibrary.Data
             {
                 entity.HasKey(e => e.IdProgressLog)
                     .HasName("PK__Progress__F031B417F3C2DA0F");
+
+                entity.HasOne(d => d.IdSupervisorNavigation)
+                    .WithMany(p => p.ProgressLogs)
+                    .HasForeignKey(d => d.IdSupervisor)
+                    .HasConstraintName("FK_ProgressLogs_ID_Supervisor");
             });
 
             modelBuilder.Entity<SubElement>(entity =>
