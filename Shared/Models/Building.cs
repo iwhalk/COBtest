@@ -24,10 +24,9 @@ namespace SharedLibrary.Models
         [Required]
         [StringLength(30)]
         [Unicode(false)]
-        public string Districts { get; set; }
-        [Column("CP")]
+        public string District { get; set; }
         [StringLength(10)]
-        public string Cp { get; set; }
-        public int? ApartmentsNumber { get; set; }
+        public string ZipCode { get; set; }
+        public int? TotalApartments { get; set; }
     }
 }
