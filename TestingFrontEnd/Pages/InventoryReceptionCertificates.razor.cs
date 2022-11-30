@@ -21,19 +21,19 @@ namespace FrontEnd.Pages
         private readonly NavigationManager _navigate;
         private readonly IInventoryService _inventoryService;
         private readonly IServicesService _servicesService;
-        private readonly IAreaService _areaService;
+        private readonly IAreasService _areaService;
         private readonly IFeaturesService _featuresService;
-        private readonly IDescriptionService _descriptionService;
-        private readonly IBlobService _blobService;
+        private readonly IDescriptionsService _descriptionService;
+        private readonly IBlobsService _blobService;
         private readonly IBlobsInventoryService _blobsInventoryService;
 
         public InventoryReceptionCertificates(ApplicationContext context,
                                               IInventoryService inventoryService,
                                               IServicesService servicesService,
-                                              IAreaService areaService,
+                                              IAreasService areaService,
                                               IFeaturesService featuresService,
-                                              IDescriptionService descriptionService,
-                                              IBlobService blobService,
+                                              IDescriptionsService descriptionService,
+                                              IBlobsService blobService,
                                               IBlobsInventoryService blobsInventoryService,
                                               NavigationManager navigate)
         {

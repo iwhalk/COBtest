@@ -4,7 +4,7 @@ using SharedLibrary.Models;
 
 namespace FrontEnd.Services
 {
-    public class AreasService : IAreaService
+    public class AreasService : IAreasService
     {
         private readonly IGenericRepository _repository;
         private readonly ApplicationContext _context;

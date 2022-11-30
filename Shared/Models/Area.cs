@@ -10,13 +10,6 @@ namespace SharedLibrary.Models
 {
     public partial class Area
     {
-        public Area()
-        {
-            AreaServices = new HashSet<AreaService>();
-            Inventories = new HashSet<Inventory>();
-            IdProperties = new HashSet<Property>();
-        }
-
         [Key]
         [Column("ID_Area")]
         public int IdArea { get; set; }
@@ -24,14 +17,5 @@ namespace SharedLibrary.Models
         [StringLength(20)]
         [Unicode(false)]
         public string AreaName { get; set; }
-
-        [InverseProperty("IdAreaNavigation")]
-        public virtual ICollection<AreaService> AreaServices { get; set; }
-        [InverseProperty("IdAreaNavigation")]
-        public virtual ICollection<Inventory> Inventories { get; set; }
-
-        [ForeignKey("IdArea")]
-        [InverseProperty("IdAreas")]
-        public virtual ICollection<Property> IdProperties { get; set; }
     }
 }

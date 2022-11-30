@@ -11,16 +11,17 @@ namespace ApiGateway.Controllers
     [ApiController]
     public class BlobsController : ControllerBase
     {
-        private readonly IBlobsService _blobService;
+        private readonly IBlobsService _blobsService;
+
         public BlobsController(IBlobsService blobsService)
         {
-            _blobService = blobsService;
+            _blobsService = blobsService;
         }
 
         [HttpGet]
-        public async Task<ActionResult> GetBlob()
+        public async Task<ActionResult> GetBlobs()
         {
-            var result = await _blobService.GetBlobsAsync();
+            var result = await _blobsService.GetBlobsAsync();
 
             if (result.Succeeded)
             {
@@ -31,35 +32,9 @@ namespace ApiGateway.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> PostBlob(IFormFile file)
+        public async Task<ActionResult> PostBlob(Blob blob)
         {
-            var result = await _blobService.PostBlobAsync(new() { BlobSize = file.Length.ToString(), ContentType = file.ContentType, BlodTypeId = "1"}, file);
-
-            if (result.Succeeded)
-            {
-                return Ok(result);
-            }
-
-            return BadRequest(result);
-        }
-
-        [HttpPut]
-        public async Task<ActionResult> PutBlob(Blob blob)
-        {
-            var result = await _blobService.PutBlobAsync(blob);
-
-            if (result.Succeeded)
-            {
-                return Ok(result);
-            }
-
-            return BadRequest(result);
-        }
-
-        [HttpDelete("{idBlob}")]
-        public async Task<ActionResult> Delete(int idBlob)
-        {
-            var result = await _blobService.DeleteBlobAsync(idBlob);
+            var result = await _blobsService.PostBlobAsync(blob);
 
             if (result.Succeeded)
             {

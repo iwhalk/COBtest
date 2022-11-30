@@ -2,6 +2,6 @@
 {
     public interface IReporteActaEntregaService
     {
-        Task<byte[]> GetActaEntrega(int idReceptionCertificate);
+        //Task<byte[]> GetActaEntrega(int idReceptionCertificate);
     }
 }
