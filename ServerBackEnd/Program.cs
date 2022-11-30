@@ -279,7 +279,7 @@ builder.Services.AddRazorPages();
 builder.Services.AddScoped<IAspNetUserService, AspNetUserService>();
 builder.Services.AddScoped<IMailObraService, MailObraService>();
 
-builder.Services.AddScoped<IBuildingsService, BuildingService>();
+builder.Services.AddScoped<IBuildingsService, BuildingsService>();
 builder.Services.AddScoped<IAreasService, AreasService>();
 builder.Services.AddScoped<IActivitiesService, ActivitiesService>();
 builder.Services.AddScoped<IApartmentsService, ApartmentsService>();

@@ -5,9 +5,9 @@ using SharedLibrary.Models;
 
 namespace ApiGateway.Services
 {
-    public class BuildingService : GenericProxy, IBuildingsService
+    public class BuildingsService : GenericProxy, IBuildingsService
     {
-        public BuildingService(IHttpContextAccessor? httpContextAccessor, IHttpClientFactory httpClientFactory) : base(httpContextAccessor, httpClientFactory, "Reportes")
+        public BuildingsService(IHttpContextAccessor? httpContextAccessor, IHttpClientFactory httpClientFactory) : base(httpContextAccessor, httpClientFactory, "Reportes")
         {
 
         }
