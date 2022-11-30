@@ -4,16 +4,16 @@ using System.ComponentModel.DataAnnotations;
 
 namespace ReportesObra.Endpoints
 {
-    public static class AreaEndpoints
+    public static class ActivityEndpoints
     {
-        public static void MapAreaEndpoints(this IEndpointRouteBuilder routes) 
+        public static void MapActivityEndpoints(this IEndpointRouteBuilder routes)
         {
-            routes.MapGet("/Areas", async (IAreasService _areasService, ILogger<Program> _logger) =>
+            routes.MapGet("/Activities", async (IActivitiesService _activitiesService, ILogger<Program> _logger) =>
             {
                 try
                 {
-                    var areas = await _areasService.GetAreasAsync();
-                    return Results.Ok(areas);
+                    var activities = await _activitiesService.GetActivitiesAsync();
+                    return Results.Ok(activities);
                 }
                 catch (Exception e)
                 {
@@ -23,17 +23,17 @@ namespace ReportesObra.Endpoints
                     return Results.Problem(e.Message);
                 }
             })
-            .WithName("GetAreas")
+            .WithName("GetActivities")
             .Produces<IResult>(StatusCodes.Status200OK, "application/pdf")
             .Produces<HttpValidationProblemDetails>(StatusCodes.Status400BadRequest, "application/problem+json")
             .Produces<HttpValidationProblemDetails>(StatusCodes.Status500InternalServerError, "application/problem+json");
 
-            routes.MapGet("/Area", async (int idArea, IAreasService _areasService, ILogger<Program> _logger) =>
+            routes.MapGet("/Activity", async (int idActivity, IActivitiesService _activitiesService, ILogger<Program> _logger) =>
             {
                 try
                 {
-                    var area = await _areasService.GetAreaAsync(idArea);
-                    return Results.Ok(area);
+                    var activity = await _activitiesService.GetActivityAsync(idActivity);
+                    return Results.Ok(activity);
                 }
                 catch (Exception e)
                 {
@@ -43,16 +43,16 @@ namespace ReportesObra.Endpoints
                     return Results.Problem(e.Message);
                 }
             })
-            .WithName("GetArea")
+            .WithName("GetActivity")
             .Produces<IResult>(StatusCodes.Status200OK, "application/pdf")
             .Produces<HttpValidationProblemDetails>(StatusCodes.Status400BadRequest, "application/problem+json")
             .Produces<HttpValidationProblemDetails>(StatusCodes.Status500InternalServerError, "application/problem+json");
 
-            routes.MapPost("/Area", async (Area area, IAreasService _areasService, ILogger<Program> _logger) =>
+            routes.MapPost("/Activity", async (Activity activity, IActivitiesService _activitiesService, ILogger<Program> _logger) =>
             {
                 try
                 {
-                    var res = await _areasService.CreateAreaAsync(area);
+                    var res = await _activitiesService.CreateActivityAsync(activity);
                     return Results.Ok(res);
                 }
                 catch (Exception e)
@@ -63,17 +63,17 @@ namespace ReportesObra.Endpoints
                     return Results.Problem(e.Message);
                 }
             })
-            .WithName("CreateArea")
+            .WithName("CreateActivity")
             .Produces<IResult>(StatusCodes.Status200OK, "application/pdf")
             .Produces<HttpValidationProblemDetails>(StatusCodes.Status400BadRequest, "application/problem+json")
             .Produces<HttpValidationProblemDetails>(StatusCodes.Status500InternalServerError, "application/problem+json");
 
-            routes.MapPut("/Area/{id}", async (int id, Area area, IAreasService _areasService, ILogger<Program> _logger) =>
+            routes.MapPut("/Activity/{id}", async (int id, Activity activity, IActivitiesService _activitiesService, ILogger<Program> _logger) =>
             {
                 try
                 {
-                    if (id != area.IdArea) return Results.BadRequest();
-                    var res = await _areasService.UpdateAreaAsync(area);
+                    if (id != activity.IdActivity) return Results.BadRequest();
+                    var res = await _activitiesService.UpdateActivityAsync(activity);
                     return Results.Ok(res);
                 }
                 catch (Exception e)
@@ -84,7 +84,7 @@ namespace ReportesObra.Endpoints
                     return Results.Problem(e.Message);
                 }
             })
-            .WithName("UpdateArea")
+            .WithName("UpdateActivity")
             .Produces<IResult>(StatusCodes.Status200OK, "application/pdf")
             .Produces<HttpValidationProblemDetails>(StatusCodes.Status400BadRequest, "application/problem+json")
             .Produces<HttpValidationProblemDetails>(StatusCodes.Status500InternalServerError, "application/problem+json");

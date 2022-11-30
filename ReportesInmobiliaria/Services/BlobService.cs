@@ -8,12 +8,12 @@ using System.IO;
 
 namespace ReportesObra.Services
 {
-    public class BlobService : IBlobService
+    public class BlobService //: IBlobService
     {
-        private readonly InmobiliariaDbContext _dbContext;
+        private readonly ObraDbContext _dbContext;
         private readonly BlobServiceClient _blobServiceClient;
 
-        public BlobService(InmobiliariaDbContext dbContext, BlobServiceClient blobServiceClient)
+        public BlobService(ObraDbContext dbContext, BlobServiceClient blobServiceClient)
         {
             _dbContext = dbContext;
             _blobServiceClient = blobServiceClient;
@@ -95,47 +95,47 @@ namespace ReportesObra.Services
             return true;
         }
 
-        public async Task<List<BlobsInventory>?> GetBlobInventoryAsync()
-        {
-            return await _dbContext.BlobsInventories.ToListAsync();
-        }
+        //public async Task<List<BlobsInventory>?> GetBlobInventoryAsync()
+        //{
+        //    return await _dbContext.BlobsInventories.ToListAsync();
+        //}
 
-        public async Task<BlobsInventory?> CreateBlobInventoryAsync(BlobsInventory blobsInventory)
-        {
-            await _dbContext.BlobsInventories.AddAsync(blobsInventory);
-            try
-            {
-                await _dbContext.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                throw;
-            }
-            return blobsInventory;
-        }
+        //public async Task<BlobsInventory?> CreateBlobInventoryAsync(BlobsInventory blobsInventory)
+        //{
+        //    await _dbContext.BlobsInventories.AddAsync(blobsInventory);
+        //    try
+        //    {
+        //        await _dbContext.SaveChangesAsync();
+        //    }
+        //    catch (DbUpdateConcurrencyException)
+        //    {
+        //        throw;
+        //    }
+        //    return blobsInventory;
+        //}
 
-        public async Task<bool> UpdateBlobInventoryAsync(BlobsInventory blobsInventory)
-        {
-            _dbContext.Entry(blobsInventory).State = EntityState.Modified;
-            try
-            {
-                await _dbContext.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                throw;
-            }
-            return true;
-        }
+        //public async Task<bool> UpdateBlobInventoryAsync(BlobsInventory blobsInventory)
+        //{
+        //    _dbContext.Entry(blobsInventory).State = EntityState.Modified;
+        //    try
+        //    {
+        //        await _dbContext.SaveChangesAsync();
+        //    }
+        //    catch (DbUpdateConcurrencyException)
+        //    {
+        //        throw;
+        //    }
+        //    return true;
+        //}
 
-        public async Task<bool> DeleteBlobInventoryAsync(int id)
-        {
-            BlobsInventory? blobsInventory = _dbContext.BlobsInventories.FirstOrDefault(x => x.IdBlobsInventory == id);
-            if (blobsInventory == null)
-                return false;
-            _dbContext.BlobsInventories.Remove(blobsInventory);
-            await _dbContext.SaveChangesAsync();
-            return true;
-        }
+        //public async Task<bool> DeleteBlobInventoryAsync(int id)
+        //{
+        //    BlobsInventory? blobsInventory = _dbContext.BlobsInventories.FirstOrDefault(x => x.IdBlobsInventory == id);
+        //    if (blobsInventory == null)
+        //        return false;
+        //    _dbContext.BlobsInventories.Remove(blobsInventory);
+        //    await _dbContext.SaveChangesAsync();
+        //    return true;
+        //}
     }
 }
