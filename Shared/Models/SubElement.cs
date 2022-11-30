@@ -24,6 +24,9 @@ namespace SharedLibrary.Models
         public string SubElementName { get; set; }
         [Column("ID_Element")]
         public int IdElement { get; set; }
+        [StringLength(20)]
+        [Unicode(false)]
+        public string Type { get; set; }
 
         [ForeignKey("IdElement")]
         [InverseProperty("SubElements")]
