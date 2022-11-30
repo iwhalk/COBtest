@@ -13,10 +13,10 @@ namespace ReportesObra.Services
     //public class ReceptionCertificatesService : IReceptionCertificates
     public class ReceptionCertificatesService
     {
-        private readonly InmobiliariaDbContext _dbContext;
+        private readonly ObraDbContext _dbContext;
         private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public ReceptionCertificatesService(InmobiliariaDbContext dbContext, IHttpContextAccessor httpContextAccessor)
+        public ReceptionCertificatesService(ObraDbContext dbContext, IHttpContextAccessor httpContextAccessor)
         {
             _dbContext = dbContext;
             _httpContextAccessor = httpContextAccessor;
@@ -73,45 +73,45 @@ namespace ReportesObra.Services
         //    return list;
         //}
 
-        public async Task<ReceptionCertificate?> CreateReceptionCertificateAsync(ReceptionCertificate receptionCertificate)
-        {
-            await _dbContext.ReceptionCertificates.AddAsync(receptionCertificate);
-            try
-            {
-                await _dbContext.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                throw;
-            }
-            return receptionCertificate;
-        }
+        //public async Task<ReceptionCertificate?> CreateReceptionCertificateAsync(ReceptionCertificate receptionCertificate)
+        //{
+        //    await _dbContext.ReceptionCertificates.AddAsync(receptionCertificate);
+        //    try
+        //    {
+        //        await _dbContext.SaveChangesAsync();
+        //    }
+        //    catch (DbUpdateConcurrencyException)
+        //    {
+        //        throw;
+        //    }
+        //    return receptionCertificate;
+        //}
 
-        public async Task<ReceptionCertificate?> UpdateReceptionCertificateAsync(ReceptionCertificate receptionCertificate)
-        {
-            _dbContext.ReceptionCertificates.Update(receptionCertificate);
-            try
-            {
-                await _dbContext.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                throw;
-            }
-            return receptionCertificate;
-        }
+        //public async Task<ReceptionCertificate?> UpdateReceptionCertificateAsync(ReceptionCertificate receptionCertificate)
+        //{
+        //    _dbContext.ReceptionCertificates.Update(receptionCertificate);
+        //    try
+        //    {
+        //        await _dbContext.SaveChangesAsync();
+        //    }
+        //    catch (DbUpdateConcurrencyException)
+        //    {
+        //        throw;
+        //    }
+        //    return receptionCertificate;
+        //}
 
-        public async Task<List<ReceptionCertificate?>> GetReceptionCertificatesAsync(int? idReceptionCertificate)
-        {
-            if (idReceptionCertificate != null)
-            {
-                var certificates = _dbContext.ReceptionCertificates.Where(x => x.IdReceptionCertificate == idReceptionCertificate);
-                if (certificates.Any())
-                {
-                    return await certificates.ToListAsync();
-                }
-            }
-            return await _dbContext.ReceptionCertificates.ToListAsync();
-        }
+        //public async Task<List<ReceptionCertificate?>> GetReceptionCertificatesAsync(int? idReceptionCertificate)
+        //{
+        //    if (idReceptionCertificate != null)
+        //    {
+        //        var certificates = _dbContext.ReceptionCertificates.Where(x => x.IdReceptionCertificate == idReceptionCertificate);
+        //        if (certificates.Any())
+        //        {
+        //            return await certificates.ToListAsync();
+        //        }
+        //    }
+        //    return await _dbContext.ReceptionCertificates.ToListAsync();
+        //}
     }
 }

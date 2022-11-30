@@ -19,7 +19,7 @@ namespace ApiGateway.Services
 
         public async Task<ApiResponse<Building>> PostBuildingAsync(Building building)
         {
-            return await PostAsync<Building>(building, path: "Buildings");
+            return await PostAsync<Building>(building, path: "Building");
         }
     }
 }

@@ -19,7 +19,7 @@ namespace ApiGateway.Services
 
         public async Task<ApiResponse<Activity>> PostActivityAsync(Activity activity)
         {
-            return await PostAsync<Activity>(activity, path: "Activities");
+            return await PostAsync<Activity>(activity, path: "Activity");
         }
     }
 }

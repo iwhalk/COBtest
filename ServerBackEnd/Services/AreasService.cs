@@ -19,7 +19,7 @@ namespace ApiGateway.Services
 
         public async Task<ApiResponse<Area>> PostAreaAsync(Area area)
         {
-            return await PostAsync<Area>(area, path: "Areas");
+            return await PostAsync<Area>(area, path: "Area");
         }
     }
 }

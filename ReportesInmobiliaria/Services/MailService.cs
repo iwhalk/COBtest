@@ -10,10 +10,10 @@ namespace ReportesObra.Services
 {
     public class MailService : Interfaces.IMailService
     {
-        private readonly InmobiliariaDbContext _dbContext;
+        private readonly ObraDbContext _dbContext;
         private readonly MailFactory _mailFactory;
 
-        public MailService(MailFactory mailFactory, InmobiliariaDbContext dbContext)
+        public MailService(MailFactory mailFactory, ObraDbContext dbContext)
         {
             _mailFactory = mailFactory;
             _dbContext = dbContext;

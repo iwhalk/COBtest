@@ -24,7 +24,7 @@ using ReportesObra.Utilities;
 using ReportesObra.Endpoints;
 
 var builder = WebApplication.CreateBuilder(args);
-var connectionString = "Server=arisoft2245.database.windows.net;Database=prosisdb_3;User=PROSIS_DEVELOPER;Password=PR0515_D3ev3l0p3r;MultipleActiveResultSets=true";
+var connectionString = "Server=arisoft2245.database.windows.net;Database=prosisdb_4;User=PROSIS_DEVELOPER;Password=PR0515_D3ev3l0p3r;MultipleActiveResultSets=true";
 var secretKey = builder.Configuration.GetValue<string>("SecretKey");
 var key = Encoding.ASCII.GetBytes(secretKey);
 
@@ -36,7 +36,7 @@ Thread.CurrentThread.CurrentUICulture = culture;
 builder.Services.AddSingleton(x => new BlobServiceClient(builder.Configuration.GetConnectionString("AzureStorage")));
 
 // Add services to the container.
-builder.Services.AddDbContext<InmobiliariaDbContext>(options =>
+builder.Services.AddDbContext<ObraDbContext>(options =>
     options.UseSqlServer(connectionString).EnableSensitiveDataLogging());
 builder.Services.AddHttpContextAccessor();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -63,12 +63,12 @@ builder.Services.AddAuthentication(options =>
     });
 
 builder.Services.AddAuthentication();
-builder.Services.AddAuthorization(cfg =>
-{
-    cfg.FallbackPolicy = new AuthorizationPolicyBuilder()
-        .RequireAuthenticatedUser()
-        .Build();
-});
+//builder.Services.AddAuthorization(cfg =>
+//{
+//    cfg.FallbackPolicy = new AuthorizationPolicyBuilder()
+//        .RequireAuthenticatedUser()
+//        .Build();
+//});
 
 builder.Services.AddLogging(loggingBuilder =>
 {
@@ -79,6 +79,11 @@ builder.Services.AddLogging(loggingBuilder =>
 
 builder.Services.AddScoped<AuxiliaryMethods>();
 //builder.Services.AddScoped<IAspNetUserService, AspNetUserService>();
+builder.Services.AddScoped<IApartmentsService, ApartmentsService>();
+builder.Services.AddScoped<IAreasService, AreasService>();
+builder.Services.AddScoped<IBuildingsService, BuildingsService>();
+builder.Services.AddScoped<IActivitiesService, ActivitiesService>();
+
 builder.Services.AddScoped<ReportesFactory>();
 
 builder.Services.AddCors();
@@ -96,7 +101,7 @@ app.UseSwaggerUI();
 
 app.UseAuthentication();
 
-app.UseAuthorization();
+//app.UseAuthorization();
 
 //app.UseHttpsRedirection();
 
@@ -107,6 +112,10 @@ app.UseCors(x => x
                 .AllowAnyHeader()
                 .SetIsOriginAllowed(origin => true) // allow any origin
                 .AllowCredentials());
+app.MapApartmentEndpoints();
+app.MapAreaEndpoints();
+app.MapBuildingEndpoints();
+app.MapActivityEndpoints();
 #region Inmobiliaria
 
 #region AspNetUsers

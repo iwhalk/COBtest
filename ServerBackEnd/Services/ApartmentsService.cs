@@ -15,12 +15,12 @@ namespace ApiGateway.Services
 
         public async Task<ApiResponse<List<Apartment>>> GetApartmentsAsync()
         {
-            return await GetAsync<List<Apartment>>(path: "Aparments");
+            return await GetAsync<List<Apartment>>(path: "Apartments");
         }
 
         public async Task<ApiResponse<Apartment>> PostApartmentAsync(Apartment apartment)
         {
-            return await PostAsync<Apartment>(apartment, path: "Apartments");
+            return await PostAsync<Apartment>(apartment, path: "Apartment");
         }
     }
 }
