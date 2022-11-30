@@ -279,6 +279,16 @@ builder.Services.AddRazorPages();
 builder.Services.AddScoped<IAspNetUserService, AspNetUserService>();
 builder.Services.AddScoped<IMailObraService, MailObraService>();
 
+builder.Services.AddScoped<IBuildingsService, BuildingService>();
+builder.Services.AddScoped<IAreasService, AreasService>();
+builder.Services.AddScoped<IActivitiesService, ActivitiesService>();
+builder.Services.AddScoped<IApartmentsService, ApartmentsService>();
+builder.Services.AddScoped<IElementsService, ElementsService>();
+builder.Services.AddScoped<ISubElementsService, SubElementsService>();
+builder.Services.AddScoped<IProgressLogsService,ProgressLogsService>();
+builder.Services.AddScoped<IBlobsService, BlobsService>();
+builder.Services.AddScoped<IProgressReportService, ProgressReportService>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

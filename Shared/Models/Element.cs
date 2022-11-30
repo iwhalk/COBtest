@@ -12,6 +12,7 @@ namespace SharedLibrary.Models
     {
         public Element()
         {
+            ProgressReports = new HashSet<ProgressReport>();
             SubElements = new HashSet<SubElement>();
         }
 
@@ -28,6 +29,8 @@ namespace SharedLibrary.Models
         [ForeignKey("IdActivity")]
         [InverseProperty("Elements")]
         public virtual Activity IdActivityNavigation { get; set; }
+        [InverseProperty("IdElementNavigation")]
+        public virtual ICollection<ProgressReport> ProgressReports { get; set; }
         [InverseProperty("IdElementNavigation")]
         public virtual ICollection<SubElement> SubElements { get; set; }
     }

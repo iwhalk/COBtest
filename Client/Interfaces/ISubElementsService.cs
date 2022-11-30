@@ -1,6 +1,11 @@
-﻿namespace Client.Interfaces
+﻿using SharedLibrary.Models;
+using SharedLibrary;
+
+namespace Client.Interfaces
 {
-    public class ISubElementsService
+    public interface ISubElementsService
     {
+        Task<List<SubElement>> GetSubElementsAsync();
+        Task<SubElement> PostSubElementAsync(SubElement subElement);
     }
 }
