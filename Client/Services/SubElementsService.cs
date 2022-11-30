@@ -1,6 +1,6 @@
 ﻿namespace Client.Services
 {
-    public class Class
+    public class SubElementsService
     {
     }
 }

@@ -1,6 +1,6 @@
 ﻿{
    "CodeGenerationMode": 2,
-   "ContextClassName": "InmobiliariaDbContext",
+   "ContextClassName": "ObraDbContext",
    "ContextNamespace": null,
    "DefaultDacpacSchema": null,
    "FilterSchemas": false,
@@ -15,11 +15,15 @@
    "SelectedToBeGenerated": 0,
    "Tables": [
       {
-         "Name": "[dbo].[Areas]",
+         "Name": "[dbo].[Activities]",
          "ObjectType": 0
       },
       {
-         "Name": "[dbo].[AreaServices]",
+         "Name": "[dbo].[Apartments]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Areas]",
          "ObjectType": 0
       },
       {
@@ -31,75 +35,23 @@
          "ObjectType": 0
       },
       {
-         "Name": "[dbo].[BlobsInventories]",
+         "Name": "[dbo].[Buildings]",
          "ObjectType": 0
       },
       {
-         "Name": "[dbo].[Descriptions]",
+         "Name": "[dbo].[Elements]",
          "ObjectType": 0
       },
       {
-         "Name": "[dbo].[Features]",
+         "Name": "[dbo].[ProgressLogs]",
          "ObjectType": 0
       },
       {
-         "Name": "[dbo].[Inventories]",
+         "Name": "[dbo].[SubElements]",
          "ObjectType": 0
-      },
-      {
-         "Name": "[dbo].[Lessors]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[dbo].[Modules]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[dbo].[Properties]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[dbo].[PropertyAreas]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[dbo].[PropertyTypes]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[dbo].[ReceptionCertificates]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[dbo].[Services]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[dbo].[Tenants]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[dbo].[SP_GET_AERI_AREAS]",
-         "ObjectType": 1
-      },
-      {
-         "Name": "[dbo].[SP_GET_AERI_DELIVERABLES]",
-         "ObjectType": 1
-      },
-      {
-         "Name": "[dbo].[SP_GET_AERI_HEADER]",
-         "ObjectType": 1
-      },
-      {
-         "Name": "[dbo].[SP_GET_AERI]",
-         "ObjectType": 1
-      },
-      {
-         "Name": "[dbo].[SP_GET_AERIImages]",
-         "ObjectType": 1
       }
    ],
-   "UiHint": "arisoft2245.prosisdb_3",
+   "UiHint": "arisoft2245.prosisdb_4",
    "UseBoolPropertiesWithoutDefaultSql": false,
    "UseDatabaseNames": false,
    "UseDbContextSplitting": false,
