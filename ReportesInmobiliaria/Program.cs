@@ -36,8 +36,8 @@ Thread.CurrentThread.CurrentUICulture = culture;
 builder.Services.AddSingleton(x => new BlobServiceClient(builder.Configuration.GetConnectionString("AzureStorage")));
 
 // Add services to the container.
-builder.Services.AddDbContext<InmobiliariaDbContext>(options =>
-    options.UseSqlServer(connectionString).EnableSensitiveDataLogging());
+//builder.Services.AddDbContext<InmobiliariaDbContext>(options =>
+//    options.UseSqlServer(connectionString).EnableSensitiveDataLogging());
 builder.Services.AddHttpContextAccessor();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();

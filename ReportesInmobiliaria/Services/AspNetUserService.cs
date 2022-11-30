@@ -5,18 +5,18 @@ using SharedLibrary.Models;
 
 namespace ReportesObra.Services
 {
-    public class AspNetUserService : IAspNetUserService
+    public class AspNetUserService //: IAspNetUserService
     {
-        private readonly InmobiliariaDbContext _dbContext;
+        //private readonly InmobiliariaDbContext _dbContext;
 
-        public AspNetUserService(InmobiliariaDbContext dbContext)
-        {
-            _dbContext = dbContext;
-        }
+        //public AspNetUserService(InmobiliariaDbContext dbContext)
+        //{
+        //    _dbContext = dbContext;
+        //}
 
-        public async Task<List<AspNetUser>?> GetAspNetUsersAsync()
-        {
-            return await _dbContext.AspNetUsers.ToListAsync();
-        }
+        //public async Task<List<AspNetUser>?> GetAspNetUsersAsync()
+        //{
+        //    return await _dbContext.AspNetUsers.ToListAsync();
+        //}
     }
 }
