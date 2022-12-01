@@ -1,9 +1,9 @@
-﻿using Client.Interfaces;
-using Client.Stores;
+﻿using Obra.Client.Interfaces;
+using Obra.Client.Stores;
 using SharedLibrary.Models;
 using System.Diagnostics;
 
-namespace Client.Services
+namespace Obra.Client.Services
 {
     public class ApartmentsService : IApartmentsService
     {
@@ -33,7 +33,8 @@ namespace Client.Services
 
         public async Task<Apartment> PostApartmentAsync(Apartment apartment)
         {
-            return await _repository.PostAsync("api/Apartments", apartment);
+            return null;
+            //return await _repository.PostAsync("api/Apartments", apartment);
         }
     }
 }

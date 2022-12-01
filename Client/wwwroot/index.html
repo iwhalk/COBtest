@@ -3,20 +3,27 @@
 
 <head>
     <meta charset="utf-8" />
-    <title>Client</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>BlazorAppLogin</title>
     <base href="/" />
+    <link href="css/bootstrap/bootstrap.min.css" rel="stylesheet" />
     <link href="css/app.css" rel="stylesheet" />
+    <link rel="icon" type="image/png" href="favicon.png" />
+    <link href="BlazorAppLogin.Client.styles.css" rel="stylesheet" />
     <link href="manifest.json" rel="manifest" />
-    <script src="_content/Blazor.Extensions.Canvas/blazor.extensions.canvas.js"></script>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="Client.styles.css" rel="stylesheet" />
-
-    <!-- If you add any scoped CSS files, uncomment the following to load them
-    <link href="Client.styles.css" rel="stylesheet" /> -->
+    <link rel="apple-touch-icon" sizes="512x512" href="icon-512.png" />
+    <link rel="apple-touch-icon" sizes="192x192" href="icon-192.png" />
+    <link href="Obra.Client.styles.css" rel="stylesheet" />
 </head>
 
 <body>
-    <div id="app">Loading...</div>
+    <div id="app">
+        <svg class="loading-progress">
+            <circle r="40%" cx="50%" cy="50%" />
+            <circle r="40%" cx="50%" cy="50%" />
+        </svg>
+        <div class="loading-progress-text"></div>
+    </div>
 
     <div id="blazor-error-ui">
         An unhandled error has occurred.
@@ -25,18 +32,8 @@
     </div>
     <script src="_content/Microsoft.AspNetCore.Components.WebAssembly.Authentication/AuthenticationService.js"></script>
     <script src="_framework/blazor.webassembly.js"></script>
-    <script type="module" src="https://cdn.jsdelivr.net/npm/@fluentui/web-components/dist/web-components.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
     <script>navigator.serviceWorker.register('service-worker.js');</script>
-    <script>
-        function CreateObjectURL(content, filename, contentType) {
-            const file = new File([content], filename, { type: contentType });
-            const exportUrl = URL.createObjectURL(file);
-            return exportUrl;
-        };
-        function RevokeObjectURL(exportUrl) {
-            URL.revokeObjectURL(exportUrl);
-        };
-    </script>
 </body>
 
 </html>

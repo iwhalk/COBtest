@@ -1,6 +1,6 @@
 ﻿using SharedLibrary.Models;
 
-namespace Client.Stores
+namespace Obra.Client.Stores
 {
     public class ApplicationContext
     {
@@ -14,7 +14,7 @@ namespace Client.Stores
         private List<Element> elementsList;
         private List<SubElement> subElementsList;
         private List<ProgressLog> progressLogsList;
-        private List<Blob> blobList; 
+        private List<Blob> blobList;
         private List<ProgressReport> progressReportList;
 
         public List<Building> Building

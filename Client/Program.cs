@@ -1,64 +1,20 @@
-using Client;
+using Obra.Client;
 using Microsoft.AspNetCore.Components.Web;
-using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
-using TanvirArjel.Blazor.DependencyInjection;
-using Microsoft.Fast.Components.FluentUI;
-using Microsoft.JSInterop;
-using Client.Services;
-using Client.Stores;
-using Client.Repositories;
-using Client.Interfaces;
-using System.Net.Http;
+using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 
-var builder = WebAssemblyHostBuilder.CreateDefault(args); 
-
-var client = "blazor-client";
-
-if (!builder.HostEnvironment.IsDevelopment())
-{
-    client = "blazor-soft2245";
-}
-
-builder.RootComponents.Add<App>("#app");
+var builder = WebAssemblyHostBuilder.CreateDefault(args);
+builder.RootComponents.Add<Obra.Client.App>("#app");
 builder.RootComponents.Add<HeadOutlet>("head::after");
 
-//builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
-
-builder.Services.AddHttpClient("ApiGateway")
-    .ConfigureHttpClient(client => client.BaseAddress = new Uri(builder.HostEnvironment.BaseAddress))
+builder.Services.AddHttpClient("BlazorAppLogin.ServerAPI", client => client.BaseAddress = new Uri(builder.HostEnvironment.BaseAddress))
     .AddHttpMessageHandler<BaseAddressAuthorizationMessageHandler>();
 
-builder.Services.AddScoped(sp => sp.GetRequiredService<IHttpClientFactory>()
-    .CreateClient("ApiGateway"));
-
-builder.Services.AddSingleton(serviceProvider => (IJSInProcessRuntime)serviceProvider.GetRequiredService<IJSRuntime>());
-
-builder.Services.AddComponents();
-builder.Services.AddFluentUIComponents();
-
-builder.Services.AddScoped<ApplicationContext>();
-builder.Services.AddScoped<IGenericRepository, GenericRepository>();
-
-builder.Services.AddScoped<IBuildingsService, BuildingsService>();
-builder.Services.AddScoped<IAreasService, AreasService>();
-builder.Services.AddScoped<IActivitiesService, ActivitiesService>();
-builder.Services.AddScoped<IApartmentsService, ApartmentsService>();
-builder.Services.AddScoped<IElementsService, ElementsService>();
-builder.Services.AddScoped<ISubElementsService, SubElementsService>();
-builder.Services.AddScoped<IProgressLogsService, ProgressLogsService>();
-builder.Services.AddScoped<IBlobsService, BlobsService>();
-builder.Services.AddScoped<IProgressReportService, ProgressReportService>();
-
-// Supply HttpClient instances that include access tokens when making requests to the server project.
-//builder.Services.AddScoped(provider =>
-//{
-//    var factory = provider.GetRequiredService<IHttpClientFactory>();
-//    return factory.CreateClient("ApiGateway");
-//});
+// Supply HttpClient instances that include access tokens when making requests to the server project
+builder.Services.AddScoped(sp => sp.GetRequiredService<IHttpClientFactory>().CreateClient("BlazorAppLogin.ServerAPI"));
 builder.Services.AddOidcAuthentication(options =>
 {
-    options.ProviderOptions.ClientId = client;
+    options.ProviderOptions.ClientId = "blazor-pruebas";
     options.ProviderOptions.Authority = builder.HostEnvironment.BaseAddress;
     options.ProviderOptions.ResponseType = "code";
 
@@ -76,5 +32,7 @@ builder.Services.AddOidcAuthentication(options =>
     options.ProviderOptions.DefaultScopes.Add("roles");
     options.UserOptions.RoleClaim = "role";
 });
+
+builder.Services.AddApiAuthorization();
 
 await builder.Build().RunAsync();

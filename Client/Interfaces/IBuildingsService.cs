@@ -1,6 +1,6 @@
 ﻿using SharedLibrary.Models;
 
-namespace Client.Interfaces
+namespace Obra.Client.Interfaces
 {
     public interface IBuildingsService
     {

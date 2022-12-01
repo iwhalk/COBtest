@@ -1,8 +1,8 @@
-﻿using Client.Interfaces;
-using Client.Stores;
+﻿using Obra.Client.Interfaces;
+using Obra.Client.Stores;
 using SharedLibrary.Models;
 
-namespace Client.Services
+namespace Obra.Client.Services
 {
     public class ElementsService : IElementsService
     {
@@ -32,7 +32,8 @@ namespace Client.Services
 
         public async Task<Element> PostElementAsync(Element element)
         {
-            return await _repository.PostAsync("api/Elements", element);
+            return null;
+            //return await _repository.PostAsync("api/Elements", element);
         }
     }
 }
