@@ -12,6 +12,18 @@ namespace ApiGateway.Services
 
         }
 
+        public async Task<ApiResponse<Activity>> GetActivityAsync(int id)
+        {
+            Dictionary<string, string> parameters = new();
+
+            if (id != null && id > 0)
+            {
+                parameters.Add("id", id.ToString());
+            }
+
+            return await GetAsync<Activity>(path: "Activity", parameters: parameters);
+        }
+
         public async Task<ApiResponse<List<Activity>>> GetActivitiesAsync()
         {
             return await GetAsync<List<Activity>>(path: "Activities");
@@ -19,7 +31,7 @@ namespace ApiGateway.Services
 
         public async Task<ApiResponse<Activity>> PostActivityAsync(Activity activity)
         {
-            return await PostAsync<Activity>(activity, path: "Activities");
+            return await PostAsync<Activity>(activity, path: "Activity");
         }
     }
 }

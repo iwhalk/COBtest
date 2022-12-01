@@ -5,7 +5,7 @@ using SharedLibrary.Models;
 
 namespace ReportesObra.Services
 {
-    public class AspNetUserService //: IAspNetUserService
+    public class AspNetUserService
     {
         //private readonly InmobiliariaDbContext _dbContext;
 

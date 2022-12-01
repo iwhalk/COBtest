@@ -29,6 +29,9 @@ namespace SharedLibrary.Models
         [StringLength(450)]
         public string IdSupervisor { get; set; }
 
+        [ForeignKey("IdProgressReport")]
+        [InverseProperty("ProgressLogs")]
+        public virtual ProgressReport IdProgressReportNavigation { get; set; }
         [ForeignKey("IdSupervisor")]
         [InverseProperty("ProgressLogs")]
         public virtual AspNetUser IdSupervisorNavigation { get; set; }
