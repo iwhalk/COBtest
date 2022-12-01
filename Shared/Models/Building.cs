@@ -10,6 +10,11 @@ namespace SharedLibrary.Models
 {
     public partial class Building
     {
+        public Building()
+        {
+            ProgressReports = new HashSet<ProgressReport>();
+        }
+
         [Key]
         [Column("ID_Building")]
         public int IdBuilding { get; set; }
@@ -28,5 +33,8 @@ namespace SharedLibrary.Models
         [StringLength(10)]
         public string ZipCode { get; set; }
         public int? TotalApartments { get; set; }
+
+        [InverseProperty("IdBuildingNavigation")]
+        public virtual ICollection<ProgressReport> ProgressReports { get; set; }
     }
 }

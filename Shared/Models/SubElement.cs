@@ -10,6 +10,11 @@ namespace SharedLibrary.Models
 {
     public partial class SubElement
     {
+        public SubElement()
+        {
+            ProgressReports = new HashSet<ProgressReport>();
+        }
+
         [Key]
         [Column("ID_SubElement")]
         public int IdSubElement { get; set; }
@@ -19,9 +24,14 @@ namespace SharedLibrary.Models
         public string SubElementName { get; set; }
         [Column("ID_Element")]
         public int IdElement { get; set; }
+        [StringLength(20)]
+        [Unicode(false)]
+        public string Type { get; set; }
 
         [ForeignKey("IdElement")]
         [InverseProperty("SubElements")]
         public virtual Element IdElementNavigation { get; set; }
+        [InverseProperty("IdSubElementNavigation")]
+        public virtual ICollection<ProgressReport> ProgressReports { get; set; }
     }
 }

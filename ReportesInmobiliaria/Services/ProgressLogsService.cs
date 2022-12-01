@@ -14,7 +14,7 @@ namespace ReportesObra.Services
             _dbContext = dbContext;
         }
 
-        public async Task<List<ProgressLog>?> GetProgressLogAsync(int? idProgressLog, int? idProgressReport, int? idStatus, string? idSupervisor)
+        public Task<List<ProgressLog>?> GetProgressLogsAsync(int? idProgressLog, int? idProgressReport, int? idStatus, string? idSupervisor)
         {
             IQueryable<ProgressLog> progressLogs = _dbContext.ProgressLogs;
 
@@ -25,12 +25,12 @@ namespace ReportesObra.Services
             if (idStatus != null)
                 progressLogs = progressLogs.Where(x => x.IdStatus == idStatus);
             if (idSupervisor != null)
-                progressLogs = progressLogs.Where(x => x.idSupervisor == idSupervisor);
+                progressLogs = progressLogs.Where(x => x.IdSupervisor == idSupervisor);
 
-            return progressLogs;
+            return progressLogs.ToListAsync();
         }
 
-        public async Task<Area?> CreateAreaAsync(ProgressLog progressLog)
+        public async Task<ProgressLog?> CreateProgressLogsAsync(ProgressLog progressLog)
         {
             await _dbContext.ProgressLogs.AddAsync(progressLog);
             try { await _dbContext.SaveChangesAsync(); }
@@ -38,9 +38,9 @@ namespace ReportesObra.Services
             return progressLog;
         }
 
-        public async Task<bool> UpdateAreaAsync(Area area)
+        public async Task<bool> UpdateProgressLogsAsync(ProgressLog progressLog)
         {
-            _dbContext.Entry(area).State = EntityState.Modified;
+            _dbContext.Entry(progressLog).State = EntityState.Modified;
             try
             {
                 await _dbContext.SaveChangesAsync();
@@ -49,16 +49,6 @@ namespace ReportesObra.Services
             {
                 throw;
             }
-            return true;
-        }
-
-        public async Task<bool> DeleteAreaAsync(int id)
-        {
-            Area? area = _dbContext.Areas.FirstOrDefault(x => x.IdArea == id);
-            if (area == null)
-                return false;
-            _dbContext.Areas.Remove(area);
-            await _dbContext.SaveChangesAsync();
             return true;
         }
     }

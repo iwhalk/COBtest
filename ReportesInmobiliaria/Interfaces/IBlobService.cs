@@ -9,10 +9,6 @@ namespace ReportesObra.Interfaces
         Task<Blob?> CreateBlobAsync(string name, IFormFile file);
         Task<bool> UpdateBlobAsync(Blob blob);
         Task<bool> DeleteBlobAsync(int id);
-        //Task<List<BlobsInventory>?> GetBlobInventoryAsync();
-        //Task<BlobsInventory?> CreateBlobInventoryAsync(BlobsInventory blobsInventory);
-        //Task<bool> UpdateBlobInventoryAsync(BlobsInventory blobsInventory);
-        Task<bool> DeleteBlobInventoryAsync(int id);
     }
 }
 
