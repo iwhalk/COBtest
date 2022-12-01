@@ -2,6 +2,7 @@
 using ApiGateway.Proxies;
 using SharedLibrary;
 using SharedLibrary.Models;
+using System.Data;
 
 namespace ApiGateway.Services
 {
@@ -12,11 +13,21 @@ namespace ApiGateway.Services
 
         }
 
+        public async Task<ApiResponse<Building>> GetBuildingAsync(int id)
+        {
+            Dictionary<string, string> parameters = new();
+
+            if (id != null && id > 0)
+            {
+                parameters.Add("id", id.ToString());
+            }
+
+            return await GetAsync<Building>(path: "Building", parameters: parameters);
+        }
         public async Task<ApiResponse<List<Building>>> GetBuildingsAsync()
         {
             return await GetAsync<List<Building>>(path: "Buildings");
         }
-
         public async Task<ApiResponse<Building>> PostBuildingAsync(Building building)
         {
             return await PostAsync<Building>(building, path: "Building");

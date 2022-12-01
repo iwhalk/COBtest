@@ -17,6 +17,26 @@ namespace ApiGateway.Controllers
             _aparmentsService = apartmentsService;
         }
 
+        [HttpGet("{id}")]
+        public async Task<ActionResult> GetApartment(string id)
+        {
+            int idInt = 0;
+
+            if (id != null)
+            {
+                idInt = Convert.ToInt16(id);
+            }
+
+            var result = await _aparmentsService.GetApartmentAsync(idInt);
+
+            if (result.Succeeded)
+            {
+                return Ok(result);
+            }
+
+            return BadRequest(result);
+        }
+
         [HttpGet]
         public async Task<ActionResult> GetApartments()
         {

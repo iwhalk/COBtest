@@ -12,6 +12,18 @@ namespace ApiGateway.Services
 
         }
 
+        public async Task<ApiResponse<Area>> GetAreaAsync(int id)
+        {
+            Dictionary<string, string> parameters = new();
+
+            if (id != null && id > 0)
+            {
+                parameters.Add("id", id.ToString());
+            }
+
+            return await GetAsync<Area>(path: "Area", parameters: parameters);
+        }
+
         public async Task<ApiResponse<List<Area>>> GetAreasAsync()
         {
             return await GetAsync<List<Area>>(path: "Areas");
