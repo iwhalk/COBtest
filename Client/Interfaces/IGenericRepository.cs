@@ -1,4 +1,4 @@
-﻿namespace Client.Repositories
+﻿namespace Client.Interfaces
 {
     public interface IGenericRepository
     {

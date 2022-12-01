@@ -40,8 +40,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Client\Client.csproj" />
-    <ProjectReference Include="..\Shared\SharedLibrary.csproj" />
+    <Folder Include="Interfaces\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\BlazorAppLogin\BlazorAppLogin\Client\App.Client.csproj" />
   </ItemGroup>
 
 </Project>

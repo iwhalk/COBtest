@@ -1,6 +1,5 @@
 using ApiGateway;
 using ApiGateway.Data;
-using ApiGateway.Interfaces;
 using ApiGateway.Models;
 using ApiGateway.Services;
 using Hellang.Middleware.ProblemDetails;
@@ -276,8 +275,6 @@ builder.Services.AddMediatR(Assembly.Load("ApiGateway"));
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
 
-builder.Services.AddScoped<IAspNetUserService, AspNetUserService>();
-builder.Services.AddScoped<IMailObraService, MailObraService>();
 
 var app = builder.Build();
 

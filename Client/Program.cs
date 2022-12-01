@@ -17,20 +17,21 @@ var client = "blazor-client";
 
 if (!builder.HostEnvironment.IsDevelopment())
 {
-    client = "blazor-arisoft";
+    client = "blazor-pruebas";
 }
 
 builder.RootComponents.Add<App>("#app");
 builder.RootComponents.Add<HeadOutlet>("head::after");
 
 //builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
-
-builder.Services.AddHttpClient("ApiGateway")
-    .ConfigureHttpClient(client => client.BaseAddress = new Uri(builder.HostEnvironment.BaseAddress))
+builder.Services.AddHttpClient("ApiGateway", client => client.BaseAddress = new Uri(builder.HostEnvironment.BaseAddress))
     .AddHttpMessageHandler<BaseAddressAuthorizationMessageHandler>();
+//builder.Services.AddHttpClient("ApiGateway")
+//    .ConfigureHttpClient(client => client.BaseAddress = new Uri(builder.HostEnvironment.BaseAddress))
+//    .AddHttpMessageHandler<BaseAddressAuthorizationMessageHandler>();
 
-builder.Services.AddScoped(sp => sp.GetRequiredService<IHttpClientFactory>()
-    .CreateClient("ApiGateway"));
+//builder.Services.AddScoped(sp => sp.GetRequiredService<IHttpClientFactory>()
+//    .CreateClient("ApiGateway"));
 
 builder.Services.AddSingleton(serviceProvider => (IJSInProcessRuntime)serviceProvider.GetRequiredService<IJSRuntime>());
 
@@ -67,5 +68,7 @@ builder.Services.AddOidcAuthentication(options =>
     options.ProviderOptions.DefaultScopes.Add("roles");
     options.UserOptions.RoleClaim = "role";
 });
+
+builder.Services.AddApiAuthorization();
 
 await builder.Build().RunAsync();

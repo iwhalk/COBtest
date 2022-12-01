@@ -1,11 +1,13 @@
 ﻿using Client.Interfaces;
 using Client.Stores;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Components;
 using SharedLibrary.Models;
 using System.Reflection.Metadata.Ecma335;
 
 namespace Client.Pages
 {
+    [Authorize]
     public partial class Index : ComponentBase
     {
         private readonly NavigationManager _navigationManager;

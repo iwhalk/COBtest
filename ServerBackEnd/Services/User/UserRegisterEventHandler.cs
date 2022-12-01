@@ -5,19 +5,18 @@ using System.ComponentModel.DataAnnotations;
 using ApiGateway.Data;
 using MimeKit;
 using static Duende.IdentityServer.Models.IdentityResources;
-using ApiGateway.Interfaces;
+//using ApiGateway.Interfaces;
 
 namespace ApiGateway.Services.User
 {
     public class UserRegisterEventHandler : IRequestHandler<UserCreateCommand, IdentityResult>
     {
         private readonly UserManager<ApplicationUser> _userManager;
-        private readonly IMailObraService _mail;
+        //private readonly IMailObraService _mail;
 
-        public UserRegisterEventHandler(UserManager<ApplicationUser> userManager, IMailObraService mail)
+        public UserRegisterEventHandler(UserManager<ApplicationUser> userManager)
         {
             _userManager = userManager;
-            _mail = mail;
         }
 
         public async Task<IdentityResult> Handle(UserCreateCommand createCommand, CancellationToken cancellationToken)
@@ -52,7 +51,7 @@ namespace ApiGateway.Services.User
             if (res.Succeeded)
             {
                 res = await _userManager.AddToRoleAsync(user, "User");
-                _mail.MailSender(mimeMessage);
+                //_mail.MailSender(mimeMessage);
             }
             return res;
         }
