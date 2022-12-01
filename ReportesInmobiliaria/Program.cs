@@ -63,12 +63,12 @@ builder.Services.AddAuthentication(options =>
     });
 
 builder.Services.AddAuthentication();
-//builder.Services.AddAuthorization(cfg =>
-//{
-//    cfg.FallbackPolicy = new AuthorizationPolicyBuilder()
-//        .RequireAuthenticatedUser()
-//        .Build();
-//});
+builder.Services.AddAuthorization(cfg =>
+{
+    cfg.FallbackPolicy = new AuthorizationPolicyBuilder()
+        .RequireAuthenticatedUser()
+        .Build();
+});
 
 builder.Services.AddLogging(loggingBuilder =>
 {
@@ -83,6 +83,8 @@ builder.Services.AddScoped<IApartmentsService, ApartmentsService>();
 builder.Services.AddScoped<IAreasService, AreasService>();
 builder.Services.AddScoped<IBuildingsService, BuildingsService>();
 builder.Services.AddScoped<IActivitiesService, ActivitiesService>();
+builder.Services.AddScoped<IElementsService, ElementsService>();
+builder.Services.AddScoped<ISubElementsService, SubElementsService>();
 
 builder.Services.AddScoped<ReportesFactory>();
 
@@ -101,7 +103,7 @@ app.UseSwaggerUI();
 
 app.UseAuthentication();
 
-//app.UseAuthorization();
+app.UseAuthorization();
 
 //app.UseHttpsRedirection();
 
@@ -116,6 +118,9 @@ app.MapApartmentEndpoints();
 app.MapAreaEndpoints();
 app.MapBuildingEndpoints();
 app.MapActivityEndpoints();
+app.MapElementEndpoints();
+app.MapSubElementEndpoints();
+
 #region Inmobiliaria
 
 #region AspNetUsers
