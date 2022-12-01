@@ -14,6 +14,11 @@ namespace ReportesObra.Services
             _dbContext = dbContext;
         }
 
+        public async Task<ProgressLog> GetProgressLogAsync(int idProgressLog)
+        {
+            return await _dbContext.ProgressLogs.FirstOrDefaultAsync(x => x.IdProgressLog == idProgressLog);
+        }
+
         public Task<List<ProgressLog>?> GetProgressLogsAsync(int? idProgressLog, int? idProgressReport, int? idStatus, string? idSupervisor)
         {
             IQueryable<ProgressLog> progressLogs = _dbContext.ProgressLogs;

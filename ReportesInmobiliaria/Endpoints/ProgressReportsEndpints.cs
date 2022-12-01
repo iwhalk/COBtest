@@ -1,19 +1,20 @@
 ﻿using ReportesObra.Interfaces;
 using SharedLibrary.Models;
 using System.ComponentModel.DataAnnotations;
+using System.Configuration;
 
 namespace ReportesObra.Endpoints
 {
-    public static class ProgressLogsEndpints
+    public static class ProgressReportsEndpints
     {
-        public static void MapProgressLogsEndpints(this IEndpointRouteBuilder routes)
+        public static void MapProgressReportsEndpoints(this IEndpointRouteBuilder routes)
         {
-            routes.MapGet("/ProgressLog/{idProgressLog}", async (int idProgressLog, IProgressLogsService _progressLogsService, ILogger<Program> _logger) =>
+            routes.MapGet("/ProgressReport/{idProgressReport}", async (int idProgressReport, IProgressReportsService _progressReportsService, ILogger<Program> _logger) =>
             {
                 try
                 {
-                    var progressLogs = await _progressLogsService.GetProgressLogAsync(idProgressLog);
-                    return Results.Ok(progressLogs);
+                    var progressReports = await _progressReportsService.GetProgressReportAsync(idProgressReport);
+                    return Results.Ok(progressReports);
                 }
                 catch (Exception e)
                 {
@@ -23,17 +24,17 @@ namespace ReportesObra.Endpoints
                     return Results.Problem(e.Message);
                 }
             })
-            .WithName("GetProgressLog")
+            .WithName("GetProgressReport")
             .Produces<IResult>(StatusCodes.Status200OK)
             .Produces<HttpValidationProblemDetails>(StatusCodes.Status400BadRequest, "application/problem+json")
             .Produces<HttpValidationProblemDetails>(StatusCodes.Status500InternalServerError, "application/problem+json");
 
-            routes.MapGet("/ProgressLogs", async (int? idProgressLog, int? idBuilding, int? idAparment, int? idArea, int? idElemnet, int? idSubElement, string? idSupervisor, IProgressLogsService _progressLogsService, ILogger<Program> _logger) =>
+            routes.MapGet("/ProgressReports", async (int ? idProgressReport, int ? idBuilding, int ? idAparment, int ? idArea, int ? idElemnet, int ? idSubElement, string ? idSupervisor, IProgressReportsService _progressReportsService, ILogger<Program> _logger) =>
             {
                 try
                 {
-                    var progressLogs = await _progressLogsService.GetProgressLogsAsync(idProgressLog, idBuilding, idAparment, idArea, idElemnet, idSubElement, idSupervisor);
-                    return Results.Ok(progressLogs);
+                    var progressReports = await _progressReportsService.GetProgressReportsAsync(idProgressReport, idBuilding, idAparment, idArea, idElemnet, idSubElement, idSupervisor);
+                    return Results.Ok(progressReports);
                 }
                 catch (Exception e)
                 {
@@ -43,16 +44,16 @@ namespace ReportesObra.Endpoints
                     return Results.Problem(e.Message);
                 }
             })
-            .WithName("GetProgressLogs")
+            .WithName("GetProgressReports")
             .Produces<IResult>(StatusCodes.Status200OK)
             .Produces<HttpValidationProblemDetails>(StatusCodes.Status400BadRequest, "application/problem+json")
             .Produces<HttpValidationProblemDetails>(StatusCodes.Status500InternalServerError, "application/problem+json");
 
-            routes.MapPost("/ProgressLogs", async (ProgressLog progressLog, IProgressLogsService _progressLogsService, ILogger<Program> _logger) =>
+            routes.MapPost("/ProgressReports", async (ProgressReport progressReport, IProgressReportsService _progressReportsService, ILogger<Program> _logger) =>
             {
                 try
                 {
-                    var res = await _progressLogsService.CreateProgressLogsAsync(progressLog);
+                    var res = await _progressReportsService.CreateProgressReportsAsync(progressReport);
                     return Results.Ok(res);
                 }
                 catch (Exception e)
@@ -63,17 +64,17 @@ namespace ReportesObra.Endpoints
                     return Results.Problem(e.Message);
                 }
             })
-            .WithName("CreateProgressLogs")
+            .WithName("CreateProgressReports")
             .Produces<IResult>(StatusCodes.Status200OK)
             .Produces<HttpValidationProblemDetails>(StatusCodes.Status400BadRequest, "application/problem+json")
             .Produces<HttpValidationProblemDetails>(StatusCodes.Status500InternalServerError, "application/problem+json");
 
-            routes.MapPut("/ProgressLogs/{idProgressLog}", async (int idProgressLog, ProgressLog progressLog, IProgressLogsService _progressLogsService, ILogger<Program> _logger) =>
+            routes.MapPut("/ProgressReports/{idProgressReport}", async (int idProgressReport, ProgressReport progressReport, IProgressReportsService _progressReportsService, ILogger<Program> _logger) =>
             {
                 try
                 {
-                    if (idProgressLog != progressLog.IdProgressLog) return Results.BadRequest();
-                    var res = await _progressLogsService.UpdateProgressLogsAsync(progressLog);
+                    if (idProgressReport != progressReport.IdProgressReport) return Results.BadRequest();
+                    var res = await _progressReportsService.UpdateProgressReportsAsync(progressReport);
                     return Results.Ok(res);
                 }
                 catch (Exception e)
@@ -84,7 +85,7 @@ namespace ReportesObra.Endpoints
                     return Results.Problem(e.Message);
                 }
             })
-            .WithName("UpdateProgressLogs")
+            .WithName("UpdateProgressReports")
             .Produces<IResult>(StatusCodes.Status200OK, "application/pdf")
             .Produces<HttpValidationProblemDetails>(StatusCodes.Status400BadRequest, "application/problem+json")
             .Produces<HttpValidationProblemDetails>(StatusCodes.Status500InternalServerError, "application/problem+json");
