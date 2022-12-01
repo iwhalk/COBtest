@@ -44,7 +44,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\BlazorAppLogin\BlazorAppLogin\Client\App.Client.csproj" />
+    <ProjectReference Include="..\..\BlazorAppLogin\BlazorAppLogin\Client\Obra.Client.csproj" />
   </ItemGroup>
 
 </Project>
