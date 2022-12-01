@@ -83,6 +83,9 @@ builder.Services.AddScoped<IApartmentsService, ApartmentsService>();
 builder.Services.AddScoped<IAreasService, AreasService>();
 builder.Services.AddScoped<IBuildingsService, BuildingsService>();
 builder.Services.AddScoped<IActivitiesService, ActivitiesService>();
+builder.Services.AddScoped<IProgressReportsService, ProgressReportsService>();
+builder.Services.AddScoped<IProgressLogsService, ProgressLogsService>();
+builder.Services.AddScoped<IBlobService, BlobService>();
 
 builder.Services.AddScoped<ReportesFactory>();
 
@@ -116,6 +119,9 @@ app.MapApartmentEndpoints();
 app.MapAreaEndpoints();
 app.MapBuildingEndpoints();
 app.MapActivityEndpoints();
+app.MapProgressLogsEndpints();
+app.MapProgressReportsEndpoints();
+app.MapBlobsEndpoints();
 #region Inmobiliaria
 
 #region AspNetUsers
