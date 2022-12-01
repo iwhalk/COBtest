@@ -28,11 +28,11 @@ namespace ReportesObra.Endpoints
             .Produces<HttpValidationProblemDetails>(StatusCodes.Status400BadRequest, "application/problem+json")
             .Produces<HttpValidationProblemDetails>(StatusCodes.Status500InternalServerError, "application/problem+json");
 
-            routes.MapGet("/Activity", async (int idActivity, IActivitiesService _activitiesService, ILogger<Program> _logger) =>
+            routes.MapGet("/Activity/{id}", async (int id, IActivitiesService _activitiesService, ILogger<Program> _logger) =>
             {
                 try
                 {
-                    var activity = await _activitiesService.GetActivityAsync(idActivity);
+                    var activity = await _activitiesService.GetActivityAsync(id);
                     return Results.Ok(activity);
                 }
                 catch (Exception e)
