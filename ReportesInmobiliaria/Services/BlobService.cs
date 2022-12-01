@@ -8,7 +8,7 @@ using System.IO;
 
 namespace ReportesObra.Services
 {
-    public class BlobService //: IBlobService
+    public class BlobService : IBlobService
     {
         private readonly ObraDbContext _dbContext;
         private readonly BlobServiceClient _blobServiceClient;
