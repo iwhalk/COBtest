@@ -1,5 +1,6 @@
 using ApiGateway;
 using ApiGateway.Data;
+using ApiGateway.Interfaces;
 using ApiGateway.Models;
 using ApiGateway.Services;
 using Hellang.Middleware.ProblemDetails;
@@ -275,6 +276,16 @@ builder.Services.AddMediatR(Assembly.Load("ApiGateway"));
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
 
+
+//builder.Services.AddScoped<IBuildingsService, BuildingsService>();
+//builder.Services.AddScoped<IAreasService, AreasService>();
+//builder.Services.AddScoped<IActivitiesService, ActivitiesService>();
+//builder.Services.AddScoped<IApartmentsService, ApartmentsService>();
+//builder.Services.AddScoped<IElementsService, ElementsService>();
+//builder.Services.AddScoped<ISubElementsService, SubElementsService>();
+//builder.Services.AddScoped<IProgressLogsService,ProgressLogsService>();
+//builder.Services.AddScoped<IBlobsService, BlobsService>();
+//builder.Services.AddScoped<IProgressReportService, ProgressReportService>();
 
 var app = builder.Build();
 

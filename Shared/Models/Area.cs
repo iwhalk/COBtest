@@ -10,6 +10,11 @@ namespace SharedLibrary.Models
 {
     public partial class Area
     {
+        public Area()
+        {
+            ProgressReports = new HashSet<ProgressReport>();
+        }
+
         [Key]
         [Column("ID_Area")]
         public int IdArea { get; set; }
@@ -17,5 +22,8 @@ namespace SharedLibrary.Models
         [StringLength(20)]
         [Unicode(false)]
         public string AreaName { get; set; }
+
+        [InverseProperty("IdAreaNavigation")]
+        public virtual ICollection<ProgressReport> ProgressReports { get; set; }
     }
 }

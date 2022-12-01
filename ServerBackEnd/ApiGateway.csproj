@@ -45,6 +45,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\BlazorAppLogin\BlazorAppLogin\Client\Obra.Client.csproj" />
+    <ProjectReference Include="..\Shared\SharedLibrary.csproj" />
   </ItemGroup>
 
 </Project>
