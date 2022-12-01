@@ -27,6 +27,7 @@ namespace SharedLibrary.Data
         public virtual DbSet<Building> Buildings { get; set; }
         public virtual DbSet<Element> Elements { get; set; }
         public virtual DbSet<ProgressLog> ProgressLogs { get; set; }
+        public virtual DbSet<ProgressReport> ProgressReports { get; set; }
         public virtual DbSet<SubElement> SubElements { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -78,10 +79,56 @@ namespace SharedLibrary.Data
                 entity.HasKey(e => e.IdProgressLog)
                     .HasName("PK__Progress__F031B417F3C2DA0F");
 
+                entity.HasOne(d => d.IdProgressReportNavigation)
+                    .WithMany(p => p.ProgressLogs)
+                    .HasForeignKey(d => d.IdProgressReport)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_ProgressLogs_ID_ProgressReport");
+
                 entity.HasOne(d => d.IdSupervisorNavigation)
                     .WithMany(p => p.ProgressLogs)
                     .HasForeignKey(d => d.IdSupervisor)
                     .HasConstraintName("FK_ProgressLogs_ID_Supervisor");
+            });
+
+            modelBuilder.Entity<ProgressReport>(entity =>
+            {
+                entity.HasKey(e => e.IdProgressReport)
+                    .HasName("PK__Progress__2DC7E849EE4E1FED");
+
+                entity.HasOne(d => d.IdApartmentNavigation)
+                    .WithMany(p => p.ProgressReports)
+                    .HasForeignKey(d => d.IdApartment)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_ProgressReports_ID_Apartment");
+
+                entity.HasOne(d => d.IdAreaNavigation)
+                    .WithMany(p => p.ProgressReports)
+                    .HasForeignKey(d => d.IdArea)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_ProgressReports_ID_Area");
+
+                entity.HasOne(d => d.IdBuildingNavigation)
+                    .WithMany(p => p.ProgressReports)
+                    .HasForeignKey(d => d.IdBuilding)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_ProgressReports_ID_Building");
+
+                entity.HasOne(d => d.IdElementNavigation)
+                    .WithMany(p => p.ProgressReports)
+                    .HasForeignKey(d => d.IdElement)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_ProgressReports_ID_Element");
+
+                entity.HasOne(d => d.IdSubElementNavigation)
+                    .WithMany(p => p.ProgressReports)
+                    .HasForeignKey(d => d.IdSubElement)
+                    .HasConstraintName("FK_ProgressReports_ID_SubElement");
+
+                entity.HasOne(d => d.IdSupervisorNavigation)
+                    .WithMany(p => p.ProgressReports)
+                    .HasForeignKey(d => d.IdSupervisor)
+                    .HasConstraintName("FK_ProgressReports_ID_Supervisor");
             });
 
             modelBuilder.Entity<SubElement>(entity =>

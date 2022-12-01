@@ -47,6 +47,10 @@
          "ObjectType": 0
       },
       {
+         "Name": "[dbo].[ProgressReports]",
+         "ObjectType": 0
+      },
+      {
          "Name": "[dbo].[SubElements]",
          "ObjectType": 0
       }

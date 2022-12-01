@@ -18,6 +18,26 @@ namespace ApiGateway.Controllers
             _activitiesService = activitiesService;
         }
 
+        [HttpGet("{id}")]
+        public async Task<ActionResult> GetActivity(string id)
+        {
+            int idInt = 0;
+
+            if (id != null)
+            {
+                idInt = Convert.ToInt16(id);
+            }
+
+            var result = await _activitiesService.GetActivityAsync(idInt);
+
+            if (result.Succeeded)
+            {
+                return Ok(result);
+            }
+
+            return BadRequest(result);
+        }
+
         [HttpGet]
         public async Task<ActionResult> GetActivities()
         {
