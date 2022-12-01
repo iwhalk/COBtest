@@ -1,43 +1,40 @@
 ﻿@page "/ProgressForApartment"
 
 <div id="Contenedor" class="min-h-screen bg-[url('/assets/img/imgFondo.png')] z-0 opacity-25 imgfondo fixed inset-0 bg-gray-500 bg-opacity-25 transition-opacity"></div>
-<div class="h-screen p-20 pb-28 fixed inset-0">
-    <div class="flex h-full border border-stone-300 rounded-2xl">
-        <div class="w-1/6">
-            <div class="p-2">
+<div class="p-20 pb-24 pb-28 fixed inset-0">
+    <div class="h-full block border border-stone-300 rounded-2xl">
+        <div class="w-full inline-flex">
+            <div class="w-1/6 p-2">
                 <h1 class="rounded-br-lg rounded-tl-2xl text-xl text-white font-medium leading-6 bg-[#162D4E] text-center p-5">Departamentos</h1>
             </div>
-            <div class="grid grid-col-1 gap-2 p-2">
-                <div class="bg-gray-400 border border-stone-400">
-                    <h1 class="text-lg text-white font-medium leading-6 text-center p-3">Todos</h1>
-                </div>
-                <div class="overflow-y-auto h-[38rem]">
-                    @foreach(int i in Enumerable.Range(1,20))
-                    {
-                        <div class="bg-gray-600 border border-stone-400">
-                            <h1 class="text-lg text-white font-medium leading-6 text-center p-3">A-10 @i</h1>
-                        </div>   
-                    }
-                </div>
+            <div class="w-5/6 p-2">
+                <h1 class="rounded-br-lg rounded-tl-2xl text-xl text-white font-medium leading-6 bg-[#162D4E] text-center p-5">Porcentaje</h1>
             </div>
         </div>
-        <div class="w-5/6">
-            <div class="p-2">
-                <h1 class="rounded-br-lg rounded-tl-2xl text-xl text-white font-medium leading-6 bg-[#162D4E] text-center p-5">Avance General</h1>
-            </div>
-            <div class="grid grid-col-1 gap-2 p-2">
-                <div class="inline-flex h-12 mb-1"></div>
-                <div class="overflow-y-auto h-[38rem]">
-                    @foreach(int i in Enumerable.Range(1,20))
-                    {
-                        <div>
-                            <div class="bg-gray-200 inline-flex border border-stone-400 w-full">
-                                <div class="bg-green-500 p-3 text-white text-end w-[70%]">70%</div>
-                                <div class="bg-red-500 p-3 text-white text-end w-[30%]">30%</div>
+        <div class="grid grid-cols-1">
+            <div class="overflow-y-auto sm:h-[20rem] md:h-[38rem]">
+                <div class="w-full inline-flex">
+                    <div class="w-1/6 p-1">
+                        <div class="bg-gray-600 border border-stone-400">
+                            <p class="text-lg text-white font-medium leading-6 text-center p-3">Todos</p>
+                        </div>
+                    </div>
+                    <div class="w-5/6 inline-flex"></div>
+                </div>
+                @foreach(var i in Enumerable.Range(0 ,10))
+                {
+                    <div class="w-full inline-flex">
+                        <div class="w-1/6 p-1">
+                            <div class="bg-gray-600 border border-stone-400">
+                                <p class="text-lg text-white font-medium leading-6 text-center p-3">A-10 @i</p>
                             </div>
                         </div>
-                    }  
-                </div>
+                        <div class="w-5/6 inline-flex p-1">
+                            <div class="bg-green-500 p-3 text-white text-end w-[70%]">70%</div>
+                            <div class="bg-red-500 p-3 text-white text-end w-[30%]">30%</div>
+                        </div>
+                    </div>
+                }
             </div>
         </div>
     </div>
