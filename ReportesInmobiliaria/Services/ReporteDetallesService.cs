@@ -30,23 +30,30 @@ namespace ReportesObra.Services
         {
             ReporteDetalles reporteDetalles = new()
             {
-                SubElementos = GetSubElementsAsync()
+                detalladoActividades = GetSubElementsAsync()
             };
             return _reportesFactory.CrearPdf(reporteDetalles);
         }
 
-        public List<SubElementosTest> GetSubElementsAsync()
+        public List<DetalladoActividades> GetSubElementsAsync()
         {
-            var list = new List<SubElementosTest>();
-            var subElements = _dbContext.SubElements;
-            foreach (var subElement in subElements)
+            var list = new List<DetalladoActividades>();
+            var progressReport = _dbContext.ProgressReports;
+
+            foreach (var subElement in progressReport)
             {
-                list.Add(new SubElementosTest()
+                list.Add(new DetalladoActividades()
                 {
-                    id = subElement.IdSubElement,
-                    nombre = subElement.SubElementName.ToString(),
-                    idElemento = subElement.IdElement,
-                    Tipo = subElement.Type.ToString()
+                    //id = subElement.IdSubElement,
+                    //nombre = subElement.SubElementName.ToString(),
+                    //idElemento = subElement.IdElement,
+                    //Tipo = subElement.Type.ToString()
+                    actividad = "",
+                    elemento = "",
+                    subElemento = "",
+                    estatus = "",
+                    total = 1,
+                    avance = 0,
                 });
             }
             return list;

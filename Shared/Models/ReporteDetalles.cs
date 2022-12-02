@@ -2,6 +2,6 @@
 {
     public class ReporteDetalles
     {
-        public List<SubElementosTest> SubElementos { get; set; }
+        public List<DetalladoActividades> detalladoActividades { get; set; }
     }
 }
