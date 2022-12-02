@@ -94,6 +94,18 @@ namespace ReportesObra.Utilities
             DefineStyles();
             CreateLayout(reporte);
 
+            switch (typeof(T).Name)
+            {
+                case nameof(ReporteOperacionesDetalle):
+                    CrearReporteOperacionDetalle(reporte as ReporteOperacionesDetalle);
+                    break;
+                case nameof(ReporteDescuentosResumen):
+                    CrearReporteDescuentosResumen(reporte as ReporteDescuentosResumen);
+                    break;
+                default:
+                    break;
+            }
+
             CrearReporte(reporte as ReporteDetalles);
 
             PdfDocumentRenderer pdfRenderer = new(true)
