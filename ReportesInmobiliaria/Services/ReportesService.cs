@@ -12,7 +12,7 @@ using System.Data.Entity.Infrastructure;
 
 namespace ReportesObra.Services
 {
-    public class ReportesService : IReporteService
+    public class ReportesService : IReportesService
     {
         private readonly ObraDbContext _dbContext;
         private readonly IHttpContextAccessor _httpContextAccessor;
