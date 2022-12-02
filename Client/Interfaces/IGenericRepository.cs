@@ -1,4 +1,4 @@
-﻿namespace Client.Repositories
+﻿namespace Obra.Client.Interfaces
 {
     public interface IGenericRepository
     {

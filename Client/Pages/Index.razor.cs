@@ -1,11 +1,11 @@
 ﻿using Microsoft.AspNetCore.Components;
 
-namespace Client.Pages
+namespace Obra.Client.Pages
 {
     public partial class Index : ComponentBase
-    {             
+    {
         public Index()
         {
-        }  
+        }
     }
 }

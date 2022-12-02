@@ -1,14 +1,14 @@
 ﻿using System.Net.Http.Json;
 using System.Text.Json.Serialization;
-using Client.Interfaces;
 using SharedLibrary;
-using Client.Stores;
 using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
 using System.Net;
 using Microsoft.AspNetCore.WebUtilities;
 using PluralizeService.Core;
+using Obra.Client.Interfaces;
+using Obra.Client.Stores;
 
-namespace Client.Repositories
+namespace Obra.Client.Repositories
 {
     public class GenericRepository : IGenericRepository
     {

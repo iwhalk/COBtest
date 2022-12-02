@@ -12,6 +12,18 @@ namespace ApiGateway.Services
 
         }
 
+        public async Task<ApiResponse<Element>> GetElementAsync(int id)
+        {
+            Dictionary<string, string> parameters = new();
+
+            if (id != null && id > 0)
+            {
+                parameters.Add("id", id.ToString());
+            }
+
+            return await GetAsync<Element>(id, path: "Element", parameters: parameters);
+        }
+
         public async Task<ApiResponse<List<Element>>> GetElementsAsync()
         {
             return await GetAsync<List<Element>>(path: "Elements");
@@ -19,7 +31,7 @@ namespace ApiGateway.Services
 
         public async Task<ApiResponse<Element>> PostElementAsync(Element element)
         {
-            return await PostAsync<Element>(element, path: "Elements");
+            return await PostAsync<Element>(element, path: "Element");
         }
     }
 }

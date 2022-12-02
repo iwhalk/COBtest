@@ -21,7 +21,7 @@ namespace ApiGateway.Services
                 parameters.Add("id", id.ToString());
             }
 
-            return await GetAsync<Area>(path: "Area", parameters: parameters);
+            return await GetAsync<Area>(id, path: "Area", parameters: parameters);
         }
 
         public async Task<ApiResponse<List<Area>>> GetAreasAsync()

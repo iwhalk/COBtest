@@ -1,8 +1,8 @@
-﻿using Client.Interfaces;
-using Client.Stores;
+﻿using Obra.Client.Interfaces;
+using Obra.Client.Stores;
 using SharedLibrary.Models;
 
-namespace Client.Services
+namespace Obra.Client.Services
 {
     public class AreasService : IAreasService
     {
@@ -14,11 +14,23 @@ namespace Client.Services
             _context = context;
         }
 
+        public async Task<Area> GetAreaAsync(int id)
+        {
+            Dictionary<string, string> parameters = new();
+
+            if (id != null && id > 0)
+            {
+                parameters.Add("id", id.ToString());
+            }
+
+            return await _repository.GetAsync<Area>(id, parameters: parameters, path: "api/Areas");
+        }
+
         public async Task<List<Area>> GetAreasAsync()
         {
             if (_context.Area == null)
             {
-                var response = await _repository.GetAsync<List<Area>>("api/Areas");
+                var response = await _repository.GetAsync<List<Area>>(path: "api/Areas");
 
                 if (response != null)
                 {
@@ -32,7 +44,7 @@ namespace Client.Services
 
         public async Task<Area> PostAreaAsync(Area area)
         {
-            return await _repository.PostAsync("api/Areas", area);
+            return await _repository.PostAsync(area, path: "api/Areas");
         }
     }
 }

@@ -1,9 +1,9 @@
-﻿using Client.Interfaces;
-using Client.Stores;
+﻿using Obra.Client.Interfaces;
+using Obra.Client.Stores;
 using SharedLibrary.Models;
 using System.Diagnostics;
 
-namespace Client.Services
+namespace Obra.Client.Services
 {
     public class ApartmentsService : IApartmentsService
     {
@@ -19,7 +19,7 @@ namespace Client.Services
         {
             if (_context.Apartment == null)
             {
-                var response = await _repository.GetAsync<List<Apartment>>("api/Apartments");
+                var response = await _repository.GetAsync<List<Apartment>>(path: "api/Apartments");
 
                 if (response != null)
                 {
@@ -33,7 +33,7 @@ namespace Client.Services
 
         public async Task<Apartment> PostApartmentAsync(Apartment apartment)
         {
-            return await _repository.PostAsync("api/Apartments", apartment);
+            return await _repository.PostAsync(apartment, path: "api/Apartments");
         }
     }
 }
