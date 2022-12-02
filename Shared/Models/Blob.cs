@@ -10,11 +10,6 @@ namespace SharedLibrary.Models
 {
     public partial class Blob
     {
-        public Blob()
-        {
-            BlobsInventories = new HashSet<BlobsInventory>();
-        }
-
         [Key]
         [Column("ID_Blobs")]
         public int IdBlobs { get; set; }
@@ -25,20 +20,17 @@ namespace SharedLibrary.Models
         [Column(TypeName = "datetime")]
         public DateTime DateCreated { get; set; }
         [Column(TypeName = "datetime")]
-        public DateTime DateModified { get; set; }
-        [Required]
+        public DateTime? DateModified { get; set; }
         [StringLength(60)]
         [Unicode(false)]
         public string BlodName { get; set; }
-        [Required]
         [StringLength(20)]
         [Unicode(false)]
         public string BlodTypeId { get; set; }
-        [Required]
         [StringLength(20)]
         [Unicode(false)]
         public string ContainerName { get; set; }
-        public bool IsPrivate { get; set; }
+        public bool? IsPrivate { get; set; }
         [Required]
         [Unicode(false)]
         public string Uri { get; set; }
@@ -46,8 +38,5 @@ namespace SharedLibrary.Models
         [StringLength(20)]
         [Unicode(false)]
         public string BlobSize { get; set; }
-
-        [InverseProperty("IdBlobsNavigation")]
-        public virtual ICollection<BlobsInventory> BlobsInventories { get; set; }
     }
 }

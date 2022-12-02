@@ -14,12 +14,12 @@ namespace FrontEnd.Pages
         private readonly IPropertyService _propertyService;
         private readonly IInventoryService _inventoryService;
         private readonly IServicesService _servicesService;
-        private readonly IAreaService _areaService;
-        private readonly IDescriptionService _descriptionService;
+        private readonly IAreasService _areaService;
+        private readonly IDescriptionsService _descriptionService;
         private readonly IFeaturesService _featuresService;
         private readonly IPropertyTypeService _propertyTypeService;
 
-        public Signatures(ApplicationContext context, ITenantService tenantService, IPropertyService propertyService, ILessorService lessorService, IInventoryService inventoryService, IServicesService servicesService, IAreaService areaService, IDescriptionService descriptionService, IFeaturesService featuresService, IPropertyTypeService propertyTypeService)
+        public Signatures(ApplicationContext context, ITenantService tenantService, IPropertyService propertyService, ILessorService lessorService, IInventoryService inventoryService, IServicesService servicesService, IAreasService areaService, IDescriptionsService descriptionService, IFeaturesService featuresService, IPropertyTypeService propertyTypeService)
         {
             _context = context;
             _tenantService = tenantService;

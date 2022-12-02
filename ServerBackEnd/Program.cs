@@ -276,21 +276,18 @@ builder.Services.AddMediatR(Assembly.Load("ApiGateway"));
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
 
-builder.Services.AddScoped<ILessorService, LessorService>();
-builder.Services.AddScoped<ITenantService, TenantService>();
-builder.Services.AddScoped<IPropertyService, PropertyService>();
-builder.Services.AddScoped<IPropertyTypeService, PropertyTypeService>();
-builder.Services.AddScoped<IServicesService, ServicesService>();
-builder.Services.AddScoped<IAreaService, AreasService>();
-builder.Services.AddScoped<IFeaturesService, FeaturesService>();
-builder.Services.AddScoped<IDescriptionService, DescriptionService>();
-builder.Services.AddScoped<IInventoryService, InventoryService>();
-builder.Services.AddScoped<IBlobsService, BlobsService>();
-builder.Services.AddScoped<IReportesService, ReportesService>();
-builder.Services.AddScoped<IBlobInventoryService, BlobInventoryService>();
-builder.Services.AddScoped<IReceptionCertificateService, ReceptionCertificateService>();
 builder.Services.AddScoped<IAspNetUserService, AspNetUserService>();
-builder.Services.AddScoped<IMailAriService, MailAriService>();
+builder.Services.AddScoped<IMailObraService, MailObraService>();
+
+builder.Services.AddScoped<IBuildingsService, BuildingsService>();
+builder.Services.AddScoped<IAreasService, AreasService>();
+builder.Services.AddScoped<IActivitiesService, ActivitiesService>();
+builder.Services.AddScoped<IApartmentsService, ApartmentsService>();
+builder.Services.AddScoped<IElementsService, ElementsService>();
+builder.Services.AddScoped<ISubElementsService, SubElementsService>();
+builder.Services.AddScoped<IProgressLogsService,ProgressLogsService>();
+builder.Services.AddScoped<IBlobsService, BlobsService>();
+builder.Services.AddScoped<IProgressReportService, ProgressReportService>();
 
 var app = builder.Build();
 

@@ -12,7 +12,8 @@ namespace SharedLibrary.Models
     {
         public AspNetUser()
         {
-            ReceptionCertificates = new HashSet<ReceptionCertificate>();
+            ProgressLogs = new HashSet<ProgressLog>();
+            ProgressReports = new HashSet<ProgressReport>();
         }
 
         [Key]
@@ -44,7 +45,9 @@ namespace SharedLibrary.Models
         public string LastName { get; set; }
         public bool? Active { get; set; }
 
-        [InverseProperty("IdAgentNavigation")]
-        public virtual ICollection<ReceptionCertificate> ReceptionCertificates { get; set; }
+        [InverseProperty("IdSupervisorNavigation")]
+        public virtual ICollection<ProgressLog> ProgressLogs { get; set; }
+        [InverseProperty("IdSupervisorNavigation")]
+        public virtual ICollection<ProgressReport> ProgressReports { get; set; }
     }
 }

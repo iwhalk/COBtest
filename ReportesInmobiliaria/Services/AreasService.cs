@@ -7,9 +7,9 @@ namespace ReportesObra.Services
 {
     public class AreasService : IAreasService
     {
-        private readonly InmobiliariaDbContext _dbContext;
+        private readonly ObraDbContext _dbContext;
 
-        public AreasService(InmobiliariaDbContext dbContext)
+        public AreasService(ObraDbContext dbContext)
         {
             _dbContext = dbContext;
         }
@@ -18,22 +18,17 @@ namespace ReportesObra.Services
         {
             return await _dbContext.Areas.ToListAsync();
         }
-        public async Task<List<AreaService>?> GetAreaServicesAsync()
+
+        public async Task<Area?> GetAreaAsync(int id)
         {
-            return await _dbContext.AreaServices.ToListAsync();
+            return await _dbContext.Areas.FirstOrDefaultAsync(x => x.IdArea == id);
         }
 
         public async Task<Area?> CreateAreaAsync(Area area)
         {
             await _dbContext.Areas.AddAsync(area);
-            try
-            {
-                await _dbContext.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                throw;
-            }
+            try { await _dbContext.SaveChangesAsync(); }
+            catch (DbUpdateConcurrencyException) { throw; }
             return area;
         }
 
