@@ -46,7 +46,7 @@ namespace ReportesObra.Endpoints
             .Produces<HttpValidationProblemDetails>(StatusCodes.Status500InternalServerError, "application/problem+json")
             .AllowAnonymous();
 
-            routes.MapPost("/Blobs", async (HttpRequest request, IBlobService _blobService) =>
+            routes.MapPost("/Blob", async (HttpRequest request, IBlobService _blobService) =>
             {
                 try
                 {
@@ -68,7 +68,7 @@ namespace ReportesObra.Endpoints
             .Produces<HttpValidationProblemDetails>(StatusCodes.Status500InternalServerError, "application/problem+json")
             .AllowAnonymous();
 
-            routes.MapPut("/Blobs/{id}", async (int id, SharedLibrary.Models.Blob blob, IBlobService _blobService) =>
+            routes.MapPut("/Blob/{id}", async (int id, SharedLibrary.Models.Blob blob, IBlobService _blobService) =>
             {
                 try
                 {

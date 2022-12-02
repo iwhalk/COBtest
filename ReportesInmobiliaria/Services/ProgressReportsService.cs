@@ -42,7 +42,7 @@ namespace ReportesObra.Services
             return progressReports.ToListAsync();
         }
 
-        public async Task<ProgressReport?> CreateProgressReportsAsync(ProgressReport progressReport)
+        public async Task<ProgressReport?> CreateProgressReportAsync(ProgressReport progressReport)
         {
             await _dbContext.ProgressReports.AddAsync(progressReport);
             try { await _dbContext.SaveChangesAsync(); }
@@ -50,7 +50,7 @@ namespace ReportesObra.Services
             return progressReport;
         }
 
-        public async Task<bool> UpdateProgressReportsAsync(ProgressReport progressReport)
+        public async Task<bool> UpdateProgressReportAsync(ProgressReport progressReport)
         {
             _dbContext.Entry(progressReport).State = EntityState.Modified;
             try

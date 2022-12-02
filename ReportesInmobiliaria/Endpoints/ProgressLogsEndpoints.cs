@@ -4,9 +4,9 @@ using System.ComponentModel.DataAnnotations;
 
 namespace ReportesObra.Endpoints
 {
-    public static class ProgressLogsEndpints
+    public static class ProgressLogsEndpoints
     {
-        public static void MapProgressLogsEndpints(this IEndpointRouteBuilder routes)
+        public static void MapProgressLogsEndpoints(this IEndpointRouteBuilder routes)
         {
             routes.MapGet("/ProgressLog/{idProgressLog}", async (int idProgressLog, IProgressLogsService _progressLogsService, ILogger<Program> _logger) =>
             {
@@ -50,7 +50,7 @@ namespace ReportesObra.Endpoints
             .Produces<HttpValidationProblemDetails>(StatusCodes.Status500InternalServerError, "application/problem+json")
             .AllowAnonymous();
 
-            routes.MapPost("/ProgressLogs", async (ProgressLog progressLog, IProgressLogsService _progressLogsService, ILogger<Program> _logger) =>
+            routes.MapPost("/ProgressLog", async (ProgressLog progressLog, IProgressLogsService _progressLogsService, ILogger<Program> _logger) =>
             {
                 try
                 {
@@ -65,13 +65,13 @@ namespace ReportesObra.Endpoints
                     return Results.Problem(e.Message);
                 }
             })
-            .WithName("CreateProgressLogs")
+            .WithName("CreateProgressLog")
             .Produces<IResult>(StatusCodes.Status200OK)
             .Produces<HttpValidationProblemDetails>(StatusCodes.Status400BadRequest, "application/problem+json")
             .Produces<HttpValidationProblemDetails>(StatusCodes.Status500InternalServerError, "application/problem+json")
             .AllowAnonymous();
 
-            routes.MapPut("/ProgressLogs/{idProgressLog}", async (int idProgressLog, ProgressLog progressLog, IProgressLogsService _progressLogsService, ILogger<Program> _logger) =>
+            routes.MapPut("/ProgressLog/{idProgressLog}", async (int idProgressLog, ProgressLog progressLog, IProgressLogsService _progressLogsService, ILogger<Program> _logger) =>
             {
                 try
                 {
@@ -87,7 +87,7 @@ namespace ReportesObra.Endpoints
                     return Results.Problem(e.Message);
                 }
             })
-            .WithName("UpdateProgressLogs")
+            .WithName("UpdateProgressLog")
             .Produces<IResult>(StatusCodes.Status200OK, "application/pdf")
             .Produces<HttpValidationProblemDetails>(StatusCodes.Status400BadRequest, "application/problem+json")
             .Produces<HttpValidationProblemDetails>(StatusCodes.Status500InternalServerError, "application/problem+json")

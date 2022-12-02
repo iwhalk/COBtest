@@ -123,7 +123,7 @@ app.MapBuildingEndpoints();
 app.MapActivityEndpoints();
 app.MapElementEndpoints();
 app.MapSubElementEndpoints();
-app.MapProgressLogsEndpints();
+app.MapProgressLogsEndpoints();
 app.MapProgressReportsEndpoints();
 app.MapBlobsEndpoints();
 #region Inmobiliaria
