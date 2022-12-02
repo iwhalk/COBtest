@@ -4,7 +4,6 @@ using System.Security.Claims;
 using Microsoft.EntityFrameworkCore;
 using SharedLibrary.Models;
 using System.Diagnostics;
-using SharedLibrary.Models;
 using NuGet.Packaging.Signing;
 using ReportesObra.Interfaces;
 
