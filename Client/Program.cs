@@ -22,7 +22,7 @@ builder.Services.AddFluentUIComponents();
 builder.Services.AddScoped(sp => sp.GetRequiredService<IHttpClientFactory>().CreateClient("Obra.ServerAPI"));
 builder.Services.AddOidcAuthentication(options =>
 {
-    options.ProviderOptions.ClientId = "blazor-pruebas";
+    options.ProviderOptions.ClientId = "blazor-soft2245";
     options.ProviderOptions.Authority = builder.HostEnvironment.BaseAddress;
     options.ProviderOptions.ResponseType = "code";
 
