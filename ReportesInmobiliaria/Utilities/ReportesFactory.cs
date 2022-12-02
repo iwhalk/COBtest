@@ -248,7 +248,7 @@ namespace ReportesObra.Utilities
             row.Cells[1].AddParagraph("SubElementName");
             row.Cells[2].AddParagraph("Type");
 
-            FillGenericContent(reporteDetalles.SubElementos, tableAreas);         
+            FillGenericContent(reporteDetalles.detalladoActividades, tableAreas);         
         }
 
         void CreateLayout<T>(T reporte)
