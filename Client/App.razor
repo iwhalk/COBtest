@@ -4,7 +4,7 @@
             <AuthorizeRouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)">
                 <NotAuthorized>
                     @if (context.User.Identity?.IsAuthenticated != true)
-                    {                        
+                    {
                         <RedirectToLogin />
                     }
                     else
@@ -12,13 +12,6 @@
                         <p role="alert">You are not authorized to access this resource.</p>
                     }
                 </NotAuthorized>
-                <Authorizing>
-                    <div class="d-flex justify-content-center vh-100">
-                        <div class="d-flex flex-column justify-content-center">
-                            <FluentProgressRing style="width: 102px; height: 102px;"></FluentProgressRing>
-                        </div>     
-                    </div>
-                </Authorizing>
             </AuthorizeRouteView>
             <FocusOnNavigate RouteData="@routeData" Selector="h1" />
         </Found>

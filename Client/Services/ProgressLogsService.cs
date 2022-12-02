@@ -1,8 +1,8 @@
-﻿using Client.Interfaces;
-using Client.Stores;
+﻿using Obra.Client.Interfaces;
+using Obra.Client.Stores;
 using SharedLibrary.Models;
 
-namespace Client.Services
+namespace Obra.Client.Services
 {
     public class ProgressLogsService : IProgressLogsService
     {
@@ -18,7 +18,7 @@ namespace Client.Services
         {
             if (_context.ProgressLog == null)
             {
-                var response = await _repository.GetAsync<List<ProgressLog>>("api/ProgressLogs");
+                var response = await _repository.GetAsync<List<ProgressLog>>(path: "api/ProgressLogs");
 
                 if (response != null)
                 {
@@ -32,7 +32,7 @@ namespace Client.Services
 
         public async Task<ProgressLog> PostProgressLogAsync(ProgressLog progressLog)
         {
-            return await _repository.PostAsync("api/ProgressLogs", progressLog);
+            return await _repository.PostAsync(progressLog, path: "api/ProgressLogs");
         }
     }
 }

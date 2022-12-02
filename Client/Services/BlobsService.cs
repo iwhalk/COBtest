@@ -1,8 +1,8 @@
-﻿using Client.Interfaces;
-using Client.Stores;
+﻿using Obra.Client.Interfaces;
+using Obra.Client.Stores;
 using SharedLibrary.Models;
 
-namespace Client.Services
+namespace Obra.Client.Services
 {
     public class BlobsService : IBlobsService
     {
@@ -18,7 +18,7 @@ namespace Client.Services
         {
             if (_context.Blob == null)
             {
-                var response = await _repository.GetAsync<List<Blob>>("api/Blobs");
+                var response = await _repository.GetAsync<List<Blob>>(path: "api/Blobs");
 
                 if (response != null)
                 {
@@ -32,7 +32,7 @@ namespace Client.Services
 
         public async Task<Blob> PostBlobAsync(Blob blob)
         {
-            return await _repository.PostAsync("api/Blobs", blob);
+            return await _repository.PostAsync(blob, path: "api/Blobs");
         }
     }
 }

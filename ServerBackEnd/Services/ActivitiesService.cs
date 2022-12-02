@@ -21,7 +21,7 @@ namespace ApiGateway.Services
                 parameters.Add("id", id.ToString());
             }
 
-            return await GetAsync<Activity>(path: "Activity", parameters: parameters);
+            return await GetAsync<Activity>(id, path: "Activity", parameters: parameters);
         }
 
         public async Task<ApiResponse<List<Activity>>> GetActivitiesAsync()
