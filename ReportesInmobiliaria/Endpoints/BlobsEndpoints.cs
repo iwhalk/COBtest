@@ -8,7 +8,7 @@ namespace ReportesObra.Endpoints
     {
         public static void MapBlobsEndpoints(this IEndpointRouteBuilder routes)
         {
-            routes.MapGet("/Blobs", async (int id, IBlobService _blobService) =>
+            routes.MapGet("/Blobs", async (int? id, IBlobService _blobService) =>
             {
             var blobs = await _blobService.GetBlobsAsync(id);
             if (blobs == null) return Results.NoContent();
@@ -86,7 +86,8 @@ namespace ReportesObra.Endpoints
             .WithName("UpdateBlob")
             .Produces<IResult>(StatusCodes.Status200OK)
             .Produces<HttpValidationProblemDetails>(StatusCodes.Status400BadRequest, "application/problem+json")
-            .Produces<HttpValidationProblemDetails>(StatusCodes.Status500InternalServerError, "application/problem+json");
+            .Produces<HttpValidationProblemDetails>(StatusCodes.Status500InternalServerError, "application/problem+json")
+            .AllowAnonymous();
 
             //app.MapDelete("/Blob/{id}",
             //    async (int id, IBlobService _blobService) =>

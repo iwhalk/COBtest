@@ -26,13 +26,14 @@ namespace ReportesObra.Endpoints
             .WithName("GetProgressLog")
             .Produces<IResult>(StatusCodes.Status200OK)
             .Produces<HttpValidationProblemDetails>(StatusCodes.Status400BadRequest, "application/problem+json")
-            .Produces<HttpValidationProblemDetails>(StatusCodes.Status500InternalServerError, "application/problem+json");
+            .Produces<HttpValidationProblemDetails>(StatusCodes.Status500InternalServerError, "application/problem+json")
+            .AllowAnonymous();
 
-            routes.MapGet("/ProgressLogs", async (int? idProgressLog, int? idBuilding, int? idAparment, int? idArea, int? idElemnet, int? idSubElement, string? idSupervisor, IProgressLogsService _progressLogsService, ILogger<Program> _logger) =>
+            routes.MapGet("/ProgressLogs", async (int? idProgressLog, int? idProgressReport, int? idStatus, string? idSupervisor, IProgressLogsService _progressLogsService, ILogger<Program> _logger) =>
             {
                 try
                 {
-                    var progressLogs = await _progressLogsService.GetProgressLogsAsync(idProgressLog, idBuilding, idAparment, idArea, idElemnet, idSubElement, idSupervisor);
+                    var progressLogs = await _progressLogsService.GetProgressLogsAsync(idProgressLog, idProgressReport, idStatus, idSupervisor);
                     return Results.Ok(progressLogs);
                 }
                 catch (Exception e)
@@ -46,7 +47,8 @@ namespace ReportesObra.Endpoints
             .WithName("GetProgressLogs")
             .Produces<IResult>(StatusCodes.Status200OK)
             .Produces<HttpValidationProblemDetails>(StatusCodes.Status400BadRequest, "application/problem+json")
-            .Produces<HttpValidationProblemDetails>(StatusCodes.Status500InternalServerError, "application/problem+json");
+            .Produces<HttpValidationProblemDetails>(StatusCodes.Status500InternalServerError, "application/problem+json")
+            .AllowAnonymous();
 
             routes.MapPost("/ProgressLogs", async (ProgressLog progressLog, IProgressLogsService _progressLogsService, ILogger<Program> _logger) =>
             {
@@ -66,7 +68,8 @@ namespace ReportesObra.Endpoints
             .WithName("CreateProgressLogs")
             .Produces<IResult>(StatusCodes.Status200OK)
             .Produces<HttpValidationProblemDetails>(StatusCodes.Status400BadRequest, "application/problem+json")
-            .Produces<HttpValidationProblemDetails>(StatusCodes.Status500InternalServerError, "application/problem+json");
+            .Produces<HttpValidationProblemDetails>(StatusCodes.Status500InternalServerError, "application/problem+json")
+            .AllowAnonymous();
 
             routes.MapPut("/ProgressLogs/{idProgressLog}", async (int idProgressLog, ProgressLog progressLog, IProgressLogsService _progressLogsService, ILogger<Program> _logger) =>
             {
@@ -87,7 +90,8 @@ namespace ReportesObra.Endpoints
             .WithName("UpdateProgressLogs")
             .Produces<IResult>(StatusCodes.Status200OK, "application/pdf")
             .Produces<HttpValidationProblemDetails>(StatusCodes.Status400BadRequest, "application/problem+json")
-            .Produces<HttpValidationProblemDetails>(StatusCodes.Status500InternalServerError, "application/problem+json");
+            .Produces<HttpValidationProblemDetails>(StatusCodes.Status500InternalServerError, "application/problem+json")
+            .AllowAnonymous();
         }
     }
 }

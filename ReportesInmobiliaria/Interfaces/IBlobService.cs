@@ -5,7 +5,7 @@ namespace ReportesObra.Interfaces
 {
     public interface IBlobService
     {
-        Task<Blob> GetBlobAsync(int? id);
+        Task<Blob> GetBlobAsync(int id);
         Task<List<Blob>> GetBlobsAsync(int? id);
         Task<BlobDownloadInfo>? GetBlobFileAsync(int id);
         Task<Blob?> CreateBlobAsync(IFormFile file);
