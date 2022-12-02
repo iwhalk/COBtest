@@ -13,6 +13,7 @@ namespace SharedLibrary.Models
         public AspNetUser()
         {
             ProgressLogs = new HashSet<ProgressLog>();
+            ProgressReports = new HashSet<ProgressReport>();
         }
 
         [Key]
@@ -46,5 +47,7 @@ namespace SharedLibrary.Models
 
         [InverseProperty("IdSupervisorNavigation")]
         public virtual ICollection<ProgressLog> ProgressLogs { get; set; }
+        [InverseProperty("IdSupervisorNavigation")]
+        public virtual ICollection<ProgressReport> ProgressReports { get; set; }
     }
 }

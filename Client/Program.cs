@@ -17,7 +17,7 @@ var client = "blazor-client";
 
 if (!builder.HostEnvironment.IsDevelopment())
 {
-    client = "blazor-arisoft";
+    client = "blazor-soft2245";
 }
 
 builder.RootComponents.Add<App>("#app");
@@ -40,6 +40,15 @@ builder.Services.AddFluentUIComponents();
 builder.Services.AddScoped<ApplicationContext>();
 builder.Services.AddScoped<IGenericRepository, GenericRepository>();
 
+builder.Services.AddScoped<IBuildingsService, BuildingsService>();
+builder.Services.AddScoped<IAreasService, AreasService>();
+builder.Services.AddScoped<IActivitiesService, ActivitiesService>();
+builder.Services.AddScoped<IApartmentsService, ApartmentsService>();
+builder.Services.AddScoped<IElementsService, ElementsService>();
+builder.Services.AddScoped<ISubElementsService, SubElementsService>();
+builder.Services.AddScoped<IProgressLogsService, ProgressLogsService>();
+builder.Services.AddScoped<IBlobsService, BlobsService>();
+builder.Services.AddScoped<IProgressReportService, ProgressReportService>();
 
 // Supply HttpClient instances that include access tokens when making requests to the server project.
 //builder.Services.AddScoped(provider =>
