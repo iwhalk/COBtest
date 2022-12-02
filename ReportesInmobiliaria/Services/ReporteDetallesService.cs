@@ -58,5 +58,12 @@ namespace ReportesObra.Services
             }
             return list;
         }
+
+        public string getActividad(int idElement)
+        {
+            var listaActividades = _dbContext.Activities;
+            //activityName = from d in listaActividades 
+            return "";
+        }
     }
 }
