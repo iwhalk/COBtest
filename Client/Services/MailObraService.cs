@@ -1,6 +1,6 @@
 ﻿namespace Obra.Client.Services
 {
-    public class MailObraService
+    public class MailObraService 
     {
     }
 }

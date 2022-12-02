@@ -1,4 +1,4 @@
-﻿namespace Obra.Client.Interfaces
+﻿namespace FrontEnd.Interfaces
 {
     public interface IMailObraService
     {

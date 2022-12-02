@@ -18,7 +18,7 @@ namespace Obra.Client.Services
         {
             if (_context.Element == null)
             {
-                var response = await _repository.GetAsync<List<Element>>("api/Elements");
+                var response = await _repository.GetAsync<List<Element>>(path: "api/Elements");
 
                 if (response != null)
                 {
@@ -32,8 +32,7 @@ namespace Obra.Client.Services
 
         public async Task<Element> PostElementAsync(Element element)
         {
-            return null;
-            //return await _repository.PostAsync("api/Elements", element);
+            return await _repository.PostAsync(element, path: "api/Elements");
         }
     }
 }

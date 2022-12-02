@@ -40,10 +40,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Interfaces\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\Client\Obra.Client.csproj" />
     <ProjectReference Include="..\Shared\SharedLibrary.csproj" />
   </ItemGroup>

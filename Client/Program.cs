@@ -5,13 +5,20 @@ using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.JSInterop;
 using TanvirArjel.Blazor.DependencyInjection;
 using Microsoft.Fast.Components.FluentUI;
+using Obra.Client.Interfaces;
+using Obra.Client.Repositories;
+using Obra.Client.Services;
+using Obra.Client.Stores;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.RootComponents.Add<Obra.Client.App>("#app");
 builder.RootComponents.Add<HeadOutlet>("head::after");
 
-builder.Services.AddHttpClient("BlazorAppLogin.ServerAPI", client => client.BaseAddress = new Uri(builder.HostEnvironment.BaseAddress))
+builder.Services.AddHttpClient("ApiGateway", client => client.BaseAddress = new Uri(builder.HostEnvironment.BaseAddress))
     .AddHttpMessageHandler<BaseAddressAuthorizationMessageHandler>();
+
+builder.Services.AddScoped(sp => sp.GetRequiredService<IHttpClientFactory>()
+    .CreateClient("ApiGateway"));
 
 builder.Services.AddSingleton(serviceProvider => (IJSInProcessRuntime)serviceProvider.GetRequiredService<IJSRuntime>());
 
@@ -19,10 +26,10 @@ builder.Services.AddComponents();
 builder.Services.AddFluentUIComponents();
 
 // Supply HttpClient instances that include access tokens when making requests to the server project
-builder.Services.AddScoped(sp => sp.GetRequiredService<IHttpClientFactory>().CreateClient("Obra.ServerAPI"));
+
 builder.Services.AddOidcAuthentication(options =>
 {
-    options.ProviderOptions.ClientId = "blazor-pruebas";
+    options.ProviderOptions.ClientId = "blazor-client";
     options.ProviderOptions.Authority = builder.HostEnvironment.BaseAddress;
     options.ProviderOptions.ResponseType = "code";
 
@@ -42,5 +49,18 @@ builder.Services.AddOidcAuthentication(options =>
 });
 
 builder.Services.AddApiAuthorization();
+
+builder.Services.AddScoped<ApplicationContext>();
+builder.Services.AddScoped<IGenericRepository, GenericRepository>();
+
+builder.Services.AddScoped<IBuildingsService, BuildingsService>();
+builder.Services.AddScoped<IAreasService, AreasService>();
+builder.Services.AddScoped<IActivitiesService, ActivitiesService>();
+builder.Services.AddScoped<IApartmentsService, ApartmentsService>();
+builder.Services.AddScoped<IElementsService, ElementsService>();
+builder.Services.AddScoped<ISubElementsService, SubElementsService>();
+builder.Services.AddScoped<IProgressLogsService, ProgressLogsService>();
+builder.Services.AddScoped<IBlobsService, BlobsService>();
+builder.Services.AddScoped<IProgressReportService, ProgressReportService>();
 
 await builder.Build().RunAsync();

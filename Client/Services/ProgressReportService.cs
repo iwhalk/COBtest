@@ -19,7 +19,7 @@ namespace Obra.Client.Services
         {
             if (_context.ProgressReport == null)
             {
-                var response = await _repository.GetAsync<List<ProgressReport>>("api/ProgressReport");
+                var response = await _repository.GetAsync<List<ProgressReport>>(path: "api/ProgressReport");
 
                 if (response != null)
                 {
@@ -33,8 +33,7 @@ namespace Obra.Client.Services
 
         public async Task<ProgressReport> PostProgressReportAsync(ProgressReport progressReport)
         {
-            return null;
-            //return await _repository.PostAsync("api/ProgressReport", progressReport);
+            return await _repository.PostAsync(progressReport, path: "api/ProgressReport");
         }
     }
 }
