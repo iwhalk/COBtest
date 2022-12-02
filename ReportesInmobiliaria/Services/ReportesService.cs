@@ -12,14 +12,14 @@ using System.Data.Entity.Infrastructure;
 
 namespace ReportesObra.Services
 {
-    public class ReporteDetallesService : IReporteDetallesService
+    public class ReportesService : IReportesService
     {
         private readonly ObraDbContext _dbContext;
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly ReportesFactory _reportesFactory;
         //private readonly InmobiliariaDbContextProcedures _dbContextProcedure;
 
-        public ReporteDetallesService(ObraDbContext dbContext, IHttpContextAccessor httpContextAccessor, ReportesFactory reportesFactory)
+        public ReportesService(ObraDbContext dbContext, IHttpContextAccessor httpContextAccessor, ReportesFactory reportesFactory)
         {
             _dbContext = dbContext;
             _httpContextAccessor = httpContextAccessor;

@@ -1,6 +1,6 @@
 ﻿namespace ReportesObra.Interfaces
 {
-    public interface IReporteDetallesService
+    public interface IReportesService
     {
         Task<byte[]> GetReporteDetalles();
     }
