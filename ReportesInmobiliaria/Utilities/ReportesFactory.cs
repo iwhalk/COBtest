@@ -226,7 +226,7 @@ namespace ReportesObra.Utilities
             tableAreas = section.AddTable();
             tableAreas.Style = "Table";
             tableAreas.Borders.Color = Colors.Gray;
-            tableAreas.Borders.Width = 0.7;
+            tableAreas.Borders.Width = 0.3;
             tableAreas.Rows.LeftIndent = 0;
             tableAreas.Rows.Alignment = RowAlignment.Center;
             // Before you can add a row, you must define the columns
@@ -336,7 +336,7 @@ namespace ReportesObra.Utilities
                             if (i == 0)
                             {
                                 row.Cells[0].Borders.Color = Colors.Gray;
-                                row.Cells[0].Borders.Top.Width = 0.7;
+                                row.Cells[0].Borders.Top.Width = 0.3;
                             }
                             else
                                 row.Cells[0].Borders.Top.Width = 1.5;
