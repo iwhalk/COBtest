@@ -63,18 +63,18 @@ builder.Services.AddAuthentication(options =>
     });
 
 builder.Services.AddAuthentication();
-builder.Services.AddAuthorization(cfg =>
-{
-    cfg.FallbackPolicy = new AuthorizationPolicyBuilder()
-        .RequireAuthenticatedUser()
-        .Build();
-});
+//builder.Services.AddAuthorization(cfg =>
+//{
+//    cfg.FallbackPolicy = new AuthorizationPolicyBuilder()
+//        .RequireAuthenticatedUser()
+//        .Build();
+//});
 
-builder.Services.AddLogging(loggingBuilder =>
-{
-    var loggingSection = builder.Configuration.GetSection("Logging");
-    loggingBuilder.AddFile(loggingSection);
-});
+//builder.Services.AddLogging(loggingBuilder =>
+//{
+//    var loggingSection = builder.Configuration.GetSection("Logging");
+//    loggingBuilder.AddFile(loggingSection);
+//});
 //builder.Services.AddScoped<CreationLogger>();
 
 builder.Services.AddScoped<AuxiliaryMethods>();
@@ -85,6 +85,7 @@ builder.Services.AddScoped<IBuildingsService, BuildingsService>();
 builder.Services.AddScoped<IActivitiesService, ActivitiesService>();
 builder.Services.AddScoped<IElementsService, ElementsService>();
 builder.Services.AddScoped<ISubElementsService, SubElementsService>();
+builder.Services.AddScoped<IReporteDetallesService, ReporteDetallesService>();
 
 builder.Services.AddScoped<ReportesFactory>();
 
@@ -103,7 +104,7 @@ app.UseSwaggerUI();
 
 app.UseAuthentication();
 
-app.UseAuthorization();
+//app.UseAuthorization();
 
 //app.UseHttpsRedirection();
 
@@ -120,6 +121,7 @@ app.MapBuildingEndpoints();
 app.MapActivityEndpoints();
 app.MapElementEndpoints();
 app.MapSubElementEndpoints();
+app.MapReporteEndpoints();
 
 #region Inmobiliaria
 
