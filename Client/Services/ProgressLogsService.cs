@@ -18,7 +18,7 @@ namespace Obra.Client.Services
         {
             if (_context.ProgressLog == null)
             {
-                var response = await _repository.GetAsync<List<ProgressLog>>("api/ProgressLogs");
+                var response = await _repository.GetAsync<List<ProgressLog>>(path: "api/ProgressLogs");
 
                 if (response != null)
                 {
@@ -32,8 +32,7 @@ namespace Obra.Client.Services
 
         public async Task<ProgressLog> PostProgressLogAsync(ProgressLog progressLog)
         {
-            return null;
-            //return await _repository.PostAsync("api/ProgressLogs", progressLog);
+            return await _repository.PostAsync(progressLog, path: "api/ProgressLogs");
         }
     }
 }

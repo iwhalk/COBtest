@@ -19,7 +19,7 @@ namespace Obra.Client.Services
         {
             if (_context.SubElement == null)
             {
-                var response = await _repository.GetAsync<List<SubElement>>("api/SubElements");
+                var response = await _repository.GetAsync<List<SubElement>>(path: "api/SubElements");
 
                 if (response != null)
                 {
@@ -33,8 +33,7 @@ namespace Obra.Client.Services
 
         public async Task<SubElement> PostSubElementAsync(SubElement subElement)
         {
-            return null;
-            //return await _repository.PostAsync("api/SubElements", subElement);
+            return await _repository.PostAsync(subElement, path: "api/SubElements");
         }
     }
 }

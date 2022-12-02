@@ -14,11 +14,23 @@ namespace Obra.Client.Services
             _context = context;
         }
 
+        public async Task<Building> GetBuildingAsync(int id)
+        {
+            Dictionary<string, string> parameters = new ();
+
+            if (id != null && id > 0)
+            {
+                parameters.Add("id", id.ToString());
+            }
+
+            return await _repository.GetAsync<Building>(id, parameters: parameters, path: "api/Buildings");
+        }
+
         public async Task<List<Building>> GetBuildingsAsync()
         {
             if (_context.Building == null)
             {
-                var response = await _repository.GetAsync<List<Building>>("api/Buildings");
+                var response = await _repository.GetAsync<List<Building>>(path: "api/Buildings");
 
                 if (response != null)
                 {
@@ -32,8 +44,7 @@ namespace Obra.Client.Services
 
         public async Task<Building> PostBuildingAsync(Building building)
         {
-            return null;
-            //return await _repository.PostAsync("api/Buildings", building);
+            return await _repository.PostAsync(building, path: "api/Buildings");
         }
     }
 }
