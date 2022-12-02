@@ -1,0 +1,71 @@
+﻿@page "/Test"
+
+<h1>TestPage</h1>
+
+<div class="text-aling-center">
+    <h3>Building</h3>
+
+    @if (buildings != null)
+    {
+        @foreach (var item in buildings)
+        {
+            <p>
+                <input id="@item.IdBuilding" type="checkbox" @onchange="(e) => GetsId(e, item.IdBuilding, nameBuilding)" /> @item.IdBuilding
+            </p>
+        }
+    }
+
+    <br />
+
+    @if (building != null)
+    {
+        <p>@building.IdBuilding</p>
+        <p>@building.Street</p>
+        <p>@building.Neighborhood</p>
+        <p>@building.District</p>
+        <p>@building.ZipCode</p>
+        <p>@building.TotalApartments</p>
+    }
+
+    <br />
+    <h3>Area</h3>
+
+    @if (areas != null)
+    {
+        @foreach (var item in areas)
+        {
+            <p>
+                <input id="@item.IdArea" type="checkbox" @onchange="(e) => GetsId(e, item.IdArea, nameArea)" /> @item.IdArea
+            </p>
+        }
+    }
+
+    <br />
+
+    @if (area != null)
+    {
+        <p>@area.IdArea</p>
+        <p>@area.AreaName</p>
+    }
+
+    <br />
+    <h3>Activity</h3>
+
+    @if (activities != null)
+    {
+        @foreach (var item in activities)
+        {
+            <p>
+                <input id="@item.IdActivity" type="checkbox" @onchange="(e) => GetsId(e, item.IdActivity, nameActivity)" /> @item.IdActivity
+            </p>
+        }
+    }
+
+    <br />
+
+    @if (activity != null)
+    {
+        <p>@activity.IdActivity</p>
+        <p>@activity.ActivityName</p>
+    }
+</div>

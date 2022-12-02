@@ -22,7 +22,7 @@ namespace ApiGateway.Services
                 parameters.Add("id", id.ToString());
             }
 
-            return await GetAsync<Building>(path: "Building", parameters: parameters);
+            return await GetAsync<Building>(id, path: "Building", parameters: parameters);
         }
         public async Task<ApiResponse<List<Building>>> GetBuildingsAsync()
         {

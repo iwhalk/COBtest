@@ -1,9 +1,9 @@
 ﻿using ApiGateway.Data;
-using ApiGateway.Interfaces;
+//using ApiGateway.Interfaces;
 using ApiGateway.Models;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
-using SharedLibrary;
+//using SharedLibrary;
 using System.ComponentModel.DataAnnotations;
 using System.Security.Claims;
 

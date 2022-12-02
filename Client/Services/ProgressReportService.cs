@@ -1,9 +1,9 @@
-﻿using Client.Interfaces;
-using Client.Stores;
+﻿using Obra.Client.Interfaces;
+using Obra.Client.Stores;
 using SharedLibrary.Models;
 using System.Reflection.Metadata;
 
-namespace Client.Services
+namespace Obra.Client.Services
 {
     public class ProgressReportService : IProgressReportService
     {
@@ -19,7 +19,7 @@ namespace Client.Services
         {
             if (_context.ProgressReport == null)
             {
-                var response = await _repository.GetAsync<List<ProgressReport>>("api/ProgressReport");
+                var response = await _repository.GetAsync<List<ProgressReport>>(path: "api/ProgressReport");
 
                 if (response != null)
                 {
@@ -33,7 +33,7 @@ namespace Client.Services
 
         public async Task<ProgressReport> PostProgressReportAsync(ProgressReport progressReport)
         {
-            return await _repository.PostAsync("api/ProgressReport", progressReport);
+            return await _repository.PostAsync(progressReport, path: "api/ProgressReport");
         }
     }
 }

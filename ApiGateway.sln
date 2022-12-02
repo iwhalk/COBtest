@@ -9,7 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SharedLibrary", "Shared\Sha
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ReportesObra", "ReportesInmobiliaria\ReportesObra.csproj", "{9C84DE40-910A-4412-9CF1-92278871309F}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Client", "Client\Client.csproj", "{171E8F51-E3A1-40DB-B0CD-7468E097F678}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Obra.Client", "Client\Obra.Client.csproj", "{555DA007-3237-48ED-B8CE-611C5EEE176F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -29,10 +29,10 @@ Global
 		{9C84DE40-910A-4412-9CF1-92278871309F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9C84DE40-910A-4412-9CF1-92278871309F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9C84DE40-910A-4412-9CF1-92278871309F}.Release|Any CPU.Build.0 = Release|Any CPU
-		{171E8F51-E3A1-40DB-B0CD-7468E097F678}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{171E8F51-E3A1-40DB-B0CD-7468E097F678}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{171E8F51-E3A1-40DB-B0CD-7468E097F678}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{171E8F51-E3A1-40DB-B0CD-7468E097F678}.Release|Any CPU.Build.0 = Release|Any CPU
+		{555DA007-3237-48ED-B8CE-611C5EEE176F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{555DA007-3237-48ED-B8CE-611C5EEE176F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{555DA007-3237-48ED-B8CE-611C5EEE176F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{555DA007-3237-48ED-B8CE-611C5EEE176F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

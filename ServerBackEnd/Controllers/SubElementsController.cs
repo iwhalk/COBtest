@@ -18,6 +18,26 @@ namespace ApiGateway.Controllers
             _subElementsService = subElementsService;
         }
 
+        [HttpGet("{id}")]
+        public async Task<ActionResult> GetSubElement(string id)
+        {
+            int idInt = 0;
+
+            if (id != null)
+            {
+                idInt = Convert.ToInt16(id);
+            }
+
+            var result = await _subElementsService.GetSubElementAsync(idInt);
+
+            if (result.Succeeded)
+            {
+                return Ok(result);
+            }
+
+            return BadRequest(result);
+        }
+
         [HttpGet]
         public async Task<ActionResult> GetSubElements()
         {
