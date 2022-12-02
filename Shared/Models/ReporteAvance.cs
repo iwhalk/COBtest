@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace SharedLibrary.Models
 {
-    internal class ReporteAvance
+    public class ReporteAvance
     {
+        public List<Apartment> Apartments { get; set; }
     }
 }

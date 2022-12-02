@@ -96,17 +96,15 @@ namespace ReportesObra.Utilities
 
             switch (typeof(T).Name)
             {
-                case nameof(ReporteOperacionesDetalle):
-                    CrearReporteOperacionDetalle(reporte as ReporteOperacionesDetalle);
+                case nameof(ReporteDetalles):
+                    CrearReporteDetalle(reporte as ReporteDetalles);
                     break;
-                case nameof(ReporteDescuentosResumen):
-                    CrearReporteDescuentosResumen(reporte as ReporteDescuentosResumen);
+                case nameof(ReporteAvance):
+                    CrearReporteAvance(reporte as ReporteAvance);
                     break;
                 default:
                     break;
             }
-
-            CrearReporte(reporte as ReporteDetalles);
 
             PdfDocumentRenderer pdfRenderer = new(true)
             {
@@ -151,7 +149,7 @@ namespace ReportesObra.Utilities
             style.ParagraphFormat.TabStops.AddTabStop("16cm", TabAlignment.Right);
         }
 
-        void CrearReporte(ReporteDetalles? reporteDetalles)
+        void CrearReporteDetalle(ReporteDetalles? reporteDetalles)
         {
             section.PageSetup.Orientation = Orientation.Portrait;
 
@@ -261,6 +259,118 @@ namespace ReportesObra.Utilities
             row.Cells[2].AddParagraph("Type");
 
             FillGenericContent(reporteDetalles.SubElementos, tableAreas);         
+        }
+
+        void CrearReporteAvance(ReporteAvance? reporteAvance)
+        {
+            section.PageSetup.Orientation = Orientation.Portrait;
+
+            headerFrame = section.AddTextFrame();
+            headerFrame.Width = "20.0cm";
+            headerFrame.Left = ShapePosition.Center;
+            headerFrame.RelativeHorizontal = RelativeHorizontal.Margin;
+            headerFrame.Top = "2.70cm";
+            headerFrame.RelativeVertical = RelativeVertical.Page;
+
+            // Create the text frame for the data parameters
+            dataParametersFrameLeft = section.AddTextFrame();
+            dataParametersFrameLeft.Height = "2.0cm";
+            dataParametersFrameLeft.Width = "7.0cm";
+            dataParametersFrameLeft.Left = ShapePosition.Left;
+            dataParametersFrameLeft.RelativeHorizontal = RelativeHorizontal.Margin;
+            dataParametersFrameLeft.Top = "4.0cm";
+            dataParametersFrameLeft.RelativeVertical = RelativeVertical.Page;
+
+            dataParametersFrameRight = section.AddTextFrame();
+            dataParametersFrameRight.Height = "2.0cm";
+            dataParametersFrameRight.Width = "6.5cm";
+            //dataParametersFrameRight.Left = ShapePosition.Right;
+            dataParametersFrameRight.Left = "13.0cm";
+            dataParametersFrameRight.RelativeHorizontal = RelativeHorizontal.Margin;
+            dataParametersFrameRight.Top = "4.0cm";
+            dataParametersFrameRight.RelativeVertical = RelativeVertical.Page;
+
+            // Create the text frame for the data values
+            dataValuesFrame = section.AddTextFrame();
+            dataValuesFrame.Width = "7.5cm";
+            dataValuesFrame.Left = "2.3cm";//"3.5cm"
+            dataValuesFrame.RelativeHorizontal = RelativeHorizontal.Margin;
+            dataValuesFrame.Top = "4.0cm";
+            dataValuesFrame.RelativeVertical = RelativeVertical.Page;
+
+            dataValuesFrameRight = section.AddTextFrame();
+            dataValuesFrameRight.Width = "6.5cm";
+            dataValuesFrameRight.Left = "16.0cm";//"3.5cm"
+            dataValuesFrameRight.RelativeHorizontal = RelativeHorizontal.Margin;
+            dataValuesFrameRight.Top = "4.0cm";
+            dataValuesFrameRight.RelativeVertical = RelativeVertical.Page;
+
+            dataValueTable = section.AddTextFrame();
+            dataValueTable.Width = "5.0cm";
+            dataValueTable.Left = ShapePosition.Left;
+            dataValueTable.RelativeHorizontal = RelativeHorizontal.Margin;
+            dataValueTable.Top = "6.6cm";
+            dataValueTable.RelativeVertical = RelativeVertical.Page;
+
+            // Put header in header frame
+            Paragraph paragraph = headerFrame.AddParagraph("Reporte Detallado");//Titulo
+            paragraph.AddLineBreak();
+            paragraph.AddText("Departamento A-101");
+            paragraph.Format.Font.Name = "Times New Roman";
+            paragraph.Format.Font.Size = 16;
+            paragraph.Format.Font.Bold = true;
+            paragraph.Format.Alignment = ParagraphAlignment.Center;
+
+            // Put parameters in data Frame
+            paragraph = dataParametersFrameRight.AddParagraph();
+            paragraph.Format.Font.Bold = true;
+            paragraph.Format.Font.Size = 10;
+            paragraph.AddText("Fecha de creación: ");
+
+            // Put values in data Frame
+            paragraph = dataValuesFrameRight.AddParagraph();
+            paragraph.AddText(DateTime.Now.ToString("dd/MM/yyyy"));
+            //paragraph.AddText(reporteActaEntrega.header.ElementAt(0).FechaHora.ToString("dd/MM/yyyy hh:mm tt"));
+            // Add the data separation field
+            paragraph = section.AddParagraph();
+            paragraph.Format.SpaceBefore = "2.0cm";//"2.0cm"
+            paragraph.Format.Font.Size = 10;
+            paragraph.Style = "Reference";
+            paragraph.AddFormattedText("", TextFormat.Bold);
+
+            //Control de NullReferenceException al llamar a las imágenes
+            if (ImageSource.ImageSourceImpl == null)
+            {
+                ImageSource.ImageSourceImpl = new ImageSharpImageSource<Rgba32>();
+            }
+            //---------------------------------------------------------------------------------------
+            // Create the item table
+            tableAreas = section.AddTable();
+            tableAreas.Style = "Table";
+            tableAreas.Borders.Color = Colors.Gray;
+            tableAreas.Borders.Width = 0.3;
+            tableAreas.Rows.LeftIndent = 0;
+            tableAreas.Rows.Alignment = RowAlignment.Center;
+            // Before you can add a row, you must define the columns
+            Column column = tableAreas.AddColumn("3cm");
+            column.Format.Alignment = ParagraphAlignment.Center;
+            column = tableAreas.AddColumn("4cm");
+            column.Format.Alignment = ParagraphAlignment.Center;
+            column = tableAreas.AddColumn("3cm");
+            column.Format.Alignment = ParagraphAlignment.Center;
+            // Create the header of the table
+            Row row = tableAreas.AddRow();
+            row.HeadingFormat = true;
+            row.Format.Alignment = ParagraphAlignment.Center;
+            row.Format.Font.Bold = true;
+            row.Format.Font.Size = 10;
+            row.Borders.Visible = false;
+            //row.Shading.Color = TableColor;
+            row.Cells[0].AddParagraph("ID_Element");
+            row.Cells[1].AddParagraph("SubElementName");
+            row.Cells[2].AddParagraph("Type");
+
+            //FillGenericContent(reporteDetalles.SubElementos, tableAreas);
         }
 
         void CreateLayout<T>(T reporte)
