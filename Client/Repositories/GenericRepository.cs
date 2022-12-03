@@ -1,12 +1,12 @@
-﻿using System.Net.Http.Json;
-using System.Text.Json.Serialization;
-using SharedLibrary;
-using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
-using System.Net;
+﻿using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
 using Microsoft.AspNetCore.WebUtilities;
-using PluralizeService.Core;
 using Obra.Client.Interfaces;
 using Obra.Client.Stores;
+using PluralizeService.Core;
+using SharedLibrary;
+using System.Net;
+using System.Net.Http.Json;
+using System.Text.Json.Serialization;
 
 namespace Obra.Client.Repositories
 {
@@ -22,24 +22,6 @@ namespace Obra.Client.Repositories
         }
 
         #region Get
-        public async Task<HttpResponseMessage> GetAsync(string path)
-        {
-            try
-            {
-                using HttpResponseMessage httpResponse = await _httpClient.GetAsync(path);
-                return await ParseHttpResponseAsync(httpResponse);
-
-            }
-            catch (AccessTokenNotAvailableException ex)
-            {
-                ex.Redirect(requestOptions =>
-                {
-                    requestOptions.TryAddAdditionalParameter("login_hint", "user@example.com");
-                });
-                throw;
-            }
-        }
-
         /// <summary>
         /// Realiza una llamada http GET de un solo objeto con ID al endpoint del servicio especificado
         /// </summary>
@@ -50,13 +32,31 @@ namespace Obra.Client.Repositories
 
         public async Task<T> GetAsync<T>(object? id, Dictionary<string, string>? parameters = null, string? path = null)
         {
-            using HttpResponseMessage httpResponse = await _httpClient.GetAsync(GetUri<T>(id, parameters, path));
-            return await ParseHttpResponseAsync<T>(httpResponse);
+            try
+            {
+                using HttpResponseMessage httpResponse = await _httpClient.GetAsync(GetUri<T>(id, parameters, path));
+                return await ParseHttpResponseAsync<T>(httpResponse);
+            }
+            catch (AccessTokenNotAvailableException ex)
+            {
+                _context.ErrorMessage = ex.Message;
+                ex.Redirect();
+                return default;
+            }
         }
         public async Task<object> GetAsync(object? id, Dictionary<string, string>? parameters = null, string? path = null)
         {
-            using HttpResponseMessage httpResponse = await _httpClient.GetAsync(GetUri<object>(id, parameters, path));
-            return await ParseHttpResponseAsync(httpResponse);
+            try
+            {
+                using HttpResponseMessage httpResponse = await _httpClient.GetAsync(GetUri<object>(id, parameters, path));
+                return await ParseHttpResponseAsync(httpResponse);
+            }
+            catch (AccessTokenNotAvailableException ex)
+            {
+                _context.ErrorMessage = ex.Message;
+                ex.Redirect();
+                return default;
+            }
         }
 
         /// <summary>
@@ -67,16 +67,35 @@ namespace Obra.Client.Repositories
         /// <returns>Respuesta en un arreglo de objetos genericos del endpoint del servicio consultado serializada en formato JSON</returns>
         public async Task<T> GetAsync<T>(Dictionary<string, string>? parameters = null, string? path = null)
         {
-            using HttpResponseMessage httpResponse = await _httpClient.GetAsync(GetUri<T>(default, parameters, path));
-            return await ParseHttpResponseAsync<T>(httpResponse);
+            try
+            {
+                using HttpResponseMessage httpResponse = await _httpClient.GetAsync(GetUri<T>(default, parameters, path));
+                return await ParseHttpResponseAsync<T>(httpResponse);
+            }
+            catch (AccessTokenNotAvailableException ex)
+            {
+                _context.ErrorMessage = ex.Message;
+                ex.Redirect();
+                return default;
+            }
         }
         public async Task<object> GetAsync(Dictionary<string, string>? parameters = null, string? path = null)
         {
-            using HttpResponseMessage httpResponse = await _httpClient.GetAsync(GetUri<object>(default, parameters, path));
-            return await ParseHttpResponseAsync(httpResponse);
+            try
+            {
+                using HttpResponseMessage httpResponse = await _httpClient.GetAsync(GetUri<object>(default, parameters, path));
+                return await ParseHttpResponseAsync(httpResponse);
+            }
+            catch (AccessTokenNotAvailableException ex)
+            {
+                _context.ErrorMessage = ex.Message;
+                ex.Redirect();
+                return default;
+            }
         }
         #endregion
 
+        #region Post
         /// <summary>
         /// Realiza una llamada http POST al endpoint del servicio especificado
         /// </summary>
@@ -86,18 +105,45 @@ namespace Obra.Client.Repositories
         /// <returns>Respuesta en un objeto del tipo definido en la clase del endpoint del servicio consultado</returns>
         public async Task<T> PostAsync<T>(T? value, Dictionary<string, string>? parameters = null, string? path = null)
         {
-            using HttpResponseMessage httpResponse = await _httpClient.PostAsJsonAsync(GetUri<T>(default, parameters, path), value);
-            return await ParseHttpResponseAsync<T>(httpResponse);
+            try
+            {
+                using HttpResponseMessage httpResponse = await _httpClient.PostAsJsonAsync(GetUri<T>(default, parameters, path), value);
+                return await ParseHttpResponseAsync<T>(httpResponse);
+            }
+            catch (AccessTokenNotAvailableException ex)
+            {
+                _context.ErrorMessage = ex.Message;
+                ex.Redirect();
+                return default;
+            }
         }
         public async Task<T> PostAsync<T>(object? value, Dictionary<string, string>? parameters = null, string? path = null)
         {
-            using HttpResponseMessage httpResponse = await _httpClient.PostAsJsonAsync(GetUri<object>(default, parameters, path), value);
-            return await ParseHttpResponseAsync<T>(httpResponse);
+            try
+            {
+                using HttpResponseMessage httpResponse = await _httpClient.PostAsJsonAsync(GetUri<object>(default, parameters, path), value);
+                return await ParseHttpResponseAsync<T>(httpResponse);
+            }
+            catch (AccessTokenNotAvailableException ex)
+            {
+                _context.ErrorMessage = ex.Message;
+                ex.Redirect();
+                return default;
+            }
         }
         public async Task<object> PostAsync(object? value, Dictionary<string, string>? parameters = null, string? path = null)
         {
-            using HttpResponseMessage httpResponse = await _httpClient.PostAsJsonAsync(GetUri<object>(default, parameters, path), value);
-            return await ParseHttpResponseAsync(httpResponse);
+            try
+            {
+                using HttpResponseMessage httpResponse = await _httpClient.PostAsJsonAsync(GetUri<object>(default, parameters, path), value);
+                return await ParseHttpResponseAsync(httpResponse);
+            }
+            catch (AccessTokenNotAvailableException ex)
+            {
+                _context.ErrorMessage = ex.Message;
+                ex.Redirect();
+                return default;
+            }
         }
 
         /// <summary>
@@ -109,15 +155,35 @@ namespace Obra.Client.Repositories
         /// <returns>Respuesta en un objeto del tipo definido en la clase del endpoint del servicio consultado</returns>
         public async Task<T> PostAsync<T>(HttpContent? content, Dictionary<string, string>? parameters = null, string? path = null)
         {
-            using HttpResponseMessage httpResponse = await _httpClient.PostAsync(GetUri<T>(default, parameters, path), content);
-            return await ParseHttpResponseAsync<T>(httpResponse);
+            try
+            {
+                using HttpResponseMessage httpResponse = await _httpClient.PostAsync(GetUri<T>(default, parameters, path), content);
+                return await ParseHttpResponseAsync<T>(httpResponse);
+            }
+            catch (AccessTokenNotAvailableException ex)
+            {
+                _context.ErrorMessage = ex.Message;
+                ex.Redirect();
+                return default;
+            }
         }
         public async Task<object> PostAsync(HttpContent? content, Dictionary<string, string>? parameters = null, string? path = null)
         {
-            using HttpResponseMessage httpResponse = await _httpClient.PostAsync(GetUri<object>(default, parameters, path), content);
-            return await ParseHttpResponseAsync(httpResponse);
+            try
+            {
+                using HttpResponseMessage httpResponse = await _httpClient.PostAsync(GetUri<object>(default, parameters, path), content);
+                return await ParseHttpResponseAsync(httpResponse);
+            }
+            catch (AccessTokenNotAvailableException ex)
+            {
+                _context.ErrorMessage = ex.Message;
+                ex.Redirect();
+                return default;
+            }
         }
+        #endregion
 
+        #region Put
         /// <summary>
         /// Realiza una llamada http PUT al endpoint del servicio especificado
         /// </summary>
@@ -128,13 +194,31 @@ namespace Obra.Client.Repositories
         /// <returns>Respuesta de tipo bool si la operacion se completo de manera satisfactoria en el endpoint del servicio consultado</returns>
         public async Task<T> PutAsync<T>(object? id, T? value, Dictionary<string, string>? parameters = null, string? path = null)
         {
-            using HttpResponseMessage httpResponse = await _httpClient.PutAsJsonAsync(GetUri<T>(id, parameters, path), value);
-            return await ParseHttpResponseAsync<T>(httpResponse);
+            try
+            {
+                using HttpResponseMessage httpResponse = await _httpClient.PutAsJsonAsync(GetUri<T>(id, parameters, path), value);
+                return await ParseHttpResponseAsync<T>(httpResponse);
+            }
+            catch (AccessTokenNotAvailableException ex)
+            {
+                _context.ErrorMessage = ex.Message;
+                ex.Redirect();
+                return default;
+            }
         }
         public async Task<object> PutAsync(object? id, object? value, Dictionary<string, string>? parameters = null, string? path = null)
         {
-            using HttpResponseMessage httpResponse = await _httpClient.PutAsJsonAsync(GetUri<object>(id, parameters, path), value);
-            return await ParseHttpResponseAsync(httpResponse);
+            try
+            {
+                using HttpResponseMessage httpResponse = await _httpClient.PutAsJsonAsync(GetUri<object>(id, parameters, path), value);
+                return await ParseHttpResponseAsync(httpResponse);
+            }
+            catch (AccessTokenNotAvailableException ex)
+            {
+                _context.ErrorMessage = ex.Message;
+                ex.Redirect();
+                return default;
+            }
         }
 
         /// <summary>
@@ -147,14 +231,35 @@ namespace Obra.Client.Repositories
         /// <returns>Respuesta de tipo bool si la operacion se completo de manera satisfactoria en el endpoint del servicio consultado</returns>
         public async Task<T> PutAsync<T>(object? id, HttpContent? content, Dictionary<string, string>? parameters = null, string? path = null)
         {
-            using HttpResponseMessage httpResponse = await _httpClient.PutAsync(GetUri<T>(id, parameters, path), content);
-            return await ParseHttpResponseAsync<T>(httpResponse);
+            try
+            {
+                using HttpResponseMessage httpResponse = await _httpClient.PutAsync(GetUri<T>(id, parameters, path), content);
+                return await ParseHttpResponseAsync<T>(httpResponse);
+            }
+            catch (AccessTokenNotAvailableException ex)
+            {
+                _context.ErrorMessage = ex.Message;
+                ex.Redirect();
+                return default;
+            }
         }
         public async Task<object> PutAsync(object? id, HttpContent? content, Dictionary<string, string>? parameters = null, string? path = null)
         {
-            using HttpResponseMessage httpResponse = await _httpClient.PutAsync(GetUri<object>(id, parameters, path), content);
-            return await ParseHttpResponseAsync(httpResponse);
+            try
+            {
+                using HttpResponseMessage httpResponse = await _httpClient.PutAsync(GetUri<object>(id, parameters, path), content);
+                return await ParseHttpResponseAsync(httpResponse);
+            }
+            catch (AccessTokenNotAvailableException ex)
+            {
+                _context.ErrorMessage = ex.Message;
+                ex.Redirect();
+                return default;
+            }
         }
+        #endregion
+
+        #region Delete
         /// <summary>
         /// Realiza una llamada http DELETE al endpoint del servicio especificado
         /// </summary>
@@ -164,15 +269,37 @@ namespace Obra.Client.Repositories
         /// <returns>Respuesta de tipo bool si la operacion se completo de manera satisfactoria en el endpoint del servicio consultado</returns>
         public async Task<T> DeleteAsync<T>(object? id, Dictionary<string, string>? parameters = null, string? path = null)
         {
-            using HttpResponseMessage httpResponse = await _httpClient.DeleteAsync(GetUri<T>(id, parameters, path));
-            return await ParseHttpResponseAsync<T>(httpResponse);
-        }
-        //public async Task<ApiResponse> DeleteAsync(object? id, Dictionary<string, string>? parameters = null, string? path = null)
-        //{
-        //    using HttpResponseMessage httpResponse = await _httpClient.DeleteAsync(GetUri<object>(id, parameters, path));
-        //    return await ParseHttpResponseAsync(httpResponse);
-        //}
+            try
+            {
+                using HttpResponseMessage httpResponse = await _httpClient.DeleteAsync(GetUri<T>(id, parameters, path));
+                return await ParseHttpResponseAsync<T>(httpResponse);
 
+            }
+            catch (AccessTokenNotAvailableException ex)
+            {
+                _context.ErrorMessage = ex.Message;
+                ex.Redirect();
+                return default;
+            }
+        }
+        public async Task<object> DeleteAsync(object? id, Dictionary<string, string>? parameters = null, string? path = null)
+        {
+            try
+            {
+                using HttpResponseMessage httpResponse = await _httpClient.DeleteAsync(GetUri<object>(id, parameters, path));
+                return await ParseHttpResponseAsync(httpResponse);
+
+            }
+            catch (AccessTokenNotAvailableException ex)
+            {
+                _context.ErrorMessage = ex.Message;
+                ex.Redirect();
+                return default;
+            }
+        }
+        #endregion
+
+        #region AuxiliaryMethods
         private async Task<T>? ParseHttpResponseAsync<T>(HttpResponseMessage httpResponse)
         {
             if (httpResponse.Content != null)
@@ -208,9 +335,10 @@ namespace Obra.Client.Repositories
                         {
                             _context.ErrorMessage = apiResponse.Status switch
                             {
-                                400 => "Bad request al servicio: " + apiResponse.ErrorMessage,
+                                400 => "Peticion erronea al servicio: " + apiResponse.ErrorMessage,
                                 401 => "Lammada no autentificada al servicio.",
                                 500 => "Error interno del servicio: " + apiResponse.ErrorMessage,
+                                503 => "Error de conexion con el servicio: " + apiResponse.ErrorMessage,
                                 _ => "Error en el servicio",
                             };
                             return default;
@@ -273,6 +401,8 @@ namespace Obra.Client.Repositories
 
             return parameters == null ? path : QueryHelpers.AddQueryString(path, parameters);
         }
+
+        #endregion
     }
 
     internal class ProblemDetails
