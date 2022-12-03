@@ -12,7 +12,7 @@ namespace SharedLibrary.Models
         public string elemento { get; set; }
         public string subElemento { get; set; }
         public string estatus { get; set; }
-        public int total { get; set; }
+        public string total { get; set; }
         public int avance { get; set; }
     }
 }

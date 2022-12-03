@@ -17,6 +17,11 @@ namespace ReportesObra.Services
         private readonly ObraDbContext _dbContext;
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly ReportesFactory _reportesFactory;
+        List<ProgressReport> progressReportsComplete;
+        List<ProgressLog> listProgressLog;
+        List<Element> listElements;
+        List<Activity> listActivities;
+        List<SubElement> listSubElements;
         //private readonly InmobiliariaDbContextProcedures _dbContextProcedure;
 
         public ReportesService(ObraDbContext dbContext, IHttpContextAccessor httpContextAccessor, ReportesFactory reportesFactory)
@@ -26,33 +31,34 @@ namespace ReportesObra.Services
             _reportesFactory = reportesFactory;
         }
 
-        public async Task<byte[]> GetReporteDetalles()
+        public async Task<byte[]> GetReporteDetalles(int idApartment)
         {
+            progressReportsComplete = _dbContext.ProgressReports.ToList();
             ReporteDetalles reporteDetalles = new()
             {
-                detalladoActividades = GetSubElementsAsync()
+                detalladoActividades = GetSubElementsAsync(idApartment)
             };
+            if (reporteDetalles.detalladoActividades.Count == 0)
+                return null;
             return _reportesFactory.CrearPdf(reporteDetalles);
         }
 
-        public List<DetalladoActividades> GetSubElementsAsync()
+        public List<DetalladoActividades> GetSubElementsAsync(int idApartment)
         {
             var list = new List<DetalladoActividades>();
-            var progressReport = _dbContext.ProgressReports;
-
+            var progressReport = progressReportsComplete.Where(x => x.IdApartment == idApartment).ToList();            
+            listElements = _dbContext.Elements.ToList();
+            listActivities = _dbContext.Activities.ToList();
+            listSubElements= _dbContext.SubElements.ToList();
             foreach (var subElement in progressReport)
             {
                 list.Add(new DetalladoActividades()
                 {
-                    //id = subElement.IdSubElement,
-                    //nombre = subElement.SubElementName.ToString(),
-                    //idElemento = subElement.IdElement,
-                    //Tipo = subElement.Type.ToString()
-                    actividad = "",
-                    elemento = "",
-                    subElemento = "",
+                    actividad = getActividad(subElement.IdElement),
+                    elemento = getElemento(subElement.IdElement),
+                    subElemento = getSubElemento(subElement.IdSubElement),
                     estatus = "",
-                    total = 1,
+                    total = subElement.TotalPieces,
                     avance = 0,
                 });
             }
@@ -61,9 +67,22 @@ namespace ReportesObra.Services
 
         public string getActividad(int idElement)
         {
-            var listaActividades = _dbContext.Activities;
-            //activityName = from d in listaActividades 
-            return "";
+            var nombreActividad = listActivities.FirstOrDefault(x => x.IdActivity == listElements.FirstOrDefault(y => y.IdElement == idElement).IdActivity).ActivityName;
+            return nombreActividad;
+        }
+
+        public string getElemento(int idElement)
+        {
+            var nameElement = listElements.FirstOrDefault(x => x.IdElement == idElement).ElementName;
+            return nameElement;
+        }
+
+        public string getSubElemento(int? idSubElement)
+        {
+            if (idSubElement == null)
+                return "N/A";
+            var nameSubElement = listSubElements.FirstOrDefault(x => x.IdSubElement == idSubElement).SubElementName;            
+            return nameSubElement;
         }
     }
 }
