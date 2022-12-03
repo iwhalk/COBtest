@@ -52,7 +52,7 @@ namespace SharedLibrary.Data
 
             modelBuilder.Entity<Blob>(entity =>
             {
-                entity.HasKey(e => e.IdBlobs)
+                entity.HasKey(e => e.IdBlob)
                     .HasName("PK__Blobs__DED4FFECDD0E0187");
             });
 

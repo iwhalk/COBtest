@@ -11,8 +11,8 @@ namespace SharedLibrary.Models
     public partial class Blob
     {
         [Key]
-        [Column("ID_Blobs")]
-        public int IdBlobs { get; set; }
+        [Column("ID_Blob")]
+        public int IdBlob { get; set; }
         [Required]
         [StringLength(20)]
         [Unicode(false)]
@@ -23,10 +23,10 @@ namespace SharedLibrary.Models
         public DateTime? DateModified { get; set; }
         [StringLength(60)]
         [Unicode(false)]
-        public string BlodName { get; set; }
+        public string BlobName { get; set; }
         [StringLength(20)]
         [Unicode(false)]
-        public string BlodTypeId { get; set; }
+        public string BlobTypeId { get; set; }
         [StringLength(20)]
         [Unicode(false)]
         public string ContainerName { get; set; }
@@ -35,7 +35,6 @@ namespace SharedLibrary.Models
         [Unicode(false)]
         public string Uri { get; set; }
         [Required]
-        [StringLength(20)]
         [Unicode(false)]
         public string BlobSize { get; set; }
     }

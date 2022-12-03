@@ -5,7 +5,9 @@ namespace ApiGateway.Interfaces
 {
     public interface IBlobsService
     {
-        Task<ApiResponse<List<Blob>>> GetBlobsAsync();
-        Task<ApiResponse<Blob>> PostBlobAsync(Blob blob);
+        Task<ApiResponse<byte[]>> GetBlobImage(int id);
+        Task<ApiResponse<Blob>> GetBlobAsync(int id);
+        Task<ApiResponse<List<Blob>>> GetBlobsAsync(int? id);
+        Task<ApiResponse<Blob>> PostBlobAsync(Blob blob, IFormFile file);
     }
 }
