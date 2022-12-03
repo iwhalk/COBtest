@@ -28,6 +28,7 @@ namespace SharedLibrary.Data
         public virtual DbSet<Element> Elements { get; set; }
         public virtual DbSet<ProgressLog> ProgressLogs { get; set; }
         public virtual DbSet<ProgressReport> ProgressReports { get; set; }
+        public virtual DbSet<Status> Statuses { get; set; }
         public virtual DbSet<SubElement> SubElements { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -48,11 +49,28 @@ namespace SharedLibrary.Data
             {
                 entity.HasKey(e => e.IdArea)
                     .HasName("PK__Areas__42A5C44CD07CA77C");
+
+                entity.HasMany(d => d.IdActivities)
+                    .WithMany(p => p.IdAreas)
+                    .UsingEntity<Dictionary<string, object>>(
+                        "AreaActivity",
+                        l => l.HasOne<Activity>().WithMany().HasForeignKey("IdActivity").OnDelete(DeleteBehavior.ClientSetNull).HasConstraintName("FK_AreaActivities_ID_Activity"),
+                        r => r.HasOne<Area>().WithMany().HasForeignKey("IdArea").OnDelete(DeleteBehavior.ClientSetNull).HasConstraintName("FK_AreaActivities_ID_Areas"),
+                        j =>
+                        {
+                            j.HasKey("IdArea", "IdActivity").HasName("PK_AreaActvities");
+
+                            j.ToTable("AreaActivities");
+
+                            j.IndexerProperty<int>("IdArea").HasColumnName("ID_Area");
+
+                            j.IndexerProperty<int>("IdActivity").HasColumnName("ID_Activity");
+                        });
             });
 
             modelBuilder.Entity<Blob>(entity =>
             {
-                entity.HasKey(e => e.IdBlobs)
+                entity.HasKey(e => e.IdBlob)
                     .HasName("PK__Blobs__DED4FFECDD0E0187");
             });
 
@@ -85,10 +103,32 @@ namespace SharedLibrary.Data
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_ProgressLogs_ID_ProgressReport");
 
+                entity.HasOne(d => d.IdStatusNavigation)
+                    .WithMany(p => p.ProgressLogs)
+                    .HasForeignKey(d => d.IdStatus)
+                    .HasConstraintName("FK_ProgressLogs_ID_Status");
+
                 entity.HasOne(d => d.IdSupervisorNavigation)
                     .WithMany(p => p.ProgressLogs)
                     .HasForeignKey(d => d.IdSupervisor)
                     .HasConstraintName("FK_ProgressLogs_ID_Supervisor");
+
+                entity.HasMany(d => d.IdBlobs)
+                    .WithMany(p => p.IdProgressLogs)
+                    .UsingEntity<Dictionary<string, object>>(
+                        "ProgressLogsBlob",
+                        l => l.HasOne<Blob>().WithMany().HasForeignKey("IdBlobs").OnDelete(DeleteBehavior.ClientSetNull).HasConstraintName("FK_ProgressLogsBlobs_ID_Blobs"),
+                        r => r.HasOne<ProgressLog>().WithMany().HasForeignKey("IdProgressLog").OnDelete(DeleteBehavior.ClientSetNull).HasConstraintName("FK_ProgressLogsBlobs_ID_ProgressLog"),
+                        j =>
+                        {
+                            j.HasKey("IdProgressLog", "IdBlobs").HasName("PK__Progress__2DDCFBE924DDA683");
+
+                            j.ToTable("ProgressLogsBlobs");
+
+                            j.IndexerProperty<int>("IdProgressLog").HasColumnName("ID_ProgressLog");
+
+                            j.IndexerProperty<int>("IdBlobs").HasColumnName("ID_Blobs");
+                        });
             });
 
             modelBuilder.Entity<ProgressReport>(entity =>
@@ -129,6 +169,12 @@ namespace SharedLibrary.Data
                     .WithMany(p => p.ProgressReports)
                     .HasForeignKey(d => d.IdSupervisor)
                     .HasConstraintName("FK_ProgressReports_ID_Supervisor");
+            });
+
+            modelBuilder.Entity<Status>(entity =>
+            {
+                entity.HasKey(e => e.IdStatus)
+                    .HasName("PK__Statuses__5AC2A7347B1A3A31");
             });
 
             modelBuilder.Entity<SubElement>(entity =>

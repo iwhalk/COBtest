@@ -13,6 +13,7 @@ namespace SharedLibrary.Models
         public Area()
         {
             ProgressReports = new HashSet<ProgressReport>();
+            IdActivities = new HashSet<Activity>();
         }
 
         [Key]
@@ -25,5 +26,9 @@ namespace SharedLibrary.Models
 
         [InverseProperty("IdAreaNavigation")]
         public virtual ICollection<ProgressReport> ProgressReports { get; set; }
+
+        [ForeignKey("IdArea")]
+        [InverseProperty("IdAreas")]
+        public virtual ICollection<Activity> IdActivities { get; set; }
     }
 }

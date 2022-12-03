@@ -10,6 +10,11 @@ namespace SharedLibrary.Models
 {
     public partial class ProgressLog
     {
+        public ProgressLog()
+        {
+            IdBlobs = new HashSet<Blob>();
+        }
+
         [Key]
         [Column("ID_ProgressLog")]
         public int IdProgressLog { get; set; }
@@ -32,8 +37,15 @@ namespace SharedLibrary.Models
         [ForeignKey("IdProgressReport")]
         [InverseProperty("ProgressLogs")]
         public virtual ProgressReport IdProgressReportNavigation { get; set; }
+        [ForeignKey("IdStatus")]
+        [InverseProperty("ProgressLogs")]
+        public virtual Status IdStatusNavigation { get; set; }
         [ForeignKey("IdSupervisor")]
         [InverseProperty("ProgressLogs")]
         public virtual AspNetUser IdSupervisorNavigation { get; set; }
+
+        [ForeignKey("IdProgressLog")]
+        [InverseProperty("IdProgressLogs")]
+        public virtual ICollection<Blob> IdBlobs { get; set; }
     }
 }
