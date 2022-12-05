@@ -49,7 +49,7 @@ namespace ReportesObra.Services
             try
             {
                 var blobContainerClient = _blobServiceClient.GetBlobContainerClient("inventoryblobs");
-                var extensionFile = file.ContentType == null ? "jpg" : file.ContentType.Split("/")[1];
+                var extensionFile = file.ContentType == "" ? "jpeg" : file.ContentType.Split("/")[1]?? "jpeg";
                 var blobName = Guid.NewGuid().ToString() + "." + extensionFile;
                 var blobClient = blobContainerClient.GetBlobClient(blobName);
 
@@ -61,7 +61,7 @@ namespace ReportesObra.Services
                     ContainerName = "inventoryblobs",
                     IsPrivate = false,
                     BlobTypeId = "",
-                    ContentType = file.ContentType ?? "image/jpg",
+                    ContentType = file.ContentType == "" ? "image/jpeg" : file.ContentType?? "image/jpeg",
                     DateCreated = DateTime.Now,
                     DateModified = DateTime.Now
                 };
@@ -70,7 +70,7 @@ namespace ReportesObra.Services
                 file.OpenReadStream(),
                 new BlobHttpHeaders
                 {
-                    ContentType = file.ContentType
+                    ContentType = file.ContentType == "" ? "image/jpeg" : file.ContentType ?? "image/jpeg"
                 });
 
                 await _dbContext.Blobs.AddAsync(newBlob);
