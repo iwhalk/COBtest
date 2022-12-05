@@ -14,14 +14,7 @@ namespace ApiGateway.Services
 
         public async Task<ApiResponse<ProgressLog>> GetProgressLogAsync(int id)
         {
-            Dictionary<string, string> parameters = new();
-
-            if (id != null && id > 0)
-            {
-                parameters.Add("id", id.ToString());
-            }
-
-            return await GetAsync<ProgressLog>(id, path: "ProgressLog", parameters: parameters);
+            return await GetAsync<ProgressLog>(id, path: "ProgressLog");
         }
 
         public async Task<ApiResponse<List<ProgressLog>>> GetProgressLogsAsync(int? idProgressLog, int? idProgressReport, int? idStatus, string? idSupervisor)
