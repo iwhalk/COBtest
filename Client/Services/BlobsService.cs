@@ -15,7 +15,7 @@ namespace Obra.Client.Services
         }
         public async Task<Blob> GetBlobAsync(int? id)
         {
-            return await _repository.GetAsync<Blob>(id, path: "Blob");
+            return await _repository.GetAsync<Blob>(id, path: "api/Blob");
         }
         public async Task<List<Blob>> GetBlobsAsync(int? id)
         {
@@ -26,7 +26,7 @@ namespace Obra.Client.Services
                 parameters.Add("id", id.ToString());
             }
 
-            return await _repository.GetAsync<List<Blob>>(path: "Blobs", parameters: parameters);
+            return await _repository.GetAsync<List<Blob>>(path: "api/Blobs", parameters: parameters);
         }  
         public async Task<Blob> PostBlobAsync(Blob blob)
         {
