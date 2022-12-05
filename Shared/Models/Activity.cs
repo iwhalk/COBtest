@@ -13,6 +13,7 @@ namespace SharedLibrary.Models
         public Activity()
         {
             Elements = new HashSet<Element>();
+            IdAreas = new HashSet<Area>();
         }
 
         [Key]
@@ -25,5 +26,9 @@ namespace SharedLibrary.Models
 
         [InverseProperty("IdActivityNavigation")]
         public virtual ICollection<Element> Elements { get; set; }
+
+        [ForeignKey("IdActivity")]
+        [InverseProperty("IdActivities")]
+        public virtual ICollection<Area> IdAreas { get; set; }
     }
 }

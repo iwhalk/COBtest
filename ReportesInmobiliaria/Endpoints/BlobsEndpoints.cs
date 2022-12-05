@@ -20,7 +20,7 @@ namespace ReportesObra.Endpoints
             .Produces<HttpValidationProblemDetails>(StatusCodes.Status500InternalServerError, "application/problem+json")
             .AllowAnonymous();
 
-            routes.MapGet("/Blob/{idBlob}", async (int id, IBlobService _blobService) =>
+            routes.MapGet("/Blob/{id}", async (int id, IBlobService _blobService) =>
             {
                 var blob = await _blobService.GetBlobAsync(id);
                 if (blob == null) return Results.NoContent();
@@ -32,7 +32,7 @@ namespace ReportesObra.Endpoints
             .Produces<HttpValidationProblemDetails>(StatusCodes.Status500InternalServerError, "application/problem+json")
             .AllowAnonymous();
 
-            routes.MapGet("/BlobImage", async (int id, IBlobService _blobService) =>
+            routes.MapGet("/BlobImage/{id}", async (int id, IBlobService _blobService) =>
             {
                 var blobs = await _blobService.GetBlobFileAsync(id);
                 if (blobs == null) return Results.NoContent();
@@ -72,7 +72,7 @@ namespace ReportesObra.Endpoints
             {
                 try
                 {
-                    if (id != blob.IdBlobs) return Results.BadRequest();
+                    if (id != blob.IdBlob) return Results.BadRequest();
                     var res = await _blobService.UpdateBlobAsync(blob);
                     return Results.Ok(res);
                 }
