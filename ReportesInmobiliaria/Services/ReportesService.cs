@@ -22,6 +22,7 @@ namespace ReportesObra.Services
         List<Element> listElements;
         List<Activity> listActivities;
         List<SubElement> listSubElements;
+        List<Apartment> listApartments;
         //private readonly InmobiliariaDbContextProcedures _dbContextProcedure;
 
         public ReportesService(ObraDbContext dbContext, IHttpContextAccessor httpContextAccessor, ReportesFactory reportesFactory)
@@ -31,35 +32,40 @@ namespace ReportesObra.Services
             _reportesFactory = reportesFactory;
         }
 
-        public async Task<byte[]> GetReporteDetalles(int idApartment)
+        public async Task<byte[]> GetReporteDetalles(int idBuilding, int idApartment)
         {
             progressReportsComplete = _dbContext.ProgressReports.ToList();
+            listProgressLog = _dbContext.ProgressLogs.ToList();
             ReporteDetalles reporteDetalles = new()
             {
-                detalladoActividades = GetSubElementsAsync(idApartment)
+                detalladoActividades = GetSubElementsAsync(idBuilding, idApartment)
             };
             if (reporteDetalles.detalladoActividades.Count == 0)
                 return null;
-            return _reportesFactory.CrearPdf(reporteDetalles);
+            string apartmentNumber = listApartments.FirstOrDefault(x => x.IdApartment == idApartment).ApartmentNumber;
+            return _reportesFactory.CrearPdf(reporteDetalles, apartmentNumber);
         }
 
-        public List<DetalladoActividades> GetSubElementsAsync(int idApartment)
+        public List<DetalladoActividades> GetSubElementsAsync(int idBuilding, int idApartment)
         {
             var list = new List<DetalladoActividades>();
-            var progressReport = progressReportsComplete.Where(x => x.IdApartment == idApartment).ToList();            
+            var progressReport = progressReportsComplete.Where(x => (x.IdBuilding == idBuilding && x.IdApartment == idApartment)).ToList();            
             listElements = _dbContext.Elements.ToList();
             listActivities = _dbContext.Activities.ToList();
-            listSubElements= _dbContext.SubElements.ToList();
+            listSubElements = _dbContext.SubElements.ToList();
+            listApartments = _dbContext.Apartments.ToList();
             foreach (var subElement in progressReport)
             {
+                if (getStausName(subElement.IdProgressReport) == "Terminado")
+                    continue;
                 list.Add(new DetalladoActividades()
                 {
                     actividad = getActividad(subElement.IdElement),
                     elemento = getElemento(subElement.IdElement),
                     subElemento = getSubElemento(subElement.IdSubElement),
-                    estatus = "",
+                    estatus = getStausName(subElement.IdProgressReport),
                     total = subElement.TotalPieces,
-                    avance = 0,
+                    avance = getProgress(subElement.IdProgressReport),
                 });
             }
             return list;
@@ -83,6 +89,36 @@ namespace ReportesObra.Services
                 return "N/A";
             var nameSubElement = listSubElements.FirstOrDefault(x => x.IdSubElement == idSubElement).SubElementName;            
             return nameSubElement;
+        }
+
+        public string getStausName(int idProgressReport)
+        {
+            var result = listProgressLog.LastOrDefault(x => x.IdProgressReport == idProgressReport);
+            if (result == null)
+                return "Pendiente";
+            int? idStatus = result.IdStatus;
+            switch (idStatus)
+            {
+                case 1:
+                    return "Pendiente";
+                case 2:
+                    return "En curso";
+                case 3:
+                    return "Terminado";
+                default:
+                    return "Pendiente";
+            }
+        }
+
+        private int getProgress(int idProgressReport)
+        {
+            int i = 0;
+            var result = listProgressLog.LastOrDefault(x => x.IdProgressReport == idProgressReport);
+            if (result == null)
+                return 0;
+            string pieces = result.Pieces;
+            bool canConvert = Int32.TryParse(pieces, out i);
+            return i;
         }
     }
 }
