@@ -25,7 +25,7 @@ namespace ReportesObra.Services
             if (blob == null) return null;
 
             var blobContainerClient = _blobServiceClient.GetBlobContainerClient("inventoryblobs");
-            var blobClient = blobContainerClient.GetBlobClient(blob.BlodName);
+            var blobClient = blobContainerClient.GetBlobClient(blob.BlobName);
 
             var blobFile = await blobClient.DownloadAsync();
             return blobFile;
@@ -33,14 +33,14 @@ namespace ReportesObra.Services
 
         public async Task<Blob> GetBlobAsync(int id)
         {
-            return await _dbContext.Blobs.FirstOrDefaultAsync(x => x.IdBlobs == id);
+            return await _dbContext.Blobs.FirstOrDefaultAsync(x => x.IdBlob == id);
         }
 
         public async Task<List<Blob>> GetBlobsAsync(int? id)
         {
             IQueryable<Blob> blobs  = _dbContext.Blobs;
             if (id != null)
-                blobs =  blobs.Where(x => x.IdBlobs == id);
+                blobs =  blobs.Where(x => x.IdBlob == id);
             return await blobs.ToListAsync();
         }
         public async Task<Blob?> CreateBlobAsync(IFormFile file)
@@ -55,12 +55,12 @@ namespace ReportesObra.Services
 
                 var newBlob = new Blob
                 {
-                    BlodName = blobName,
+                    BlobName = blobName,
                     Uri = blobClient.Uri.ToString(),
                     BlobSize = file.Length.ToString(),
                     ContainerName = "inventoryblobs",
                     IsPrivate = false,
-                    BlodTypeId = "",
+                    BlobTypeId = "",
                     ContentType = file.ContentType ?? "image/jpg",
                     DateCreated = DateTime.Now,
                     DateModified = DateTime.Now
@@ -100,7 +100,7 @@ namespace ReportesObra.Services
 
         public async Task<bool> DeleteBlobAsync(int id)
         {
-            Blob? blob = _dbContext.Blobs.FirstOrDefault(x => x.IdBlobs == id);
+            Blob? blob = _dbContext.Blobs.FirstOrDefault(x => x.IdBlob == id);
             if (blob == null)
                 return false;
             _dbContext.Blobs.Remove(blob);
