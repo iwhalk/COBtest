@@ -22,7 +22,8 @@ namespace Obra.Client.Services
 
         public async Task<List<Apartment>> GetApartmentsAsync()
         {
-            return await _repository.GetAsync<List<Apartment>>(path: "api/Apartments");
+            _context.Apartment = await _repository.GetAsync<List<Apartment>>(path: "api/Apartments");
+            return _context.Apartment;
         }
 
         public async Task<Apartment> PostApartmentAsync(Apartment apartment)
