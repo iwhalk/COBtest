@@ -72,7 +72,7 @@ namespace ReportesObra.Endpoints
             {
                 try
                 {
-                    if (id != blob.IdBlobs) return Results.BadRequest();
+                    if (id != blob.IdBlob) return Results.BadRequest();
                     var res = await _blobService.UpdateBlobAsync(blob);
                     return Results.Ok(res);
                 }

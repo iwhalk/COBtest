@@ -14,11 +14,12 @@ namespace Obra.Client.Repositories
     {
         private readonly ApplicationContext _context;
         private readonly HttpClient _httpClient;
+        //private readonly IHttpClientFactory _httpClientFactory;
 
-        public GenericRepository(ApplicationContext context, HttpClient httpClient)
+        public GenericRepository(ApplicationContext context, HttpClient httpClient, IHttpClientFactory httpClientFactory)
         {
             _context = context;
-            _httpClient = httpClient;
+            _httpClient = httpClientFactory.CreateClient("ApiGateway");
         }
 
         #region Get
