@@ -18,12 +18,12 @@ namespace Obra.Client.Services
         {
             Dictionary<string, string> parameters = new ();
 
-            if (id != null && id > 0)
+            if (id > 0)
             {
                 parameters.Add("id", id.ToString());
             }
 
-            return await _repository.GetAsync<Building>(id, parameters: parameters, path: "api/Buildings");
+            return await _repository.GetAsync<Building>(id, path: "Building", parameters: parameters);
         }
 
         public async Task<List<Building>> GetBuildingsAsync()

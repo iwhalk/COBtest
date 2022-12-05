@@ -11,7 +11,7 @@ namespace Obra.Client.Pages
         private readonly IApartmentsService _apartmentsService;
         private readonly IProgressLogsService _progressLogsService;
         private readonly IProgressReportService _progressReportService;
-
+        //Variable locales
         private List<int> _idsAparmentSelect { get; set; } = new();
         private bool _isFullAparment { get; set;}
         

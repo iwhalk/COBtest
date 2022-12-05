@@ -13,66 +13,15 @@
                         <button class="bg-gray-600 border border-stone-400">
                             <h1 class="text-md text-white font-medium leading-6 text-center p-1">TODOS</h1>
                         </button>
-                        <button class="bg-gray-600 border border-stone-400">
-                            <h1 class="text-md text-white font-medium leading-6 text-center p-1">A-101</h1>
-                        </button>
-                        <button class="bg-gray-600 border border-stone-400">
-                            <h1 class="text-md text-white font-medium leading-6 text-center p-1">A-102</h1>
-                        </button>
-                        <button class="bg-gray-600 border border-stone-400">
-                            <h1 class="text-md text-white font-medium leading-6 text-center p-1">A-103</h1>
-                        </button>
-                        <button class="bg-gray-600 border border-stone-400">
-                            <h1 class="text-md text-white font-medium leading-6 text-center p-1">A-104</h1>
-                        </button>
-                        <button class="bg-gray-600 border border-stone-400">
-                            <h1 class="text-md text-white font-medium leading-6 text-center p-1">A-201</h1>
-                        </button>
-                        <button class="bg-gray-600 border border-stone-400">
-                            <h1 class="text-md text-white font-medium leading-6 text-center p-1">A-202</h1>
-                        </button>
-                        <button class="bg-gray-600 border border-stone-400">
-                            <h1 class="text-md text-white font-medium leading-6 text-center p-1">A-203</h1>
-                        </button>
-                        <button class="bg-gray-600 border border-stone-400">
-                            <h1 class="text-md text-white font-medium leading-6 text-center p-1">A-204</h1>
-                        </button>
-                        <button class="bg-gray-600 border border-stone-400">
-                            <h1 class="text-md text-white font-medium leading-6 text-center p-1">A-301</h1>
-                        </button>
-                        <button class="bg-gray-600 border border-stone-400">
-                            <h1 class="text-md text-white font-medium leading-6 text-center p-1">A-302</h1>
-                        </button>
-                        <button class="bg-gray-600 border border-stone-400">
-                            <h1 class="text-md text-white font-medium leading-6 text-center p-1">A-303</h1>
-                        </button>
-                        <button class="bg-gray-600 border border-stone-400">
-                            <h1 class="text-md text-white font-medium leading-6 text-center p-1">A-304</h1>
-                        </button>
-                        <button class="bg-gray-600 border border-stone-400">
-                            <h1 class="text-md text-white font-medium leading-6 text-center p-1">A-401</h1>
-                        </button>
-                        <button class="bg-gray-600 border border-stone-400">
-                            <h1 class="text-md text-white font-medium leading-6 text-center p-1">A-402</h1>
-                        </button>
-                        <button class="bg-gray-600 border border-stone-400">
-                            <h1 class="text-md text-white font-medium leading-6 text-center p-1">A-403</h1>
-                        </button>
-                        <button class="bg-gray-600 border border-stone-400">
-                            <h1 class="text-md text-white font-medium leading-6 text-center p-1">A-404</h1>
-                        </button>
-                        <button class="bg-gray-600 border border-stone-400">
-                            <h1 class="text-md text-white font-medium leading-6 text-center p-1">A-501</h1>
-                        </button>
-                        <button class="bg-gray-600 border border-stone-400">
-                            <h1 class="text-md text-white font-medium leading-6 text-center p-1">A-502</h1>
-                        </button>
-                        <button class="bg-gray-600 border border-stone-400">
-                            <h1 class="text-md text-white font-medium leading-6 text-center p-1">A-503</h1>
-                        </button>
-                        <button class="bg-gray-600 border border-stone-400">
-                            <h1 class="text-md text-white font-medium leading-6 text-center p-1">A-504</h1>
-                        </button>
+                        @if (_context.Apartment != null)
+                        {                    
+                            @foreach (var apartment in _context.Apartment)
+                            {
+                                <button @onclick="() => AddIdAparmentSelect(apartment.IdApartment)" class="@(_idsAparmentSelect.Contains(apartment.IdApartment) ? "bg-[#55595E]" : "bg-[#9CA2A8]") border border-stone-400">
+                                    <h1 class="text-md text-white font-medium leading-6 text-center p-1">@apartment.ApartmentNumber</h1>
+                                </button>
+                            }
+                        }
                     </div>
                 </div>
             </div>
@@ -87,30 +36,15 @@
                         <button class="bg-gray-600 border border-stone-400">
                             <h1 class="text-md text-white font-medium leading-6 text-center p-1">TODOS</h1>
                         </button>
-                        <button class="bg-gray-600 border border-stone-400">
-                            <h1 class="text-md text-white font-medium leading-6 text-center p-1">Carpintería</h1>
-                        </button>
-                        <button class="bg-gray-600 border border-stone-400">
-                            <h1 class="text-md text-white font-medium leading-6 text-center p-1">Cancelería</h1>
-                        </button>
-                        <button class="bg-gray-600 border border-stone-400">
-                            <h1 class="text-md text-white font-medium leading-6 text-center p-1">Instalaciones Eléctricas</h1>
-                        </button>
-                        <button class="bg-gray-600 border border-stone-400">
-                            <h1 class="text-md text-white font-medium leading-6 text-center p-1">Instalaciones Especializadas</h1>
-                        </button>
-                        <button class="bg-gray-600 border border-stone-400">
-                            <h1 class="text-md text-white font-medium leading-6 text-center p-1">Instalaciones Hidro-Sanitarias</h1>
-                        </button>
-                        <button class="bg-gray-600 border border-stone-400">
-                            <h1 class="text-md text-white font-medium leading-6 text-center p-1">Obra Civil</h1>
-                        </button>
-                        <button class="bg-gray-600 border border-stone-400">
-                            <h1 class="text-md text-white font-medium leading-6 text-center p-1">Pinturas</h1>
-                        </button>
-                        <button class="bg-gray-600 border border-stone-400">
-                            <h1 class="text-md text-white font-medium leading-6 text-center p-1">Pisos</h1>
-                        </button>
+                        @if (_context.Area != null)
+                        {                    
+                            @foreach (var area in _context.Area)
+                            {
+                                <button @onclick="() => AddIdAreaSelect(area.IdArea)" class="@(_idsAreaSelect.Contains(area.IdArea) ? "bg-[#55595E]" : "bg-[#9CA2A8]") border border-stone-400">
+                                    <h1 class="text-md text-white font-medium leading-6 text-center p-1">@area.AreaName</h1>
+                                </button>   
+                            }
+                        }
                     </div>
                 </div>
             </div>
@@ -125,15 +59,15 @@
                         <button class="bg-gray-600 border border-stone-400">
                             <h1 class="text-md text-white font-medium leading-6 text-center p-1">TODOS</h1>
                         </button>
-                        <button class="bg-gray-600 border border-stone-400">
-                            <h1 class="text-md text-white font-medium leading-6 text-center p-1">Puerta de Acceso</h1>
-                        </button>
-                        <button class="bg-gray-600 border border-stone-400">
-                            <h1 class="text-md text-white font-medium leading-6 text-center p-1">Puerta Principal</h1>
-                        </button>
-                        <button class="bg-gray-600 border border-stone-400">
-                            <h1 class="text-md text-white font-medium leading-6 text-center p-1">Señalización</h1>
-                        </button>
+                        @if (_context.Area != null)
+                        {                    
+                            @foreach (var area in _context.Area)
+                            {
+                                <button class="bg-gray-600 border border-stone-400">
+                                    <h1 class="text-md text-white font-medium leading-6 text-center p-1">Señalización</h1>
+                                </button>
+                            }
+                        }
                     </div>
                 </div>
             </div>
@@ -166,5 +100,5 @@
     <Navbar></Navbar>
     <Footer></Footer>
 
-<label class="fixed top-0 left-0 right-0 text-2xl text-white leading-6 text-center py-2 mt-3">Detalles Por Departamento</label>
+<label class="fixed top-0 left-0 mx-64 right-0 text-2xl text-white leading-6 text-center py-2 mt-3">Detalles Por Departamento</label>
 
