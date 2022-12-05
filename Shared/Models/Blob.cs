@@ -10,6 +10,11 @@ namespace SharedLibrary.Models
 {
     public partial class Blob
     {
+        public Blob()
+        {
+            IdProgressLogs = new HashSet<ProgressLog>();
+        }
+
         [Key]
         [Column("ID_Blob")]
         public int IdBlob { get; set; }
@@ -37,5 +42,9 @@ namespace SharedLibrary.Models
         [Required]
         [Unicode(false)]
         public string BlobSize { get; set; }
+
+        [ForeignKey("IdBlobs")]
+        [InverseProperty("IdBlobs")]
+        public virtual ICollection<ProgressLog> IdProgressLogs { get; set; }
     }
 }

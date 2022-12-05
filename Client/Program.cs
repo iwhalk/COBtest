@@ -11,7 +11,7 @@ using Obra.Client.Services;
 using Obra.Client.Stores;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
-builder.RootComponents.Add<Obra.Client.App>("#app");
+builder.RootComponents.Add<App>("#app");
 builder.RootComponents.Add<HeadOutlet>("head::after");
 
 builder.Services.AddHttpClient("ApiGateway", client => client.BaseAddress = new Uri(builder.HostEnvironment.BaseAddress))
@@ -29,7 +29,8 @@ builder.Services.AddFluentUIComponents();
 
 builder.Services.AddOidcAuthentication(options =>
 {
-    options.ProviderOptions.ClientId = "blazor-client";
+    options.ProviderOptions.ClientId = "blazor-soft2245";
+    //options.ProviderOptions.ClientId = "blazor-client";
     options.ProviderOptions.Authority = builder.HostEnvironment.BaseAddress;
     options.ProviderOptions.ResponseType = "code";
 
