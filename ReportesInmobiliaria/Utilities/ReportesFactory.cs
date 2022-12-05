@@ -140,7 +140,7 @@ namespace ReportesObra.Utilities
             // Create a new style called Table based on style Normal
             style = document.Styles.AddStyle("Table", "Normal");
             style.Font.Name = "Times New Roman";
-            style.Font.Size = 9;
+            style.Font.Size = 12;
 
             // Create a new style called Reference based on style Normal
             style = document.Styles.AddStyle("Reference", "Normal");
@@ -240,25 +240,34 @@ namespace ReportesObra.Utilities
             tableAreas.Rows.LeftIndent = 0;
             tableAreas.Rows.Alignment = RowAlignment.Center;
             // Before you can add a row, you must define the columns
-            Column column = tableAreas.AddColumn("3cm");
+            Column column = tableAreas.AddColumn("4.0cm");
             column.Format.Alignment = ParagraphAlignment.Center;
-            column = tableAreas.AddColumn("4cm");
+            column = tableAreas.AddColumn("4.6cm");
             column.Format.Alignment = ParagraphAlignment.Center;
-            column = tableAreas.AddColumn("3cm");
+            column = tableAreas.AddColumn("3.8cm");
+            column.Format.Alignment = ParagraphAlignment.Center;
+            column = tableAreas.AddColumn("2.0cm");
+            column.Format.Alignment = ParagraphAlignment.Center;
+            column = tableAreas.AddColumn("1.5cm");
+            column.Format.Alignment = ParagraphAlignment.Center;
+            column = tableAreas.AddColumn("1.5cm");
             column.Format.Alignment = ParagraphAlignment.Center;
             // Create the header of the table
             Row row = tableAreas.AddRow();
             row.HeadingFormat = true;
             row.Format.Alignment = ParagraphAlignment.Center;
-            row.Format.Font.Bold = true;
-            row.Format.Font.Size = 10;
+            //row.Format.Font.Bold = true;
+            row.Format.Font.Size = 14;
             row.Borders.Visible = false;
             //row.Shading.Color = TableColor;
-            row.Cells[0].AddParagraph("ID_Element");
-            row.Cells[1].AddParagraph("SubElementName");
-            row.Cells[2].AddParagraph("Type");
+            row.Cells[0].AddParagraph("Actividad");
+            row.Cells[1].AddParagraph("Elemento");
+            row.Cells[2].AddParagraph("Sub-Elemento");
+            row.Cells[3].AddParagraph("Estatus");
+            row.Cells[4].AddParagraph("Total");
+            row.Cells[5].AddParagraph("Avance");
 
-            FillGenericContent(reporteDetalles.SubElementos, tableAreas);         
+            FillGenericContent(reporteDetalles.detalladoActividades, tableAreas);         
         }
 
         void CrearReporteAvance(ReporteAvance? reporteAvance)
@@ -405,7 +414,7 @@ namespace ReportesObra.Utilities
         /// Creates the static parts of the invoice.
         /// </summary>
 
-        void FillGenericContent<T>(List<T> value, Table table, int fontSize = 8)
+        void FillGenericContent<T>(List<T> value, Table table, int fontSize = 10)
         {
             Table _table = table;
             //foreach (var item in value)
@@ -421,35 +430,31 @@ namespace ReportesObra.Utilities
                     foreach (var (prop, index) in item.GetType().GetProperties().Select((v, i) => (v, i)))
                     {
                         var type = Nullable.GetUnderlyingType(prop.PropertyType) ?? prop.PropertyType;
-                        if (index >= 1 && index <= 3)
+                        if (index == 0)
                         {
-                            int changedIndex = 1;
-                            switch (index)
-                            {
-                                case 2: changedIndex = 0; currentName = prop.GetValue(item, null)?.ToString(); break;
-                                case 3: changedIndex = 2; break;
-                            }
-                            if (type == typeof(DateTime))
-                            {
-                                row.Cells[changedIndex].AddParagraph(((DateTime?)prop.GetValue(item, null))?.ToString("dd/MM/yyyy hh:mm:ss tt") ?? "");
-                            }
-                            if (type == typeof(string))
-                            {
-                                row.Cells[changedIndex].AddParagraph(prop.GetValue(item, null)?.ToString());
-                            }
-                            if (type == typeof(bool))
-                            {
-                                row.Cells[changedIndex].AddParagraph((bool?)prop.GetValue(item, null) ?? false ? "SI" : "NO");
-                            }
-                            if (type == typeof(int))
-                            {
-                                row.Cells[changedIndex].AddParagraph(prop.GetValue(item, null)?.ToString());
-                            }
-                            if (type == typeof(long))
-                            {
-                                row.Cells[changedIndex].AddParagraph(prop.GetValue(item, null)?.ToString());
-                            }
+                            currentName = prop.GetValue(item, null)?.ToString();
                         }
+                        if (type == typeof(DateTime))
+                        {
+                            row.Cells[index].AddParagraph(((DateTime?)prop.GetValue(item, null))?.ToString("dd/MM/yyyy hh:mm:ss tt") ?? "");
+                        }
+                        if (type == typeof(string))
+                        {
+                            row.Cells[index].AddParagraph(prop.GetValue(item, null)?.ToString());
+                        }
+                        if (type == typeof(bool))
+                        {
+                            row.Cells[index].AddParagraph((bool?)prop.GetValue(item, null) ?? false ? "SI" : "NO");
+                        }
+                        if (type == typeof(int))
+                        {
+                            row.Cells[index].AddParagraph(prop.GetValue(item, null)?.ToString());
+                        }
+                        if (type == typeof(long))
+                        {
+                            row.Cells[index].AddParagraph(prop.GetValue(item, null)?.ToString());
+                        }
+                        
                         row.Cells[0].Borders.Color = Colors.Black;
                         row.Cells[0].Borders.Visible = false;
                         row.Cells[0].Borders.Left.Width = 1.5;
@@ -473,6 +478,9 @@ namespace ReportesObra.Utilities
                     //row.Shading.Color= Colors.LightGray;
                     row.Cells[1].Shading.Color = Colors.LightGray;
                     row.Cells[2].Shading.Color = Colors.LightGray;
+                    row.Cells[3].Shading.Color = Colors.LightGray;
+                    row.Cells[4].Shading.Color = Colors.LightGray;
+                    row.Cells[5].Shading.Color = Colors.LightGray;
                 }
             }
         }

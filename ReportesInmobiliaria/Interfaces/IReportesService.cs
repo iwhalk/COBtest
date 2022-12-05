@@ -2,6 +2,6 @@
 {
     public interface IReportesService
     {
-        Task<byte[]> GetReporteDetalles();
+        Task<byte[]> GetReporteDetalles(int idApartment);
     }
 }

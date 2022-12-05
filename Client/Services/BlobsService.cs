@@ -16,23 +16,23 @@ namespace Obra.Client.Services
 
         public async Task<List<Blob>> GetBlobsAsync()
         {
-            if (_context.Blob == null)
-            {
-                var response = await _repository.GetAsync<List<Blob>>(path: "api/Blobs");
+            //if (_context.Blob == null)
+            //{
+            var response = await _repository.GetAsync<List<Blob>>();
 
-                if (response != null)
-                {
-                    _context.Blob = response;
-                    return _context.Blob;
-                }
-            }
+            //if (response != null)
+            //{
+            //_context.Blob = response;
+            return response;
+            //}
+            //}
 
-            return _context.Blob;
+            //return _context.Blob;
         }
 
         public async Task<Blob> PostBlobAsync(Blob blob)
         {
-            return await _repository.PostAsync(blob, path: "api/Blobs");
+            return await _repository.PostAsync(blob);
         }
     }
 }
