@@ -6,8 +6,10 @@ using System.Threading.Tasks;
 
 namespace SharedLibrary.Models
 {
-    public class ReporteAvance
+    public class AparmentProgress
     {
-        public List<AparmentProgress> Apartments { get; set; }
+        public string ApartmentNumber;
+
+        public long ApartmentProgress;
     }
 }

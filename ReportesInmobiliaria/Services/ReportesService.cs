@@ -51,5 +51,33 @@ namespace ReportesObra.Services
             }
             return list;
         }
+        public async Task<byte[]> GetReporteAvance()
+        {
+            ReporteAvance reporteAvance = new()
+            {
+                Apartments = GetAparmentsAsync()
+            };
+            return _reportesFactory.CrearPdf(reporteAvance);
+        }
+
+        public List<AparmentProgress> GetAparmentsAsync()
+        {
+            IQueryable<ProgressReport> progressReports = _dbContext.ProgressReports;
+            IQueryable<ProgressLog> progressLogs= _dbContext.ProgressLogs;
+            IQueryable<Apartment> apartments = _dbContext.Apartments;                        
+
+
+
+            var list = new List<AparmentProgress>();
+            foreach (var progressReport in progressReports)
+            {
+                list.Add(new AparmentProgress()
+                {
+                    ApartmentNumber = apartments.FirstOrDefault(x => x.IdApartment == progressReport.IdApartment).ApartmentNumber,
+                    ApartmentProgress = 
+                });
+            }
+            return list;
+        }
     }
 }
