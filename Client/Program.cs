@@ -29,7 +29,7 @@ builder.Services.AddFluentUIComponents();
 
 builder.Services.AddOidcAuthentication(options =>
 {
-    options.ProviderOptions.ClientId = "blazor-soft2245";
+    options.ProviderOptions.ClientId = "blazor-client";
     //options.ProviderOptions.ClientId = "blazor-client";
     options.ProviderOptions.Authority = builder.HostEnvironment.BaseAddress;
     options.ProviderOptions.ResponseType = "code";

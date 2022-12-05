@@ -10,7 +10,13 @@
             <div class="flex justify-center bg-[#0B253E] rounded-br-2xl rounded-bl-2xl" style="height: 42rem">
                 <div>
                     <div class="grid grid-col-1 gap-1 p-1 w-48">
-                        <button class="bg-gray-600 border border-stone-400">
+                        @foreach (var apartment in ApartmentsList)
+                        {
+                            <button class="bg-gray-600 border border-stone-400">
+                                <h1 class="text-md text-white font-medium leading-6 text-center p-1">@apartment.ApartmentNumber</h1>
+                            </button>                            
+                        }
+                        @*<button class="bg-gray-600 border border-stone-400">
                             <h1 class="text-md text-white font-medium leading-6 text-center p-1">A-101</h1>
                         </button>
                         <button class="bg-gray-600 border border-stone-400">
@@ -39,10 +45,10 @@
                         </button>
                         <button class="bg-gray-600 border border-stone-400">
                             <h1 class="text-md text-white font-medium leading-6 text-center p-1">A-503</h1>
-                        </button>
+                        </button>*@
                     </div>
                 </div>
-                <div>
+                @*<div>
                     <div class="grid grid-col-1 gap-1 p-1 w-48">
                         <button class="bg-gray-600 border border-stone-400">
                             <h1 class="text-md text-white font-medium leading-6 text-center p-1">A-102</h1>
@@ -75,7 +81,7 @@
                             <h1 class="text-md text-white font-medium leading-6 text-center p-1">A-504</h1>
                         </button>
                     </div>
-                </div>
+                </div>*@
             </div>
         </div>
         <div class="mt-12 mx-1">
@@ -85,7 +91,13 @@
             <div class="flex justify-center bg-[#23364B] rounded-br-2xl rounded-bl-2xl">
                 <div class="-mb-12" style="height: 42rem">
                     <div class="grid grid-col-1 gap-1 p-1 w-56">
-                        <button class="bg-gray-600 border border-stone-400">
+                        @foreach (var area in AreasList)
+                        {
+                            <button class="bg-gray-600 border border-stone-400">
+                                <h1 class="text-md text-white font-medium leading-6 text-center p-1">@area.AreaName</h1>
+                            </button>                            
+                        }
+                        @*<button class="bg-gray-600 border border-stone-400">
                             <h1 class="text-md text-white font-medium leading-6 text-center p-1">Acceso</h1>
                         </button>
                         <button class="bg-gray-600 border border-stone-400">
@@ -132,7 +144,7 @@
                         </button>
                         <button class="bg-gray-600 border border-stone-400">
                             <h1 class="text-sm text-white font-medium leading-6 text-center p-1">Vestidor y Baño Recámara 3</h1>
-                        </button>
+                        </button>*@
                     </div>
                 </div>
             </div>
@@ -144,12 +156,18 @@
             <div class="flex justify-center bg-[#163758] rounded-br-2xl rounded-bl-2xl">
                 <div class="-mb-24" style="height: 42rem">
                     <div class="grid grid-col-1 gap-1 p-1 w-56">
-                        <button class="bg-gray-600 border border-stone-400">
+                        @foreach (var activity in ActivitiesList)
+                        {
+                            <button class="bg-gray-600 border border-stone-400">
+                                <h1 class="text-md text-white font-medium leading-6 text-center p-1">@activity.ActivityName</h1>
+                            </button>                            
+                        }
+                        @*<button class="bg-gray-600 border border-stone-400">
                             <h1 class="text-md text-white font-medium leading-6 text-center p-1">Carpinteria</h1>
                         </button>
                         <button class="bg-gray-600 border border-stone-400">
                             <h1 class="text-md text-white font-medium leading-6 text-center p-1">Pinturas</h1>
-                        </button>
+                        </button>*@
                     </div>
                 </div>
             </div>
@@ -161,7 +179,13 @@
             <div class="flex justify-center bg-[#254260] rounded-br-2xl rounded-bl-2xl">
                 <div class="-mb-36" style="height: 42rem">
                     <div class="grid grid-col-1 gap-1 p-1 w-56">
-                        <button class="bg-gray-600 border border-stone-400">
+                        @foreach (var element in CurrentElementsList)
+                        {
+                            <button class="bg-gray-600 border border-stone-400">
+                                <h1 class="text-md text-white font-medium leading-6 text-center p-1">@element.ElementName</h1>
+                            </button>
+                        }
+                        @*<button class="bg-gray-600 border border-stone-400">
                             <h1 class="text-md text-white font-medium leading-6 text-center p-1">Puerta acceso</h1>
                         </button>
                         <button class="bg-gray-600 border border-stone-400">
@@ -172,7 +196,7 @@
                         </button>
                         <button class="bg-gray-600 border border-stone-400">
                             <h1 class="text-sm text-white font-medium leading-6 text-center p-1">Segunda mano para entrega</h1>
-                        </button>
+                        </button>*@
                     </div>
                 </div>
             </div>

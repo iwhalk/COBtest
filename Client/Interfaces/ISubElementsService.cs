@@ -5,7 +5,7 @@ namespace Obra.Client.Interfaces
 {
     public interface ISubElementsService
     {
-        Task<List<SubElement>> GetSubElementsAsync();
+        Task<List<SubElement>> GetSubElementsAsync(int? idElement = null);
         Task<SubElement> PostSubElementAsync(SubElement subElement);
     }
 }
