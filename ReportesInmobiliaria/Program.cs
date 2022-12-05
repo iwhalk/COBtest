@@ -63,18 +63,18 @@ builder.Services.AddAuthentication(options =>
     });
 
 builder.Services.AddAuthentication();
-builder.Services.AddAuthorization(cfg =>
-{
-    cfg.FallbackPolicy = new AuthorizationPolicyBuilder()
-        .RequireAuthenticatedUser()
-        .Build();
-});
+//builder.Services.AddAuthorization(cfg =>
+//{
+//    cfg.FallbackPolicy = new AuthorizationPolicyBuilder()
+//        .RequireAuthenticatedUser()
+//        .Build();
+//});
 
-builder.Services.AddLogging(loggingBuilder =>
-{
-    var loggingSection = builder.Configuration.GetSection("Logging");
-    loggingBuilder.AddFile(loggingSection);
-});
+//builder.Services.AddLogging(loggingBuilder =>
+//{
+//    var loggingSection = builder.Configuration.GetSection("Logging");
+//    loggingBuilder.AddFile(loggingSection);
+//});
 //builder.Services.AddScoped<CreationLogger>();
 
 builder.Services.AddScoped<AuxiliaryMethods>();
@@ -88,6 +88,7 @@ builder.Services.AddScoped<IProgressLogsService, ProgressLogsService>();
 builder.Services.AddScoped<IBlobService, BlobService>();
 builder.Services.AddScoped<IElementsService, ElementsService>();
 builder.Services.AddScoped<ISubElementsService, SubElementsService>();
+builder.Services.AddScoped<IReportesService, ReportesService>();
 
 builder.Services.AddScoped<ReportesFactory>();
 
@@ -106,7 +107,7 @@ app.UseSwaggerUI();
 
 app.UseAuthentication();
 
-app.UseAuthorization();
+//app.UseAuthorization();
 
 //app.UseHttpsRedirection();
 
@@ -126,6 +127,8 @@ app.MapSubElementEndpoints();
 app.MapProgressLogsEndpoints();
 app.MapProgressReportsEndpoints();
 app.MapBlobsEndpoints();
+app.MapReporteEndpoints();
+
 #region Inmobiliaria
 
 #region AspNetUsers
