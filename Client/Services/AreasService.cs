@@ -16,14 +16,7 @@ namespace Obra.Client.Services
 
         public async Task<Area> GetAreaAsync(int id)
         {
-            Dictionary<string, string> parameters = new();
-
-            if (id > 0)
-            {
-                parameters.Add("id", id.ToString());
-            }
-
-            return await _repository.GetAsync<Area>(id, parameters: parameters, path: "api/Areas");
+            return await _repository.GetAsync<Area>(id, path: "api/Area");
         }
 
         public async Task<List<Area>> GetAreasAsync()

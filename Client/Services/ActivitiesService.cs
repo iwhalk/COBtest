@@ -15,15 +15,8 @@ namespace Obra.Client.Services
         }
 
         public async Task<Activity> GetActivityAsync(int id)
-        {
-            Dictionary<string, string> parameters = new();
-
-            if (id > 0)
-            {
-                parameters.Add("id", id.ToString());
-            }
-
-            return await _repository.GetAsync<Activity>(id, parameters: parameters, path: "api/Activities");
+        {       
+            return await _repository.GetAsync<Activity>(id, path: "api/Activities");
         }
 
         public async Task<List<Activity>> GetActivitiesAsync()

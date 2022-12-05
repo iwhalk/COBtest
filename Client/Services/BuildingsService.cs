@@ -15,14 +15,8 @@ namespace Obra.Client.Services
         }
 
         public async Task<Building> GetBuildingAsync(int id)
-        {
-            Dictionary<string, string> parameters = new ();
-
-            if (id > 0)
-            {
-                parameters.Add("id", id.ToString());
-            }
-            return await _repository.GetAsync<Building>(id, path: "Building", parameters: parameters);
+        {      
+            return await _repository.GetAsync<Building>(id, path: "Building");
         }
         public async Task<List<Building>> GetBuildingsAsync()
         {        
