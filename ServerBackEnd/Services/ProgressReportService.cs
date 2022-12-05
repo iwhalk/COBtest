@@ -15,14 +15,7 @@ namespace ApiGateway.Services
 
         public async Task<ApiResponse<ProgressReport>> GetProgressReportAsync(int id)
         {
-            Dictionary<string, string> parameters = new();
-
-            if (id != null && id > 0)
-            {
-                parameters.Add("id", id.ToString());
-            }
-
-            return await GetAsync<ProgressReport>(id, path: "ProgressReport", parameters: parameters);
+            return await GetAsync<ProgressReport>(id, path: "ProgressReport");
         }
 
         public async Task<ApiResponse<List<ProgressReport>>> GetProgressReportsAsync(int? idProgressReport, int? idBuilding, int? idAparment, int? idArea, int? idElemnet, int? idSubElement, string? idSupervisor)
