@@ -61,7 +61,7 @@ namespace ReportesObra.Services
                     ContainerName = "inventoryblobs",
                     IsPrivate = false,
                     BlobTypeId = "",
-                    ContentType = file.ContentType == "" ? "image/jpeg " : file.ContentType?? "image/jpeg ",
+                    ContentType = file.ContentType == "" ? "image/jpeg" : file.ContentType?? "image/jpeg",
                     DateCreated = DateTime.Now,
                     DateModified = DateTime.Now
                 };

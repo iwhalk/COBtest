@@ -31,7 +31,7 @@ namespace ApiGateway.Controllers
 
             if (result.Succeeded)
             {
-                return File(result.Content, result.ContentType?? "image.jp");                
+                return File(result.Content, result.ContentType.Equals("image/jpeg") == false ? "image/jpeg" : "image/jpeg");                
             }
 
             return BadRequest(result);
