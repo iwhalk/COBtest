@@ -15,25 +15,20 @@ namespace Obra.Client.Services
             _context = context;
         }
 
+        public async Task<Apartment> GetApartmentAsync(int id)
+        {           
+            return await _repository.GetAsync<Apartment>(id, path: "api/Apartment");
+        }
+
         public async Task<List<Apartment>> GetApartmentsAsync()
         {
-            if (_context.Apartment == null)
-            {
-                var response = await _repository.GetAsync<List<Apartment>>(path: "api/Apartments");
-
-                if (response != null)
-                {
-                    _context.Apartment = response;
-                    return _context.Apartment;
-                }
-            }
-
+            _context.Apartment = await _repository.GetAsync<List<Apartment>>(path: "api/Apartments");
             return _context.Apartment;
         }
 
         public async Task<Apartment> PostApartmentAsync(Apartment apartment)
         {
-            return await _repository.PostAsync(apartment, path: "api/Apartments");
+            return await _repository.PostAsync(apartment, path: "api/Apartment");
         }
     }
 }

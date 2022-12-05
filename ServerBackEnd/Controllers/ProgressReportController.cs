@@ -6,7 +6,7 @@ using SharedLibrary.Models;
 namespace ApiGateway.Controllers
 {
     [Route("api/[controller]")]
-    //[Authorize]
+    [Authorize]
     [ApiController]
     public class ProgressReportController : ControllerBase
     {

@@ -11,7 +11,7 @@ namespace Obra.Client.Pages
         private readonly IApartmentsService _apartmentsService;
         private readonly IProgressLogsService _progressLogsService;
         private readonly IProgressReportService _progressReportService;
-
+        //Variable locales
         private List<int> _idsAparmentSelect { get; set; } = new();
         private bool _isFullAparment { get; set;}
         
@@ -40,8 +40,16 @@ namespace Obra.Client.Pages
         }
         private void FullAparment()
         {
-            _isFullAparment = true;
-            _idsAparmentSelect = _context.Apartment.Select(x => x.IdApartment).ToList();
+            //if (_idsAparmentSelect.Count() > 0)
+            //{
+            //    _isFullAparment = false;
+            //    _idsAparmentSelect.Clear();
+            //}
+            //else
+            //{
+                _isFullAparment = true;
+                _idsAparmentSelect = _context.Apartment.Select(x => x.IdApartment).ToList();
+            //}
         }
     }
 }
