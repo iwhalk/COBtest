@@ -22,26 +22,12 @@ namespace Obra.Client.Services
             {
                 parameters.Add("id", id.ToString());
             }
-
             return await _repository.GetAsync<Building>(id, path: "Building", parameters: parameters);
         }
-
         public async Task<List<Building>> GetBuildingsAsync()
-        {
-            if (_context.Building == null)
-            {
-                var response = await _repository.GetAsync<List<Building>>(path: "api/Buildings");
-
-                if (response != null)
-                {
-                    _context.Building = response;
-                    return _context.Building;
-                }
-            }
-
-            return _context.Building;
+        {        
+            return await _repository.GetAsync<List<Building>>(path: "api/Buildings");
         }
-
         public async Task<Building> PostBuildingAsync(Building building)
         {
             return await _repository.PostAsync(building, path: "api/Buildings");
