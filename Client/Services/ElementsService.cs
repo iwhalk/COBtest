@@ -14,19 +14,27 @@ namespace Obra.Client.Services
             _context = context;
         }
 
-        public async Task<List<Element>> GetElementsAsync(int id)
+        public async Task<List<Element>> GetElementsAsync(int? idActivity = null)
         {
-            if (_context.Element == null)
-            {
-                var response = await _repository.GetAsync<List<Element>>(path: "api/Elements");
+            Dictionary<string, string> parameters = new();
 
-                if (response != null)
-                {
-                    _context.Element = response.Where(x => x.IdActivity == id).ToList();
-                    return _context.Element;
-                }
+            if (idActivity != null)
+            {
+                parameters.Add("idActivity", idActivity.ToString());
             }
-            return _context.Element;
+
+            //if (_context.Element == null)
+            //{
+            //    var response = await _repository.GetAsync<List<Element>>(path: "api/Elements");
+
+            //    if (response != null)
+            //    {
+            //        _context.Element = response;
+            //        return _context.Element;
+            //    }
+            //}
+
+            return await _repository.GetAsync<List<Element>>(path: "api/Elements");
         }
         public async Task<Element> PostElementAsync(Element element)
         {

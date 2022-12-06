@@ -1,6 +1,7 @@
 ﻿using Obra.Client.Interfaces;
 using Obra.Client.Stores;
 using SharedLibrary.Models;
+using System.Diagnostics;
 using System.Xml.Linq;
 
 namespace Obra.Client.Services
@@ -15,20 +16,27 @@ namespace Obra.Client.Services
             _context = context;
         }
 
-        public async Task<List<SubElement>> GetSubElementsAsync(int id)
+        public async Task<List<SubElement>> GetSubElementsAsync(int? idElement = null)
         {
-            if (_context.SubElement == null)
-            {
-                var response = await _repository.GetAsync<List<SubElement>>(path: "api/SubElements");
+            Dictionary<string, string> parameters = new();
 
-                if (response != null)
-                {
-                    _context.SubElement = response.Where(x => x.IdElement == id).ToList();
-                    return _context.SubElement;
-                }
+            if (idElement != null)
+            {
+                parameters.Add("idElement", idElement.ToString());
             }
 
-            return _context.SubElement;
+            //if (_context.SubElement == null)
+            //{
+            //    var response = await _repository.GetAsync<List<SubElement>>(path: "api/SubElements");
+
+            //    if (response != null)
+            //    {
+            //        _context.SubElement = response;
+            //        return _context.SubElement;
+            //    }
+            //}
+
+            return await _repository.GetAsync<List<SubElement>>(path: "api/SubElements");
         }
 
         public async Task<SubElement> PostSubElementAsync(SubElement subElement)

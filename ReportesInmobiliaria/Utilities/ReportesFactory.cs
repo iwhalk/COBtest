@@ -67,6 +67,7 @@ namespace ReportesObra.Utilities
 
         PageSetup pageSetup;
         string obserbations = "";
+        private string _apartmentNumber;
         /// <summary>
         /// Initializes a new instance of the class BillFrom and opens the specified XML document.
         /// </summary>
@@ -81,7 +82,7 @@ namespace ReportesObra.Utilities
         /// <summary>
         /// Creates the invoice document.
         /// </summary>
-        public byte[] CrearPdf<T>(T reporte)
+        public byte[] CrearPdf<T>(T reporte, string apartmentNumber)
         {
             // Create a new MigraDoc document
             document = new Document();
@@ -93,7 +94,7 @@ namespace ReportesObra.Utilities
 
             DefineStyles();
             CreateLayout(reporte);
-
+            _apartmentNumber = apartmentNumber;
             switch (typeof(T).Name)
             {
                 case nameof(ReporteDetalles):
@@ -203,7 +204,7 @@ namespace ReportesObra.Utilities
             // Put header in header frame
             Paragraph paragraph = headerFrame.AddParagraph("Reporte Detallado");//Titulo
             paragraph.AddLineBreak();
-            paragraph.AddText("Departamento A-101");
+            paragraph.AddText("Departamento " + _apartmentNumber);
             paragraph.Format.Font.Name = "Times New Roman";
             paragraph.Format.Font.Size = 16;
             paragraph.Format.Font.Bold = true;
