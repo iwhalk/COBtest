@@ -13,26 +13,24 @@ namespace Obra.Client.Services
             _repository = repository;
             _context = context;
         }
-
-        public async Task<List<Blob>> GetBlobsAsync()
+        public async Task<Blob> GetBlobAsync(int? id)
         {
-            if (_context.Blob == null)
-            {
-                var response = await _repository.GetAsync<List<Blob>>(path: "api/Blobs");
+            return await _repository.GetAsync<Blob>(id, path: "api/Blob");
+        }
+        public async Task<List<Blob>> GetBlobsAsync(int? id)
+        {
+            Dictionary<string, string> parameters = new();
 
-                if (response != null)
-                {
-                    _context.Blob = response;
-                    return _context.Blob;
-                }
+            if (id != null)
+            {
+                parameters.Add("id", id.ToString());
             }
 
-            return _context.Blob;
-        }
-
+            return await _repository.GetAsync<List<Blob>>(path: "api/Blobs", parameters: parameters);
+        }  
         public async Task<Blob> PostBlobAsync(Blob blob)
         {
-            return await _repository.PostAsync(blob, path: "api/Blobs");
+            return await _repository.PostAsync(blob);
         }
     }
 }

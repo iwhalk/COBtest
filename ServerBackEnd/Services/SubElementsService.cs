@@ -15,19 +15,19 @@ namespace ApiGateway.Services
 
         public async Task<ApiResponse<SubElement>> GetSubElementAsync(int id)
         {
-            Dictionary<string, string> parameters = new();
-
-            if (id != null && id > 0)
-            {
-                parameters.Add("id", id.ToString());
-            }
-
-            return await GetAsync<SubElement>(id, path: "SubElement", parameters: parameters);
+            return await GetAsync<SubElement>(id, path: "SubElement");
         }
 
-        public async Task<ApiResponse<List<SubElement>>> GetSubElementsAsync()
+        public async Task<ApiResponse<List<SubElement>>> GetSubElementsAsync(int? ID_Element)
         {
-            return await GetAsync<List<SubElement>>(path: "SubElements");
+            Dictionary<string, string> parameters = new();
+
+            if (ID_Element != null && ID_Element > 0)
+            {
+                parameters.Add("ID_Element", ID_Element.ToString());
+            }
+
+            return await GetAsync<List<SubElement>>(path: "SubElements", parameters: parameters);
         }
 
         public async Task<ApiResponse<SubElement>> PostSubElementAsync(SubElement subElement)

@@ -14,9 +14,16 @@ namespace ReportesObra.Services
             _dbContext = dbContext;
         }
 
-        public async Task<List<SubElement>?> GetSubElementsAsync()
+        public async Task<List<SubElement>?> GetSubElementsAsync(int? ID_Element)
         {
-            return await _dbContext.SubElements.ToListAsync();
+            IQueryable<SubElement> subElements = _dbContext.SubElements;
+
+            if (ID_Element != null)
+            {
+                subElements = subElements.Where(x => x.IdElement == ID_Element);
+            }
+
+            return await subElements.ToListAsync();
         }
 
         public async Task<SubElement?> GetSubElementAsync(int id)

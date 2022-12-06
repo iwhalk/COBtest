@@ -1,7 +1,7 @@
 ﻿@page "/ProjectTracking"
 
 <div class="pt-28 pb-12 min-h-screen bg-[url('/assets/img/imgFondo.png')] z-0 opacity-25 imgfondo fixed inset-0 bg-gray-500 bg-opacity-25 transition-opacity"></div>
-<div class="h-screen p-28 pb-12 fixed inset-0">
+<div class="h-screen pt-20 pb-12 fixed inset-0 flex flex-col justify-center items-center">
     <div class="flex justify-center rounded-2xl my-2" style="height: 45rem">
         <div class="mx-1">
             <div>
@@ -10,7 +10,13 @@
             <div class="flex justify-center bg-[#0B253E] rounded-br-2xl rounded-bl-2xl" style="height: 42rem">
                 <div>
                     <div class="grid grid-col-1 gap-1 p-1 w-48">
-                        <button class="bg-gray-600 border border-stone-400">
+                        @foreach (var apartment in ApartmentsList)
+                        {
+                            <button class="bg-gray-600 border border-stone-400">
+                                <h1 class="text-md text-white font-medium leading-6 text-center p-1">@apartment.ApartmentNumber</h1>
+                            </button>                            
+                        }
+                        @*<button class="bg-gray-600 border border-stone-400">
                             <h1 class="text-md text-white font-medium leading-6 text-center p-1">A-101</h1>
                         </button>
                         <button class="bg-gray-600 border border-stone-400">
@@ -39,10 +45,10 @@
                         </button>
                         <button class="bg-gray-600 border border-stone-400">
                             <h1 class="text-md text-white font-medium leading-6 text-center p-1">A-503</h1>
-                        </button>
+                        </button>*@
                     </div>
                 </div>
-                <div>
+                @*<div>
                     <div class="grid grid-col-1 gap-1 p-1 w-48">
                         <button class="bg-gray-600 border border-stone-400">
                             <h1 class="text-md text-white font-medium leading-6 text-center p-1">A-102</h1>
@@ -75,7 +81,7 @@
                             <h1 class="text-md text-white font-medium leading-6 text-center p-1">A-504</h1>
                         </button>
                     </div>
-                </div>
+                </div>*@
             </div>
         </div>
         <div class="mt-12 mx-1">
@@ -85,7 +91,13 @@
             <div class="flex justify-center bg-[#23364B] rounded-br-2xl rounded-bl-2xl">
                 <div class="-mb-12" style="height: 42rem">
                     <div class="grid grid-col-1 gap-1 p-1 w-56">
-                        <button class="bg-gray-600 border border-stone-400">
+                        @foreach (var area in AreasList)
+                        {
+                            <button class="bg-gray-600 border border-stone-400">
+                                <h1 class="text-md text-white font-medium leading-6 text-center p-1">@area.AreaName</h1>
+                            </button>                            
+                        }
+                        @*<button class="bg-gray-600 border border-stone-400">
                             <h1 class="text-md text-white font-medium leading-6 text-center p-1">Acceso</h1>
                         </button>
                         <button class="bg-gray-600 border border-stone-400">
@@ -132,7 +144,7 @@
                         </button>
                         <button class="bg-gray-600 border border-stone-400">
                             <h1 class="text-sm text-white font-medium leading-6 text-center p-1">Vestidor y Baño Recámara 3</h1>
-                        </button>
+                        </button>*@
                     </div>
                 </div>
             </div>
@@ -144,12 +156,18 @@
             <div class="flex justify-center bg-[#163758] rounded-br-2xl rounded-bl-2xl">
                 <div class="-mb-24" style="height: 42rem">
                     <div class="grid grid-col-1 gap-1 p-1 w-56">
-                        <button class="bg-gray-600 border border-stone-400">
+                        @foreach (var activity in ActivitiesList)
+                        {
+                            <button class="bg-gray-600 border border-stone-400">
+                                <h1 class="text-md text-white font-medium leading-6 text-center p-1">@activity.ActivityName</h1>
+                            </button>                            
+                        }
+                        @*<button class="bg-gray-600 border border-stone-400">
                             <h1 class="text-md text-white font-medium leading-6 text-center p-1">Carpinteria</h1>
                         </button>
                         <button class="bg-gray-600 border border-stone-400">
                             <h1 class="text-md text-white font-medium leading-6 text-center p-1">Pinturas</h1>
-                        </button>
+                        </button>*@
                     </div>
                 </div>
             </div>
@@ -161,7 +179,13 @@
             <div class="flex justify-center bg-[#254260] rounded-br-2xl rounded-bl-2xl">
                 <div class="-mb-36" style="height: 42rem">
                     <div class="grid grid-col-1 gap-1 p-1 w-56">
-                        <button class="bg-gray-600 border border-stone-400">
+                        @foreach (var element in CurrentElementsList)
+                        {
+                            <button class="bg-gray-600 border border-stone-400">
+                                <h1 class="text-md text-white font-medium leading-6 text-center p-1">@element.ElementName</h1>
+                            </button>
+                        }
+                        @*<button class="bg-gray-600 border border-stone-400">
                             <h1 class="text-md text-white font-medium leading-6 text-center p-1">Puerta acceso</h1>
                         </button>
                         <button class="bg-gray-600 border border-stone-400">
@@ -172,7 +196,7 @@
                         </button>
                         <button class="bg-gray-600 border border-stone-400">
                             <h1 class="text-sm text-white font-medium leading-6 text-center p-1">Segunda mano para entrega</h1>
-                        </button>
+                        </button>*@
                     </div>
                 </div>
             </div>
@@ -201,17 +225,17 @@
             <div class="flex justify-center bg-[#51708E] rounded-br-2xl rounded-bl-2xl">
                 <div class="-mb-60" style="height: 42rem">
                     <div class="grid grid-col-1 gap-1 p-1">
-                        <div class="flex justify-center my-10">
+                        <div class="flex justify-center my-3">
                             <span class="w-60 flex justify-center">
                                 <label class="text-xl text-white font-medium leading-6 text-center p-1">Total (pza)</label>
-                                <input type="number" class="h-5 w-12 self-center rounded px-2 text-center">
+                                <input type="number" disabled class="h-5 w-12 self-center rounded px-2 text-center">
                             </span>
                             <span class="w-60 flex justify-center">
                                 <label class="text-xl text-white font-medium leading-6 text-center p-1">Avance (pza)</label>
                                 <input type="number" class="h-5 w-12 self-center rounded px-2 text-center">
                             </span>
                         </div>
-                        <div class="flex justify-center my-5">
+                        <div class="flex justify-center my-3">
                             <span class="w-40 flex flex-col">
                                 <input type="radio" class="h-6 w-6 self-center mb-4">
                                 <label class="text-xl text-red-600 font-medium leading-6 text-center p-1">Pendiente</label>
@@ -225,7 +249,7 @@
                                 <label class="text-xl text-green-600 font-medium leading-6 text-center p-1">Terminado</label>
                             </span>
                         </div>
-                        <div class="flex justify-center my-10">
+                        <div class="flex justify-center my-3">
                             <span class="w-60 flex flex-col">
                                 <label class="text-xl text-white font-medium leading-6 text-center p-1 mb-2">Observaciones</label>
                                 <input type="text" class="h-20 w-48 self-center rounded px-2 text-center">
@@ -246,3 +270,4 @@
 </div>
 <Navbar></Navbar>
 <Footer></Footer>
+<label class="fixed top-0 mx-64 left-0 right-0 text-2xl text-white leading-6 text-center py-2 mt-3">Seguimiento del Proyecto</label>
