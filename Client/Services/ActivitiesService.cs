@@ -21,7 +21,8 @@ namespace Obra.Client.Services
 
         public async Task<List<Activity>> GetActivitiesAsync()
         {            
-            return await _repository.GetAsync<List<Activity>>(path: "api/Activities");            
+            _context.Activity = await _repository.GetAsync<List<Activity>>(path: "api/Activities");            
+            return _context.Activity;
         }
 
         public async Task<Activity> PostActivityAsync(Activity activity)

@@ -7,10 +7,10 @@ namespace Obra.Client.Pages
     public partial class TestPage
     {
         private readonly IBuildingsService _buildingsService;
-        private readonly IAreasService _areasService;
+        private readonly IActivityService _areasService;
         private readonly IActivitiesService _activitiesService;
 
-        public TestPage(IBuildingsService buildingsService, IAreasService areasService, IActivitiesService activitiesService)
+        public TestPage(IBuildingsService buildingsService, IActivityService areasService, IActivitiesService activitiesService)
         {
             _buildingsService = buildingsService;
             _areasService = areasService;

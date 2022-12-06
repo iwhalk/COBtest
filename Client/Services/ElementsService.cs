@@ -14,7 +14,7 @@ namespace Obra.Client.Services
             _context = context;
         }
 
-        public async Task<List<Element>> GetElementsAsync()
+        public async Task<List<Element>> GetElementsAsync(int id)
         {
             if (_context.Element == null)
             {
@@ -22,11 +22,10 @@ namespace Obra.Client.Services
 
                 if (response != null)
                 {
-                    _context.Element = response;
+                    _context.Element = response.Where(x => x.IdActivity == id).ToList();
                     return _context.Element;
                 }
             }
-
             return _context.Element;
         }
         public async Task<Element> PostElementAsync(Element element)

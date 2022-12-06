@@ -15,7 +15,7 @@ namespace Obra.Client.Services
             _context = context;
         }
 
-        public async Task<List<SubElement>> GetSubElementsAsync()
+        public async Task<List<SubElement>> GetSubElementsAsync(int id)
         {
             if (_context.SubElement == null)
             {
@@ -23,7 +23,7 @@ namespace Obra.Client.Services
 
                 if (response != null)
                 {
-                    _context.SubElement = response;
+                    _context.SubElement = response.Where(x => x.IdElement == id).ToList();
                     return _context.SubElement;
                 }
             }

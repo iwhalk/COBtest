@@ -9,23 +9,27 @@ namespace Obra.Client.Pages
     {
         private readonly ApplicationContext _context;
         private readonly IApartmentsService _apartmentsService;
-        private readonly IAreasService _areaService;
+        private readonly IActivitiesService _activityService;
         private readonly IElementsService _elementsService;
+        private readonly ISubElementsService _subElementsService;
         //Variable locales
         private List<int> _idsAparmentSelect { get; set; } = new();
-        private List<int> _idsAreaSelect { get; set; } = new();
+        private List<int> _idsActivitySelect { get; set; } = new();
+        private List<int> _idsElementSelect { get; set; } = new();
+        private List<int> _idsSubElementSelect { get; set; } = new();
 
-        public ApartmentDetails(ApplicationContext context, IApartmentsService apartmentsService, IAreasService areasService, IElementsService elementsService)        
+        public ApartmentDetails(ApplicationContext context, IApartmentsService apartmentsService, IActivitiesService activityService, IElementsService elementsService, ISubElementsService subElementsService)        
         {
             _context = context;
             _apartmentsService = apartmentsService;                        
-            _areaService = areasService;
+            _activityService = activityService;
             _elementsService = elementsService;
+            _subElementsService = subElementsService;
         }
         protected async override Task OnInitializedAsync()
         {
             await _apartmentsService.GetApartmentsAsync();
-            await _areaService.GetAreasAsync();
+            await _activityService.GetActivitiesAsync();
         }
         private void AddIdAparmentSelect(int idDeparment)
         {
@@ -37,16 +41,37 @@ namespace Obra.Client.Pages
                 _idsAparmentSelect = _idsAparmentSelect.Where(x => x != idDeparment).ToList();
             }
         }
-        private async void AddIdAreaSelect(int idArea)
+        private async void AddIdActivitySelect(int idActivity)
         {
-            if (!_idsAreaSelect.Contains(idArea))
+            if (!_idsActivitySelect.Contains(idActivity))
             {
-                _idsAreaSelect.Add(idArea);
-                await _elementsService.GetElementsAsync();
+                _idsActivitySelect.Add(idActivity);                
+                await _elementsService.GetElementsAsync(idActivity);                
             }
             else
-            {
-                _idsAreaSelect = _idsAreaSelect.Where(x => x != idArea).ToList();
+            {                
+                _idsActivitySelect = _idsActivitySelect.Where(x => x != idActivity).ToList();
+            }
+        }
+        private async void AddIdElement(int idElement)
+        {
+            if (!_idsElementSelect.Contains(idElement))
+            { 
+                _idsElementSelect.Add(idElement);
+                await _subElementsService.GetSubElementsAsync(idElement);
+            }
+            else
+            {                
+                _idsElementSelect.Where(x => x != idElement).ToList();
+            }
+        }
+        private async void AddIdSubElement(int idSubElement)
+        {
+            if (!_idsSubElementSelect.Contains(idSubElement))            
+                _idsSubElementSelect.Add(idSubElement);                            
+            else
+            {                
+                _idsSubElementSelect.Where(x => x != idSubElement).ToList();
             }
         }
     }

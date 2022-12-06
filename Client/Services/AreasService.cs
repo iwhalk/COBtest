@@ -4,7 +4,7 @@ using SharedLibrary.Models;
 
 namespace Obra.Client.Services
 {
-    public class AreasService : IAreasService
+    public class AreasService : IActivityService
     {
         private readonly IGenericRepository _repository;
         private readonly ApplicationContext _context;
