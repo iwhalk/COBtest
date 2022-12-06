@@ -28,14 +28,16 @@ namespace Obra.Client.Pages
             //var progressLog = await _progressLogsService.GetProgressLogsAsync();            
             var progressReport = await _progressReportService.GetProgressReportsAsync();
         }
-        private void AddIdAparmentSelect(int idDeparment)
+        private async void AddIdAparmentSelect(int idDeparment)
         {
-            if(!_idsAparmentSelect.Contains(idDeparment))
+            if (!_idsAparmentSelect.Contains(idDeparment))
+            {
                 _idsAparmentSelect.Add(idDeparment);
-
+                var infoProgress = await _progressReportService.GetProgresReportViewAsync(idDeparment);
+            }
             else
             {
-                _idsAparmentSelect = _idsAparmentSelect.Where(x => x != idDeparment).ToList();                                
+                _idsAparmentSelect = _idsAparmentSelect.Where(x => x != idDeparment).ToList();
             }
         }
         private void FullAparment()

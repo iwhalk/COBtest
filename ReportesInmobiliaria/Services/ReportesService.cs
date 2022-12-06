@@ -1,5 +1,6 @@
 ﻿using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
+using NuGet.Versioning;
 using ReportesObra.Interfaces;
 using ReportesObra.Utilities;
 using SharedLibrary.Data;
@@ -66,6 +67,51 @@ namespace ReportesObra.Services
                     estatus = getStausName(subElement.IdProgressReport),
                     total = subElement.TotalPieces,
                     avance = getProgress(subElement.IdProgressReport),
+                });
+            }
+            return list;
+        }
+        public async Task<byte[]> GetReporteAvance(int? idAparment)
+        {
+            ReporteAvance reporteAvance = new()
+            {
+                FechaGeneracion = DateTime.Now,
+                Apartments = GetAparmentsAsync(idAparment)
+            };
+            return _reportesFactory.CrearPdf(reporteAvance, reporteAvance.Apartments[0].ApartmentNumber);
+        }
+
+        public async Task<ReporteAvance> GetReporteAvanceVista(int? idAparment)
+        {
+            ReporteAvance reporteAvance = new()
+            {
+                FechaGeneracion = DateTime.Now,
+                Apartments = GetAparmentsAsync(idAparment)
+            };
+            return reporteAvance;
+        }
+
+        public List<AparmentProgress> GetAparmentsAsync(int? idAparment)
+        {
+            IQueryable<ProgressReport> progressReports = _dbContext.ProgressReports;
+            IQueryable<ProgressLog> progressLogs= _dbContext.ProgressLogs;
+            IQueryable<Apartment> apartments = _dbContext.Apartments;
+
+            if (idAparment != null)
+                progressReports = progressReports.Where(x => x.IdApartment == idAparment);
+
+            var progressReportsByAparment = progressReports.Join(progressLogs, x => x.IdProgressReport, y => y.IdProgressReport, (report, log) => new {report, log}).GroupBy(x => x.report.IdApartment);
+
+            var list = new List<AparmentProgress>();
+            foreach (var aparment in progressReportsByAparment)
+            {
+                //var logs = aparment.GroupBy(x => x.log.IdProgressReport);
+                var total = aparment.Sum(x => long.Parse(x.report.TotalPieces));
+                var current = aparment.Sum(x => long.Parse(x.log.Pieces));
+                list.Add(new AparmentProgress()
+                {
+                    ApartmentNumber = apartments.FirstOrDefault(x => x.IdApartment == aparment.Key).ApartmentNumber,
+                    ApartmentProgress = (100 / Convert.ToSingle(total)) * current
                 });
             }
             return list;

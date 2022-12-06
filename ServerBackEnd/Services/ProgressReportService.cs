@@ -54,6 +54,13 @@ namespace ApiGateway.Services
             return await GetAsync<List<ProgressReport>>(path: "ProgressReports", parameters: parameters);
         }
 
+        public async Task<ApiResponse<ReporteAvance>> GetProgressReportViewAsync(int? id)
+        {
+            Dictionary<string, string> parameters = new();
+            parameters.Add("id", id.ToString());
+            return await GetAsync<ReporteAvance>(path: "ReporteAvanceVista", parameters: parameters);
+        }
+
         public async Task<ApiResponse<ProgressReport>> PostProgressReportAsync(ProgressReport progressReport)
         {
             return await PostAsync<ProgressReport>(progressReport, path: "ProgressReport");

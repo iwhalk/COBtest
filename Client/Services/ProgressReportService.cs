@@ -2,6 +2,7 @@
 using Obra.Client.Stores;
 using SharedLibrary.Models;
 using System.Reflection.Metadata;
+using System.Security.Cryptography;
 
 namespace Obra.Client.Services
 {
@@ -61,7 +62,12 @@ namespace Obra.Client.Services
 
             return await _repository.GetAsync<List<ProgressReport>>(parameters, path: "api/ProgressReport"); ;
         }
-
+        public async Task<ReporteAvance> GetProgresReportViewAsync(int? id)
+        {
+            Dictionary<string, string> parameters = new();
+            parameters.Add("id", id.ToString());            
+            return await _repository.GetAsync<ReporteAvance>(parameters, path: "api/ProgressReport/ProgressReportView");
+        }
         public async Task<ProgressReport> PostProgressReportAsync(ProgressReport progressReport)
         {
             return await _repository.PostAsync(progressReport, path: "api/ProgressReport");
