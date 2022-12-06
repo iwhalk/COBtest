@@ -56,8 +56,8 @@ namespace ReportesObra.Endpoints
             {
                 try
                 {
-                    var newModule = await _reportesService.GetReporteAvanceVista(idAparment);
-                    if (newModule == null) return Results.NoContent();                    
+                    var newModule = await _reportesService.GetAparments(idAparment);
+                    //if (newModule == null) return Results.NoContent();                    
                     return Results.Ok(newModule);
                 }
                 catch (Exception e)
@@ -71,7 +71,8 @@ namespace ReportesObra.Endpoints
             .WithName("GetReporteAvanceVista")
             .Produces<IResult>(StatusCodes.Status200OK)
             .Produces<HttpValidationProblemDetails>(StatusCodes.Status400BadRequest, "application/problem+json")
-            .Produces<HttpValidationProblemDetails>(StatusCodes.Status500InternalServerError, "application/problem+json");
+            .Produces<HttpValidationProblemDetails>(StatusCodes.Status500InternalServerError, "application/problem+json")
+            .AllowAnonymous();
 
         }
     }

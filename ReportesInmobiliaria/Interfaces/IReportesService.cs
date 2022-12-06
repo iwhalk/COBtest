@@ -6,6 +6,6 @@ namespace ReportesObra.Interfaces
     {
         Task<byte[]> GetReporteDetalles(int idApartment);
         Task<byte[]> GetReporteAvance(int? idAparment);
-        Task<ReporteAvance> GetReporteAvanceVista(int? idAparment);
+        Task <List<AparmentProgress>> GetAparments(int? idAparment);
     }
 }
