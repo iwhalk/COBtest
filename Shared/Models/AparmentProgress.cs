@@ -10,6 +10,6 @@ namespace SharedLibrary.Models
     {
         public string ApartmentNumber;
 
-        public long ApartmentProgress;
+        public double ApartmentProgress;
     }
 }

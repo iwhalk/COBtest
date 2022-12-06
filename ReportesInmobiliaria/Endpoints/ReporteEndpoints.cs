@@ -34,7 +34,7 @@ namespace ReportesObra.Endpoints
             {
                 try
                 {
-                    var newModule = await _reportesService.GetReporteDetalles();
+                    var newModule = await _reportesService.GetReporteAvance();
                     if (newModule == null) return Results.NoContent();
                     //System.IO.File.WriteAllBytes("ReporteTransaccionesCrucesTotales.pdf", newModule);
                     return Results.File(newModule, "application/pdf");
@@ -47,7 +47,7 @@ namespace ReportesObra.Endpoints
                     return Results.Problem(e.Message);
                 }
             })
-            .WithName("GetReporteDetalles")
+            .WithName("GetReporteAvance")
             .Produces<IResult>(StatusCodes.Status200OK, "application/pdf")
             .Produces<HttpValidationProblemDetails>(StatusCodes.Status400BadRequest, "application/problem+json")
             .Produces<HttpValidationProblemDetails>(StatusCodes.Status500InternalServerError, "application/problem+json");
