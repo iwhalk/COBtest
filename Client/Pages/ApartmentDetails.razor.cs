@@ -35,7 +35,6 @@ namespace Obra.Client.Pages
         {
             if (!_idsAparmentSelect.Contains(idDeparment))
                 _idsAparmentSelect.Add(idDeparment);
-
             else
             {
                 _idsAparmentSelect = _idsAparmentSelect.Where(x => x != idDeparment).ToList();
@@ -46,10 +45,12 @@ namespace Obra.Client.Pages
             if (!_idsActivitySelect.Contains(idActivity))
             {
                 _idsActivitySelect.Add(idActivity);                
-                await _elementsService.GetElementsAsync(idActivity);                
+                _context.Element = await _elementsService.GetElementsAsync(idActivity);
+                _context.Element = _context.Element.Where(x => x.IdActivity == idActivity).ToList();
             }
             else
-            {                
+            {
+                _context.Element = null;
                 _idsActivitySelect = _idsActivitySelect.Where(x => x != idActivity).ToList();
             }
         }
