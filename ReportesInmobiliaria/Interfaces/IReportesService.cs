@@ -3,6 +3,6 @@
     public interface IReportesService
     {
         Task<byte[]> GetReporteDetalles(int idApartment);
-        Task<byte[]> GetReporteAvance();
+        Task<byte[]> GetReporteAvance(int? idAparment);
     }
 }

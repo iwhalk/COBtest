@@ -30,11 +30,11 @@ namespace ReportesObra.Endpoints
             .Produces<HttpValidationProblemDetails>(StatusCodes.Status400BadRequest, "application/problem+json")
             .Produces<HttpValidationProblemDetails>(StatusCodes.Status500InternalServerError, "application/problem+json");
 
-            routes.MapGet("/ReporteAvance", async (IReportesService _reportesService, ILogger<Program> _logger) =>
+            routes.MapGet("/ReporteAvance", async (int? idAparment, IReportesService _reportesService, ILogger<Program> _logger) =>
             {
                 try
                 {
-                    var newModule = await _reportesService.GetReporteAvance();
+                    var newModule = await _reportesService.GetReporteAvance(idAparment);
                     if (newModule == null) return Results.NoContent();
                     //System.IO.File.WriteAllBytes("ReporteTransaccionesCrucesTotales.pdf", newModule);
                     return Results.File(newModule, "application/pdf");

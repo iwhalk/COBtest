@@ -8,6 +8,7 @@ namespace SharedLibrary.Models
 {
     public class ReporteAvance
     {
+        public DateTime FechaGeneracion { get; set; }
         public List<AparmentProgress> Apartments { get; set; }
     }
 }

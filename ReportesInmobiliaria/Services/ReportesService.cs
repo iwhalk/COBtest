@@ -65,20 +65,24 @@ namespace ReportesObra.Services
             }
             return list;
         }
-        public async Task<byte[]> GetReporteAvance()
+        public async Task<byte[]> GetReporteAvance(int? idAparment)
         {
             ReporteAvance reporteAvance = new()
             {
-                Apartments = GetAparmentsAsync()
+                FechaGeneracion = DateTime.Now,
+                Apartments = GetAparmentsAsync(idAparment)
             };
             return _reportesFactory.CrearPdf(reporteAvance);
         }
 
-        public List<AparmentProgress> GetAparmentsAsync()
+        public List<AparmentProgress> GetAparmentsAsync(int? idAparment)
         {
             IQueryable<ProgressReport> progressReports = _dbContext.ProgressReports;
             IQueryable<ProgressLog> progressLogs= _dbContext.ProgressLogs;
             IQueryable<Apartment> apartments = _dbContext.Apartments;
+
+            if (idAparment != null)
+                progressReports = progressReports.Where(x => x.IdApartment == idAparment);
 
             var progressReportsByAparment = progressReports.Join(progressLogs, x => x.IdProgressReport, y => y.IdProgressReport, (report, log) => new {report, log}).GroupBy(x => x.report.IdApartment);
 
