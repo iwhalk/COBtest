@@ -26,6 +26,7 @@ namespace Obra.Client.Pages
         {
             await _apartmentsService.GetApartmentsAsync();
             //var progressLog = await _progressLogsService.GetProgressLogsAsync();
+            _progressLogsService.
             var progressReport = await _progressReportService.GetProgressReportsAsync();
         }
         private void AddIdAparmentSelect(int idDeparment)
@@ -35,7 +36,7 @@ namespace Obra.Client.Pages
 
             else
             {
-                _idsAparmentSelect = _idsAparmentSelect.Where(x => x != idDeparment).ToList();
+                _idsAparmentSelect = _idsAparmentSelect.Where(x => x != idDeparment).ToList();                                
             }
         }
         private void FullAparment()
@@ -46,7 +47,7 @@ namespace Obra.Client.Pages
             //    _idsAparmentSelect.Clear();
             //}
             //else
-            //{
+            //{                
                 _isFullAparment = true;
                 _idsAparmentSelect = _context.Apartment.Select(x => x.IdApartment).ToList();
             //}
