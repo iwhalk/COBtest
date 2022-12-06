@@ -75,6 +75,16 @@ namespace ReportesObra.Services
             return _reportesFactory.CrearPdf(reporteAvance);
         }
 
+        public async Task<ReporteAvance> GetReporteAvanceVista(int? idAparment)
+        {
+            ReporteAvance reporteAvance = new()
+            {
+                FechaGeneracion = DateTime.Now,
+                Apartments = GetAparmentsAsync(idAparment)
+            };
+            return reporteAvance;
+        }
+
         public List<AparmentProgress> GetAparmentsAsync(int? idAparment)
         {
             IQueryable<ProgressReport> progressReports = _dbContext.ProgressReports;
@@ -88,7 +98,8 @@ namespace ReportesObra.Services
 
             var list = new List<AparmentProgress>();
             foreach (var aparment in progressReportsByAparment)
-            {                
+            {
+                //var logs = aparment.GroupBy(x => x.log.IdProgressReport);
                 var total = aparment.Sum(x => long.Parse(x.report.TotalPieces));
                 var current = aparment.Sum(x => long.Parse(x.log.Pieces));
                 list.Add(new AparmentProgress()
