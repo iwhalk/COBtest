@@ -2,103 +2,169 @@
 
 
 <div id="Contenedor" class="min-h-screen bg-[url('/assets/img/imgFondo.png')] z-0 opacity-25 imgfondo fixed inset-0 bg-gray-500 bg-opacity-25 transition-opacity"></div>
-@if (isFirstView)
-{    
-    <div class="h-screen pt-20 pb-12 fixed inset-0 flex flex-col justify-center items-center">
-        <div class="flex justify-left w-screen rounded-2xl my-2 px-72" style="height: 45rem">
-            <div class="mx-1">
-                <div class="w-84">
-                    <h1 class="rounded-xl text-xl text-white font-medium leading-6 bg-[#0B253E] text-center py-2">Departamento</h1>
-                </div>
-                <div class="flex justify-center rounded-br-2xl-2xl overflow-y-scroll overflow-x-hidden" style="height: 43rem; direction: rtl;">
-                    <div>
-                        <div class="grid grid-col-1 gap-1 p-1 w-80">
-                            <button class="bg-gray-600 border border-stone-400">
-                                <h1 class="text-md text-white font-medium leading-6 text-center p-1">TODOS</h1>
-                            </button>
-                            @if (_context.Apartment != null)
-                            {
-                                @foreach (var apartment in _context.Apartment)
-                                {
-                                    <button @onclick="() => AddIdAparmentSelect(apartment.IdApartment)" class="@(_idsAparmentSelect.Contains(apartment.IdApartment) ? "bg-[#55595E]" : "bg-[#9CA2A8]") border border-stone-400">
-                                        <h1 class="text-md text-white font-medium leading-6 text-center p-1">@apartment.ApartmentNumber</h1>
-                                    </button>
-                                }
-                            }
-                        </div>
-                    </div>
-                </div>
+@if(isFirstView)
+{
+<div class="h-screen pt-20 pb-12 fixed inset-0 flex flex-col justify-center items-center">
+    <div class="flex justify-left w-screen rounded-2xl my-2 px-72" style="height: 45rem">
+        <div class="mx-1">
+            <div class="w-84">
+                <h1 class="rounded-xl text-xl text-white font-medium leading-6 bg-[#0B253E] text-center py-2">Departamento</h1>
             </div>
-            <div class="mx-1">
+            <div class="flex justify-center rounded-br-2xl-2xl overflow-y-scroll overflow-x-hidden" style="height: 43rem; direction: rtl;">
                 <div>
-                    <h1 class="rounded-xl text-xl text-white font-medium leading-6 bg-[#0B253E] text-center py-2">Actividad</h1>
-                </div>
-                <div class="flex justify-center rounded-br-2xl-2xl" style="height: 43rem; direction: ltr;">
-                    <div>
-                        <div class="grid grid-col-1 gap-1 p-1 w-80">
-                            <button class="bg-gray-600 border border-stone-400">
-                                <h1 class="text-md text-white font-medium leading-6 text-center p-1">TODOS</h1>
-                            </button>
-                            @if (_context.Area != null)
-                            {
-                                @foreach (var area in _context.Area)
-                                {
-                                    <button @onclick="() => AddIdAreaSelect(area.IdArea)" class="@(_idsAreaSelect.Contains(area.IdArea) ? "bg-[#55595E]" : "bg-[#9CA2A8]") border border-stone-400">
-                                        <h1 class="text-md text-white font-medium leading-6 text-center p-1">@area.AreaName</h1>
-                                    </button>
-                                }
-                            }
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="mx-1">
-                <div>
-                    <h1 class="rounded-xl text-xl text-white font-medium leading-6 bg-[#0B253E] text-center py-2">Elemento</h1>
-                </div>
-                <div class="flex justify-center rounded-br-2xl-2xl" style="height: 43rem; direction: ltr;">
-                    <div>
-                        <div class="grid grid-col-1 gap-1 p-1 w-80">
-                            <button class="bg-gray-600 border border-stone-400">
-                                <h1 class="text-md text-white font-medium leading-6 text-center p-1">TODOS</h1>
-                            </button>
-                            @if (_context.Area != null)
-                            {
-                                @foreach (var area in _context.Area)
-                                {
-                                    <button class="bg-gray-600 border border-stone-400">
-                                        <h1 class="text-md text-white font-medium leading-6 text-center p-1">Señalización</h1>
-                                    </button>
-                                }
-                            }
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="mx-1">
-                <div>
-                    <h1 class="rounded-xl text-xl text-white font-medium leading-6 bg-[#0B253E] text-center py-2">Elemento</h1>
-                </div>
-                <div class="flex justify-center rounded-br-2xl-2xl" style="height: 43rem; direction: ltr;">
-                    <div>
-                        <div class="grid grid-col-1 gap-1 p-1 w-80">
-                            <button class="bg-gray-600 border border-stone-400">
-                                <h1 class="text-md text-white font-medium leading-6 text-center p-1">TODOS</h1>
-                            </button>
-                            <button class="bg-gray-600 border border-stone-400">
-                                <h1 class="text-md text-white font-medium leading-6 text-center p-1">Chapa</h1>
-                            </button>
-                            <button class="bg-gray-600 border border-stone-400">
-                                <h1 class="text-md text-white font-medium leading-6 text-center p-1">Cera</h1>
-                            </button>
-                        </div>
+                    <div class="grid grid-col-1 gap-1 p-1 w-80">
+                        <button class="bg-gray-600 border border-stone-400">
+                            <h1 class="text-md text-white font-medium leading-6 text-center p-1">TODOS</h1>
+                        </button>
+                        <button class="bg-gray-600 border border-stone-400">
+                            <h1 class="text-md text-white font-medium leading-6 text-center p-1">A-101</h1>
+                        </button>
+                        <button class="bg-gray-600 border border-stone-400">
+                            <h1 class="text-md text-white font-medium leading-6 text-center p-1">A-102</h1>
+                        </button>
+                        <button class="bg-gray-600 border border-stone-400">
+                            <h1 class="text-md text-white font-medium leading-6 text-center p-1">A-103</h1>
+                        </button>
+                        <button class="bg-gray-600 border border-stone-400">
+                            <h1 class="text-md text-white font-medium leading-6 text-center p-1">A-104</h1>
+                        </button>
+                        <button class="bg-gray-600 border border-stone-400">
+                            <h1 class="text-md text-white font-medium leading-6 text-center p-1">A-201</h1>
+                        </button>
+                        <button class="bg-gray-600 border border-stone-400">
+                            <h1 class="text-md text-white font-medium leading-6 text-center p-1">A-202</h1>
+                        </button>
+                        <button class="bg-gray-600 border border-stone-400">
+                            <h1 class="text-md text-white font-medium leading-6 text-center p-1">A-203</h1>
+                        </button>
+                        <button class="bg-gray-600 border border-stone-400">
+                            <h1 class="text-md text-white font-medium leading-6 text-center p-1">A-204</h1>
+                        </button>
+                        <button class="bg-gray-600 border border-stone-400">
+                            <h1 class="text-md text-white font-medium leading-6 text-center p-1">A-301</h1>
+                        </button>
+                        <button class="bg-gray-600 border border-stone-400">
+                            <h1 class="text-md text-white font-medium leading-6 text-center p-1">A-302</h1>
+                        </button>
+                        <button class="bg-gray-600 border border-stone-400">
+                            <h1 class="text-md text-white font-medium leading-6 text-center p-1">A-303</h1>
+                        </button>
+                        <button class="bg-gray-600 border border-stone-400">
+                            <h1 class="text-md text-white font-medium leading-6 text-center p-1">A-304</h1>
+                        </button>
+                        <button class="bg-gray-600 border border-stone-400">
+                            <h1 class="text-md text-white font-medium leading-6 text-center p-1">A-401</h1>
+                        </button>
+                        <button class="bg-gray-600 border border-stone-400">
+                            <h1 class="text-md text-white font-medium leading-6 text-center p-1">A-402</h1>
+                        </button>
+                        <button class="bg-gray-600 border border-stone-400">
+                            <h1 class="text-md text-white font-medium leading-6 text-center p-1">A-403</h1>
+                        </button>
+                        <button class="bg-gray-600 border border-stone-400">
+                            <h1 class="text-md text-white font-medium leading-6 text-center p-1">A-404</h1>
+                        </button>
+                        <button class="bg-gray-600 border border-stone-400">
+                            <h1 class="text-md text-white font-medium leading-6 text-center p-1">A-501</h1>
+                        </button>
+                        <button class="bg-gray-600 border border-stone-400">
+                            <h1 class="text-md text-white font-medium leading-6 text-center p-1">A-502</h1>
+                        </button>
+                        <button class="bg-gray-600 border border-stone-400">
+                            <h1 class="text-md text-white font-medium leading-6 text-center p-1">A-503</h1>
+                        </button>
+                        <button class="bg-gray-600 border border-stone-400">
+                            <h1 class="text-md text-white font-medium leading-6 text-center p-1">A-504</h1>
+                        </button>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="w-full flex py-3">
+        <div class="mx-1">
+            <div>
+                <h1 class="rounded-xl text-xl text-white font-medium leading-6 bg-[#0B253E] text-center py-2">Actividad</h1>
+            </div>
+            <div class="flex justify-center rounded-br-2xl-2xl" style="height: 43rem; direction: ltr;">
+                <div>
+                    <div class="grid grid-col-1 gap-1 p-1 w-80">
+                        <button class="bg-gray-600 border border-stone-400">
+                            <h1 class="text-md text-white font-medium leading-6 text-center p-1">TODOS</h1>
+                        </button>
+                        <button class="bg-gray-600 border border-stone-400">
+                            <h1 class="text-md text-white font-medium leading-6 text-center p-1">Carpintería</h1>
+                        </button>
+                        <button class="bg-gray-600 border border-stone-400">
+                            <h1 class="text-md text-white font-medium leading-6 text-center p-1">Cancelería</h1>
+                        </button>
+                        <button class="bg-gray-600 border border-stone-400">
+                            <h1 class="text-md text-white font-medium leading-6 text-center p-1">Instalaciones Eléctricas</h1>
+                        </button>
+                        <button class="bg-gray-600 border border-stone-400">
+                            <h1 class="text-md text-white font-medium leading-6 text-center p-1">Instalaciones Especializadas</h1>
+                        </button>
+                        <button class="bg-gray-600 border border-stone-400">
+                            <h1 class="text-md text-white font-medium leading-6 text-center p-1">Instalaciones Hidro-Sanitarias</h1>
+                        </button>
+                        <button class="bg-gray-600 border border-stone-400">
+                            <h1 class="text-md text-white font-medium leading-6 text-center p-1">Obra Civil</h1>
+                        </button>
+                        <button class="bg-gray-600 border border-stone-400">
+                            <h1 class="text-md text-white font-medium leading-6 text-center p-1">Pinturas</h1>
+                        </button>
+                        <button class="bg-gray-600 border border-stone-400">
+                            <h1 class="text-md text-white font-medium leading-6 text-center p-1">Pisos</h1>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="mx-1">
+            <div>
+                <h1 class="rounded-xl text-xl text-white font-medium leading-6 bg-[#0B253E] text-center py-2">Elemento</h1>
+            </div>
+            <div class="flex justify-center rounded-br-2xl-2xl" style="height: 43rem; direction: ltr;">
+                <div>
+                    <div class="grid grid-col-1 gap-1 p-1 w-80">
+                        <button class="bg-gray-600 border border-stone-400">
+                            <h1 class="text-md text-white font-medium leading-6 text-center p-1">TODOS</h1>
+                        </button>
+                        <button class="bg-gray-600 border border-stone-400">
+                            <h1 class="text-md text-white font-medium leading-6 text-center p-1">Puerta de Acceso</h1>
+                        </button>
+                        <button class="bg-gray-600 border border-stone-400">
+                            <h1 class="text-md text-white font-medium leading-6 text-center p-1">Puerta Principal</h1>
+                        </button>
+                        <button class="bg-gray-600 border border-stone-400">
+                            <h1 class="text-md text-white font-medium leading-6 text-center p-1">Señalización</h1>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="mx-1">
+            <div>
+                <h1 class="rounded-xl text-xl text-white font-medium leading-6 bg-[#0B253E] text-center py-2">Sub-Elemento</h1>
+            </div>
+            <div class="flex justify-center rounded-br-2xl-2xl" style="height: 43rem; direction: ltr;">
+                <div>
+                    <div class="grid grid-col-1 gap-1 p-1 w-80">
+                        <button class="bg-gray-600 border border-stone-400">
+                            <h1 class="text-md text-white font-medium leading-6 text-center p-1">TODOS</h1>
+                        </button>
+                        <button class="bg-gray-600 border border-stone-400">
+                            <h1 class="text-md text-white font-medium leading-6 text-center p-1">Chapa</h1>
+                        </button>
+                        <button class="bg-gray-600 border border-stone-400">
+                            <h1 class="text-md text-white font-medium leading-6 text-center p-1">Cera</h1>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="w-full flex py-3">
             <button @onclick="() => ChangeView()" class="mx-auto bg-[#B9352E] hover:bg-red-500 p-2 rounded-2xl text-lg text-white font-medium leading-6 border border-stone-400 hover:border-white">Generar Reporte</button>
-        </div>
+    </div>
     </div>
 }
 else
@@ -110,9 +176,9 @@ else
     </div>
     <div class="flex w-full mt-10 px-16">
         <div class="flex justify-center w-3/6">
-            <label class="w-64 h-12 text-4xl text-white leading-6 text-center bg-[#0B253E] rounded-lg py-3 m-2">Actividad</label>
-            <label class="w-64 h-12 text-4xl text-white leading-6 text-center bg-[#0B253E] rounded-lg py-3 m-2">Elemento</label>
-            <label class="w-64 h-12 text-4xl text-white leading-6 text-center bg-[#0B253E] rounded-lg py-3 m-2">Sub-Elemento</label>
+            <label class="w-64 h-12 text-4xl text-white leading-6 text-center bg-[#0B253E] rounded-lg py-2 m-2">Actividad</label>
+            <label class="w-64 h-12 text-4xl text-white leading-6 text-center bg-[#0B253E] rounded-lg py-2 m-2">Elemento</label>
+            <label class="w-64 h-12 text-4xl text-white leading-6 text-center bg-[#0B253E] rounded-lg py-2 m-2">Sub-Elemento</label>
         </div>
         <div class="flex justify-center w-3/6">
             <label class="w-full text-4xl text-white leading-6 text-center bg-[#0B253E] rounded-lg py-3 my-2">Avance</label>
@@ -218,5 +284,5 @@ else
 <Navbar></Navbar>
 <Footer></Footer>
 
-<label class="fixed top-0 left-0 mx-64 right-0 text-2xl text-white leading-6 text-center py-2 mt-3">Detalles Por Departamento</label>
+<label class="mx-64 fixed top-0 left-0 right-0 text-2xl text-white leading-6 text-center py-2 mt-3">Detalles Por Departamento</label>
 
