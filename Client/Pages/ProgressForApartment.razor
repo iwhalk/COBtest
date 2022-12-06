@@ -1,6 +1,4 @@
 ﻿@page "/ProgressForApartment"
-@using Microsoft.Fast.Components.FluentUI
-
 
 <div id="Contenedor" class="min-h-screen bg-[url('/assets/img/imgFondo.png')] z-0 opacity-25 imgfondo fixed inset-0 bg-gray-500 bg-opacity-25 transition-opacity"></div>
 <div class="md:p-10 p-20 md:pb-32 mt-12 fixed inset-0">    
@@ -28,7 +26,7 @@
                 @if (_context.Apartment != null)
                 {                    
                     @foreach (var apartment in _context.Apartment)
-                    {                    _
+                    {                    
                         <div class="w-full inline-flex">                            
                             <div class="md:w-2/6 xl:w-1/6 p-0.5">
                                 <div class="@(_idsAparmentSelect.Contains(apartment.IdApartment) ? "bg-[#55595E]" : "bg-[#9CA2A8]") border border-stone-400 md:h-8 xl:h-12 xl:p-3">
@@ -50,7 +48,7 @@
                 else
                 {
                     <div class="h-full w-1/6">
-                        <FluentProgressRing></FluentProgressRing>
+                        <FluentProgress></FluentProgress>
                     </div>
                 }
             </div>
