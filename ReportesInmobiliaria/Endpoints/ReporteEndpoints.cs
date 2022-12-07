@@ -8,7 +8,7 @@ namespace ReportesObra.Endpoints
     {
         public static void MapReporteEndpoints(this IEndpointRouteBuilder routes)
         {
-            routes.MapGet("/ReporteDetalles/{idBuilding}/{idApartment}", async (int idBuilding, int idApartment, IReportesService _reportesService, ILogger<Program> _logger) =>
+            routes.MapGet("/ReporteDetalles", async (int idBuilding, int idApartment, IReportesService _reportesService, ILogger<Program> _logger) =>
             {
                 try
                 {

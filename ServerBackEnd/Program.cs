@@ -99,7 +99,8 @@ if (builder.Environment.IsDevelopment())
 }
 else
 {
-    builder.Services.AddHttpClient("Reportes", client => client.BaseAddress = new Uri("https://reportesarisoft.azurewebsites.net/"));
+
+    builder.Services.AddHttpClient("Reportes", client => client.BaseAddress = new Uri("https://reportesarisoft.azurewebsites.net"));
 }
 
 builder.Services.AddCors();

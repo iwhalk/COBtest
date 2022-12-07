@@ -25,7 +25,7 @@ namespace Obra.Client.Pages
         protected async override Task OnInitializedAsync()
         {
             await _apartmentsService.GetApartmentsAsync();
-            //var progressLog = await _progressLogsService.GetProgressLogsAsync();            
+            //var progressLog = await _progressLogsService.GetProgressLogsAsync();
             var progressReport = await _progressReportService.GetProgressReportsAsync();
         }
         private async void AddIdAparmentSelect(int idDeparment)
@@ -42,16 +42,16 @@ namespace Obra.Client.Pages
         }
         private void FullAparment()
         {
-            //if (_idsAparmentSelect.Count() > 0)
-            //{
-            //    _isFullAparment = false;
-            //    _idsAparmentSelect.Clear();
-            //}
-            //else
-            //{                
+            if (_idsAparmentSelect.Count() == _context.Apartment.Count())
+            {
+                _isFullAparment = false;
+                _idsAparmentSelect.Clear();
+            }
+            else
+            {
                 _isFullAparment = true;
                 _idsAparmentSelect = _context.Apartment.Select(x => x.IdApartment).ToList();
-            //}
+            }
         }
     }
 }

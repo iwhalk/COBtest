@@ -17,6 +17,8 @@ namespace Obra.Client.Pages
         private List<int> _idsActivitySelect { get; set; } = new();
         private List<int> _idsElementSelect { get; set; } = new();
         private List<int> _idsSubElementSelect { get; set; } = new();
+        private bool isFirstView { get; set; }
+        private bool showModal { get; set; }
 
         public ApartmentDetails(ApplicationContext context, IApartmentsService apartmentsService, IActivitiesService activityService, IElementsService elementsService, ISubElementsService subElementsService)        
         {
@@ -26,6 +28,8 @@ namespace Obra.Client.Pages
             _elementsService = elementsService;
             _subElementsService = subElementsService;
         }
+        private void ChangeView() => isFirstView = isFirstView ? false : true;
+        private void ChangeShowModal() => showModal = showModal ? false : true;
         protected async override Task OnInitializedAsync()
         {
             await _apartmentsService.GetApartmentsAsync();
