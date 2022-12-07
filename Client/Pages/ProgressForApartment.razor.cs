@@ -25,8 +25,8 @@ namespace Obra.Client.Pages
         protected async override Task OnInitializedAsync()
         {
             await _apartmentsService.GetApartmentsAsync();
-            var progressLog = await _progressLogsService.GetProgressLogsAsync();
-            var progressReport = await _progressReportService.GetProgressReportsAsync();
+            //var progressLog = await _progressLogsService.GetProgressLogsAsync();
+            //var progressReport = await _progressReportService.GetProgressReportsAsync();
         }
         private void AddIdAparmentSelect(int idDeparment)
         {
