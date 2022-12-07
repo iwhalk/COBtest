@@ -28,7 +28,7 @@ namespace ApiGateway.Controllers
                 idInt = Convert.ToInt16(id);
             }
 
-            var result = await _subElementsService.GetSubElementAsync(idInt);
+            var result = await _subElementsService.GetSubElementsAsync(idInt);
 
             if (result.Succeeded)
             {

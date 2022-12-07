@@ -15,6 +15,11 @@ namespace Obra.Client.Services
             _context = context;
         }
 
+        public async Task<ProgressReport> GetProgressReportAsync(int id)
+        {
+            return await _repository.GetAsync<ProgressReport>(id, path: "api/ProgressReport");
+        }
+
         public async Task<List<ProgressReport>> GetProgressReportsAsync(int? idProgressReport = null, int? idBuilding = null, int? idAparment = null, int? idArea = null, int? idElemnet = null, int? idSubElement = null, string? idSupervisor = null)
         {
             Dictionary<string, string> parameters = new();
@@ -47,17 +52,6 @@ namespace Obra.Client.Services
             {
                 parameters.Add("idSupervisor", idSupervisor);
             }
-
-            //if (_context.ProgressReport == null)
-            //{
-            //    var response = await _repository.GetAsync<List<ProgressReport>>(path: "api/ProgressReport");
-
-            //    if (response != null)
-            //    {
-            //        _context.ProgressReport = response;
-            //        return _context.ProgressReport;
-            //    }
-            //}
 
             return await _repository.GetAsync<List<ProgressReport>>(parameters, path: "api/ProgressReport"); ;
         }
