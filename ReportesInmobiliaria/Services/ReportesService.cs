@@ -30,12 +30,16 @@ namespace ReportesObra.Services
             _dbContext = dbContext;
             _httpContextAccessor = httpContextAccessor;
             _reportesFactory = reportesFactory;
+            progressReportsComplete = _dbContext.ProgressReports.ToList();
+            listProgressLog = _dbContext.ProgressLogs.ToList();
+            listElements = _dbContext.Elements.ToList();
+            listActivities = _dbContext.Activities.ToList();
+            listSubElements = _dbContext.SubElements.ToList();
+            listApartments = _dbContext.Apartments.ToList();
         }
 
         public async Task<byte[]> GetReporteDetalles(int idBuilding, int idApartment)
-        {
-            progressReportsComplete = _dbContext.ProgressReports.ToList();
-            listProgressLog = _dbContext.ProgressLogs.ToList();
+        {            
             ReporteDetalles reporteDetalles = new()
             {
                 detalladoActividades = GetSubElementsAsync(idBuilding, idApartment)
@@ -46,18 +50,50 @@ namespace ReportesObra.Services
             return _reportesFactory.CrearPdf(reporteDetalles, apartmentNumber);
         }
 
+        public async Task<byte[]> GetReporteDetalles(int idBuilding, int idApartment, List<int> actividades)
+        {
+            //Se obtiene la lista de nombres de las actividades
+            List<string> actividadesStr = new List<string>();
+            foreach (var actividad in actividades) 
+            {
+                var result = listActivities.FirstOrDefault(x => x.IdActivity == actividad);
+                if (result == null)
+                    continue;
+                actividadesStr.Add(result.ActivityName);
+            }
+            ReporteDetalles reporteDetalles = new()
+            {
+                detalladoActividades = GetSubElementsAsync(idBuilding, idApartment)
+            };
+            //Se obtiene la nueva lista de objetos para el reporte filtrando las correspondientes actividades            
+            List<DetalladoActividades> subList = new List<DetalladoActividades>();
+            foreach (string actividad in actividadesStr)
+            {
+                var result = reporteDetalles.detalladoActividades.Where(x => x.actividad == actividad);
+                if(result == null)
+                    continue;
+                subList.AddRange(result);
+            }
+            ReporteDetalles reporteDetallesActividades = new() { detalladoActividades = subList };
+            if (reporteDetallesActividades.detalladoActividades.Count == 0)
+                return null;
+            string apartmentNumber = listApartments.FirstOrDefault(x => x.IdApartment == idApartment).ApartmentNumber;
+            return _reportesFactory.CrearPdf(reporteDetallesActividades, apartmentNumber);
+        }
+
         public List<DetalladoActividades> GetSubElementsAsync(int idBuilding, int idApartment)
         {
+            int contador = 0;
             var list = new List<DetalladoActividades>();
-            var progressReport = progressReportsComplete.Where(x => (x.IdBuilding == idBuilding && x.IdApartment == idApartment)).ToList();            
-            listElements = _dbContext.Elements.ToList();
-            listActivities = _dbContext.Activities.ToList();
-            listSubElements = _dbContext.SubElements.ToList();
-            listApartments = _dbContext.Apartments.ToList();
+            var progressReport = progressReportsComplete.Where(x => (x.IdBuilding == idBuilding && x.IdApartment == idApartment)).ToList();                        
             foreach (var subElement in progressReport)
             {
                 if (getStausName(subElement.IdProgressReport) == "Terminado")
+                {
+                    contador++;
                     continue;
+                }
+                    
                 list.Add(new DetalladoActividades()
                 {
                     actividad = getActividad(subElement.IdElement),
