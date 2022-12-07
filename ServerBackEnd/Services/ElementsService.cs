@@ -17,13 +17,13 @@ namespace ApiGateway.Services
             return await GetAsync<Element>(id, path: "Element");
         }
 
-        public async Task<ApiResponse<List<Element>>> GetElementsAsync(int? ID_Activity)
+        public async Task<ApiResponse<List<Element>>> GetElementsAsync(int? idActivity)
         {
             Dictionary<string, string> parameters = new();
 
-            if (ID_Activity != null && ID_Activity > 0)
+            if (idActivity != null && idActivity > 0)
             {
-                parameters.Add("ID_Activity", ID_Activity.ToString());
+                parameters.Add("idActivity", idActivity.ToString());
             }
             return await GetAsync<List<Element>>(path: "Elements", parameters: parameters);
         }
