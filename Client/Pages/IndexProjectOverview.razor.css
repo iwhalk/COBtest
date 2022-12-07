@@ -5,3 +5,29 @@
     background-position: center;
     background-repeat: no-repeat;
 }
+
+.logo {
+    margin: -25px;
+    margin-top: -17px;
+    margin-left: 0px;
+    width: 150px;
+    height: 120px;
+}
+
+@media screen and (max-height: 1080px) {
+    .scaleTab {
+        transform: scale(.75);
+    }
+}
+
+@media screen and (min-width: 1081px) {
+    .scaleDesk {
+        transform: scale(1);
+    }
+}
+
+@media screen and (min-width: 1081px) {
+    .margin {
+        margin: 2.5rem;
+    }
+}

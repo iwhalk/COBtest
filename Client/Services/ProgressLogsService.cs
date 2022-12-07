@@ -49,7 +49,6 @@ namespace Obra.Client.Services
 
             return _context.ProgressLog;
         }
-
         public async Task<ProgressLog> PostProgressLogAsync(ProgressLog progressLog)
         {
             return await _repository.PostAsync(progressLog, path: "api/ProgressLogs");
