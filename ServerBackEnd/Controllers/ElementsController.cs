@@ -39,16 +39,16 @@ namespace ApiGateway.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult> GetElements(string? ID_Activity)
+        public async Task<ActionResult> GetElements(string? idActivity)
         {
-            int ID_ActivityInt = 0;
+            int idActivityInt = 0;
 
-            if (ID_Activity != null)
+            if (idActivity != null)
             {
-                ID_ActivityInt = Convert.ToInt16(ID_Activity);
+                idActivityInt = Convert.ToInt16(idActivity);
             }
 
-            var result = await _elementsService.GetElementsAsync(ID_ActivityInt);
+            var result = await _elementsService.GetElementsAsync(idActivityInt);
 
             if (result.Succeeded)
             {

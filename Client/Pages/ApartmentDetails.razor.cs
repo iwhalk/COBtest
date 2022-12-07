@@ -14,6 +14,8 @@ namespace Obra.Client.Pages
         //Variable locales
         private List<int> _idsAparmentSelect { get; set; } = new();
         private List<int> _idsAreaSelect { get; set; } = new();
+        private bool isFirstView { get; set; } = true;
+        private bool showModal { get; set; } = false;
 
         public ApartmentDetails(ApplicationContext context, IApartmentsService apartmentsService, IAreasService areasService, IElementsService elementsService)        
         {
@@ -22,6 +24,8 @@ namespace Obra.Client.Pages
             _areaService = areasService;
             _elementsService = elementsService;
         }
+        private void ChangeView() => isFirstView = isFirstView ? false : true;
+        private void ChangeShowModal() => showModal = showModal ? false : true;
         protected async override Task OnInitializedAsync()
         {
             await _apartmentsService.GetApartmentsAsync();
