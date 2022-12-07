@@ -57,7 +57,7 @@ namespace ReportesObra.Endpoints
                 try
                 {
                     var newModule = await _reportesService.GetAparments(idAparment);
-                    //if (newModule == null) return Results.NoContent();                    
+                    if (newModule.Count == 0) return Results.NoContent();                    
                     return Results.Ok(newModule);
                 }
                 catch (Exception e)
