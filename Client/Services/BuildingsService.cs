@@ -16,7 +16,7 @@ namespace Obra.Client.Services
 
         public async Task<Building> GetBuildingAsync(int id)
         {      
-            return await _repository.GetAsync<Building>(id, path: "Building");
+            return await _repository.GetAsync<Building>(id, path: "api/Buildings");
         }
         public async Task<List<Building>> GetBuildingsAsync()
         {        
