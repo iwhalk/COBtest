@@ -26,8 +26,8 @@ namespace Obra.Client.Components.Blobs
 
         private readonly IBlobsService _blobService;
         public BlobFile CurrentBlobFile { get; set; }
-        public ImageFile CurrentImageFile { get; set; }
-        public List<ImageFile> CurrentImageFiles { get; set; }
+        public ImageFile CurrentImageFile { get; set; } = new();
+        public List<ImageFile> CurrentImageFiles { get; set; } = new();
 
         public EditContext CurrentBlobFileEditContext;
 
@@ -76,7 +76,7 @@ namespace Obra.Client.Components.Blobs
                 CurrentImageFile.FileName = eventArgs.File.Name;
                 CurrentImageFile.MimeType = MimeMapping.MimeUtility.GetMimeMapping(eventArgs.File.Name);
 
-                CurrentImageFiles.Add(CurrentImageFile);
+                CurrentImageFiles.Add(new() { FileContent = CurrentImageFile.FileContent, FileName = CurrentImageFile.FileName, MimeType = CurrentImageFile.MimeType });
 
                 //var res = await _blobService.PostBlobAsync(CurrentBlobFile);
                 //if (res != null)

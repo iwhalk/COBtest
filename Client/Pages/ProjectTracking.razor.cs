@@ -158,5 +158,53 @@ namespace Obra.Client.Pages
 
             StateHasChanged();
         }
+        public async void ObservationInput(ChangeEventArgs e)
+        {
+
+            var NewProgressLog = NewProgressLogs.FirstOrDefault(x => x.IdProgressReport == CurrentProgressReport.IdProgressReport);
+            if (NewProgressLog != null)
+            {
+                NewProgressLogs.FirstOrDefault(x => x.IdProgressReport == CurrentProgressReport.IdProgressReport).Observation = e.Value?.ToString();
+                //NewProgressLogs.FirstOrDefault(x => x.IdProgressReport == CurrentProgressReport.IdProgressReport).IdProgressReport = CurrentProgressReport?.IdProgressReport ?? 1;
+            }
+            else
+            {
+                CurrentProgressLog.Observation = e.Value?.ToString();
+                CurrentProgressLog.IdProgressReport = CurrentProgressReport?.IdProgressReport ?? 1;
+                NewProgressLogs.Add(new ProgressLog()
+                {
+                    Pieces = CurrentProgressLog.Pieces,
+                    Observation = e.Value?.ToString(),
+                    IdProgressReport = CurrentProgressReport?.IdProgressReport ?? 1,
+                    IdStatus = CurrentProgressLog.IdStatus
+                });
+            }
+
+            StateHasChanged();
+        }
+        public async void CheckboxClicked(int idStatus, ChangeEventArgs e)
+        {
+
+            var NewProgressLog = NewProgressLogs.FirstOrDefault(x => x.IdProgressReport == CurrentProgressReport.IdProgressReport);
+            if (NewProgressLog != null)
+            {
+                NewProgressLogs.FirstOrDefault(x => x.IdProgressReport == CurrentProgressReport.IdProgressReport).IdStatus = idStatus;
+                //NewProgressLogs.FirstOrDefault(x => x.IdProgressReport == CurrentProgressReport.IdProgressReport).IdProgressReport = CurrentProgressReport?.IdProgressReport ?? 1;
+            }
+            else
+            {
+                CurrentProgressLog.IdStatus = idStatus;
+                CurrentProgressLog.IdProgressReport = CurrentProgressReport?.IdProgressReport ?? 1;
+                NewProgressLogs.Add(new ProgressLog()
+                {
+                    Pieces = CurrentProgressLog.Pieces,
+                    Observation = CurrentProgressLog.Observation,
+                    IdProgressReport = CurrentProgressReport?.IdProgressReport ?? 1,
+                    IdStatus = idStatus
+                });
+            }
+
+            StateHasChanged();
+        }
     }
 }

@@ -13,14 +13,14 @@ else
             @*<h6>@CurrentBlobFile.Blob.BlodName</h6>*@
             @*<h6>@CurrentBlobFile.Blob.BlobSize</h6>*@     
         </div>
-        <div class="h-[@HeigthContent] overflow-y-auto">
-            @if (ListBase64Blobs.Count > 0)
+        <div class="h-40 overflow-y-auto">
+            @if (CurrentImageFiles?.Count > 0)
             {
 
                 <div class="grid grid-cols-4 gap-1 w-full">
-                    @foreach (var base64 in ListBase64Blobs)
+                    @foreach (var imageFile in CurrentImageFiles)
                     {
-                        <div><img class="w-[@SizeImg] h-[@SizeImg]" src="@base64" /></div>
+                        <div><img class="w-20 h-20" src="@imageFile.Base64Content" /></div>
                     }
                 </div>
             }
