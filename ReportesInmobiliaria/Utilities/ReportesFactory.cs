@@ -82,7 +82,7 @@ namespace ReportesObra.Utilities
         /// <summary>
         /// Creates the invoice document.
         /// </summary>
-        public byte[] CrearPdf<T>(T reporte, string apartmentNumber)
+        public byte[] CrearPdf<T>(T reporte, string? apartmentNumber)
         {
             // Create a new MigraDoc document
             document = new Document();
