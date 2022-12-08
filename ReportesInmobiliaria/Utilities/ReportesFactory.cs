@@ -67,6 +67,7 @@ namespace ReportesObra.Utilities
 
         PageSetup pageSetup;
         string obserbations = "";
+        private string _apartmentNumber;
         /// <summary>
         /// Initializes a new instance of the class BillFrom and opens the specified XML document.
         /// </summary>
@@ -81,7 +82,7 @@ namespace ReportesObra.Utilities
         /// <summary>
         /// Creates the invoice document.
         /// </summary>
-        public byte[] CrearPdf<T>(T reporte)
+        public byte[] CrearPdf<T>(T reporte, string apartmentNumber)
         {
             // Create a new MigraDoc document
             document = new Document();
@@ -93,7 +94,7 @@ namespace ReportesObra.Utilities
 
             DefineStyles();
             CreateLayout(reporte);
-
+            _apartmentNumber = apartmentNumber;
             switch (typeof(T).Name)
             {
                 case nameof(ReporteDetalles):
@@ -200,14 +201,43 @@ namespace ReportesObra.Utilities
             dataValueTable.Top = "6.6cm";
             dataValueTable.RelativeVertical = RelativeVertical.Page;
 
+            //Control de NullReferenceException al llamar a las imágenes
+            if (ImageSource.ImageSourceImpl == null)
+            {
+                ImageSource.ImageSourceImpl = new ImageSharpImageSource<Rgba32>();
+            }
+
+            WebClient client = new WebClient();
+            MemoryStream stream = new MemoryStream(client.DownloadData("https://aeriblobs.blob.core.windows.net/inventoryblobs/282039e4-b91f-4c4a-8356-eb359c9c4ece.jpeg"));
+            stream.Position = 0;
+            var logoSOF2245 = section.AddImage(ImageSource.FromStream("logoSOF", () => stream));
+            logoSOF2245.Width = "4.5cm";
+            logoSOF2245.LockAspectRatio = true;
+            logoSOF2245.RelativeHorizontal = RelativeHorizontal.Margin;
+            logoSOF2245.RelativeVertical = RelativeVertical.Page;
+            logoSOF2245.Top = "1.7cm";
+            logoSOF2245.Left = "-1.3cm";
+            logoSOF2245.WrapFormat.Style = WrapStyle.Through;
+
+            MemoryStream stream1 = new MemoryStream(client.DownloadData("https://aeriblobs.blob.core.windows.net/inventoryblobs/63450fd9-9af2-4c14-88ec-0752b1b6f1ae.jpeg"));
+            stream1.Position = 0;
+            var logoGeneric = section.AddImage(ImageSource.FromStream("logoGEN", () => stream1));
+            logoGeneric.Width = "3.5cm";
+            logoGeneric.LockAspectRatio = true;
+            logoGeneric.RelativeHorizontal = RelativeHorizontal.Margin;
+            logoGeneric.RelativeVertical = RelativeVertical.Page;
+            logoGeneric.Top = "1.7cm";
+            logoGeneric.Left = "14.0cm";
+            logoGeneric.WrapFormat.Style = WrapStyle.Through;
+
             // Put header in header frame
             Paragraph paragraph = headerFrame.AddParagraph("Reporte Detallado");//Titulo
             paragraph.AddLineBreak();
-            paragraph.AddText("Departamento A-101");
+            paragraph.AddText("Departamento " + _apartmentNumber);
             paragraph.Format.Font.Name = "Times New Roman";
             paragraph.Format.Font.Size = 16;
             paragraph.Format.Font.Bold = true;
-            paragraph.Format.Alignment = ParagraphAlignment.Center;
+            paragraph.Format.Alignment = ParagraphAlignment.Center;            
 
             // Put parameters in data Frame
             paragraph = dataParametersFrameRight.AddParagraph();
@@ -226,12 +256,6 @@ namespace ReportesObra.Utilities
             paragraph.Style = "Reference";
             paragraph.AddFormattedText("", TextFormat.Bold);
 
-            //Control de NullReferenceException al llamar a las imágenes
-            if (ImageSource.ImageSourceImpl == null)
-            {
-                ImageSource.ImageSourceImpl = new ImageSharpImageSource<Rgba32>();
-            }
-            //---------------------------------------------------------------------------------------
             // Create the item table
             tableAreas = section.AddTable();
             tableAreas.Style = "Table";
@@ -267,7 +291,9 @@ namespace ReportesObra.Utilities
             row.Cells[4].AddParagraph("Total");
             row.Cells[5].AddParagraph("Avance");
 
-            FillGenericContent(reporteDetalles.detalladoActividades, tableAreas);         
+            FillGenericContent(reporteDetalles.detalladoActividades, tableAreas);
+                      
+            //Image logo = Image.FromStream(stream);
         }
 
         void CrearReporteAvance(ReporteAvance? reporteAvance)
@@ -434,7 +460,7 @@ namespace ReportesObra.Utilities
             footer.AddNumPagesField();
             footer.Format.Font.Size = 8;
             footer.Format.Alignment = ParagraphAlignment.Center;
-
+            
             // Put a logo in the header
             //Image image = section.Headers.Primary.AddImage(Path.Combine(Environment.CurrentDirectory, @"Imagenes\", "ferromex.png"));
             //image.Height = "0.75cm"; image.Width = "5.25cm";
@@ -442,7 +468,7 @@ namespace ReportesObra.Utilities
             //image.RelativeVertical = RelativeVertical.Margin;
             //image.RelativeHorizontal = RelativeHorizontal.Margin;
             //image.Top = ShapePosition.Top;
-            //image.Left = ShapePosition.Right;
+            //image.Left = ShapePosition.Right; 
             //image.WrapFormat.Style = WrapStyle.Through;
         }
 
@@ -456,6 +482,7 @@ namespace ReportesObra.Utilities
             //foreach (var item in value)
             string currentName = "";
             string beforeName = "";
+            var newColorGray = MigraDocCore.DocumentObjectModel.Color.Parse("0xffE5E8E8");
             for (int i = 0; i < value.Count; i++)
             {
                 var item = value.ElementAt(i);
@@ -510,13 +537,13 @@ namespace ReportesObra.Utilities
                 if(i == value.Count -1)
                     row.Cells[0].Borders.Bottom.Width = 1.5;
                 if (i % 2 == 0)
-                {
+                {                    
                     //row.Shading.Color= Colors.LightGray;
-                    row.Cells[1].Shading.Color = Colors.LightGray;
-                    row.Cells[2].Shading.Color = Colors.LightGray;
-                    row.Cells[3].Shading.Color = Colors.LightGray;
-                    row.Cells[4].Shading.Color = Colors.LightGray;
-                    row.Cells[5].Shading.Color = Colors.LightGray;
+                    row.Cells[1].Shading.Color = newColorGray;
+                    row.Cells[2].Shading.Color = newColorGray;
+                    row.Cells[3].Shading.Color = newColorGray;
+                    row.Cells[4].Shading.Color = newColorGray;
+                    row.Cells[5].Shading.Color = newColorGray;
                 }
             }
         }

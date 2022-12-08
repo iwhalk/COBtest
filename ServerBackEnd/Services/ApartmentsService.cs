@@ -15,14 +15,7 @@ namespace ApiGateway.Services
 
         public async Task<ApiResponse<Apartment>> GetApartmentAsync(int id)
         {
-            Dictionary<string, string> parameters = new();
-
-            if (id != null && id > 0)
-            {
-                parameters.Add("id", id.ToString());
-            }
-
-            return await GetAsync<Apartment>(id, path: "Apartment", parameters: parameters);
+            return await GetAsync<Apartment>(id, path: "Apartment");
         }
 
         public async Task<ApiResponse<List<Apartment>>> GetApartmentsAsync()

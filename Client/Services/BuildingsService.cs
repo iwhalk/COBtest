@@ -15,33 +15,13 @@ namespace Obra.Client.Services
         }
 
         public async Task<Building> GetBuildingAsync(int id)
-        {
-            Dictionary<string, string> parameters = new ();
-
-            if (id != null && id > 0)
-            {
-                parameters.Add("id", id.ToString());
-            }
-
-            return await _repository.GetAsync<Building>(id, parameters: parameters, path: "api/Buildings");
+        {      
+            return await _repository.GetAsync<Building>(id, path: "api/Buildings");
         }
-
         public async Task<List<Building>> GetBuildingsAsync()
-        {
-            if (_context.Building == null)
-            {
-                var response = await _repository.GetAsync<List<Building>>(path: "api/Buildings");
-
-                if (response != null)
-                {
-                    _context.Building = response;
-                    return _context.Building;
-                }
-            }
-
-            return _context.Building;
+        {        
+            return await _repository.GetAsync<List<Building>>(path: "api/Buildings");
         }
-
         public async Task<Building> PostBuildingAsync(Building building)
         {
             return await _repository.PostAsync(building, path: "api/Buildings");

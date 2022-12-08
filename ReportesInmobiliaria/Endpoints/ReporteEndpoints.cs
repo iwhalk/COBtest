@@ -8,13 +8,12 @@ namespace ReportesObra.Endpoints
     {
         public static void MapReporteEndpoints(this IEndpointRouteBuilder routes)
         {
-            routes.MapGet("/ReporteDetalles/{idApartment}", async (int idApartment, IReportesService _reportesService, ILogger<Program> _logger) =>
+            routes.MapGet("/ReporteDetalles", async (int idBuilding, int idApartment, IReportesService _reportesService, ILogger<Program> _logger) =>
             {
                 try
                 {
-                    var newModule = await _reportesService.GetReporteDetalles(idApartment);
-                    if (newModule == null) return Results.NoContent();
-                    //System.IO.File.WriteAllBytes("ReporteTransaccionesCrucesTotales.pdf", newModule);
+                    var newModule = await _reportesService.GetReporteDetalles(idBuilding, idApartment);
+                    if (newModule == null) return Results.NotFound();
                     return Results.File(newModule, "application/pdf");
                 }
                 catch (Exception e)

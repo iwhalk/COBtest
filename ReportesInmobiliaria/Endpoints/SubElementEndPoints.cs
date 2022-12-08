@@ -8,11 +8,11 @@ namespace ReportesObra.Endpoints
     {
         public static void MapSubElementEndpoints(this IEndpointRouteBuilder routes)
         {
-            routes.MapGet("/SubElements", async (ISubElementsService _subElementsService, ILogger<Program> _logger) =>
+            routes.MapGet("/SubElements", async(int? idElement, ISubElementsService _subElementsService, ILogger<Program> _logger) =>
             {
                 try
                 {
-                    var subElements = await _subElementsService.GetSubElementsAsync();
+                    var subElements = await _subElementsService.GetSubElementsAsync(idElement);
                     return Results.Ok(subElements);
                 }
                 catch (Exception e)

@@ -15,20 +15,45 @@ namespace Obra.Client.Services
             _context = context;
         }
 
-        public async Task<List<ProgressReport>> GetProgressReportsAsync()
+        public async Task<ProgressReport> GetProgressReportAsync(int id)
         {
-            if (_context.ProgressReport == null)
-            {
-                var response = await _repository.GetAsync<List<ProgressReport>>(path: "api/ProgressReport");
+            return await _repository.GetAsync<ProgressReport>(id, path: "api/ProgressReport");
+        }
 
-                if (response != null)
-                {
-                    _context.ProgressReport = response;
-                    return _context.ProgressReport;
-                }
+        public async Task<List<ProgressReport>> GetProgressReportsAsync(int? idProgressReport = null, int? idBuilding = null, int? idAparment = null, int? idArea = null, int? idElemnet = null, int? idSubElement = null, string? idSupervisor = null)
+        {
+            Dictionary<string, string> parameters = new();
+
+            if (idProgressReport != null && idProgressReport > 0)
+            {
+                parameters.Add("idProgressReport", idProgressReport.ToString());
+            }
+            if (idBuilding != null && idBuilding > 0)
+            {
+                parameters.Add("idBuilding", idBuilding.ToString());
+            }
+            if (idAparment != null && idAparment > 0)
+            {
+                parameters.Add("idAparment", idAparment.ToString());
+            }
+            if (idArea != null && idArea > 0)
+            {
+                parameters.Add("idArea", idArea.ToString());
+            }
+            if (idElemnet != null && idElemnet > 0)
+            {
+                parameters.Add("idElemnet", idElemnet.ToString());
+            }
+            if (idSubElement != null && idSubElement > 0)
+            {
+                parameters.Add("idSubElement", idSubElement.ToString());
+            }
+            if (idSupervisor is not null)
+            {
+                parameters.Add("idSupervisor", idSupervisor);
             }
 
-            return _context.ProgressReport;
+            return await _repository.GetAsync<List<ProgressReport>>(parameters, path: "api/ProgressReport"); ;
         }
 
         public async Task<ProgressReport> PostProgressReportAsync(ProgressReport progressReport)
