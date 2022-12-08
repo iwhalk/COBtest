@@ -27,7 +27,7 @@ namespace Obra.Client.Services
 
             if (idElement != null)
             {
-                parameters.Add("ID_Element", idElement.ToString());
+                parameters.Add("idElement", idElement.ToString());
             }
 
             return await _repository.GetAsync<List<SubElement>>(path: "api/SubElements", parameters: parameters);

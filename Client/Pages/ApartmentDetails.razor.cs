@@ -2,6 +2,7 @@
 using Obra.Client.Interfaces;
 using Obra.Client.Stores;
 using SharedLibrary.Models;
+using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Text.Encodings.Web;
 
@@ -16,18 +17,30 @@ namespace Obra.Client.Pages
         private readonly ISubElementsService _subElementsService;
 
         private List<Apartment> apartments { get; set; }
-        private List<Activity> activities { get; set; }
+        private List<SharedLibrary.Models.Activity> activities { get; set; }
         private List<Element> elements { get; set; }
         private List<SubElement> subElements { get; set; }
+
+        private List<SubElement> subElementsAux { get; set; } = new();
+        private SharedLibrary.Models.Activity activity { get; set; }
+        private Element element { get; set; }
 
         private List<int> _idsAparmentSelect { get; set; } = new();
         private List<int> _idsActivitiesSelect { get; set; } = new();
         private List<int> _idsElementsSelect { get; set; } = new();
-        private List<int> _idsSubElementsSelect { get; set; } = new(); 
+        private List<int> _idsSubElementsSelect { get; set; } = new();
 
+        private string menssageError = "";
         private bool alert = false;
         private int activityIdAux = 0;
         private int elementIdAux = 0;
+
+        private bool apartmentDetails = true;
+        private bool buttonReport = false;
+        private bool subElementsNulls = false;
+
+        private bool isFirstView { get; set; } = true;
+        private bool showModal { get; set; } = false;
 
         public ApartmentDetails(ApplicationContext context, IApartmentsService apartmentsService, IActivitiesService activitiesService, IElementsService elementsService, ISubElementsService subElementsService)
         {
@@ -46,11 +59,12 @@ namespace Obra.Client.Pages
 
         public async Task AddIdSelect(int id, int filter)
         {
-            if (filter == 1)
+            if (filter == 1) //Departemento
             {
                 if (!_idsAparmentSelect.Contains(id))
                 {
                     _idsAparmentSelect.Add(id);
+                    ShowMenssage();
                 }
                 else if (_idsAparmentSelect.Count() == 1)
                 {
@@ -75,7 +89,7 @@ namespace Obra.Client.Pages
                     _idsAparmentSelect.Remove(id);
                 }
             }
-            else if (filter == 2)
+            else if (filter == 2) //Actividad
             {
                 if (_idsAparmentSelect != null && _idsAparmentSelect.Count() > 0)
                 {
@@ -123,10 +137,11 @@ namespace Obra.Client.Pages
                 }
                 else
                 {
+                    menssageError = "Es necesario elegir un un Departamento antes de una Actividad";
                     alert = true;
                 }
             }
-            else if (filter == 3)
+            else if (filter == 3) //Elemento
             {
                 if (_idsElementsSelect.Count() < 1)
                 {
@@ -147,7 +162,7 @@ namespace Obra.Client.Pages
                         }
                     }
                 }
-                else if (elementIdAux == id)
+                else if (elementIdAux == id) //SubElemento
                 {
                     _idsElementsSelect.Remove(id);
 
@@ -170,5 +185,42 @@ namespace Obra.Client.Pages
         }
 
         public async Task ShowMenssage() => alert = false;
+
+        private void ChangeShowModal() => showModal = showModal ? false : true;
+        private void ChangeView() => isFirstView = isFirstView ? false : true;
+
+        public async Task ShowReportAndHideApartment()
+        {
+            if (_idsElementsSelect != null && _idsElementsSelect.Count() > 0 && _idsSubElementsSelect.Count() > 1)
+            {
+                activity = activities.FirstOrDefault(x => x.IdActivity == _idsActivitiesSelect.FirstOrDefault());
+                element = elements.FirstOrDefault(x => x.IdElement == _idsElementsSelect.FirstOrDefault());
+
+
+                foreach (var item in _idsSubElementsSelect)
+                {
+                    SubElement subElement = await _subElementsService.GetSubElementAsync(item);
+
+                    subElementsAux.Add(new SubElement() { IdSubElement = subElement.IdSubElement, SubElementName = subElement.SubElementName, IdElement = subElement.IdElement, Type = subElement.Type });
+                }
+
+                buttonReport = true;
+                apartmentDetails = false;
+            }
+            else if (_idsElementsSelect != null && _idsElementsSelect.Count() > 0 && _idsSubElementsSelect.Count() < 1)
+            {
+                activity = activities.FirstOrDefault(x => x.IdActivity == _idsActivitiesSelect.FirstOrDefault());
+                element = elements.FirstOrDefault(x => x.IdElement == _idsElementsSelect.FirstOrDefault());
+
+                buttonReport = true;
+                apartmentDetails = false;
+                subElementsNulls = true;
+            }
+            else
+            {
+                menssageError = "Para generar el reporte es necesario elegir un elemento antes";
+                alert = true;
+            }
+        }
     }
 }

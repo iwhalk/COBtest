@@ -28,7 +28,7 @@ namespace ApiGateway.Controllers
                 idInt = Convert.ToInt16(id);
             }
 
-            var result = await _subElementsService.GetSubElementsAsync(idInt);
+            var result = await _subElementsService.GetSubElementAsync(idInt);
 
             if (result.Succeeded)
             {
@@ -39,13 +39,13 @@ namespace ApiGateway.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult> GetSubElements(string? ID_Element)
+        public async Task<ActionResult> GetSubElements(string? idElement)
         {
             int ID_ElementInt = 0;
 
-            if (ID_Element != null)
+            if (idElement != null)
             {
-                ID_ElementInt = Convert.ToInt16(ID_Element);
+                ID_ElementInt = Convert.ToInt16(idElement);
             }
 
             var result = await _subElementsService.GetSubElementsAsync(ID_ElementInt);

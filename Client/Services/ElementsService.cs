@@ -25,11 +25,12 @@ namespace Obra.Client.Services
 
             if (idActivity != null)
             {
-                parameters.Add("ID_Activity", idActivity.ToString());
+                parameters.Add("idActivity", idActivity.ToString());
             }
 
             return await _repository.GetAsync<List<Element>>(path: "api/Elements", parameters: parameters);
         }
+
         public async Task<Element> PostElementAsync(Element element)
         {
             return await _repository.PostAsync(element, path: "api/Elements");
