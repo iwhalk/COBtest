@@ -38,8 +38,8 @@
                             @if (_idsAparmentSelect.ContainsKey(apartment.IdApartment))
                             {
                                 <div class="md:w-4/6 xl:w-5/6 inline-flex p-0.5">
-                                    <div class="bg-[#115D28] md:h-8 xl:h-12 md:text-sm xl:text-lg text-white text-end w-[70%] md:p-1 xl:p-3">@_idsAparmentSelect[apartment.IdApartment]</div>
-                                    <div class="bg-[#CB3030] md:h-8 xl:h-12 md:text-sm xl:text-lg text-white text-end w-[30%] md:p-1 xl:p-3">30%</div>
+                                    <div class="bg-[#115D28] md:h-8 xl:h-12 md:text-sm xl:text-lg text-white text-end w-[@_idsAparmentSelect[apartment.IdApartment].Item1%] md:p-1 xl:p-3">@_idsAparmentSelect[apartment.IdApartment].Item1 %</div>
+                                    <div class="bg-[#CB3030] md:h-8 xl:h-12 md:text-sm xl:text-lg text-white text-end w-[@_idsAparmentSelect[apartment.IdApartment].Item2%] md:p-1 xl:p-3">@_idsAparmentSelect[apartment.IdApartment].Item2 %</div>
                                 </div> 
                             }
                         </div>

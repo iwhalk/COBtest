@@ -12,7 +12,7 @@ namespace Obra.Client.Pages
         private readonly IProgressLogsService _progressLogsService;
         private readonly IProgressReportService _progressReportService;
         //Variable locales
-        private Dictionary<int, string> _idsAparmentSelect { get; set; } = new();        
+        private Dictionary<int, Tuple<int, int>> _idsAparmentSelect { get; set; } = new();        
         private bool _isFullAparment { get; set;}
         
         public ProgressForApartment(ApplicationContext context, IApartmentsService apartmentsService, IProgressLogsService progressLogsService, IProgressReportService progressReportService) 
@@ -33,11 +33,13 @@ namespace Obra.Client.Pages
                 var infoProgress = await _progressReportService.GetProgresReportViewAsync(idDeparment);
                 if (infoProgress.Count > 0)
                 {
-                    _idsAparmentSelect.Add(idDeparment, infoProgress.FirstOrDefault().ApartmentProgress.ToString());
+                    var porcentageProgress = (int)Math.Round(infoProgress.FirstOrDefault().ApartmentProgress);
+                    var porcentage = new Tuple<int, int>(porcentageProgress, 100 - porcentageProgress);
+                    _idsAparmentSelect.Add(idDeparment, porcentage);
                 }
                 else
                 {
-                    _idsAparmentSelect.Add(idDeparment, 0.ToString());
+                    _idsAparmentSelect.Add(idDeparment, new Tuple<int, int>(0, 100));
                 }
             }
             else
@@ -46,7 +48,7 @@ namespace Obra.Client.Pages
             }
             StateHasChanged();
         }
-        private void FullAparment()
+        private async void FullAparment()
         {
             if (_idsAparmentSelect.Count() == _context.Apartment.Count())
             {
@@ -55,8 +57,17 @@ namespace Obra.Client.Pages
             }
             else
             {
-                _isFullAparment = true;
-                _idsAparmentSelect = new();//_context.Apartment.Select(x => x.IdApartment).ToList();
+                var infoProgress = await _progressReportService.GetProgresReportViewAsync(null);
+                if (infoProgress != null)
+                {
+                    foreach(var aparment in _context.Apartment)
+                    {
+                        var porcentageProgress = (int)Math.Round(infoProgress.Where(x => x.ApartmentNumber == aparment.ApartmentNumber).FirstOrDefault().ApartmentProgress);
+                        var porcentage = new Tuple<int, int>(porcentageProgress, 100 - porcentageProgress);
+                        _idsAparmentSelect.Add(aparment.IdApartment, porcentage);
+                    }
+                    _isFullAparment = true;
+                }                                
             }
         }   
     }
