@@ -8,8 +8,8 @@ namespace SharedLibrary.Models
 {
     public class AparmentProgress
     {
-        public string ApartmentNumber;
+        public string ApartmentNumber { get; set; }
 
-        public double ApartmentProgress;
+        public double ApartmentProgress { get; set; }
     }
 }

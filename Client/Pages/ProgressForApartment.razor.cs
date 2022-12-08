@@ -12,7 +12,7 @@ namespace Obra.Client.Pages
         private readonly IProgressLogsService _progressLogsService;
         private readonly IProgressReportService _progressReportService;
         //Variable locales
-        private List<int> _idsAparmentSelect { get; set; } = new();
+        private Dictionary<int, string> _idsAparmentSelect { get; set; } = new();        
         private bool _isFullAparment { get; set;}
         
         public ProgressForApartment(ApplicationContext context, IApartmentsService apartmentsService, IProgressLogsService progressLogsService, IProgressReportService progressReportService) 
@@ -24,21 +24,27 @@ namespace Obra.Client.Pages
         }
         protected async override Task OnInitializedAsync()
         {
-            await _apartmentsService.GetApartmentsAsync();
-            //var progressLog = await _progressLogsService.GetProgressLogsAsync();
-            var progressReport = await _progressReportService.GetProgressReportsAsync();
+            await _apartmentsService.GetApartmentsAsync();                        
         }
         private async void AddIdAparmentSelect(int idDeparment)
         {
-            if (!_idsAparmentSelect.Contains(idDeparment))
+            if (!_idsAparmentSelect.ContainsKey(idDeparment))
             {
-                _idsAparmentSelect.Add(idDeparment);
                 var infoProgress = await _progressReportService.GetProgresReportViewAsync(idDeparment);
+                if (infoProgress.Count > 0)
+                {
+                    _idsAparmentSelect.Add(idDeparment, infoProgress.FirstOrDefault().ApartmentProgress.ToString());
+                }
+                else
+                {
+                    _idsAparmentSelect.Add(idDeparment, 0.ToString());
+                }
             }
             else
             {
-                _idsAparmentSelect = _idsAparmentSelect.Where(x => x != idDeparment).ToList();
+                _idsAparmentSelect = _idsAparmentSelect.Where(x => x.Key != idDeparment).Select(x => new { x.Key, x.Value }).ToDictionary(x =>  x.Key, x => x.Value);                
             }
+            StateHasChanged();
         }
         private void FullAparment()
         {
@@ -50,8 +56,8 @@ namespace Obra.Client.Pages
             else
             {
                 _isFullAparment = true;
-                _idsAparmentSelect = _context.Apartment.Select(x => x.IdApartment).ToList();
+                _idsAparmentSelect = new();//_context.Apartment.Select(x => x.IdApartment).ToList();
             }
-        }
+        }   
     }
 }

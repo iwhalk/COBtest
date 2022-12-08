@@ -62,11 +62,11 @@ namespace Obra.Client.Services
 
             return await _repository.GetAsync<List<ProgressReport>>(parameters, path: "api/ProgressReport"); ;
         }
-        public async Task<ReporteAvance> GetProgresReportViewAsync(int? id)
+        public async Task<List<AparmentProgress>?> GetProgresReportViewAsync(int? id)
         {
             Dictionary<string, string> parameters = new();
             parameters.Add("id", id.ToString());            
-            return await _repository.GetAsync<ReporteAvance>(parameters, path: "api/ProgressReport/ProgressReportView");
+            return await _repository.GetAsync<List<AparmentProgress>?>(parameters, path: "api/ProgressReport/ProgressReportView");
         }
         public async Task<ProgressReport> PostProgressReportAsync(ProgressReport progressReport)
         {
