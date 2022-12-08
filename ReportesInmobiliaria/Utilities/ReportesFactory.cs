@@ -354,30 +354,66 @@ namespace ReportesObra.Utilities
             }
             //---------------------------------------------------------------------------------------
             // Create the item table
-            tableAreas = section.AddTable();
-            tableAreas.Style = "Table";
-            tableAreas.Borders.Color = Colors.Gray;
-            tableAreas.Borders.Width = 0.3;
-            tableAreas.Rows.LeftIndent = 0;
-            tableAreas.Rows.Alignment = RowAlignment.Center;
-            // Before you can add a row, you must define the columns
-            Column column = tableAreas.AddColumn("3cm");
-            column.Format.Alignment = ParagraphAlignment.Center;
-            column = tableAreas.AddColumn("4cm");
-            column.Format.Alignment = ParagraphAlignment.Center;
-            column = tableAreas.AddColumn("3cm");
-            column.Format.Alignment = ParagraphAlignment.Center;
-            // Create the header of the table
-            Row row = tableAreas.AddRow();
-            row.HeadingFormat = true;
-            row.Format.Alignment = ParagraphAlignment.Center;
-            row.Format.Font.Bold = true;
-            row.Format.Font.Size = 10;
-            row.Borders.Visible = false;
-            //row.Shading.Color = TableColor;
-            row.Cells[0].AddParagraph("ID_Element");
-            row.Cells[1].AddParagraph("SubElementName");
-            row.Cells[2].AddParagraph("Type");
+            //tableAreas = section.AddTable();
+            //tableAreas.Style = "Table";
+            //tableAreas.Borders.Color = Colors.Gray;
+            //tableAreas.Borders.Width = 0.3;
+            //tableAreas.Rows.LeftIndent = 0;
+            //tableAreas.Rows.Alignment = RowAlignment.Center;
+            //// Before you can add a row, you must define the columns
+            //Column column = tableAreas.AddColumn("3cm");
+            //column.Format.Alignment = ParagraphAlignment.Center;
+            //column = tableAreas.AddColumn("4cm");
+            //column.Format.Alignment = ParagraphAlignment.Center;
+            //column = tableAreas.AddColumn("3cm");
+            //column.Format.Alignment = ParagraphAlignment.Center;
+            //// Create the header of the table
+            //Row row = tableAreas.AddRow();
+            //row.HeadingFormat = true;
+            //row.Format.Alignment = ParagraphAlignment.Center;
+            //row.Format.Font.Bold = true;
+            //row.Format.Font.Size = 10;
+            //row.Borders.Visible = false;
+            ////row.Shading.Color = TableColor;
+            //row.Cells[0].AddParagraph("ID_Element");
+            //row.Cells[1].AddParagraph("SubElementName");
+            //row.Cells[2].AddParagraph("Type");
+
+            Table table = section.AddTable();
+            table.Rows.Alignment = RowAlignment.Center;
+
+            Column columna = table.AddColumn("2cm");
+            columna.Format.Alignment = ParagraphAlignment.Center;
+            columna = table.AddColumn("15cm");
+            columna.Format.Alignment = ParagraphAlignment.Center;
+
+            var chart = new MigraDocCore.DocumentObjectModel.Shapes.Charts.Chart(MigraDocCore.DocumentObjectModel.Shapes.Charts.ChartType.Bar2D);
+            chart.Width = "15cm";
+            chart.Height = "0.5cm";
+            var series = chart.SeriesCollection.AddSeries();
+            series.Add(new double[] { 0.55});
+            series.DataLabel.Format = "#0.0%";
+            var elements = series.Elements.Cast<MigraDocCore.DocumentObjectModel.Shapes.Charts.Point>().ToArray();
+            elements[0].FillFormat.Color = Colors.Green;
+            var xseries = chart.XValues.AddXSeries();
+            xseries.Add("");            
+            chart.XAxis.MajorTickMark = MigraDocCore.DocumentObjectModel.Shapes.Charts.TickMarkType.Outside;
+            chart.XAxis.Title.Caption = "";
+            chart.XAxis.HasMajorGridlines = false;
+            chart.YAxis.TickLabels.Format = "#0%";
+            chart.YAxis.MajorTickMark = MigraDocCore.DocumentObjectModel.Shapes.Charts.TickMarkType.Cross;
+            chart.YAxis.MinimumScale = 0;
+            chart.YAxis.MaximumScale = 1;
+            chart.PlotArea.FillFormat.Color = Colors.Red;
+
+            Row rowo = table.AddRow();
+            rowo.HeadingFormat = true;
+            rowo.Format.Alignment = ParagraphAlignment.Center;
+            rowo.Format.Font.Bold = true;
+            rowo.Format.Font.Size = 10;
+            rowo.Borders.Visible = false;            
+            rowo.Cells[0].AddParagraph("Departamento");
+            rowo.Cells[1].Add(chart);
 
             //FillGenericContent(reporteDetalles.SubElementos, tableAreas);
         }
