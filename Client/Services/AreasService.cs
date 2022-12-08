@@ -16,13 +16,12 @@ namespace Obra.Client.Services
 
         public async Task<Area> GetAreaAsync(int id)
         {
-            return await _repository.GetAsync<Area>(id, path: "api/Area");
+            return await _repository.GetAsync<Area>(id, path: "api/Areas");
         }
 
         public async Task<List<Area>> GetAreasAsync()
         {
-            _context.Area = await _repository.GetAsync<List<Area>>(path: "api/Areas");
-            return _context.Area;
+            return await _repository.GetAsync<List<Area>>(path: "api/Areas");
         }
         public async Task<Area> PostAreaAsync(Area area)
         {
