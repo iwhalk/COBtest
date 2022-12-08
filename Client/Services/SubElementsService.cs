@@ -36,7 +36,7 @@ namespace Obra.Client.Services
             //    }
             //}
 
-            return await _repository.GetAsync<List<SubElement>>(path: "api/SubElements");
+            return await _repository.GetAsync<List<SubElement>>(parameters, "api/SubElements");
         }
 
         public async Task<SubElement> PostSubElementAsync(SubElement subElement)

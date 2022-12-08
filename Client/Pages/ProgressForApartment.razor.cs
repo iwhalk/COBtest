@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Components;
+using Microsoft.Fast.Components.FluentUI;
 using Obra.Client.Interfaces;
 using Obra.Client.Services;
 using Obra.Client.Stores;
+using System.Security.Cryptography.X509Certificates;
 
 namespace Obra.Client.Pages
 {
@@ -31,7 +33,7 @@ namespace Obra.Client.Pages
             if (!_idsAparmentSelect.ContainsKey(idDeparment))
             {
                 var infoProgress = await _progressReportService.GetProgresReportViewAsync(idDeparment);
-                if (infoProgress.Count > 0)
+                if (infoProgress != null)
                 {
                     var porcentageProgress = (int)Math.Round(infoProgress.FirstOrDefault().ApartmentProgress);
                     var porcentage = new Tuple<int, int>(porcentageProgress, 100 - porcentageProgress);
@@ -57,17 +59,26 @@ namespace Obra.Client.Pages
             }
             else
             {
+                _idsAparmentSelect.Clear();
                 var infoProgress = await _progressReportService.GetProgresReportViewAsync(null);
                 if (infoProgress != null)
                 {
                     foreach(var aparment in _context.Apartment)
                     {
-                        var porcentageProgress = (int)Math.Round(infoProgress.Where(x => x.ApartmentNumber == aparment.ApartmentNumber).FirstOrDefault().ApartmentProgress);
-                        var porcentage = new Tuple<int, int>(porcentageProgress, 100 - porcentageProgress);
-                        _idsAparmentSelect.Add(aparment.IdApartment, porcentage);
+                        if (infoProgress.Exists(x => x.ApartmentNumber == aparment.ApartmentNumber))
+                        {
+                            var porcentageProgress = (int)Math.Round(infoProgress.Where(x => x.ApartmentNumber == aparment.ApartmentNumber).FirstOrDefault().ApartmentProgress);
+                            var porcentage = new Tuple<int, int>(porcentageProgress, 100 - porcentageProgress);
+                            _idsAparmentSelect.Add(aparment.IdApartment, porcentage);
+                        }
+                        else
+                        {
+                            _idsAparmentSelect.Add(aparment.IdApartment, new Tuple<int, int>(0, 100));
+                        }
                     }
                     _isFullAparment = true;
-                }                                
+                }
+                StateHasChanged();
             }
         }   
     }
