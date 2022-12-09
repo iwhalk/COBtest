@@ -1,19 +1,19 @@
 ﻿@page "/ProjectTracking"
 
 <div class="pt-28 pb-12 min-h-screen bg-[url('/assets/img/imgFondo.png')] z-0 opacity-25 imgfondo fixed inset-0 bg-gray-500 bg-opacity-25 transition-opacity"></div>
-<div class="h-screen pt-20 pb-12 fixed inset-0 flex flex-col justify-center items-center scaleTab scaleDesk">
-    <div class="flex justify-center rounded-2xl my-2" style="height: 45rem">
+<div class="h-screen pt-20 pb-12 fixed inset-0 flex items-center scaleTab scaleDesk">
+    <div class="flex rounded-2xl my-2" style="height: 45rem; margin-left: 9rem">
         <div class="mx-1">
             <div>
                 <h1 class="rounded-tr-2xl rounded-tl-2xl text-xl text-white font-medium leading-6 bg-[#0B253E] text-center py-2">No. Departamentos</h1>
             </div>
-            <div class="flex justify-center bg-[#0B253E] rounded-br-2xl rounded-bl-2xl" style="height: 42rem">
+            <div class="overflow-y-auto justify-center bg-[#0B253E] rounded-br-2xl rounded-bl-2xl" style="height: 42rem">
                 <div>
                     <div class="grid grid-col-1 gap-1 p-1 w-48">
                         @if(ApartmentsList != null)
                         @foreach (var apartment in ApartmentsList)
                         {
-                                <button @onclick="@(() => ApartmentButtonClicked(apartment.IdApartment))" class="bg-gray-600 border border-stone-400">
+                                <button @onclick="@(() => ApartmentButtonClicked(apartment.IdApartment))" style="@((SelectedApartment == apartment.IdApartment) ? "background-color: #9CA2A8;" : "")" class="bg-gray-600 border border-stone-400">
                                 <h1 class="text-md text-white font-medium leading-6 text-center p-1">@apartment.ApartmentNumber</h1>
                             </button>                            
                         }
@@ -85,150 +85,164 @@
                 </div>*@
             </div>
         </div>
-        <div class="mt-12 mx-1">
-            <div>
-                <h1 class="rounded-tr-2xl rounded-tl-2xl text-xl text-white font-medium leading-6 bg-[#23364B] text-center py-2">Area</h1>
-            </div>
-            <div class="flex justify-center bg-[#23364B] rounded-br-2xl rounded-bl-2xl">
-                <div class="-mb-12" style="height: 42rem">
-                    <div class="grid grid-col-1 gap-1 p-1 w-56">
-                        @if (AreasList != null)
-                        @foreach (var area in AreasList)
-                        {
-                                <button @onclick="@(() => AreaButtonClicked(area.IdArea))" class="bg-gray-600 border border-stone-400">
-                                <h1 class="text-md text-white font-medium leading-6 text-center p-1">@area.AreaName</h1>
-                            </button>                            
-                        }
-                        @*<button class="bg-gray-600 border border-stone-400">
-                            <h1 class="text-md text-white font-medium leading-6 text-center p-1">Acceso</h1>
+        @if (AreasList != null)
+        {
+            <div class="mt-12 mx-1">
+                <div>
+                    <h1 class="rounded-tr-2xl rounded-tl-2xl text-xl text-white font-medium leading-6 bg-[#23364B] text-center py-2">Area</h1>
+                </div>
+                <div class="flex justify-center bg-[#23364B] rounded-br-2xl rounded-bl-2xl">
+                    <div class="-mb-12" style="height: 42rem">
+                        <div class="grid grid-col-1 gap-1 p-1 w-56">
+                            @foreach (var area in AreasList)
+                            {
+                                <button @onclick="@(() => AreaButtonClicked(area.IdArea))" style="@((SelectedArea == area.IdArea) ? "background-color: #9CA2A8;" : "")" class="bg-gray-600 border border-stone-400">
+                                    <h1 class="text-md text-white font-medium leading-6 text-center p-1">@area.AreaName</h1>
+                                </button>
+                            }
+                            @*<button class="bg-gray-600 border border-stone-400">
+                        <h1 class="text-md text-white font-medium leading-6 text-center p-1">Acceso</h1>
                         </button>
                         <button class="bg-gray-600 border border-stone-400">
-                            <h1 class="text-md text-white font-medium leading-6 text-center p-1">Vestibulo</h1>
+                        <h1 class="text-md text-white font-medium leading-6 text-center p-1">Vestibulo</h1>
                         </button>
                         <button class="bg-gray-600 border border-stone-400">
-                            <h1 class="text-md text-white font-medium leading-6 text-center p-1">Baño de Visitas</h1>
+                        <h1 class="text-md text-white font-medium leading-6 text-center p-1">Baño de Visitas</h1>
                         </button>
                         <button class="bg-gray-600 border border-stone-400">
-                            <h1 class="text-md text-white font-medium leading-6 text-center p-1">Área de Servicio</h1>
+                        <h1 class="text-md text-white font-medium leading-6 text-center p-1">Área de Servicio</h1>
                         </button>
                         <button class="bg-gray-600 border border-stone-400">
-                            <h1 class="text-md text-white font-medium leading-6 text-center p-1">Cuarto de Lavado</h1>
+                        <h1 class="text-md text-white font-medium leading-6 text-center p-1">Cuarto de Lavado</h1>
                         </button>
                         <button class="bg-gray-600 border border-stone-400">
-                            <h1 class="text-md text-white font-medium leading-6 text-center p-1">Cocina</h1>
+                        <h1 class="text-md text-white font-medium leading-6 text-center p-1">Cocina</h1>
                         </button>
                         <button class="bg-gray-600 border border-stone-400">
-                            <h1 class="text-md text-white font-medium leading-6 text-center p-1">Estancia-Comedor</h1>
+                        <h1 class="text-md text-white font-medium leading-6 text-center p-1">Estancia-Comedor</h1>
                         </button>
                         <button class="bg-gray-600 border border-stone-400">
-                            <h1 class="text-md text-white font-medium leading-6 text-center p-1">Estancia Familiar</h1>
+                        <h1 class="text-md text-white font-medium leading-6 text-center p-1">Estancia Familiar</h1>
                         </button>
                         <button class="bg-gray-600 border border-stone-400">
-                            <h1 class="text-md text-white font-medium leading-6 text-center p-1">Pasillo Área Intima</h1>
+                        <h1 class="text-md text-white font-medium leading-6 text-center p-1">Pasillo Área Intima</h1>
                         </button>
                         <button class="bg-gray-600 border border-stone-400">
-                            <h1 class="text-md text-white font-medium leading-6 text-center p-1">Recámara Principal</h1>
+                        <h1 class="text-md text-white font-medium leading-6 text-center p-1">Recámara Principal</h1>
                         </button>
                         <button class="bg-gray-600 border border-stone-400">
-                            <h1 class="text-sm text-white font-medium leading-6 text-center p-1">Vestidor Recámara Principal</h1>
+                        <h1 class="text-sm text-white font-medium leading-6 text-center p-1">Vestidor Recámara Principal</h1>
                         </button>
                         <button class="bg-gray-600 border border-stone-400">
-                            <h1 class="text-md text-white font-medium leading-6 text-center p-1">Baño Recámara Principal</h1>
+                        <h1 class="text-md text-white font-medium leading-6 text-center p-1">Baño Recámara Principal</h1>
                         </button>
                         <button class="bg-gray-600 border border-stone-400">
-                            <h1 class="text-md text-white font-medium leading-6 text-center p-1">Recámara 2</h1>
+                        <h1 class="text-md text-white font-medium leading-6 text-center p-1">Recámara 2</h1>
                         </button>
                         <button class="bg-gray-600 border border-stone-400">
-                            <h1 class="text-sm text-white font-medium leading-6 text-center p-1">Vestidor y Baño Recámara 2</h1>
+                        <h1 class="text-sm text-white font-medium leading-6 text-center p-1">Vestidor y Baño Recámara 2</h1>
                         </button>
                         <button class="bg-gray-600 border border-stone-400">
-                            <h1 class="text-md text-white font-medium leading-6 text-center p-1">Recámara 3</h1>
+                        <h1 class="text-md text-white font-medium leading-6 text-center p-1">Recámara 3</h1>
                         </button>
                         <button class="bg-gray-600 border border-stone-400">
-                            <h1 class="text-sm text-white font-medium leading-6 text-center p-1">Vestidor y Baño Recámara 3</h1>
+                        <h1 class="text-sm text-white font-medium leading-6 text-center p-1">Vestidor y Baño Recámara 3</h1>
                         </button>*@
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="mt-24 mx-1">
-            <div>
-                <h1 class="rounded-tr-2xl rounded-tl-2xl text-xl text-white font-medium leading-6 bg-[#163758] text-center py-2">Actividad</h1>
-            </div>
-            <div class="flex justify-center bg-[#163758] rounded-br-2xl rounded-bl-2xl">
-                <div class="-mb-24" style="height: 42rem">
-                    <div class="grid grid-col-1 gap-1 p-1 w-56">
-                        @if (ActivitiesList != null)
-                        @foreach (var activity in ActivitiesList)
-                        {
-                            <button @onclick="@(() => ActivityButtonClicked(activity.IdActivity))" class="bg-gray-600 border border-stone-400">
-                                <h1 class="text-md text-white font-medium leading-6 text-center p-1">@activity.ActivityName</h1>
-                            </button>                            
-                        }
-                        @*<button class="bg-gray-600 border border-stone-400">
-                            <h1 class="text-md text-white font-medium leading-6 text-center p-1">Carpinteria</h1>
+            
+        }
+        @if (ActivitiesList != null)
+        {
+            <div class="mt-24 mx-1">
+                <div>
+                    <h1 class="rounded-tr-2xl rounded-tl-2xl text-xl text-white font-medium leading-6 bg-[#163758] text-center py-2">Actividad</h1>
+                </div>
+                <div class="flex justify-center bg-[#163758] rounded-br-2xl rounded-bl-2xl">
+                    <div class="-mb-24" style="height: 42rem">
+                        <div class="grid grid-col-1 gap-1 p-1 w-56">
+                            @foreach (var activity in ActivitiesList)
+                            {
+                                <button @onclick="@(() => ActivityButtonClicked(activity.IdActivity))" style="@((SelectedActivity == activity.IdActivity) ? "background-color: #9CA2A8;" : "")" class="bg-gray-600 border border-stone-400">
+                                    <h1 class="text-md text-white font-medium leading-6 text-center p-1">@activity.ActivityName</h1>
+                                </button>
+                            }
+                            @*<button class="bg-gray-600 border border-stone-400">
+                        <h1 class="text-md text-white font-medium leading-6 text-center p-1">Carpinteria</h1>
                         </button>
                         <button class="bg-gray-600 border border-stone-400">
-                            <h1 class="text-md text-white font-medium leading-6 text-center p-1">Pinturas</h1>
+                        <h1 class="text-md text-white font-medium leading-6 text-center p-1">Pinturas</h1>
                         </button>*@
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="mt-36 mx-1">
-            <div>
-                <h1 class="rounded-tr-2xl rounded-tl-2xl text-xl text-white font-medium leading-6 bg-[#254260] text-center py-2">Elemento</h1>
-            </div>
-            <div class="flex justify-center bg-[#254260] rounded-br-2xl rounded-bl-2xl">
-                <div class="-mb-36" style="height: 42rem">
-                    <div class="grid grid-col-1 gap-1 p-1 w-56">
-                        @if (CurrentElementsList != null)
-                        @foreach (var element in CurrentElementsList)
-                        {
-                                <button @onclick="@(() => ElementButtonClicked(element.IdElement))" class="bg-gray-600 border border-stone-400">
-                                <h1 class="text-md text-white font-medium leading-6 text-center p-1">@element.ElementName</h1>
-                            </button>
-                        }
-                        @*<button class="bg-gray-600 border border-stone-400">
-                            <h1 class="text-md text-white font-medium leading-6 text-center p-1">Puerta acceso</h1>
+            
+        }
+        @if (CurrentElementsList != null)
+        {
+            <div class="mt-36 mx-1">
+                <div>
+                    <h1 class="rounded-tr-2xl rounded-tl-2xl text-xl text-white font-medium leading-6 bg-[#254260] text-center py-2">Elemento</h1>
+                </div>
+                <div class="flex justify-center bg-[#254260] rounded-br-2xl rounded-bl-2xl">
+                    <div class="-mb-36" style="height: 42rem">
+                        <div class="grid grid-col-1 gap-1 p-1 w-56">
+                            @foreach (var element in CurrentElementsList)
+                            {
+                                <button @onclick="@(() => ElementButtonClicked(element.IdElement))" style="@((SelectedElement == element.IdElement) ? "background-color: #9CA2A8;" : "")" class="bg-gray-600 border border-stone-400">
+                                    <h1 class="text-md text-white font-medium leading-6 text-center p-1">@element.ElementName</h1>
+                                </button>
+                            }
+                            @*<button class="bg-gray-600 border border-stone-400">
+                        <h1 class="text-md text-white font-medium leading-6 text-center p-1">Puerta acceso</h1>
                         </button>
                         <button class="bg-gray-600 border border-stone-400">
-                            <h1 class="text-md text-white font-medium leading-6 text-center p-1">Puerta principal</h1>
+                        <h1 class="text-md text-white font-medium leading-6 text-center p-1">Puerta principal</h1>
                         </button>
                         <button class="bg-gray-600 border border-stone-400">
-                            <h1 class="text-md text-white font-medium leading-6 text-center p-1">Señalizacion</h1>
+                        <h1 class="text-md text-white font-medium leading-6 text-center p-1">Señalizacion</h1>
                         </button>
                         <button class="bg-gray-600 border border-stone-400">
-                            <h1 class="text-sm text-white font-medium leading-6 text-center p-1">Segunda mano para entrega</h1>
+                        <h1 class="text-sm text-white font-medium leading-6 text-center p-1">Segunda mano para entrega</h1>
                         </button>*@
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="mt-48 mx-1">
-            <div>
-                <h1 class="rounded-tr-2xl rounded-tl-2xl text-xl text-white font-medium leading-6 bg-[#3F5B77] text-center py-2">Sub - Elemento</h1>
-            </div>
-            <div class="flex justify-center bg-[#3F5B77] rounded-br-2xl rounded-bl-2xl">
-                <div class="-mb-48" style="height: 42rem">
-                    <div class="grid grid-col-1 gap-1 p-1 w-56">
-                        @if (CurrentSubElementsList != null)
+            
+        }
+        @if (CurrentSubElementsList != null)
+        {
+            <div class="mt-48 mx-1">
+                <div>
+                    <h1 class="rounded-tr-2xl rounded-tl-2xl text-xl text-white font-medium leading-6 bg-[#3F5B77] text-center py-2">Sub - Elemento</h1>
+                </div>
+                <div class="flex justify-center bg-[#3F5B77] rounded-br-2xl rounded-bl-2xl">
+                    <div class="-mb-48" style="height: 42rem">
+                        <div class="grid grid-col-1 gap-1 p-1 w-56">
                             @foreach (var subElement in CurrentSubElementsList)
                             {
-                                <button @onclick="@(() => SubElementButtonClicked(subElement.IdSubElement))" class="bg-gray-600 border border-stone-400">
+                                <button @onclick="@(() => SubElementButtonClicked(subElement.IdSubElement))" style="@((SelectedSubElement == subElement.IdSubElement) ? "background-color: #9CA2A8;" : "")" class="bg-gray-600 border border-stone-400">
                                     <h1 class="text-md text-white font-medium leading-6 text-center p-1">@subElement.SubElementName</h1>
                                 </button>
                             }
-                        @*<button class="bg-gray-600 border border-stone-400">
-                            <h1 class="text-md text-white font-medium leading-6 text-center p-1">Chapa</h1>
+                            @*<button class="bg-gray-600 border border-stone-400">
+                        <h1 class="text-md text-white font-medium leading-6 text-center p-1">Chapa</h1>
                         </button>
                         <button class="bg-gray-600 border border-stone-400">
-                            <h1 class="text-md text-white font-medium leading-6 text-center p-1">Cera</h1>
+                        <h1 class="text-md text-white font-medium leading-6 text-center p-1">Cera</h1>
                         </button>*@
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
+            
+        }
+        @if (ShowDetalle)
+        {
             <div class="mt-60 mx-1">
                 <div>
                     <h1 class="rounded-tr-2xl rounded-tl-2xl text-xl text-white font-medium leading-6 bg-[#51708E] text-center py-2">Detalles de Avance</h1>
@@ -236,8 +250,6 @@
                 <div class="flex justify-center bg-[#51708E] rounded-br-2xl rounded-bl-2xl">
                 <div class="-mb-60" style="height: 42rem">
                     <div class="grid grid-col-1 gap-1 p-1">
-                        @if (CurrentSubElement != null && CurrentProgressReport != null && CurrentProgressLog != null)
-                        {
                             <div class="flex justify-center my-3">
                                 <span class="w-60 flex justify-center">
                                     <label class="text-xl text-white font-medium leading-6 text-center p-1">Total (@CurrentSubElement?.Type)</label>
@@ -270,18 +282,19 @@
                                 <span class="w-60 flex flex-col">
                                     <label class="text-xl text-white font-medium leading-6 text-center p-1 mb-2">Fotografias</label>
                                     @*<input type="file" class="h-20 w-48 self-center rounded px-2 text-center bg-white">*@
-                                    <FormBlob></FormBlob>
+                                    <FormBlob @ref="FormBlob" InputBlobs="@CurrentProgressLog.IdBlobs?.ToList()" AddedBlob="HandleInputFile"></FormBlob>
                                 </span>
                             </div>
-                        }
+                        
                         </div>
                     </div>
                 </div>
-            </div>            
+            </div>
+        }
     </div>
-    <div class="w-full flex py-3">
+    @*<div class="w-full flex py-3">
         <button class="mx-auto bg-[#B9352E] hover:bg-red-500 w-32 p-2 rounded-2xl text-lg text-white font-medium leading-6 border border-stone-400 hover:border-white">Guardar</button>
-    </div>
+    </div>*@
 </div>
 <Navbar></Navbar>
 <Footer></Footer>

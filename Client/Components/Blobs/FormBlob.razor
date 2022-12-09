@@ -14,13 +14,13 @@ else
             @*<h6>@CurrentBlobFile.Blob.BlobSize</h6>*@     
         </div>
         <div class="h-40 overflow-y-auto">
-            @if (CurrentImageFiles?.Count > 0)
+            @if (CurrentBlobs?.Count > 0)
             {
 
                 <div class="grid grid-cols-4 gap-1 w-full">
-                    @foreach (var imageFile in CurrentImageFiles)
+                    @foreach (var blob in CurrentBlobs)
                     {
-                        <div><img class="w-20 h-20" src="@imageFile.Base64Content" /></div>
+                        <div><img class="w-20 h-20" src="@blob.Uri" /></div>
                     }
                 </div>
             }

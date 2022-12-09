@@ -32,7 +32,7 @@ namespace ReportesObra.Services
             if (idSupervisor != null)
                 progressLogs = progressLogs.Where(x => x.IdSupervisor == idSupervisor);
 
-            return progressLogs.ToListAsync();
+            return progressLogs?.Include(x=>x.IdBlobs)?.ToListAsync();
         }
 
         public async Task<ProgressLog?> CreateProgressLogsAsync(ProgressLog progressLog)
