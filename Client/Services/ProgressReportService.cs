@@ -2,6 +2,7 @@
 using Obra.Client.Stores;
 using SharedLibrary.Models;
 using System.Reflection.Metadata;
+using System.Security.Cryptography;
 
 namespace Obra.Client.Services
 {
@@ -13,6 +14,11 @@ namespace Obra.Client.Services
         {
             _repository = repository;
             _context = context;
+        }
+
+        public async Task<ProgressReport> GetProgressReportAsync(int id)
+        {
+            return await _repository.GetAsync<ProgressReport>(id, path: "api/ProgressReport");
         }
 
         public async Task<List<ProgressReport>> GetProgressReportsAsync(int? idProgressReport = null, int? idBuilding = null, int? idAparment = null, int? idArea = null, int? idElemnet = null, int? idSubElement = null, string? idSupervisor = null)
@@ -48,20 +54,14 @@ namespace Obra.Client.Services
                 parameters.Add("idSupervisor", idSupervisor);
             }
 
-            //if (_context.ProgressReport == null)
-            //{
-            //    var response = await _repository.GetAsync<List<ProgressReport>>(path: "api/ProgressReport");
-
-            //    if (response != null)
-            //    {
-            //        _context.ProgressReport = response;
-            //        return _context.ProgressReport;
-            //    }
-            //}
-
             return await _repository.GetAsync<List<ProgressReport>>(parameters, path: "api/ProgressReport"); ;
         }
-
+        public async Task<List<AparmentProgress>?> GetProgresReportViewAsync(int? id)
+        {
+            Dictionary<string, string> parameters = new();
+            parameters.Add("id", id.ToString());            
+            return await _repository.GetAsync<List<AparmentProgress>?>(parameters, path: "api/ProgressReport/ProgressReportView");
+        }
         public async Task<ProgressReport> PostProgressReportAsync(ProgressReport progressReport)
         {
             return await _repository.PostAsync(progressReport, path: "api/ProgressReport");

@@ -13,21 +13,27 @@ namespace Obra.Client.Components.Blobs
         [Parameter]
         public Blob InputBlob { get; set; }
         [Parameter]
+        public List<Blob> InputBlobs { get; set; }
+
+        [Parameter]
         public string[] AllowedExtensions { get; set; } = new[] { ".png", ".jpg", ".jpeg" };
         [Parameter]
         public int MaxAllowedSize { get; set; } = 2097152;
         [Parameter]
-        public EventCallback<int> AddedBlob { get; set; }
-
+        public EventCallback<Blob> AddedBlob { get; set; }
         [Parameter]
         public string HeigthContent { get; set; }
         [Parameter]
         public string SizeImg { get; set; }
+        [Parameter]
+        public EventCallback<Blob> CurrentBlob { get; set; }
 
         private readonly IBlobsService _blobService;
         public BlobFile CurrentBlobFile { get; set; }
-        public ImageFile CurrentImageFile { get; set; }
-        public List<ImageFile> CurrentImageFiles { get; set; }
+        public List<BlobFile> CurrentBlobFiles { get; set; } = new();
+        public List<Blob> CurrentBlobs { get; set; } = new();
+        public ImageFile CurrentImageFile { get; set; } = new();
+        public List<ImageFile> CurrentImageFiles { get; set; } = new();
 
         public EditContext CurrentBlobFileEditContext;
 
@@ -40,19 +46,28 @@ namespace Obra.Client.Components.Blobs
             _blobService = blobService;
         }
 
-        protected override void OnInitialized()
-        {
-        }
 
-        protected override void OnParametersSet()
+        protected override async Task OnInitializedAsync()
         {
+            //CurrentBlobs = InputBlobs ?? new List<Blob>();
+
+            //CurrentBlobFile = new BlobFile()
+            //{
+            //    Blob = InputBlob ?? new()
+            //};
+
+            //CurrentBlobFileEditContext = new EditContext(CurrentBlobFile);
+        }
+        protected override async Task OnParametersSetAsync()
+        {
+            CurrentBlobs = InputBlobs ?? new List<Blob>();
+
             CurrentBlobFile = new BlobFile()
             {
                 Blob = InputBlob ?? new()
             };
             CurrentBlobFileEditContext = new EditContext(CurrentBlobFile);
         }
-
         private async Task OnChangeAsync(InputFileChangeEventArgs eventArgs)
         {
             CurrentBlobFile.BrowserFile = eventArgs.File;
@@ -65,26 +80,41 @@ namespace Obra.Client.Components.Blobs
                 using var stream = eventArgs.File.OpenReadStream();
                 using var memoryStream = new MemoryStream();
                 await stream.CopyToAsync(memoryStream);
-                
-                //CurrentBlobFile.FileStream = new MemoryStream(memoryStream.ToArray());
+
+                var bleb = new Blob()
+                {
+                    BlobName = eventArgs.File.Name,
+                    BlobSize = memoryStream.Length.ToString(),
+                    ContentType= eventArgs.File.ContentType,
+                };
+
+                CurrentBlobFile.Blob = bleb;
+                CurrentBlobFile.FileStream = new MemoryStream(memoryStream.ToArray());
+                CurrentBlobFile.FileName = eventArgs.File.Name;
+                CurrentBlobFile.MimeType = MimeMapping.MimeUtility.GetMimeMapping(eventArgs.File.Name);
+
                 //CurrentBlobFile.Blob.BlobName = eventArgs.File.Name;
                 //CurrentBlobFile.Blob.BlobSize = CurrentBlobFile.FileStream.Length.ToString();
                 //CurrentBlobFile.Blob.BlobTypeId = "1";
                 //CurrentBlobFile.Blob.ContentType = eventArgs.File.ContentType;
-               
-                CurrentImageFile.FileContent = memoryStream.ToArray();
-                CurrentImageFile.FileName = eventArgs.File.Name;
-                CurrentImageFile.MimeType = MimeMapping.MimeUtility.GetMimeMapping(eventArgs.File.Name);
 
-                CurrentImageFiles.Add(CurrentImageFile);
+                //CurrentImageFile.FileContent = memoryStream.ToArray();
+                //CurrentImageFile.FileName = eventArgs.File.Name;
+                //CurrentImageFile.MimeType = MimeMapping.MimeUtility.GetMimeMapping(eventArgs.File.Name);
 
-                //var res = await _blobService.PostBlobAsync(CurrentBlobFile);
-                //if (res != null)
-                //{                    
-                //    ListBase64Blobs.Add("data:image/jpeg;base64," + Convert.ToBase64String(memoryStream.ToArray()));
-                //    CurrentBlobFile.Blob.IdBlobs = res.IdBlobs;
-                //    await AddedBlob.InvokeAsync(res.IdBlobs);
-                //}
+                //ImageFile imageFile = new() { FileContent = CurrentImageFile.FileContent, FileName = CurrentImageFile.FileName, MimeType = CurrentImageFile.MimeType };
+                //CurrentImageFiles.Add(imageFile);
+
+
+                var newBlob = await _blobService.PostBlobAsync(CurrentBlobFile);
+                if (newBlob != null)
+                {
+                    CurrentBlobFile.Blob = newBlob;
+                    CurrentBlobs.Add(newBlob);
+                    StateHasChanged();
+                    await AddedBlob.InvokeAsync(newBlob);
+                }
+
                 //BlobService.BlobFiles.Add(CurrentBlobFile);
             }
 

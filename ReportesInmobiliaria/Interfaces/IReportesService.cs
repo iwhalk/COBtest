@@ -1,4 +1,6 @@
-﻿namespace ReportesObra.Interfaces
+﻿using SharedLibrary.Models;
+
+namespace ReportesObra.Interfaces
 {
     public interface IReportesService
     {

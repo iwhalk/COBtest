@@ -14,15 +14,31 @@ namespace Obra.Client.Models
         public Blob Blob { get; set; }
         public int BlobId { get; set; }
         public int BlobTypeId { get; set; }
+        public string? MimeType { get; set; }
         public string FileName { get; set; }
         public string FileSize { get; set; }
         public string FileSource { get; set; }
         public Stream FileStream { get; set; }
+        public byte[]? FileContent { get; set; }
         public string[] AllowedExtensions { get; set; }
 
         [Required]
         [FileValidation(new[] { ".png", ".jpg", ".jpeg" })]
         public IBrowserFile BrowserFile { get; set; }
+        public string? Base64Content
+        {
+            get
+            {
+                string? convertedContent = null;
+
+                if (FileContent != null)
+                {
+                    convertedContent = $"data:{MimeType};base64,{Convert.ToBase64String(FileContent)}";
+                }
+
+                return convertedContent;
+            }
+        }
     }
 
     public class FileValidationAttribute : ValidationAttribute
