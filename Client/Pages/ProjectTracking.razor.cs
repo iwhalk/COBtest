@@ -12,7 +12,7 @@ namespace Obra.Client.Pages
     {
         private readonly IBuildingsService _buildingsService;
         private readonly IApartmentsService _apartmentsService;
-        private readonly IAreasService _areasService;
+        //private readonly IAreasService _areasService;
         private readonly IActivitiesService _activitiesService;
         private readonly IElementsService _elementsService;
         private readonly ISubElementsService _subElementsService;
@@ -21,7 +21,7 @@ namespace Obra.Client.Pages
 
         public ProjectTracking(IBuildingsService buildingsService,
                                IApartmentsService apartmentsService,
-                               IAreasService areasService,
+                               //IAreasService areasService,
                                IActivitiesService activitiesService,
                                IElementsService elementsService,
                                ISubElementsService subElementsService,
@@ -30,7 +30,7 @@ namespace Obra.Client.Pages
         {
             _buildingsService = buildingsService;
             _apartmentsService = apartmentsService;
-            _areasService = areasService;
+            //_areasService = areasService;
             _activitiesService = activitiesService;
             _elementsService = elementsService;
             _subElementsService = subElementsService;
@@ -64,7 +64,7 @@ namespace Obra.Client.Pages
         }
         public async void ApartmentButtonClicked(int idApartment)
         {
-            AreasList = AreasList ?? await _areasService.GetAreasAsync();
+            //AreasList = AreasList ?? await _areasService.GetAreasAsync();
             CurrentApartment = ApartmentsList.First(x=>x.IdApartment == idApartment);
             StateHasChanged();
         }

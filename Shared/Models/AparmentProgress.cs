@@ -6,9 +6,10 @@ using System.Threading.Tasks;
 
 namespace SharedLibrary.Models
 {
-    public class ReporteAvance
+    public class AparmentProgress
     {
-        public DateTime FechaGeneracion { get; set; }
-        public List<AparmentProgress> Apartments { get; set; }
+        public string ApartmentNumber { get; set; }
+
+        public double ApartmentProgress { get; set; }
     }
 }
