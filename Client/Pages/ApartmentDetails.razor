@@ -55,58 +55,67 @@
                     </div>
                 </div>
             </div>
-            <div class="mx-1">
-                <div>
-                    <h1 class="rounded-xl text-xl text-white font-medium leading-6 bg-[#162D4E] text-center py-2">Elemento</h1>
-                </div>
-                <div class="flex justify-center rounded-br-2xl-2xl" style="height: 43rem; direction: ltr;">
+            @if (showElements == true)
+            {
+                <div class="mx-1">
                     <div>
-                        <div class="grid grid-col-1 gap-1 p-1 w-80">
-                            <button class="bg-[#55595E]">
-                                <h1 class="text-md text-white font-medium leading-6 text-center p-1">TODOS</h1>
-                            </button>
-                            @if (elements != null)
-                            {
-                                @foreach (var element in elements)
+                        <h1 class="rounded-xl text-xl text-white font-medium leading-6 bg-[#162D4E] text-center py-2">Elemento</h1>
+                    </div>
+                    <div class="flex justify-center rounded-br-2xl-2xl" style="height: 43rem; direction: ltr;">
+                        <div>
+                            <div class="grid grid-col-1 gap-1 p-1 w-80">
+                                <button class="bg-[#55595E]">
+                                    <h1 class="text-md text-white font-medium leading-6 text-center p-1">TODOS</h1>
+                                </button>
+                                @if (elements != null)
                                 {
-                                    <button @onclick="() => AddIdSelect(element.IdElement, 3)" class="@(_idsElementsSelect.Contains(element.IdElement) ? "bg-[#9CA2A8]" : "bg-[#55595E]")">
-                                        <h1 class="text-md text-white font-medium leading-6 text-center p-1">@element.ElementName</h1>
-                                    </button>
+                                    @foreach (var element in elements)
+                                    {
+                                        <button @onclick="() => AddIdSelect(element.IdElement, 3)" class="@(_idsElementsSelect.Contains(element.IdElement) ? "bg-[#9CA2A8]" : "bg-[#55595E]")">
+                                            <h1 class="text-md text-white font-medium leading-6 text-center p-1">@element.ElementName</h1>
+                                        </button>
+                                    }
                                 }
-                            }
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="mx-1">
-                <div>
-                    <h1 class="rounded-xl text-xl text-white font-medium leading-6 bg-[#162D4E] text-center py-2">Sub-Elemento</h1>
-                </div>
-                <div class="flex justify-center rounded-br-2xl-2xl" style="height: 43rem; direction: ltr;">
-                    <div>
-                        <div class="grid grid-col-1 gap-1 p-1 w-80">
-                            <button class="bg-[#55595E]">
-                                <h1 class="text-md text-white font-medium leading-6 text-center p-1">TODOS</h1>
-                            </button>
-                            @if (subElements != null)
-                            {
-                                @foreach (var subElement in subElements)
-                                {
-                                    <button @onclick="() => AddIdSelect(subElement.IdSubElement, 4)" class="@(_idsSubElementsSelect.Contains(subElement.IdSubElement) ? "bg-[#9CA2A8]" : "bg-[#55595E]")">
-                                        <h1 class="text-md text-white font-medium leading-6 text-center p-1">@subElement.SubElementName</h1>
+            }
+            @if (showSubElements == true)
+            {
+                @if (subElements != null && subElements.Count() > 0)
+                {
+                    <div class="mx-1">
+                        <div>
+                            <h1 class="rounded-xl text-xl text-white font-medium leading-6 bg-[#162D4E] text-center py-2">Sub-Elemento</h1>
+                        </div>
+                        <div class="flex justify-center rounded-br-2xl-2xl" style="height: 43rem; direction: ltr;">
+                            <div>
+                                <div class="grid grid-col-1 gap-1 p-1 w-80">
+                                    <button class="bg-[#55595E]">
+                                        <h1 class="text-md text-white font-medium leading-6 text-center p-1">TODOS</h1>
                                     </button>
-                                }
-                            }
+                                    @if (subElements != null)
+                                    {
+                                        @foreach (var subElement in subElements)
+                                        {
+                                            <button @onclick="() => AddIdSelect(subElement.IdSubElement, 4)" class="@(_idsSubElementsSelect.Contains(subElement.IdSubElement) ? "bg-[#9CA2A8]" : "bg-[#55595E]")">
+                                                <h1 class="text-md text-white font-medium leading-6 text-center p-1">@subElement.SubElementName</h1>
+                                            </button>
+                                        }
+                                    }
+                                </div>
+                            </div>
                         </div>
                     </div>
-                </div>
-            </div>
+                }
+            }
         </div>
-        <div class="w-full flex py-3">
+        <div class="w-full flex justify-end py-3">
             <button @onclick="() => ShowReportAndHideApartment()" class="mx-auto bg-[#B9352E] hover:bg-red-500 p-2 rounded-2xl text-lg text-white font-medium leading-6 border border-stone-400 hover:border-white">Generar Reporte</button>
             @if (alert == true)
             {
-                <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
+                <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded fixed inset-x-90 bottom-20 w-1/3" role="alert">
                     <strong class="font-bold">¡Advertencia!</strong>
                     <span class="block sm:inline">@menssageError</span>
                     <span class="absolute top-0 bottom-0 right-0 px-4 py-3">
@@ -150,7 +159,8 @@ else if (buttonReport == true)
                         <label class="w-64 h-8 text-2xl text-white leading-6 text-center bg-[#254260] py-1 m-2">@item.SubElementName</label>
                     </div>
                     <div class="flex w-3/6">
-                        <div class="flex justify-end text-white w-[100%] bg-[#115D28] h-8 mt-2">1</div>
+                        <div class="flex justify-end text-white w-[70%] bg-[#115D28] h-8 mt-2">@progressReports.FirstOrDefault(x => x.IdSubElement == item.IdSubElement).TotalPieces</div>
+                        <div class="flex justify-end text-white w-[30%] bg-[#CB3030] h-8 mt-2">1</div>
                         <div class="self-center">
                             <button @onclick="() => ChangeShowModal()">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="#254260" class="bi bi-camera-fill ml-2" viewBox="0 0 16 16">
@@ -162,7 +172,6 @@ else if (buttonReport == true)
                     </div>
                 </div>
             }
-
         }
         else
         {
