@@ -17,7 +17,7 @@
             <div class="overflow-y-auto md:h-[31rem] xl:h-[40rem]">
                 <div class="w-full inline-flex">
                     <div class="md:w-2/6 xl:w-1/6 p-1">
-                        <div class="@(_isFullAparment ? "bg-[#9CA2A8]" : "bg-[#55595E]") border border-stone-40 md:h-12 xl:h-16">
+                        <div class="@(_isFullAparment ? "bg-[#9CA2A8]" : "bg-[#55595E]") border border-stone-40 md:h-12 xl:h-14">
                             <button @onclick="() => FullAparment()" class="w-full">
                                 <p class="text-lg text-white font-medium leading-6 text-center md:p-1 xl:p-3">Todos</p>
                             </button>
@@ -31,7 +31,7 @@
                     {
                         <div class="w-full inline-flex">                            
                             <div class="md:w-2/6 xl:w-1/6 p-0.5">
-                                <div class="@(_idsAparmentSelect.Contains(apartment.IdApartment) ? "bg-[#55595E]" : "bg-[#9CA2A8]") border border-stone-400 md:h-8 xl:h-12 xl:p-3">
+                                <div class="@(_idsAparmentSelect.Contains(apartment.IdApartment) && _isFullAparment == false ? "bg-[#9CA2A8]" : "bg-[#55595E]") border border-stone-400 md:h-8 xl:h-12 xl:p-3">
                                     <button @onclick="() => AddIdAparmentSelect(apartment.IdApartment)" class="w-full">
                                         <p class="text-lg md:text-sm xl:text-lg text-white font-medium leading-6 text-center">@apartment.ApartmentNumber</p>
                                     </button>
