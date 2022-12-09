@@ -538,9 +538,10 @@ namespace ReportesObra.Utilities
                             series.DataLabel.Format = "#0.0%";
                             var elements = series.Elements.Cast<MigraDocCore.DocumentObjectModel.Shapes.Charts.Point>().ToArray();
                             elements[0].FillFormat.Color = Colors.Green;
-                            var xseries = chart.XValues.AddXSeries();
+                            var xseries = clone_chart.XValues.AddXSeries();
                             xseries.Add("");
                             row.Cells[index].Add(clone_chart);
+                            row.Cells[index].Table.BottomPadding = "0.2cm";
                         }
                         if (type == typeof(string))
                         {
