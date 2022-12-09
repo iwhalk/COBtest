@@ -2,6 +2,7 @@
 using Obra.Client.Interfaces;
 using Obra.Client.Services;
 using Obra.Client.Stores;
+using SharedLibrary.Models;
 
 namespace Obra.Client.Pages
 {
@@ -78,6 +79,16 @@ namespace Obra.Client.Pages
                 }                
             }
             StateHasChanged();
+        }
+        private async void GeneratePDfPorgressaprment()
+        {
+            var listAparmentProgress = _idsAparmentSelect.Select(x => new AparmentProgress
+            {
+                ApartmentNumber = _context.Apartment.Find(o => o.IdApartment == x.Key).ApartmentNumber,
+                ApartmentProgress = x.Value.Item1 * 1.0
+            }).ToList();
+
+            var result = await  _progressReportService.PostProgressReporPDFtAsync(listAparmentProgress);
         }
     }
 }
