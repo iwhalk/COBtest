@@ -3,7 +3,7 @@ using SharedLibrary;
 
 namespace Obra.Client.Interfaces
 {
-    public interface IActivityService
+    public interface IAreasService
     {
         Task<Area> GetAreaAsync(int id);
         Task<List<Area>> GetAreasAsync();

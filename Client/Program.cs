@@ -55,7 +55,7 @@ builder.Services.AddScoped<ApplicationContext>();
 builder.Services.AddScoped<IGenericRepository, GenericRepository>();
 
 builder.Services.AddScoped<IBuildingsService, BuildingsService>();
-builder.Services.AddScoped<IActivityService, AreasService>();
+builder.Services.AddScoped<IAreasService, AreasService>();
 builder.Services.AddScoped<IActivitiesService, ActivitiesService>();
 builder.Services.AddScoped<IApartmentsService, ApartmentsService>();
 builder.Services.AddScoped<IElementsService, ElementsService>();
