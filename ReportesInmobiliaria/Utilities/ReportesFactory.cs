@@ -429,16 +429,19 @@ namespace ReportesObra.Utilities
             columna = table.AddColumn("15cm");
             columna.Format.Alignment = ParagraphAlignment.Center;
 
+            Row rowo = table.AddRow();
+            rowo.HeadingFormat = true;
+            rowo.Format.Alignment = ParagraphAlignment.Center;
+            rowo.Format.Font.Bold = true;
+            rowo.Format.Font.Size = 10;
+            rowo.Borders.Visible = false;
+            //rowo.Cells[0].AddParagraph("Departamento");
+            //rowo.Cells[1].AddParagraph("Avance");
+
             var chart = new MigraDocCore.DocumentObjectModel.Shapes.Charts.Chart(MigraDocCore.DocumentObjectModel.Shapes.Charts.ChartType.Bar2D);
             chart.Width = "15cm";
             chart.Height = "1cm";
-            var series = chart.SeriesCollection.AddSeries();
-            series.Add(new double[] { 0.55 });
-            series.DataLabel.Format = "#0.0%";
-            var elements = series.Elements.Cast<MigraDocCore.DocumentObjectModel.Shapes.Charts.Point>().ToArray();
-            elements[0].FillFormat.Color = Colors.Green;
-            var xseries = chart.XValues.AddXSeries();
-            xseries.Add("");            
+                       
 
             chart.XAxis.MajorTickMark = MigraDocCore.DocumentObjectModel.Shapes.Charts.TickMarkType.Outside;
             chart.XAxis.Title.Caption = "";            
@@ -454,16 +457,18 @@ namespace ReportesObra.Utilities
             chart.PlotArea.LineFormat.Visible = true;
             chart.PlotArea.FillFormat.Color = Colors.Red;
 
-            Row rowo = table.AddRow();
-            rowo.HeadingFormat = true;
-            rowo.Format.Alignment = ParagraphAlignment.Center;
-            rowo.Format.Font.Bold = true;
-            rowo.Format.Font.Size = 10;
-            rowo.Borders.Visible = false;            
+            var series = chart.SeriesCollection.AddSeries();
+            series.Add(new double[] { 0.55 });
+            series.DataLabel.Format = "#0.0%";
+            var elements = series.Elements.Cast<MigraDocCore.DocumentObjectModel.Shapes.Charts.Point>().ToArray();
+            elements[0].FillFormat.Color = Colors.Green;
+            var xseries = chart.XValues.AddXSeries();
+            xseries.Add("");
+
             rowo.Cells[0].AddParagraph("Departamento");
             rowo.Cells[1].Add(chart);
 
-            //FillGenericContent(reporteDetalles.SubElementos, tableAreas);
+            FillChartContent(reporteAvance.Apartments, table);
         }
 
         void CreateLayout<T>(T reporte)
@@ -497,6 +502,61 @@ namespace ReportesObra.Utilities
         /// <summary>
         /// Creates the static parts of the invoice.
         /// </summary>
+        /// 
+
+        void FillChartContent<T>(List<T> value, Table table, int fontSize = 6)
+        {
+            var chart = new MigraDocCore.DocumentObjectModel.Shapes.Charts.Chart(MigraDocCore.DocumentObjectModel.Shapes.Charts.ChartType.Bar2D);
+            chart.Width = "15cm";
+            chart.Height = "1cm";
+
+
+            chart.XAxis.MajorTickMark = MigraDocCore.DocumentObjectModel.Shapes.Charts.TickMarkType.Outside;
+            chart.XAxis.Title.Caption = "";
+            chart.XAxis.HasMajorGridlines = true;
+
+            chart.YAxis.TickLabels.Format = "#0%";
+            chart.YAxis.MajorTickMark = MigraDocCore.DocumentObjectModel.Shapes.Charts.TickMarkType.Cross;
+            chart.YAxis.MinimumScale = 0;
+            chart.YAxis.MaximumScale = 1;
+
+            chart.PlotArea.LineFormat.Color = Colors.AliceBlue;
+            chart.PlotArea.LineFormat.Width = 1;
+            chart.PlotArea.LineFormat.Visible = true;
+
+            foreach (var item in value)
+            {
+                Row row = table.AddRow();
+                row.Format.Font.Size = (Unit)fontSize;
+                row.VerticalAlignment = VerticalAlignment.Center;                
+
+                if (item != null)
+                    foreach (var (prop, index) in item.GetType().GetProperties().Select((v, i) => (v, i)))
+                    {
+                        var type = Nullable.GetUnderlyingType(prop.PropertyType) ?? prop.PropertyType;
+                        if (type == typeof(Double))
+                        {
+                            var clone_chart =  chart.Clone();
+                            var series = chart.SeriesCollection.AddSeries();
+                            series.Add(new double[] { (Double)prop.GetValue(item, null) });
+                            series.DataLabel.Format = "#0.0%";
+                            var elements = series.Elements.Cast<MigraDocCore.DocumentObjectModel.Shapes.Charts.Point>().ToArray();
+                            elements[0].FillFormat.Color = Colors.Green;
+                            var xseries = chart.XValues.AddXSeries();
+                            xseries.Add("");
+                            row.Cells[index].Add(clone_chart);
+                        }
+                        if (type == typeof(string))
+                        {
+                            row.Cells[index].AddParagraph(prop.GetValue(item, null)?.ToString());
+                        }
+                        if (type == typeof(bool))
+                        {
+                            row.Cells[index].AddParagraph((bool?)prop.GetValue(item, null) ?? false ? "SI" : "NO");
+                        }                        
+                    }
+            }
+        }
 
         int FillGenericContent<T>(List<T> value, Table table, int tableIndex, string title, int fontSize = 10)
         {

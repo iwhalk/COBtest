@@ -34,7 +34,6 @@ namespace ReportesObra.Endpoints
             {
                 try
                 {
-
                     var newModule = await _reportesService.GetReporteAvance(aparmentProgresses);
                     if (newModule == null) return Results.NoContent();
                     return Results.File(newModule, "application/pdf");
