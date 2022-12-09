@@ -97,7 +97,7 @@ namespace Obra.Client.Pages
             if (bytesForPDF != null)
             {
 
-                var fileName = "test.pdf";
+                var fileName = "AvancePorDepartamento.pdf";
                 var fileStream = new MemoryStream(bytesForPDF);
                 using var streamRef = new DotNetStreamReference(stream: fileStream);
                 await _JS.InvokeVoidAsync("downloadFileFromStream", fileName, streamRef);
