@@ -140,7 +140,7 @@ namespace ReportesObra.Services
                 FechaGeneracion = DateTime.Now,
                 Apartments = GetAparmentsAsync(idAparment)
             };
-            return _reportesFactory.CrearPdf(reporteAvance, null);
+            return _reportesFactory.CrearPdf(reporteAvance);
         }
 
         public async Task<ReporteAvance> GetReporteAvanceVista(int? idAparment)
