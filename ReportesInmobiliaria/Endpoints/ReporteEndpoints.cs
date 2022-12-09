@@ -30,15 +30,14 @@ namespace ReportesObra.Endpoints
             .Produces<HttpValidationProblemDetails>(StatusCodes.Status400BadRequest, "application/problem+json")
             .Produces<HttpValidationProblemDetails>(StatusCodes.Status500InternalServerError, "application/problem+json");
 
-            routes.MapPost("/ReporteAvance", async ([FromUri] ReporteAvance[] reporteAvances, IReportesService _reportesService, ILogger<Program> _logger) =>
+            routes.MapPost("/ReporteAvance", async (List<AparmentProgress> aparmentProgresses, IReportesService _reportesService, ILogger<Program> _logger) =>
             {
                 try
                 {
 
-                    //var newModule = await _reportesService.GetReporteAvance(idAparment);
-                    //if (newModule == null) return Results.NoContent();                    
-                    //return Results.File(newModule, "application/pdf");
-                    return Results.Ok();
+                    var newModule = await _reportesService.GetReporteAvance(aparmentProgresses);
+                    if (newModule == null) return Results.NoContent();
+                    return Results.File(newModule, "application/pdf");
                 }
                 catch (Exception e)
                 {
@@ -51,7 +50,8 @@ namespace ReportesObra.Endpoints
             .WithName("GetReporteAvance")
             .Produces<IResult>(StatusCodes.Status200OK, "application/pdf")
             .Produces<HttpValidationProblemDetails>(StatusCodes.Status400BadRequest, "application/problem+json")
-            .Produces<HttpValidationProblemDetails>(StatusCodes.Status500InternalServerError, "application/problem+json");
+            .Produces<HttpValidationProblemDetails>(StatusCodes.Status500InternalServerError, "application/problem+json")
+            .AllowAnonymous();
 
             routes.MapGet("/ReporteAvanceVista", async (int? idAparment, IReportesService _reportesService, ILogger<Program> _logger) =>
             {

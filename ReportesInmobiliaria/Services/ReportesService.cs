@@ -133,12 +133,12 @@ namespace ReportesObra.Services
             }
             return list;
         }
-        public async Task<byte[]> GetReporteAvance(int? idAparment)
+        public async Task<byte[]> GetReporteAvance(List<AparmentProgress> aparmentProgress)
         {
             ReporteAvance reporteAvance = new()
             {
                 FechaGeneracion = DateTime.Now,
-                Apartments = GetAparmentsAsync(idAparment)
+                Apartments = aparmentProgress
             };
             return _reportesFactory.CrearPdf(reporteAvance);
         }
