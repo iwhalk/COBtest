@@ -431,21 +431,27 @@ namespace ReportesObra.Utilities
 
             var chart = new MigraDocCore.DocumentObjectModel.Shapes.Charts.Chart(MigraDocCore.DocumentObjectModel.Shapes.Charts.ChartType.Bar2D);
             chart.Width = "15cm";
-            chart.Height = "0.5cm";
+            chart.Height = "1cm";
             var series = chart.SeriesCollection.AddSeries();
-            series.Add(new double[] { 0.55});
+            series.Add(new double[] { 0.55 });
             series.DataLabel.Format = "#0.0%";
             var elements = series.Elements.Cast<MigraDocCore.DocumentObjectModel.Shapes.Charts.Point>().ToArray();
             elements[0].FillFormat.Color = Colors.Green;
             var xseries = chart.XValues.AddXSeries();
             xseries.Add("");            
+
             chart.XAxis.MajorTickMark = MigraDocCore.DocumentObjectModel.Shapes.Charts.TickMarkType.Outside;
-            chart.XAxis.Title.Caption = "";
-            chart.XAxis.HasMajorGridlines = false;
+            chart.XAxis.Title.Caption = "";            
+            chart.XAxis.HasMajorGridlines = true;
+
             chart.YAxis.TickLabels.Format = "#0%";
             chart.YAxis.MajorTickMark = MigraDocCore.DocumentObjectModel.Shapes.Charts.TickMarkType.Cross;
             chart.YAxis.MinimumScale = 0;
             chart.YAxis.MaximumScale = 1;
+
+            chart.PlotArea.LineFormat.Color = Colors.AliceBlue;
+            chart.PlotArea.LineFormat.Width = 1;
+            chart.PlotArea.LineFormat.Visible = true;
             chart.PlotArea.FillFormat.Color = Colors.Red;
 
             Row rowo = table.AddRow();
