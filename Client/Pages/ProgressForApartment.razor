@@ -31,17 +31,17 @@
                     {
                         <div class="w-full inline-flex">                            
                             <div class="md:w-2/6 xl:w-1/6 p-0.5">
-                                <div class="@(_idsAparmentSelect.Contains(apartment.IdApartment) && _isFullAparment == false ? "bg-[#9CA2A8]" : "bg-[#55595E]") border border-stone-400 md:h-8 xl:h-12 xl:p-3">
+                                <div class="@(_idsAparmentSelect.ContainsKey(apartment.IdApartment) && _isFullAparment == false ? "bg-[#9CA2A8]" : "bg-[#55595E]") border border-stone-400 md:h-8 xl:h-12 xl:p-3">
                                     <button @onclick="() => AddIdAparmentSelect(apartment.IdApartment)" class="w-full">
                                         <p class="text-lg md:text-sm xl:text-lg text-white font-medium leading-6 text-center">@apartment.ApartmentNumber</p>
                                     </button>
                                 </div>
                             </div>
-                            @if (_idsAparmentSelect.Contains(apartment.IdApartment))
+                            @if (_idsAparmentSelect.ContainsKey(apartment.IdApartment))
                             {
                                 <div class="md:w-4/6 xl:w-5/6 inline-flex p-0.5">
-                                    <div class="bg-[#115D28] md:h-8 xl:h-12 md:text-sm xl:text-lg text-white text-end w-[70%] md:p-1 xl:p-3">70%</div>
-                                    <div class="bg-[#CB3030] md:h-8 xl:h-12 md:text-sm xl:text-lg text-white text-end w-[30%] md:p-1 xl:p-3">30%</div>
+                                    <div class="bg-[#115D28] md:h-8 xl:h-12 md:text-sm xl:text-lg text-white text-end w-[@_idsAparmentSelect[apartment.IdApartment].Item1%] md:p-1 xl:p-3">@_idsAparmentSelect[apartment.IdApartment].Item1 %</div>
+                                    <div class="bg-[#CB3030] md:h-8 xl:h-12 md:text-sm xl:text-lg text-white text-end w-[@_idsAparmentSelect[apartment.IdApartment].Item2%] md:p-1 xl:p-3">@_idsAparmentSelect[apartment.IdApartment].Item2 %</div>                                    
                                 </div> 
                             }
                         </div>
