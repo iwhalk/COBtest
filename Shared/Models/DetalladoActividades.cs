@@ -8,6 +8,7 @@ namespace SharedLibrary.Models
 {
     public class DetalladoActividades
     {
+        public string numeroApartamento { get; set; }
         public string actividad { get; set; }
         public string elemento { get; set; }
         public string subElemento { get; set; }
