@@ -89,7 +89,7 @@ namespace ReportesObra.Endpoints
             .Produces<HttpValidationProblemDetails>(StatusCodes.Status500InternalServerError, "application/problem+json")
             .AllowAnonymous();
 
-            routes.MapDelete("/BlobInventory/{id}", async (int id, IBlobService _blobService) =>
+            routes.MapDelete("/Blob/{id}", async (int id, IBlobService _blobService) =>
                 {
                     try
                     {
