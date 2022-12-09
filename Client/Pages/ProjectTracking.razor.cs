@@ -102,22 +102,22 @@ namespace Obra.Client.Pages
                 }
                 else
                 {
-                    LastProgressLog = (await _progressLogsService.GetProgressLogsAsync(idProgressReport: CurrentProgressReport.IdProgressReport))?.OrderByDescending(x => x.DateCreated).FirstOrDefault();
-                    if (LastProgressLog != null)
-                    {
-                        CurrentProgressLog.IdProgressReport = LastProgressLog.IdProgressReport;
-                        CurrentProgressLog.Observation = LastProgressLog.Observation;
-                        CurrentProgressLog.IdStatus = LastProgressLog.IdStatus;
-                        CurrentProgressLog.Pieces = LastProgressLog.Pieces;
-                        CurrentProgressLog.IdProgressLog = 0;
-                    }
-                    else
-                    {
-                        CurrentProgressLog = new ProgressLog()
-                        {
-                            IdStatus = 1
-                        };
-                    }
+                    //LastProgressLog = (await _progressLogsService.GetProgressLogsAsync(idProgressReport: CurrentProgressReport.IdProgressReport))?.OrderByDescending(x => x.DateCreated).FirstOrDefault();
+                    //if (LastProgressLog != null)
+                    //{
+                    //    CurrentProgressLog.IdProgressReport = LastProgressLog.IdProgressReport;
+                    //    CurrentProgressLog.Observation = LastProgressLog.Observation;
+                    //    CurrentProgressLog.IdStatus = LastProgressLog.IdStatus;
+                    //    CurrentProgressLog.Pieces = LastProgressLog.Pieces;
+                    //    CurrentProgressLog.IdProgressLog = 0;
+                    //}
+                    //else
+                    //{
+                    //    CurrentProgressLog = new ProgressLog()
+                    //    {
+                    //        IdStatus = 1
+                    //    };
+                    //}
                 }
 
             }
