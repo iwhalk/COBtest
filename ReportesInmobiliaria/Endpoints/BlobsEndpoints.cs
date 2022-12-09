@@ -89,6 +89,28 @@ namespace ReportesObra.Endpoints
             .Produces<HttpValidationProblemDetails>(StatusCodes.Status500InternalServerError, "application/problem+json")
             .AllowAnonymous();
 
+            routes.MapDelete("/BlobInventory/{id}", async (int id, IBlobService _blobService) =>
+                {
+                    try
+                    {
+                        var res = await _blobService.DeleteBlobAsync(id);
+                        if (res) return Results.NoContent();
+                        return Results.BadRequest();
+                    }
+                    catch (Exception e)
+                    {
+                        if (e.GetType() == typeof(ValidationException))
+                            return Results.Problem(e.Message, statusCode: 400);
+                        return Results.Problem(e.Message);
+
+                    }
+                })
+            .WithName("DeleteBlob")
+            .Produces(StatusCodes.Status204NoContent)
+            .Produces(StatusCodes.Status400BadRequest)
+            .Produces<HttpValidationProblemDetails>(StatusCodes.Status400BadRequest, "application/problem+json")
+            .Produces<HttpValidationProblemDetails>(StatusCodes.Status500InternalServerError, "application/problem+json");
+
             //app.MapDelete("/Blob/{id}",
             //    async (int id, IBlobService _blobService) =>
             //    {

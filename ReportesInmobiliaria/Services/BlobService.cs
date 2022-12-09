@@ -103,6 +103,12 @@ namespace ReportesObra.Services
             Blob? blob = _dbContext.Blobs.FirstOrDefault(x => x.IdBlob == id);
             if (blob == null)
                 return false;
+
+            var blobName = blob.BlobName;
+            var blobContainerClient = _blobServiceClient.GetBlobContainerClient("inventoryblobs");
+            var blobClient = blobContainerClient.GetBlobClient(blobName);
+            var response = await blobClient.DeleteAsync();
+
             _dbContext.Blobs.Remove(blob);
             await _dbContext.SaveChangesAsync();
             return true;
