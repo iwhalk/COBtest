@@ -1,8 +1,10 @@
 ﻿using Microsoft.AspNetCore.Components;
+using Microsoft.JSInterop;
 using Obra.Client.Interfaces;
 using Obra.Client.Services;
 using Obra.Client.Stores;
 using SharedLibrary.Models;
+using System.IO;
 
 namespace Obra.Client.Pages
 {
@@ -12,16 +14,17 @@ namespace Obra.Client.Pages
         private readonly IApartmentsService _apartmentsService;
         private readonly IProgressLogsService _progressLogsService;
         private readonly IProgressReportService _progressReportService;
+        private readonly IJSRuntime _JS;
         //Variable locales
         private Dictionary<int, Tuple<int, int>> _idsAparmentSelect { get; set; } = new();
         private bool _isFullAparment { get; set;}
-        
-        public ProgressForApartment(ApplicationContext context, IApartmentsService apartmentsService, IProgressLogsService progressLogsService, IProgressReportService progressReportService) 
+        public ProgressForApartment(ApplicationContext context, IApartmentsService apartmentsService, IProgressLogsService progressLogsService, IProgressReportService progressReportService, IJSRuntime jS)
         {
             _context = context;
             _apartmentsService = apartmentsService;
             _progressLogsService = progressLogsService;
             _progressReportService = progressReportService;
+            _JS = jS;
         }
         protected async override Task OnInitializedAsync()
         {
@@ -86,9 +89,20 @@ namespace Obra.Client.Pages
             {
                 ApartmentNumber = _context.Apartment.Find(o => o.IdApartment == x.Key).ApartmentNumber,
                 ApartmentProgress = x.Value.Item1 * 1.0
+
             }).ToList();
 
-            var result = await  _progressReportService.PostProgressReporPDFtAsync(listAparmentProgress);
+            var bytesForPDF = await  _progressReportService.PostProgressReporPDFtAsync(listAparmentProgress);
+
+            if (bytesForPDF != null)
+            {
+
+                var fileName = "test.pdf";
+                var fileStream = new MemoryStream(bytesForPDF);
+                using var streamRef = new DotNetStreamReference(stream: fileStream);
+                await _JS.InvokeVoidAsync("downloadFileFromStream", fileName, streamRef);
+
+            }
         }
     }
 }
