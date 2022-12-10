@@ -82,7 +82,7 @@ namespace ReportesObra.Utilities
         /// <summary>
         /// Creates the invoice document.
         /// </summary>
-        public byte[] CrearPdf<T>(T reporte, string apartmentNumber)
+        public byte[] CrearPdf<T>(T reporte)
         {
             // Create a new MigraDoc document
             document = new Document();
@@ -94,7 +94,6 @@ namespace ReportesObra.Utilities
 
             DefineStyles();
             CreateLayout(reporte);
-            _apartmentNumber = apartmentNumber;
             switch (typeof(T).Name)
             {
                 case nameof(ReporteDetalles):
@@ -233,9 +232,8 @@ namespace ReportesObra.Utilities
             // Put header in header frame
             Paragraph paragraph = headerFrame.AddParagraph("Reporte Detallado");//Titulo
             paragraph.AddLineBreak();
-            paragraph.AddText("Departamento " + _apartmentNumber);
             paragraph.Format.Font.Name = "Times New Roman";
-            paragraph.Format.Font.Size = 16;
+            paragraph.Format.Font.Size = 20;
             paragraph.Format.Font.Bold = true;
             paragraph.Format.Alignment = ParagraphAlignment.Center;            
 
@@ -250,48 +248,66 @@ namespace ReportesObra.Utilities
             paragraph.AddText(DateTime.Now.ToString("dd/MM/yyyy"));
             //paragraph.AddText(reporteActaEntrega.header.ElementAt(0).FechaHora.ToString("dd/MM/yyyy hh:mm tt"));
             // Add the data separation field
-            paragraph = section.AddParagraph();
-            paragraph.Format.SpaceBefore = "2.0cm";//"2.0cm"
-            paragraph.Format.Font.Size = 10;
-            paragraph.Style = "Reference";
-            paragraph.AddFormattedText("", TextFormat.Bold);
+            //paragraph = section.AddParagraph();
+            //paragraph.Format.SpaceBefore = "2.0cm";//"2.0cm"
+            //paragraph.Format.Font.Size = 10;
+            //paragraph.Style = "Reference";
+            //paragraph.AddFormattedText("", TextFormat.Bold);
+            reporteDetalles.detalladoActividades = reporteDetalles.detalladoActividades.OrderBy(x => x.numeroApartamento).ToList();
 
-            // Create the item table
-            tableAreas = section.AddTable();
-            tableAreas.Style = "Table";
-            tableAreas.Borders.Color = Colors.Gray;
-            tableAreas.Borders.Width = 0.3;
-            tableAreas.Rows.LeftIndent = 0;
-            tableAreas.Rows.Alignment = RowAlignment.Center;
-            // Before you can add a row, you must define the columns
-            Column column = tableAreas.AddColumn("4.0cm");
-            column.Format.Alignment = ParagraphAlignment.Center;
-            column = tableAreas.AddColumn("4.6cm");
-            column.Format.Alignment = ParagraphAlignment.Center;
-            column = tableAreas.AddColumn("3.8cm");
-            column.Format.Alignment = ParagraphAlignment.Center;
-            column = tableAreas.AddColumn("2.0cm");
-            column.Format.Alignment = ParagraphAlignment.Center;
-            column = tableAreas.AddColumn("1.5cm");
-            column.Format.Alignment = ParagraphAlignment.Center;
-            column = tableAreas.AddColumn("1.5cm");
-            column.Format.Alignment = ParagraphAlignment.Center;
-            // Create the header of the table
-            Row row = tableAreas.AddRow();
-            row.HeadingFormat = true;
-            row.Format.Alignment = ParagraphAlignment.Center;
-            //row.Format.Font.Bold = true;
-            row.Format.Font.Size = 14;
-            row.Borders.Visible = false;
-            //row.Shading.Color = TableColor;
-            row.Cells[0].AddParagraph("Actividad");
-            row.Cells[1].AddParagraph("Elemento");
-            row.Cells[2].AddParagraph("Sub-Elemento");
-            row.Cells[3].AddParagraph("Estatus");
-            row.Cells[4].AddParagraph("Total");
-            row.Cells[5].AddParagraph("Avance");
+            for (int i = 0; i < reporteDetalles.detalladoActividades.Count; i++)
+            {
+                string apartmentTitle = reporteDetalles.detalladoActividades.ElementAt(i).numeroApartamento;
+                // Create the item table
+                paragraph = section.AddParagraph();
+                paragraph.AddLineBreak();
+                paragraph.Format.SpaceBefore = "1.0cm";
+                paragraph.AddText("Departamento " + apartmentTitle);
+                paragraph.Format.Font.Name = "Times New Roman";
+                paragraph.Format.Font.Size = 16;
+                paragraph.Format.Font.Bold = true;
+                paragraph.Format.Alignment = ParagraphAlignment.Center;
 
-            FillGenericContent(reporteDetalles.detalladoActividades, tableAreas);
+                paragraph = section.AddParagraph();
+                paragraph.AddLineBreak();
+                paragraph.Format.SpaceBefore = "0.8cm";
+
+                tableAreas = section.AddTable();
+                tableAreas.Style = "Table";
+                tableAreas.Borders.Color = Colors.Gray;
+                tableAreas.Borders.Width = 0.3;
+                tableAreas.Rows.LeftIndent = 0;
+                tableAreas.Rows.Alignment = RowAlignment.Center;
+                // Before you can add a row, you must define the columns
+                Column column = tableAreas.AddColumn("4.0cm");
+                column.Format.Alignment = ParagraphAlignment.Center;
+                column = tableAreas.AddColumn("4.6cm");
+                column.Format.Alignment = ParagraphAlignment.Center;
+                column = tableAreas.AddColumn("3.8cm");
+                column.Format.Alignment = ParagraphAlignment.Center;
+                column = tableAreas.AddColumn("2.0cm");
+                column.Format.Alignment = ParagraphAlignment.Center;
+                column = tableAreas.AddColumn("1.5cm");
+                column.Format.Alignment = ParagraphAlignment.Center;
+                column = tableAreas.AddColumn("1.5cm");
+                column.Format.Alignment = ParagraphAlignment.Center;
+                // Create the header of the table
+                Row row = tableAreas.AddRow();
+                row.HeadingFormat = true;
+                row.Format.Alignment = ParagraphAlignment.Center;
+                //row.Format.Font.Bold = true;
+                row.Format.Font.Size = 14;
+                row.Borders.Visible = false;
+                //row.Shading.Color = TableColor;
+                row.Cells[0].AddParagraph("Actividad");
+                row.Cells[1].AddParagraph("Elemento");
+                row.Cells[2].AddParagraph("Sub-Elemento");
+                row.Cells[3].AddParagraph("Estatus");
+                row.Cells[4].AddParagraph("Total");
+                row.Cells[5].AddParagraph("Avance");
+
+                i = FillGenericContent(reporteDetalles.detalladoActividades, tableAreas, i, apartmentTitle) - 1;
+            }
                       
             //Image logo = Image.FromStream(stream);
         }
@@ -347,10 +363,38 @@ namespace ReportesObra.Utilities
             dataValueTable.Top = "6.6cm";
             dataValueTable.RelativeVertical = RelativeVertical.Page;
 
+            //Control de NullReferenceException al llamar a las imágenes
+            if (ImageSource.ImageSourceImpl == null)
+            {
+                ImageSource.ImageSourceImpl = new ImageSharpImageSource<Rgba32>();
+            }
+
+            WebClient client = new WebClient();
+            MemoryStream stream = new MemoryStream(client.DownloadData("https://aeriblobs.blob.core.windows.net/inventoryblobs/282039e4-b91f-4c4a-8356-eb359c9c4ece.jpeg"));
+            stream.Position = 0;
+            var logoSOF2245 = section.AddImage(ImageSource.FromStream("logoSOF", () => stream));
+            logoSOF2245.Width = "4.5cm";
+            logoSOF2245.LockAspectRatio = true;
+            logoSOF2245.RelativeHorizontal = RelativeHorizontal.Margin;
+            logoSOF2245.RelativeVertical = RelativeVertical.Page;
+            logoSOF2245.Top = "1.7cm";
+            logoSOF2245.Left = "-1.3cm";
+            logoSOF2245.WrapFormat.Style = WrapStyle.Through;
+
+            MemoryStream stream1 = new MemoryStream(client.DownloadData("https://aeriblobs.blob.core.windows.net/inventoryblobs/63450fd9-9af2-4c14-88ec-0752b1b6f1ae.jpeg"));
+            stream1.Position = 0;
+            var logoGeneric = section.AddImage(ImageSource.FromStream("logoGEN", () => stream1));
+            logoGeneric.Width = "3.5cm";
+            logoGeneric.LockAspectRatio = true;
+            logoGeneric.RelativeHorizontal = RelativeHorizontal.Margin;
+            logoGeneric.RelativeVertical = RelativeVertical.Page;
+            logoGeneric.Top = "1.7cm";
+            logoGeneric.Left = "14.0cm";
+            logoGeneric.WrapFormat.Style = WrapStyle.Through;
+
             // Put header in header frame
-            Paragraph paragraph = headerFrame.AddParagraph("Reporte Detallado");//Titulo
-            paragraph.AddLineBreak();
-            paragraph.AddText("Departamento A-101");
+            Paragraph paragraph = headerFrame.AddParagraph("Reporte Avance");//Titulo
+            paragraph.AddLineBreak();            
             paragraph.Format.Font.Name = "Times New Roman";
             paragraph.Format.Font.Size = 16;
             paragraph.Format.Font.Bold = true;
@@ -371,41 +415,56 @@ namespace ReportesObra.Utilities
             paragraph.Format.SpaceBefore = "2.0cm";//"2.0cm"
             paragraph.Format.Font.Size = 10;
             paragraph.Style = "Reference";
-            paragraph.AddFormattedText("", TextFormat.Bold);
+            paragraph.AddFormattedText("", TextFormat.Bold);            
 
-            //Control de NullReferenceException al llamar a las imágenes
-            if (ImageSource.ImageSourceImpl == null)
-            {
-                ImageSource.ImageSourceImpl = new ImageSharpImageSource<Rgba32>();
-            }
-            //---------------------------------------------------------------------------------------
-            // Create the item table
-            tableAreas = section.AddTable();
-            tableAreas.Style = "Table";
-            tableAreas.Borders.Color = Colors.Gray;
-            tableAreas.Borders.Width = 0.3;
-            tableAreas.Rows.LeftIndent = 0;
-            tableAreas.Rows.Alignment = RowAlignment.Center;
-            // Before you can add a row, you must define the columns
-            Column column = tableAreas.AddColumn("3cm");
-            column.Format.Alignment = ParagraphAlignment.Center;
-            column = tableAreas.AddColumn("4cm");
-            column.Format.Alignment = ParagraphAlignment.Center;
-            column = tableAreas.AddColumn("3cm");
-            column.Format.Alignment = ParagraphAlignment.Center;
-            // Create the header of the table
-            Row row = tableAreas.AddRow();
-            row.HeadingFormat = true;
-            row.Format.Alignment = ParagraphAlignment.Center;
-            row.Format.Font.Bold = true;
-            row.Format.Font.Size = 10;
-            row.Borders.Visible = false;
-            //row.Shading.Color = TableColor;
-            row.Cells[0].AddParagraph("ID_Element");
-            row.Cells[1].AddParagraph("SubElementName");
-            row.Cells[2].AddParagraph("Type");
+            Table table = section.AddTable();
+            table.Rows.Alignment = RowAlignment.Center;
 
-            //FillGenericContent(reporteDetalles.SubElementos, tableAreas);
+            Column columna = table.AddColumn("2cm");
+            columna.Format.Alignment = ParagraphAlignment.Center;
+            columna = table.AddColumn("15cm");
+            columna.Format.Alignment = ParagraphAlignment.Center;
+
+            Row rowo = table.AddRow();
+            rowo.HeadingFormat = true;
+            rowo.Format.Alignment = ParagraphAlignment.Center;
+            rowo.Format.Font.Bold = true;
+            rowo.Format.Font.Size = 10;
+            rowo.Borders.Visible = false;
+            rowo.Cells[0].AddParagraph("Departamento");
+            rowo.Cells[1].AddParagraph("Avance");
+
+            //var chart = new MigraDocCore.DocumentObjectModel.Shapes.Charts.Chart(MigraDocCore.DocumentObjectModel.Shapes.Charts.ChartType.Bar2D);
+            //chart.Width = "15cm";
+            //chart.Height = "1cm";
+
+
+            //chart.XAxis.MajorTickMark = MigraDocCore.DocumentObjectModel.Shapes.Charts.TickMarkType.None;
+            //chart.XAxis.Title.Caption = "";            
+            //chart.XAxis.HasMajorGridlines = true;
+
+            //chart.YAxis.TickLabels.Format = "#0%";
+            //chart.YAxis.MajorTickMark = MigraDocCore.DocumentObjectModel.Shapes.Charts.TickMarkType.Cross;
+            //chart.YAxis.MinimumScale = 0;
+            //chart.YAxis.MaximumScale = 1;
+
+            //chart.PlotArea.LineFormat.Color = Colors.AliceBlue;
+            //chart.PlotArea.LineFormat.Width = 1;
+            //chart.PlotArea.LineFormat.Visible = true;
+            //chart.PlotArea.FillFormat.Color = Colors.Red;
+
+            //var series = chart.SeriesCollection.AddSeries();
+            //series.Add(new double[] { 0.55 });
+            //series.DataLabel.Format = "#0.0%";
+            //var elements = series.Elements.Cast<MigraDocCore.DocumentObjectModel.Shapes.Charts.Point>().ToArray();
+            //elements[0].FillFormat.Color = Colors.Green;
+            //var xseries = chart.XValues.AddXSeries();
+            //xseries.Add("");
+
+            //rowo.Cells[0].AddParagraph("Departamento");
+            //rowo.Cells[1].Add(chart);
+
+            FillChartContent(reporteAvance.Apartments, table);
         }
 
         void CreateLayout<T>(T reporte)
@@ -439,15 +498,71 @@ namespace ReportesObra.Utilities
         /// <summary>
         /// Creates the static parts of the invoice.
         /// </summary>
+        /// 
 
-        void FillGenericContent<T>(List<T> value, Table table, int fontSize = 10)
+        void FillChartContent<T>(List<T> value, Table table, int fontSize = 6)
+        {
+            var chart = new MigraDocCore.DocumentObjectModel.Shapes.Charts.Chart(MigraDocCore.DocumentObjectModel.Shapes.Charts.ChartType.Bar2D);
+            chart.Width = "15cm";
+            chart.Height = "1cm";
+
+
+            chart.XAxis.MajorTickMark = MigraDocCore.DocumentObjectModel.Shapes.Charts.TickMarkType.Outside;
+            chart.XAxis.Title.Caption = "";
+            chart.XAxis.HasMajorGridlines = true;
+
+            chart.YAxis.TickLabels.Format = "#0%";
+            chart.YAxis.MajorTickMark = MigraDocCore.DocumentObjectModel.Shapes.Charts.TickMarkType.Cross;
+            chart.YAxis.MinimumScale = 0;
+            chart.YAxis.MaximumScale = 1;
+
+            chart.PlotArea.LineFormat.Color = Colors.AliceBlue;
+            chart.PlotArea.LineFormat.Width = 1;
+            chart.PlotArea.LineFormat.Visible = true;
+
+            foreach (var item in value)
+            {
+                Row row = table.AddRow();
+                row.Format.Font.Size = (Unit)fontSize;
+                row.VerticalAlignment = VerticalAlignment.Center;                
+
+                if (item != null)
+                    foreach (var (prop, index) in item.GetType().GetProperties().Select((v, i) => (v, i)))
+                    {
+                        var type = Nullable.GetUnderlyingType(prop.PropertyType) ?? prop.PropertyType;
+                        if (type == typeof(Double))
+                        {
+                            var clone_chart =  chart.Clone();
+                            var series = chart.SeriesCollection.AddSeries();
+                            series.Add(new double[] { (Double)prop.GetValue(item, null) });
+                            series.DataLabel.Format = "#0.0%";
+                            var elements = series.Elements.Cast<MigraDocCore.DocumentObjectModel.Shapes.Charts.Point>().ToArray();
+                            elements[0].FillFormat.Color = Colors.Green;
+                            var xseries = chart.XValues.AddXSeries();
+                            xseries.Add("");
+                            row.Cells[index].Add(clone_chart);
+                        }
+                        if (type == typeof(string))
+                        {
+                            row.Cells[index].AddParagraph(prop.GetValue(item, null)?.ToString());
+                        }
+                        if (type == typeof(bool))
+                        {
+                            row.Cells[index].AddParagraph((bool?)prop.GetValue(item, null) ?? false ? "SI" : "NO");
+                        }                        
+                    }
+            }
+        }
+
+        int FillGenericContent<T>(List<T> value, Table table, int tableIndex, string title, int fontSize = 10)
         {
             Table _table = table;
             //foreach (var item in value)
             string currentName = "";
             string beforeName = "";
+            Row lastRow = null;
             var newColorGray = MigraDocCore.DocumentObjectModel.Color.Parse("0xffE5E8E8");
-            for (int i = 0; i < value.Count; i++)
+            for (int i = tableIndex; i < value.Count; i++)
             {
                 var item = value.ElementAt(i);
                 Row row = _table.AddRow();
@@ -458,47 +573,63 @@ namespace ReportesObra.Utilities
                     {
                         var type = Nullable.GetUnderlyingType(prop.PropertyType) ?? prop.PropertyType;
                         if (index == 0)
-                        {
-                            currentName = prop.GetValue(item, null)?.ToString();
-                        }
-                        if (type == typeof(DateTime))
-                        {
-                            row.Cells[index].AddParagraph(((DateTime?)prop.GetValue(item, null))?.ToString("dd/MM/yyyy hh:mm:ss tt") ?? "");
-                        }
-                        if (type == typeof(string))
-                        {
-                            row.Cells[index].AddParagraph(prop.GetValue(item, null)?.ToString());
-                        }
-                        if (type == typeof(bool))
-                        {
-                            row.Cells[index].AddParagraph((bool?)prop.GetValue(item, null) ?? false ? "SI" : "NO");
-                        }
-                        if (type == typeof(int))
-                        {
-                            row.Cells[index].AddParagraph(prop.GetValue(item, null)?.ToString());
-                        }
-                        if (type == typeof(long))
-                        {
-                            row.Cells[index].AddParagraph(prop.GetValue(item, null)?.ToString());
-                        }
-                        
-                        row.Cells[0].Borders.Color = Colors.Black;
-                        row.Cells[0].Borders.Visible = false;
-                        row.Cells[0].Borders.Left.Width = 1.5;
-                        if (!currentName.Equals(beforeName))
-                        {
-                            if (i == 0)
+                        { 
+                            string currentApartmentName = prop.GetValue(item, null)?.ToString();
+                            //Si emepiezan los datos de otro departamento, elimina la fila extra, agrega el borde inferior a la última celda y regresa
+                            if (currentApartmentName != title)
                             {
-                                row.Cells[0].Borders.Color = Colors.Gray;
-                                row.Cells[0].Borders.Top.Width = 0.3;
+                                table.Rows.RemoveObjectAt(table.Rows.Count - 1);
+                                if(lastRow != null)
+                                    lastRow.Cells[0].Borders.Bottom.Width = 1.5;
+                                return i;
                             }
-                            else
-                                row.Cells[0].Borders.Top.Width = 1.5;
                         }
-                            
-                        beforeName = currentName;
+                        else
+                        {                            
+                            if (index == 1)
+                            {
+                                currentName = prop.GetValue(item, null)?.ToString();
+                            }
+                            if (type == typeof(DateTime))
+                            {
+                                row.Cells[index - 1].AddParagraph(((DateTime?)prop.GetValue(item, null))?.ToString("dd/MM/yyyy hh:mm:ss tt") ?? "");
+                            }
+                            if (type == typeof(string))
+                            {
+                                row.Cells[index - 1].AddParagraph(prop.GetValue(item, null)?.ToString());
+                            }
+                            if (type == typeof(bool))
+                            {
+                                row.Cells[index - 1].AddParagraph((bool?)prop.GetValue(item, null) ?? false ? "SI" : "NO");
+                            }
+                            if (type == typeof(int))
+                            {
+                                row.Cells[index - 1].AddParagraph(prop.GetValue(item, null)?.ToString());
+                            }
+                            if (type == typeof(long))
+                            {
+                                row.Cells[index - 1].AddParagraph(prop.GetValue(item, null)?.ToString());
+                            }
+
+                            row.Cells[0].Borders.Color = Colors.Black;
+                            row.Cells[0].Borders.Visible = false;
+                            row.Cells[0].Borders.Left.Width = 1.5;
+                            if (!currentName.Equals(beforeName))
+                            {
+                                if (i == 0)
+                                {
+                                    row.Cells[0].Borders.Color = Colors.Gray;
+                                    row.Cells[0].Borders.Top.Width = 0.3;
+                                }
+                                else
+                                    row.Cells[0].Borders.Top.Width = 1.5;
+                            }
+
+                            beforeName = currentName;
+                        }
                     }
-                if(i == value.Count -1)
+                lastRow = row;
+                if(i == value.Count - 1)
                     row.Cells[0].Borders.Bottom.Width = 1.5;
                 if (i % 2 == 0)
                 {                    
@@ -510,6 +641,7 @@ namespace ReportesObra.Utilities
                     row.Cells[5].Shading.Color = newColorGray;
                 }
             }
+            return value.Count;
         }
 
         int FillGenericContentMedidores<T>(List<T> value, Table table, int tableIndex, string title, int fontSize = 8)
