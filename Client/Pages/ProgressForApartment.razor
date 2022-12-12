@@ -2,8 +2,8 @@
 @using Microsoft.Fast.Components.FluentUI
 
 
-@*<div id="Contenedor" class="min-h-screen bg-[url('/assets/img/imgFondo.png')] z-0 opacity-25 imgfondo fixed inset-0 bg-gray-500 bg-opacity-25 transition-opacity"></div>*@
-@if (_context.Apartment == null)
+<div id="Contenedor" class="min-h-screen bg-[url('/assets/img/imgFondo.png')] z-0 opacity-25 imgfondo fixed inset-0 bg-gray-500 bg-opacity-25 transition-opacity"></div>
+@if (_context.Apartment is not null)
 { 
     <div class="md:p-10 p-20 md:pb-32 mt-12 fixed inset-0">    
         <div class="h-full block border border-stone-300 rounded-2xl">
@@ -28,29 +28,28 @@
                         <div class="md:w-4/6 xl:w-5/6 inline-flex p-1"></div>
                     </div>           
                                      
-                        @foreach (var apartment in _context.Apartment)
-                        {
-                            <div class="w-full inline-flex">                            
-                                <div class="md:w-2/6 xl:w-1/6 p-0.5">
-                                    <div class="@(_idsAparmentSelect.ContainsKey(apartment.IdApartment) && _isFullAparment == false ? "bg-[#9CA2A8]" : "bg-[#55595E]") border border-stone-400 md:h-8 xl:h-12 xl:p-3">
-                                        <button @onclick="() => AddIdAparmentSelect(apartment.IdApartment)" class="w-full">
-                                            <p class="text-lg md:text-sm xl:text-lg text-white font-medium leading-6 text-center">@apartment.ApartmentNumber</p>
-                                        </button>
-                                    </div>
+                    @foreach (var apartment in _context.Apartment)
+                    {
+                        <div class="w-full inline-flex">                            
+                            <div class="md:w-2/6 xl:w-1/6 p-0.5">
+                                <div class="@(_idsAparmentSelect.ContainsKey(apartment.IdApartment) && _isFullAparment == false ? "bg-[#9CA2A8]" : "bg-[#55595E]") border border-stone-400 md:h-8 xl:h-12 xl:p-3">
+                                    <button @onclick="() => AddIdAparmentSelect(apartment.IdApartment)" class="w-full">
+                                        <p class="text-lg md:text-sm xl:text-lg text-white font-medium leading-6 text-center">@apartment.ApartmentNumber</p>
+                                    </button>
                                 </div>
-                                @if (_idsAparmentSelect.ContainsKey(apartment.IdApartment))
-                                {
-                                    <div class="md:w-4/6 xl:w-5/6 inline-flex p-0.5">
-                                        @if(@_idsAparmentSelect[apartment.IdApartment].Item1 > 0)
-                                        {
-                                            <div class="bg-[#115D28] md:h-8 xl:h-12 md:text-sm xl:text-lg text-white text-end w-[@_idsAparmentSelect[apartment.IdApartment].Item1%] md:p-1 xl:p-3">@_idsAparmentSelect[apartment.IdApartment].Item1 %</div>
-                                        }                                    
-                                        <div class="bg-[#CB3030] md:h-8 xl:h-12 md:text-sm xl:text-lg text-white text-end w-[@_idsAparmentSelect[apartment.IdApartment].Item2%] md:p-1 xl:p-3">@_idsAparmentSelect[apartment.IdApartment].Item2 %</div>                                    
-                                    </div> 
-                                }
                             </div>
-                        }
-                 
+                            @if (_idsAparmentSelect.ContainsKey(apartment.IdApartment))
+                            {
+                                <div class="md:w-4/6 xl:w-5/6 inline-flex p-0.5">
+                                    @if(@_idsAparmentSelect[apartment.IdApartment].Item1 > 0)
+                                    {
+                                        <div class="bg-[#115D28] md:h-8 xl:h-12 md:text-sm xl:text-lg text-white text-end w-[@_idsAparmentSelect[apartment.IdApartment].Item1%] md:p-1 xl:p-3">@_idsAparmentSelect[apartment.IdApartment].Item1 %</div>
+                                    }                                    
+                                    <div class="bg-[#CB3030] md:h-8 xl:h-12 md:text-sm xl:text-lg text-white text-end w-[@_idsAparmentSelect[apartment.IdApartment].Item2%] md:p-1 xl:p-3">@_idsAparmentSelect[apartment.IdApartment].Item2 %</div>                                    
+                                </div> 
+                            }
+                        </div>
+                    }                 
                 </div>
             </div>
         </div>
@@ -61,12 +60,10 @@
 }
 else
 {
-    <div class="flex justify-center items-center h-screen bg-red-300">
-        <div class="loading-progress-text"></div>
-        <svg class="loading-progress">
-            <circle r="40%" cx="50%" cy="50%" />
-            <circle r="40%" cx="50%" cy="50%" />
-        </svg>        
+    <div class="flex inset-0 fixed justify-center items-center h-screen">
+        <FluentProgressRing style="width: 102px; height: 102px;">
+            <ChildContent>100%</ChildContent>
+        </FluentProgressRing>
     </div>
 }
 <Navbar></Navbar>

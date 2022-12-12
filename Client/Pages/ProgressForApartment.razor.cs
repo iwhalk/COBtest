@@ -1,10 +1,8 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 using Obra.Client.Interfaces;
-using Obra.Client.Services;
 using Obra.Client.Stores;
 using SharedLibrary.Models;
-using System.IO;
 
 namespace Obra.Client.Pages
 {
