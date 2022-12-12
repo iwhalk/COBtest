@@ -8,6 +8,5 @@ namespace ReportesObra.Interfaces
         //Task<byte[]> GetReporteDetalles(int idBuilding, int idApartment, List<int> actividades, int? idElement, int? idSubElement);
         Task<byte[]> GetReporteAvance(List<AparmentProgress> aparmentProgress);
         Task <List<AparmentProgress>> GetAparments(int? idAparment);
-        //Task<byte[]> GetReporteDetalles(int ibBuilding, int idApartment);
     }
 }

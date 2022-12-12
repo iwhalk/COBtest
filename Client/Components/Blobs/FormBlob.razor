@@ -5,27 +5,42 @@
 else
 {
     <EditForm EditContext="CurrentBlobFileEditContext">
-        <DataAnnotationsValidator />
-
-        <div class="form-group">
-            <InputFile OnChange="@((InputFileChangeEventArgs args) => OnChangeAsync(args))" />
-            <ValidationMessage For="() => CurrentBlobFile.BrowserFile" />
-            @*<h6>@CurrentBlobFile.Blob.BlodName</h6>*@
-            @*<h6>@CurrentBlobFile.Blob.BlobSize</h6>*@     
-        </div>
-        <div class="h-[@HeigthContent] overflow-y-auto">
-            @if (ListBase64Blobs.Count > 0)
+    <DataAnnotationsValidator />
+    <div class="h-20 w-48 self-center rounded px-2 text-center bg-white">
+        <label for="fileinput" class="label-wrapper">
+            <span class="oi oi-camera-slr"></span>
+            <InputFile id="fileinput" class="custom-input-hide"
+                OnChange="@((InputFileChangeEventArgs args) => OnChangeAsync(args))" />
+        </label>
+        @*
+        <InputFile OnChange="@((InputFileChangeEventArgs args) => OnChangeAsync(args))" />*@
+        <ValidationMessage For="() => CurrentBlobFile.BrowserFile" />
+        @*<h6>@CurrentBlobFile.Blob.BlodName</h6>*@
+        @*<h6>@CurrentBlobFile.Blob.BlobSize</h6>*@
+        <div class="overflow-y-auto">
+            @if (CurrentBlobs?.Count > 0)
             {
 
-                <div class="grid grid-cols-4 gap-1 w-full">
-                    @foreach (var base64 in ListBase64Blobs)
-                    {
-                        <div><img class="w-[@SizeImg] h-[@SizeImg]" src="@base64" /></div>
-                    }
-                </div>
+            <div class="grid grid-cols-4 gap-1 w-full">
+                @foreach (var blob in CurrentBlobs)
+                {
+                <div><img class="w-20 h-10 " src="@blob.Uri" /></div>
+                }
+            </div>
             }
         </div>
-
-    </EditForm>
+    </div>
+</EditForm>
 
 }
+<style>
+     .label-wrapper:hover {
+         cursor: pointer;
+     }
+
+     .custom-input-hide {
+         width: 0;
+         height: 0;
+         overflow: hidden;
+     }
+</style>

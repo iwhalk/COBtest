@@ -5,7 +5,19 @@
     background-position: center;
     background-repeat: no-repeat;
 }
+/* Removes "No File Chosen" in File Input Control */
+input[type='file'] {
+    color: transparent;
+}
+.label-wrapper:hover {
+    cursor: pointer;
+}
 
+.custom-input-hide {
+    width: 0;
+    height: 0;
+    overflow: hidden;
+}
 @media screen and (max-height: 1080px) {
     .scaleTab {
         transform: scale(.58);

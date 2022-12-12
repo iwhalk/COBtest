@@ -1,4 +1,6 @@
 ﻿using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Authorization;
+using Obra.Client.Components.Blobs;
 using Obra.Client.Interfaces;
 using Obra.Client.Services;
 using SharedLibrary.Models;
@@ -18,6 +20,7 @@ namespace Obra.Client.Pages
         private readonly ISubElementsService _subElementsService;
         private readonly IProgressReportService _progressReportService;
         private readonly IProgressLogsService _progressLogsService;
+        private readonly AuthenticationStateProvider _getAuthenticationStateAsync;
 
         public ProjectTracking(IBuildingsService buildingsService,
                                IApartmentsService apartmentsService,
@@ -26,7 +29,8 @@ namespace Obra.Client.Pages
                                IElementsService elementsService,
                                ISubElementsService subElementsService,
                                IProgressReportService progressReportService,
-                               IProgressLogsService progressLogsService)
+                               IProgressLogsService progressLogsService,
+                               AuthenticationStateProvider getAuthenticationStateAsync)
         {
             _buildingsService = buildingsService;
             _apartmentsService = apartmentsService;
@@ -36,6 +40,7 @@ namespace Obra.Client.Pages
             _subElementsService = subElementsService;
             _progressReportService = progressReportService;
             _progressLogsService = progressLogsService;
+            _getAuthenticationStateAsync = getAuthenticationStateAsync;
         }
 
         public List<Apartment> ApartmentsList { get; private set; }
@@ -53,6 +58,14 @@ namespace Obra.Client.Pages
         public ProgressLog CurrentProgressLog { get; private set; }
         public List<ProgressLog> NewProgressLogs { get; private set; }
 
+        private FormBlob FormBlob;
+        private int SelectedApartment;
+        private int SelectedArea;
+        private int SelectedActivity;
+        private int SelectedElement;
+        private int SelectedSubElement;
+        private bool ShowDetalle;
+
         protected override async Task OnInitializedAsync()
         {
             ApartmentsList = await _apartmentsService.GetApartmentsAsync();
@@ -64,33 +77,67 @@ namespace Obra.Client.Pages
         }
         public async void ApartmentButtonClicked(int idApartment)
         {
+            SelectedApartment= idApartment;
+            SelectedArea = 0;
+            ActivitiesList = null;
+            SelectedActivity = 0;
+            CurrentElementsList = null;
+            SelectedElement = 0;
+            CurrentSubElementsList = null;
+            SelectedSubElement= 0;
+            ShowDetalle= false;
+
             AreasList = AreasList ?? await _areasService.GetAreasAsync();
             CurrentApartment = ApartmentsList.First(x=>x.IdApartment == idApartment);
             StateHasChanged();
         }
         public async void AreaButtonClicked(int idArea)
         {
+            SelectedArea= idArea;
+            SelectedActivity = 0;
+            CurrentElementsList = null;
+            SelectedElement = 0;
+            CurrentSubElementsList = null;
+            SelectedSubElement = 0;
+            ShowDetalle = false;
+
             ActivitiesList = ActivitiesList ?? await _activitiesService.GetActivitiesAsync();
             CurrentArea = AreasList.First(x => x.IdArea == idArea);
             StateHasChanged();
         }
         public async void ActivityButtonClicked(int idActivity)
         {
+            SelectedActivity = idActivity;
+            SelectedElement = 0;
+            CurrentSubElementsList = null;
+            SelectedSubElement = 0;
+            ShowDetalle = false;
+
             CurrentActivity = ActivitiesList.First(x => x.IdActivity == idActivity);
             CurrentElementsList = await _elementsService.GetElementsAsync(idActivity);
             StateHasChanged();
         }
         public async void ElementButtonClicked(int idElement)
         {
+            SelectedElement= idElement;
+            SelectedSubElement = 0;
+            ShowDetalle = false;
+
             CurrentElement = CurrentElementsList.First(x => x.IdElement == idElement);
             CurrentSubElementsList = await _subElementsService.GetSubElementsAsync(idElement);
+            if (CurrentSubElementsList == null || CurrentSubElementsList.Count < 1)
+            {
+                GetCurrentProgressReport(idElement: idElement);
+                ShowDetalle= true;
+            }
+
             StateHasChanged();
         }
-        public async void SubElementButtonClicked(int idSubElement)
-        {
-            CurrentSubElement = CurrentSubElementsList.First(x => x.IdSubElement == idSubElement);
 
-            CurrentProgressReport = (await _progressReportService.GetProgressReportsAsync(/*idBuilding: 1, */idAparment: CurrentApartment?.IdApartment, idArea: CurrentArea?.IdArea, idElemnet: CurrentElement?.IdElement, idSubElement: idSubElement))?.OrderByDescending(x => x.DateCreated).FirstOrDefault();
+        public async Task GetCurrentProgressReport(int? idElement =  null, int? idSubElement = null)
+        {
+            CurrentProgressReport = (await _progressReportService.GetProgressReportsAsync(idBuilding: 1, idAparment: CurrentApartment?.IdApartment, idArea: CurrentArea?.IdArea, 
+                idElemnet: idElement ?? CurrentElement?.IdElement, idSubElement: idSubElement))?.OrderByDescending(x => x.DateCreated).FirstOrDefault();
             if (CurrentProgressReport != null)
             {
                 var NewProgressLog = NewProgressLogs.FirstOrDefault(x => x.IdProgressReport == CurrentProgressReport.IdProgressReport);
@@ -99,25 +146,27 @@ namespace Obra.Client.Pages
                     CurrentProgressLog.Observation = NewProgressLog.Observation;
                     CurrentProgressLog.IdStatus = NewProgressLog.IdStatus;
                     CurrentProgressLog.Pieces = NewProgressLog.Pieces;
+                    CurrentProgressLog.IdBlobs = NewProgressLog.IdBlobs ?? new List<Blob>();
                 }
                 else
                 {
-                    //LastProgressLog = (await _progressLogsService.GetProgressLogsAsync(idProgressReport: CurrentProgressReport.IdProgressReport))?.OrderByDescending(x => x.DateCreated).FirstOrDefault();
-                    //if (LastProgressLog != null)
-                    //{
-                    //    CurrentProgressLog.IdProgressReport = LastProgressLog.IdProgressReport;
-                    //    CurrentProgressLog.Observation = LastProgressLog.Observation;
-                    //    CurrentProgressLog.IdStatus = LastProgressLog.IdStatus;
-                    //    CurrentProgressLog.Pieces = LastProgressLog.Pieces;
-                    //    CurrentProgressLog.IdProgressLog = 0;
-                    //}
-                    //else
-                    //{
-                    //    CurrentProgressLog = new ProgressLog()
-                    //    {
-                    //        IdStatus = 1
-                    //    };
-                    //}
+                    LastProgressLog = (await _progressLogsService.GetProgressLogsAsync(idProgressReport: CurrentProgressReport.IdProgressReport))?.OrderByDescending(x => x.DateCreated).FirstOrDefault();
+                    if (LastProgressLog != null)
+                    {
+                        CurrentProgressLog.IdProgressReport = LastProgressLog.IdProgressReport;
+                        CurrentProgressLog.Observation = LastProgressLog.Observation;
+                        CurrentProgressLog.IdStatus = LastProgressLog.IdStatus;
+                        CurrentProgressLog.Pieces = LastProgressLog.Pieces;
+                        CurrentProgressLog.IdBlobs = LastProgressLog.IdBlobs ?? new List<Blob>();
+                        CurrentProgressLog.IdProgressLog = 0;
+                    }
+                    else
+                    {
+                        CurrentProgressLog = new ProgressLog()
+                        {
+                            IdStatus = 1
+                        };
+                    }
                 }
 
             }
@@ -130,7 +179,19 @@ namespace Obra.Client.Pages
                     IdStatus = 1
                 };
             }
+            StateHasChanged();
+        }
 
+        public async void SubElementButtonClicked(int idSubElement)
+        {
+            SelectedSubElement= idSubElement;
+            CurrentSubElement = CurrentSubElementsList.First(x => x.IdSubElement == idSubElement);
+            CurrentProgressLog = new ();
+            StateHasChanged();
+
+            GetCurrentProgressReport(idSubElement: idSubElement);
+
+            ShowDetalle = true;
             StateHasChanged();
         }
 
@@ -157,6 +218,89 @@ namespace Obra.Client.Pages
             }
 
             StateHasChanged();
+        }
+        public async void ObservationInput(ChangeEventArgs e)
+        {
+
+            var NewProgressLog = NewProgressLogs.FirstOrDefault(x => x.IdProgressReport == CurrentProgressReport.IdProgressReport);
+            if (NewProgressLog != null)
+            {
+                NewProgressLogs.FirstOrDefault(x => x.IdProgressReport == CurrentProgressReport.IdProgressReport).Observation = e.Value?.ToString();
+                //NewProgressLogs.FirstOrDefault(x => x.IdProgressReport == CurrentProgressReport.IdProgressReport).IdProgressReport = CurrentProgressReport?.IdProgressReport ?? 1;
+            }
+            else
+            {
+                CurrentProgressLog.Observation = e.Value?.ToString();
+                CurrentProgressLog.IdProgressReport = CurrentProgressReport?.IdProgressReport ?? 1;
+                NewProgressLogs.Add(new ProgressLog()
+                {
+                    Pieces = CurrentProgressLog.Pieces,
+                    Observation = e.Value?.ToString(),
+                    IdProgressReport = CurrentProgressReport?.IdProgressReport ?? 1,
+                    IdStatus = CurrentProgressLog.IdStatus
+                });
+            }
+
+            StateHasChanged();
+        }
+        public async void CheckboxClicked(int idStatus, ChangeEventArgs e)
+        {
+            CurrentProgressLog.IdStatus = idStatus;
+            var NewProgressLog = NewProgressLogs.FirstOrDefault(x => x.IdProgressReport == CurrentProgressReport.IdProgressReport);
+            if (NewProgressLog != null)
+            {
+                NewProgressLogs.FirstOrDefault(x => x.IdProgressReport == CurrentProgressReport.IdProgressReport).IdStatus = idStatus;
+                //NewProgressLogs.FirstOrDefault(x => x.IdProgressReport == CurrentProgressReport.IdProgressReport).IdProgressReport = CurrentProgressReport?.IdProgressReport ?? 1;
+            }
+            else
+            {
+                CurrentProgressLog.IdStatus = idStatus;
+                CurrentProgressLog.IdProgressReport = CurrentProgressReport?.IdProgressReport ?? 1;
+                NewProgressLogs.Add(new ProgressLog()
+                {
+                    Pieces = CurrentProgressLog.Pieces,
+                    Observation = CurrentProgressLog.Observation,
+                    IdProgressReport = CurrentProgressReport?.IdProgressReport ?? 1,
+                    IdStatus = idStatus
+                });
+            }
+
+            StateHasChanged();
+        }
+        public async void HandleInputFile(Blob blob)
+        {
+            //CurrentProgressLog.IdBlobs.Add(blob);
+            var NewProgressLog = NewProgressLogs.FirstOrDefault(x => x.IdProgressReport == CurrentProgressReport.IdProgressReport);
+             if (NewProgressLog != null)
+            {
+                NewProgressLogs.FirstOrDefault(x => x.IdProgressReport == CurrentProgressReport.IdProgressReport).IdBlobs.Add(blob);
+                //NewProgressLogs.FirstOrDefault(x => x.IdProgressReport == CurrentProgressReport.IdProgressReport).IdProgressReport = CurrentProgressReport?.IdProgressReport ?? 1;
+            }
+            else
+            {
+                CurrentProgressLog.IdBlobs.Add(blob);
+                CurrentProgressLog.IdProgressReport = CurrentProgressReport?.IdProgressReport ?? 1;
+                NewProgressLogs.Add(new ProgressLog()
+                {
+                    Pieces = CurrentProgressLog.Pieces,
+                    Observation = CurrentProgressLog.Observation,
+                    IdProgressReport = CurrentProgressReport?.IdProgressReport ?? 1,
+                    IdStatus = CurrentProgressLog.IdStatus,
+                    IdBlobs = new List<Blob>() { blob }
+                });
+            }
+            FormBlob.CurrentBlobFileEditContext.Validate();
+            StateHasChanged();
+        }
+        public async void SaveButtonClicked()
+        {
+            var authstate = await _getAuthenticationStateAsync.GetAuthenticationStateAsync();
+            foreach (var progressLog in NewProgressLogs)
+            {
+                progressLog.IdSupervisor = authstate.User?.Claims?.FirstOrDefault(x => x.Type.Equals("sub"))?.Value;
+                progressLog.DateCreated = DateTime.Now;
+                _ = await _progressLogsService.PostProgressLogAsync(progressLog);
+            }
         }
     }
 }
