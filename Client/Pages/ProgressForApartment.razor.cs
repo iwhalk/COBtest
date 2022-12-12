@@ -1,7 +1,10 @@
 ﻿using Microsoft.AspNetCore.Components;
+using Microsoft.JSInterop;
 using Obra.Client.Interfaces;
 using Obra.Client.Services;
 using Obra.Client.Stores;
+using SharedLibrary.Models;
+using System.IO;
 
 namespace Obra.Client.Pages
 {
@@ -11,34 +14,45 @@ namespace Obra.Client.Pages
         private readonly IApartmentsService _apartmentsService;
         private readonly IProgressLogsService _progressLogsService;
         private readonly IProgressReportService _progressReportService;
+        private readonly IJSRuntime _JS;
         //Variable locales
-        private List<int> _idsAparmentSelect { get; set; } = new();
+        private Dictionary<int, Tuple<int, int>> _idsAparmentSelect { get; set; } = new();
         private bool _isFullAparment { get; set;}
-        
-        public ProgressForApartment(ApplicationContext context, IApartmentsService apartmentsService, IProgressLogsService progressLogsService, IProgressReportService progressReportService) 
+        public ProgressForApartment(ApplicationContext context, IApartmentsService apartmentsService, IProgressLogsService progressLogsService, IProgressReportService progressReportService, IJSRuntime jS)
         {
             _context = context;
             _apartmentsService = apartmentsService;
             _progressLogsService = progressLogsService;
             _progressReportService = progressReportService;
+            _JS = jS;
         }
         protected async override Task OnInitializedAsync()
         {
-            _context.Apartment = await _apartmentsService.GetApartmentsAsync();
-            //var progressLog = await _progressLogsService.GetProgressLogsAsync();
-            var progressReport = await _progressReportService.GetProgressReportsAsync();
+            _context.Apartment = await _apartmentsService.GetApartmentsAsync();                        
         }
-        private void AddIdAparmentSelect(int idDeparment)
+        private async void AddIdAparmentSelect(int idDeparment)
         {
-            if(!_idsAparmentSelect.Contains(idDeparment))
-                _idsAparmentSelect.Add(idDeparment);
-
+            if (!_idsAparmentSelect.ContainsKey(idDeparment))
+            {
+                var infoProgress = await _progressReportService.GetProgresReportViewAsync(idDeparment);
+                if (infoProgress != null)
+                {
+                    var porcentageProgress = (int)Math.Round(infoProgress.FirstOrDefault().ApartmentProgress);
+                    var porcentage = new Tuple<int, int>(porcentageProgress, 100 - porcentageProgress);
+                    _idsAparmentSelect.Add(idDeparment, porcentage);
+                }
+                else
+                {
+                    _idsAparmentSelect.Add(idDeparment, new Tuple<int, int>(0, 100));
+                }
+            }
             else
             {
-                _idsAparmentSelect = _idsAparmentSelect.Where(x => x != idDeparment).ToList();
+                _idsAparmentSelect = _idsAparmentSelect.Where(x => x.Key != idDeparment).Select(x => new { x.Key, x.Value }).ToDictionary(x => x.Key, x => x.Value);
             }
+            StateHasChanged();
         }
-        private void FullAparment()
+        private async void FullAparment()
         {
             if (_idsAparmentSelect.Count() == _context.Apartment.Count())
             {
@@ -47,8 +61,47 @@ namespace Obra.Client.Pages
             }
             else
             {
-                _isFullAparment = true;
-                _idsAparmentSelect = _context.Apartment.Select(x => x.IdApartment).ToList();
+                _idsAparmentSelect.Clear();
+                var infoProgress = await _progressReportService.GetProgresReportViewAsync(null);
+                if (infoProgress != null)
+                {
+                    foreach (var aparment in _context.Apartment)
+                    {
+                        if (infoProgress.Exists(x => x.ApartmentNumber == aparment.ApartmentNumber))
+                        {
+                            var porcentageProgress = (int)Math.Round(infoProgress.Where(x => x.ApartmentNumber == aparment.ApartmentNumber).FirstOrDefault().ApartmentProgress);
+                            var porcentage = new Tuple<int, int>(porcentageProgress, 100 - porcentageProgress);
+                            _idsAparmentSelect.Add(aparment.IdApartment, porcentage);
+                        }
+                        else
+                        {
+                            _idsAparmentSelect.Add(aparment.IdApartment, new Tuple<int, int>(0, 100));
+                        }
+                    }
+                    _isFullAparment = true;
+                }                
+            }
+            StateHasChanged();
+        }
+        private async void GeneratePDfPorgressaprment()
+        {
+            var listAparmentProgress = _idsAparmentSelect.Select(x => new AparmentProgress
+            {
+                ApartmentNumber = _context.Apartment.Find(o => o.IdApartment == x.Key).ApartmentNumber,
+                ApartmentProgress = x.Value.Item1 * 1.0
+
+            }).ToList();
+
+            var bytesForPDF = await  _progressReportService.PostProgressReporPDFtAsync(listAparmentProgress);
+
+            if (bytesForPDF != null)
+            {
+
+                var fileName = "test.pdf";
+                var fileStream = new MemoryStream(bytesForPDF);
+                using var streamRef = new DotNetStreamReference(stream: fileStream);
+                await _JS.InvokeVoidAsync("downloadFileFromStream", fileName, streamRef);
+
             }
         }
     }
