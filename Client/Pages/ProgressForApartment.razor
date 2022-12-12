@@ -2,8 +2,8 @@
 @using Microsoft.Fast.Components.FluentUI
 
 
-<div id="Contenedor" class="min-h-screen bg-[url('/assets/img/imgFondo.png')] z-0 opacity-25 imgfondo fixed inset-0 bg-gray-500 bg-opacity-25 transition-opacity"></div>
-@if (_context.Apartment != null)
+@*<div id="Contenedor" class="min-h-screen bg-[url('/assets/img/imgFondo.png')] z-0 opacity-25 imgfondo fixed inset-0 bg-gray-500 bg-opacity-25 transition-opacity"></div>*@
+@if (_context.Apartment == null)
 { 
     <div class="md:p-10 p-20 md:pb-32 mt-12 fixed inset-0">    
         <div class="h-full block border border-stone-300 rounded-2xl">
@@ -57,12 +57,16 @@
         <div class="w-full flex py-3">
             <button @onclick="() => GeneratePDfPorgressaprment()" class="mx-auto bg-[#B9352E] hover:bg-red-500 w-32 p-2 rounded-2xl text-lg text-white font-medium leading-6 border border-stone-400 hover:border-white">Descargar</button>
         </div>      
-    </div>  
+    </div>
 }
 else
 {
-    <div class="w-full mx-auto">
-        <FluentProgressRing></FluentProgressRing>
+    <div class="flex justify-center items-center h-screen bg-red-300">
+        <div class="loading-progress-text"></div>
+        <svg class="loading-progress">
+            <circle r="40%" cx="50%" cy="50%" />
+            <circle r="40%" cx="50%" cy="50%" />
+        </svg>        
     </div>
 }
 <Navbar></Navbar>
