@@ -19,7 +19,7 @@ namespace ReportesObra.Services
             return await _dbContext.ProgressLogs.FirstOrDefaultAsync(x => x.IdProgressLog == idProgressLog);
         }
 
-        public Task<List<ProgressLog>?> GetProgressLogsAsync(int? idProgressLog, int? idProgressReport, int? idStatus, string? idSupervisor)
+        public Task<List<ProgressLog>?>? GetProgressLogsAsync(int? idProgressLog, int? idProgressReport, int? idStatus, string? idSupervisor)
         {
             IQueryable<ProgressLog> progressLogs = _dbContext.ProgressLogs;
 
@@ -32,11 +32,34 @@ namespace ReportesObra.Services
             if (idSupervisor != null)
                 progressLogs = progressLogs.Where(x => x.IdSupervisor == idSupervisor);
 
-            return progressLogs?.Include(x=>x.IdBlobs)?.ToListAsync();
+            System.Linq.Expressions.Expression<Func<ProgressLog, ProgressLog>> selector = x => new ProgressLog
+            {
+                IdProgressLog = x.IdProgressLog,
+                IdProgressReport = x.IdProgressReport,
+                DateCreated = x.DateCreated,
+                IdStatus = x.IdStatus,
+                Pieces = x.Pieces,
+                Observation = x.Observation,
+                IdSupervisor = x.IdSupervisor,
+                IdBlobs = x.IdBlobs.Select(y => new Blob
+                {
+                    IdBlob = y.IdBlob,
+                    ContainerName = y.ContainerName,
+                    IsPrivate = y.IsPrivate,
+                    Uri = y.Uri,
+                    BlobSize = y.BlobSize
+                }).ToList()
+            };
+            return progressLogs?.Select(selector).ToListAsync();
         }
 
         public async Task<ProgressLog?> CreateProgressLogsAsync(ProgressLog progressLog)
         {
+            if (progressLog.IdBlobs != null)
+                foreach (var blob in progressLog.IdBlobs)
+                {
+                    _dbContext.Attach(blob);
+                }
             await _dbContext.ProgressLogs.AddAsync(progressLog);
             try { await _dbContext.SaveChangesAsync(); }
             catch (DbUpdateConcurrencyException) { throw; }

@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Authorization;
 using Obra.Client.Components.Blobs;
 using Obra.Client.Interfaces;
 using Obra.Client.Services;
@@ -19,6 +20,7 @@ namespace Obra.Client.Pages
         private readonly ISubElementsService _subElementsService;
         private readonly IProgressReportService _progressReportService;
         private readonly IProgressLogsService _progressLogsService;
+        private readonly AuthenticationStateProvider _getAuthenticationStateAsync;
 
         public ProjectTracking(IBuildingsService buildingsService,
                                IApartmentsService apartmentsService,
@@ -27,7 +29,8 @@ namespace Obra.Client.Pages
                                IElementsService elementsService,
                                ISubElementsService subElementsService,
                                IProgressReportService progressReportService,
-                               IProgressLogsService progressLogsService)
+                               IProgressLogsService progressLogsService,
+                               AuthenticationStateProvider getAuthenticationStateAsync)
         {
             _buildingsService = buildingsService;
             _apartmentsService = apartmentsService;
@@ -37,6 +40,7 @@ namespace Obra.Client.Pages
             _subElementsService = subElementsService;
             _progressReportService = progressReportService;
             _progressLogsService = progressLogsService;
+            _getAuthenticationStateAsync = getAuthenticationStateAsync;
         }
 
         public List<Apartment> ApartmentsList { get; private set; }
@@ -121,16 +125,19 @@ namespace Obra.Client.Pages
 
             CurrentElement = CurrentElementsList.First(x => x.IdElement == idElement);
             CurrentSubElementsList = await _subElementsService.GetSubElementsAsync(idElement);
+            if (CurrentSubElementsList == null || CurrentSubElementsList.Count < 1)
+            {
+                GetCurrentProgressReport(idElement: idElement);
+                ShowDetalle= true;
+            }
+
             StateHasChanged();
         }
-        public async void SubElementButtonClicked(int idSubElement)
-        {
-            SelectedSubElement= idSubElement;
-            CurrentSubElement = CurrentSubElementsList.First(x => x.IdSubElement == idSubElement);
-            CurrentProgressLog = new ();
-            StateHasChanged();
 
-            CurrentProgressReport = (await _progressReportService.GetProgressReportsAsync(/*idBuilding: 1, */idAparment: CurrentApartment?.IdApartment, idArea: CurrentArea?.IdArea, idElemnet: CurrentElement?.IdElement, idSubElement: idSubElement))?.OrderByDescending(x => x.DateCreated).FirstOrDefault();
+        public async Task GetCurrentProgressReport(int? idElement =  null, int? idSubElement = null)
+        {
+            CurrentProgressReport = (await _progressReportService.GetProgressReportsAsync(idBuilding: 1, idAparment: CurrentApartment?.IdApartment, idArea: CurrentArea?.IdArea, 
+                idElemnet: idElement ?? CurrentElement?.IdElement, idSubElement: idSubElement))?.OrderByDescending(x => x.DateCreated).FirstOrDefault();
             if (CurrentProgressReport != null)
             {
                 var NewProgressLog = NewProgressLogs.FirstOrDefault(x => x.IdProgressReport == CurrentProgressReport.IdProgressReport);
@@ -172,6 +179,17 @@ namespace Obra.Client.Pages
                     IdStatus = 1
                 };
             }
+            StateHasChanged();
+        }
+
+        public async void SubElementButtonClicked(int idSubElement)
+        {
+            SelectedSubElement= idSubElement;
+            CurrentSubElement = CurrentSubElementsList.First(x => x.IdSubElement == idSubElement);
+            CurrentProgressLog = new ();
+            StateHasChanged();
+
+            GetCurrentProgressReport(idSubElement: idSubElement);
 
             ShowDetalle = true;
             StateHasChanged();
@@ -273,6 +291,16 @@ namespace Obra.Client.Pages
             }
             FormBlob.CurrentBlobFileEditContext.Validate();
             StateHasChanged();
+        }
+        public async void SaveButtonClicked()
+        {
+            var authstate = await _getAuthenticationStateAsync.GetAuthenticationStateAsync();
+            foreach (var progressLog in NewProgressLogs)
+            {
+                progressLog.IdSupervisor = authstate.User?.Claims?.FirstOrDefault(x => x.Type.Equals("sub"))?.Value;
+                progressLog.DateCreated = DateTime.Now;
+                _ = await _progressLogsService.PostProgressLogAsync(progressLog);
+            }
         }
     }
 }
