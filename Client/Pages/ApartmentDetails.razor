@@ -134,7 +134,7 @@ else if (buttonReport == true)
         </div>
         @if (subElementsNulls == false)
         {
-            @if (progressLogs != null && progressLogs.Count() > 0)
+            @if (progressLogs != null && progressLogs.Count() > 0 && greenPercentage != null && redPercentage != null)
             {
                 <div class="flex w-full mt-10 px-16">
                     <div class="flex justify-center w-3/6">

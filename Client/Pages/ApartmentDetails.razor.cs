@@ -271,6 +271,7 @@ namespace Obra.Client.Pages
                     ProgressReport progressReport = (await _progressReportService.GetProgressReportsAsync(idAparment: idAparment, idElemnet: _idsElementsSelect.FirstOrDefault(), idSubElement: idsSubElement)).OrderByDescending(x => x.DateCreated).FirstOrDefault();
 
                     if (progressReport != null)
+
                     {                        
                         progressReports.Add(new ProgressReport() { IdProgressReport = progressReport.IdProgressReport, DateCreated = progressReport.DateCreated, IdBuilding = progressReport.IdBuilding, IdApartment = progressReport.IdApartment, IdArea = progressReport.IdArea, IdElement = progressReport.IdElement, IdSubElement = progressReport.IdSubElement, TotalPieces = progressReport.TotalPieces, IdSupervisor = progressReport.IdSupervisor });
                     }
