@@ -41,18 +41,18 @@ namespace Obra.Client.Services
                 parameters.Add("idSupervisor", idSupervisor);
             }
 
-            if (_context.ProgressLog == null)
-            {
-                var response = await _repository.GetAsync<List<ProgressLog>>(path: "api/ProgressLogs");
+            //if (_context.ProgressLog == null)
+            //{
+            //    var response = await _repository.GetAsync<List<ProgressLog>>(path: "api/ProgressLogs");
 
-                if (response != null)
-                {
-                    _context.ProgressLog = response;
-                    return _context.ProgressLog;
-                }
-            }
+            //    if (response != null)
+            //    {
+            //        _context.ProgressLog = response;
+            //        return _context.ProgressLog;
+            //    }
+            //}
 
-            return _context.ProgressLog;
+            return await _repository.GetAsync<List<ProgressLog>>(path: "api/ProgressLogs", parameters: parameters);
         }
         public async Task<ProgressLog> PostProgressLogAsync(ProgressLog progressLog)
         {

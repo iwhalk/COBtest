@@ -85,6 +85,21 @@ namespace ApiGateway.Controllers
             return BadRequest(result);
         }
 
+        [HttpGet("ProgressReportView")]
+        public async Task<ActionResult> GetProgressReportView(int? id)
+        {   
+            var result = await _progressReportService.GetProgressReportViewAsync(id);
+            if (result != null)
+            {
+                if (result.Succeeded)
+                {
+                    return Ok(result);
+                }
+                return BadRequest(result);
+            }
+            return BadRequest(result);
+        }
+
         [HttpPost]
         public async Task<ActionResult> PostProgressReport(ProgressReport progressReport)
         {
