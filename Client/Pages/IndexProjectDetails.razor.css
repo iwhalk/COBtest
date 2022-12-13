@@ -5,15 +5,3 @@
     background-position: center;
     background-repeat: no-repeat;
 }
-
-@media screen and (max-height: 1080px) {
-    .scaleTab {
-        transform: scale(.75);
-    }
-}
-
-@media screen and (min-width: 1081px) {
-    .scaleDesk {
-        transform: scale(1);
-    }
-}
