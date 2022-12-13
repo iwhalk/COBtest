@@ -5,9 +5,3 @@
     background-position: center;
     background-repeat: no-repeat;
 }
-
-@media only screen and (min-width: 1280px) and (max-width: 1849px) {
-    .marginv2 {
-        margin-left: -10rem;
-    }
-}

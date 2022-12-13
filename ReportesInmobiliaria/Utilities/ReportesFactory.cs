@@ -439,29 +439,29 @@ namespace ReportesObra.Utilities
             //chart.Height = "1cm";
 
 
-            //chart.XAxis.MajorTickMark = MigraDocCore.DocumentObjectModel.Shapes.Charts.TickMarkType.None;
-            //chart.XAxis.Title.Caption = "";            
-            //chart.XAxis.HasMajorGridlines = true;
+            //chart.XAxis.MajorTickMark = MigraDocCore.DocumentObjectModel.Shapes.Charts.TickMarkType.Inside;
+            //chart.XAxis.Title.Caption = "";
+            //chart.XAxis.HasMajorGridlines = false;
 
-            //chart.YAxis.TickLabels.Format = "#0%";
-            //chart.YAxis.MajorTickMark = MigraDocCore.DocumentObjectModel.Shapes.Charts.TickMarkType.Cross;
+            //chart.YAxis.TickLabels.Format = " ";
+            //chart.YAxis.MajorTickMark = MigraDocCore.DocumentObjectModel.Shapes.Charts.TickMarkType.Inside;
             //chart.YAxis.MinimumScale = 0;
             //chart.YAxis.MaximumScale = 1;
 
-            //chart.PlotArea.LineFormat.Color = Colors.AliceBlue;
-            //chart.PlotArea.LineFormat.Width = 1;
+            //chart.PlotArea.LineFormat.Color = Colors.Black;
+            //chart.PlotArea.LineFormat.Width = 2;
             //chart.PlotArea.LineFormat.Visible = true;
             //chart.PlotArea.FillFormat.Color = Colors.Red;
 
             //var series = chart.SeriesCollection.AddSeries();
             //series.Add(new double[] { 0.55 });
-            //series.DataLabel.Format = "#0.0%";
+            //series.DataLabel.Format = "#0.0%";           
             //var elements = series.Elements.Cast<MigraDocCore.DocumentObjectModel.Shapes.Charts.Point>().ToArray();
             //elements[0].FillFormat.Color = Colors.Green;
             //var xseries = chart.XValues.AddXSeries();
             //xseries.Add("");
 
-            //rowo.Cells[0].AddParagraph("Departamento");
+            //rowo.Cells[0].AddParagraph("ASDASD");
             //rowo.Cells[1].Add(chart);
 
             FillChartContent(reporteAvance.Apartments, table);
@@ -500,7 +500,7 @@ namespace ReportesObra.Utilities
         /// </summary>
         /// 
 
-        void FillChartContent<T>(List<T> value, Table table, int fontSize = 6)
+        void FillChartContent<T>(List<T> value, Table table, int fontSize = 8)
         {
             var chart = new MigraDocCore.DocumentObjectModel.Shapes.Charts.Chart(MigraDocCore.DocumentObjectModel.Shapes.Charts.ChartType.Bar2D);
             chart.Width = "15cm";
@@ -511,13 +511,13 @@ namespace ReportesObra.Utilities
             chart.XAxis.Title.Caption = "";
             chart.XAxis.HasMajorGridlines = true;
 
-            chart.YAxis.TickLabels.Format = "#0%";
+            chart.YAxis.TickLabels.Format = " ";
             chart.YAxis.MajorTickMark = MigraDocCore.DocumentObjectModel.Shapes.Charts.TickMarkType.Cross;
             chart.YAxis.MinimumScale = 0;
             chart.YAxis.MaximumScale = 1;
 
-            chart.PlotArea.LineFormat.Color = Colors.AliceBlue;
-            chart.PlotArea.LineFormat.Width = 1;
+            chart.PlotArea.LineFormat.Color = Colors.Black;
+            chart.PlotArea.LineFormat.Width = 2;
             chart.PlotArea.LineFormat.Visible = true;
 
             foreach (var item in value)
@@ -538,9 +538,10 @@ namespace ReportesObra.Utilities
                             series.DataLabel.Format = "#0.0%";
                             var elements = series.Elements.Cast<MigraDocCore.DocumentObjectModel.Shapes.Charts.Point>().ToArray();
                             elements[0].FillFormat.Color = Colors.Green;
-                            var xseries = chart.XValues.AddXSeries();
+                            var xseries = clone_chart.XValues.AddXSeries();
                             xseries.Add("");
                             row.Cells[index].Add(clone_chart);
+                            row.Cells[index].Table.BottomPadding = "0.2cm";
                         }
                         if (type == typeof(string))
                         {
