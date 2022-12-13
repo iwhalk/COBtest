@@ -311,6 +311,8 @@ namespace Obra.Client.Pages
         }
         public async void SaveButtonClicked()
         {
+            if (NewProgressLogs.Count < 1)
+                return;
             var authstate = await _getAuthenticationStateAsync.GetAuthenticationStateAsync();
             foreach (var progressLog in NewProgressLogs)
             {
