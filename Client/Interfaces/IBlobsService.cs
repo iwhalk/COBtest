@@ -6,6 +6,7 @@ namespace Obra.Client.Interfaces
 {
     public interface IBlobsService
     {
+        Task<byte[]> GetBlobImage(int id);
         Task<Blob> GetBlobAsync(int? id);
         Task<List<Blob>> GetBlobsAsync(int? id);
         Task<Blob> PostBlobAsync(Blob blob);

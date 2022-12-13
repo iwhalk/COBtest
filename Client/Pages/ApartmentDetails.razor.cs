@@ -1,4 +1,6 @@
 ﻿using Microsoft.AspNetCore.Components;
+using Microsoft.EntityFrameworkCore.SqlServer.Query.Internal;
+using Microsoft.Fast.Components.FluentUI.DesignTokens;
 using Obra.Client.Interfaces;
 using Obra.Client.Stores;
 using SharedLibrary.Models;
@@ -17,6 +19,7 @@ namespace Obra.Client.Pages
         private readonly ISubElementsService _subElementsService;
         private readonly IProgressReportService _progressReportService;
         private readonly IProgressLogsService _progressLogsService;
+        private readonly IBlobsService _blobsService;
 
         private List<Apartment> apartments { get; set; }
         private List<SharedLibrary.Models.Activity> activities { get; set; }
@@ -45,13 +48,16 @@ namespace Obra.Client.Pages
         private bool buttonReport = false;
         private bool subElementsNulls = false;
 
+        private string observations = "n/a";
+        private Dictionary<int, byte[]> images = new();
+
         Dictionary<string, string> greenPercentage { get; set; } = new();
         Dictionary<string, string> redPercentage { get; set; } = new();
 
         private bool isFirstView { get; set; } = true;
         private bool showModal { get; set; } = false;
 
-        public ApartmentDetails(ApplicationContext context, IApartmentsService apartmentsService, IActivitiesService activitiesService, IElementsService elementsService, ISubElementsService subElementsService, IProgressReportService progressReportService, IProgressLogsService progressLogsService)
+        public ApartmentDetails(ApplicationContext context, IApartmentsService apartmentsService, IActivitiesService activitiesService, IElementsService elementsService, ISubElementsService subElementsService, IProgressReportService progressReportService, IProgressLogsService progressLogsService, IBlobsService blobsService)
         {
             _context = context;
             _apartmentsService = apartmentsService;
@@ -60,6 +66,7 @@ namespace Obra.Client.Pages
             _subElementsService = subElementsService;
             _progressReportService = progressReportService;
             _progressLogsService = progressLogsService;
+            _blobsService = blobsService;
         }
 
         protected async override Task OnInitializedAsync()
@@ -81,6 +88,8 @@ namespace Obra.Client.Pages
                 else if (_idsAparmentSelect.Count() == 1)
                 {
                     _idsAparmentSelect.Remove(id);
+
+                    await ShowMenssage();
 
                     _idsActivitiesSelect.Clear();
 
@@ -122,6 +131,8 @@ namespace Obra.Client.Pages
                         {
                             _idsActivitiesSelect.Remove(id);
 
+                            await ShowMenssage();
+
                             if (elements != null)
                             {
                                 elements.Clear();
@@ -138,6 +149,8 @@ namespace Obra.Client.Pages
                     else if (activityIdAux == id)
                     {
                         _idsActivitiesSelect.Remove(id);
+
+                        await ShowMenssage();
 
                         if (elements != null)
                         {
@@ -177,6 +190,8 @@ namespace Obra.Client.Pages
                     {
                         _idsElementsSelect.Remove(id);
 
+                        await ShowMenssage();
+
                         if (subElements != null)
                         {
                             subElements.Clear();
@@ -201,9 +216,16 @@ namespace Obra.Client.Pages
                 if (!_idsSubElementsSelect.Contains(id))
                 {
                     _idsSubElementsSelect.Add(id);
+
+                    await ShowMenssage();
                 }
                 else
+                {
+
                     _idsSubElementsSelect.Remove(id);
+
+                    await ShowMenssage();
+                }
             }
         }
 
@@ -257,7 +279,7 @@ namespace Obra.Client.Pages
             }
             else
             {
-                menssageError = "Para generar el reporte es necesario elegir un elemento antes";
+                menssageError = "Para generar el reporte es necesario elegir un Elemento antes";
                 alert = true;
             }
         }
@@ -272,7 +294,7 @@ namespace Obra.Client.Pages
 
                     if (progressReport != null)
 
-                    {                        
+                    {
                         progressReports.Add(new ProgressReport() { IdProgressReport = progressReport.IdProgressReport, DateCreated = progressReport.DateCreated, IdBuilding = progressReport.IdBuilding, IdApartment = progressReport.IdApartment, IdArea = progressReport.IdArea, IdElement = progressReport.IdElement, IdSubElement = progressReport.IdSubElement, TotalPieces = progressReport.TotalPieces, IdSupervisor = progressReport.IdSupervisor });
                     }
                 }
@@ -293,7 +315,7 @@ namespace Obra.Client.Pages
 
             if (progressLogs == null || progressLogs.Count() < 1 || progressReports == null || progressReports.Count() < 1)
             {
-                menssageError = "No se puede generar un reporte de este sub-elemento ya que no tienen ningun progreso";
+                menssageError = "No se puede generar un reporte de este sub-elemento, ya que no tienen ningun progreso que mostrar";
                 alert = true;
             }
         }
@@ -307,7 +329,7 @@ namespace Obra.Client.Pages
                 if (progressReport != null)
                 {
                     progressReports.Add(new ProgressReport() { IdProgressReport = progressReport.IdProgressReport, DateCreated = progressReport.DateCreated, IdBuilding = progressReport.IdBuilding, IdApartment = progressReport.IdApartment, IdArea = progressReport.IdArea, IdElement = progressReport.IdElement, IdSubElement = progressReport.IdSubElement, TotalPieces = progressReport.TotalPieces, IdSupervisor = progressReport.IdSupervisor });
-                }                
+                }
 
                 foreach (var item in progressReports)
                 {
@@ -322,7 +344,7 @@ namespace Obra.Client.Pages
 
             if (progressLogs == null || progressLogs.Count() < 1 || progressReports == null || progressReports.Count() < 1)
             {
-                menssageError = "No se puede generar un reporte de este elemento ya que no tienen ninun progreso que mostrar";
+                menssageError = "No se puede generar un reporte de este elemento, ya que no tienen ningun progreso que mostrar";
                 alert = true;
             }
         }
@@ -341,6 +363,28 @@ namespace Obra.Client.Pages
 
                 redPercentage.Add($"{item.IdProgressReport}", (100 - auxRed).ToString());
             }
+        }
+
+        public async Task CamareButton(int id)
+        {
+            int auxId = 0;
+            ProgressLog aux = progressLogs.FirstOrDefault(x => x.IdProgressLog == id);
+
+            if (aux.Observation != null)
+            {
+                observations = aux.Observation;
+            }
+
+            if (aux.IdBlobs != null)
+            {
+                foreach (var item in aux.IdBlobs)
+                {
+                    images.Add(auxId, await _blobsService.GetBlobImage(id));
+                    auxId++;
+                }
+            }
+
+            showModal = true;
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using Obra.Client.Interfaces;
 using Obra.Client.Models;
 using Obra.Client.Stores;
+using SharedLibrary;
 using SharedLibrary.Models;
 
 namespace Obra.Client.Services
@@ -57,6 +58,11 @@ namespace Obra.Client.Services
             content.Add(new StreamContent(blobFile.FileStream, Convert.ToInt32(blobFile.Blob?.BlobSize)), "file", blobFile.Blob?.BlobName ?? "");
 
             return content;
+        }
+
+        public async Task<byte[]> GetBlobImage(int id)
+        {
+            return await _repository.GetAsync(id, path: "api/Blobs/Image");
         }
     }
 }
