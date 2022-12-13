@@ -14,15 +14,21 @@
     height: 120px;
 }
 
-@media screen and (max-height: 1080px) {
+@media only screen and (min-width: 858px) and (max-width: 1079px) {
     .scaleTab {
-        transform: scale(.75);
+        transform: scale(.47);
     }
 }
 
-@media screen and (min-width: 1081px) {
-    .scaleDesk {
-        transform: scale(1);
+@media only screen and (min-width: 1080px) and (max-width: 1279px) {
+    .scaleTabHD {
+        transform: scale(.59);
+    }
+}
+
+@media only screen and (min-width: 1280px) and (max-width: 1849px) {
+    .scaleTabFullHD {
+        transform: scale(.70);
     }
 }
 
