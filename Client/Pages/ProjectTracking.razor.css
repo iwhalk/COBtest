@@ -5,20 +5,9 @@
     background-position: center;
     background-repeat: no-repeat;
 }
-@media only screen and (min-width: 858px) and (max-width: 1079px) {
-    .scaleTab {
-        transform: scale(.47);
-    }
-}
-
-@media only screen and (min-width: 1080px) and (max-width: 1279px) {
-    .scaleTabHD {
-        transform: scale(.59);
-    }
-}
 
 @media only screen and (min-width: 1280px) and (max-width: 1849px) {
-    .scaleTabFullHD {
-        transform: scale(.70);
+    .marginv2 {
+        margin-left: -10rem;
     }
 }

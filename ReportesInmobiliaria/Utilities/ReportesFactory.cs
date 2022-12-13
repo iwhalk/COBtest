@@ -435,7 +435,7 @@ namespace ReportesObra.Utilities
             rowo.BottomPadding = "1cm";
             rowo.Cells[0].AddParagraph("Departamento");
             rowo.Cells[1].AddParagraph("Avance");
-
+          
             FillChartContent(reporteAvance.Apartments, table);
         }
 
@@ -466,11 +466,6 @@ namespace ReportesObra.Utilities
             //image.Left = ShapePosition.Right; 
             //image.WrapFormat.Style = WrapStyle.Through;
         }
-
-        /// <summary>
-        /// Creates the static parts of the invoice.
-        /// </summary>
-        /// 
 
         void FillChartContent<T>(List<T> value, Table table, int fontSize = 12)
         {
@@ -512,12 +507,12 @@ namespace ReportesObra.Utilities
                             series.DataLabel.Position = MigraDocCore.DocumentObjectModel.Shapes.Charts.DataLabelPosition.InsideEnd;
                             series.DataLabel.Font.Color = Colors.White;
                             var elements = series.Elements.Cast<MigraDocCore.DocumentObjectModel.Shapes.Charts.Point>().ToArray();
+                          
                             elements[0].FillFormat.Color = Colors.MediumSeaGreen;
                             var xseries = clone_chart.XValues.AddXSeries();
                             xseries.Add("");
                             row.Cells[index].Add(clone_chart);
                             row.Cells[index].Row.TopPadding = "0.5cm";
-                            //row.Cells[index].Row.BottomPadding = "0.5cm";
                         }
                         if (type == typeof(string))
                         {
