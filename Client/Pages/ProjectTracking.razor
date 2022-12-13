@@ -257,7 +257,7 @@
                                 </span>
                                 <span class="w-60 flex justify-center">
                                     <label class="text-xl text-white font-medium leading-6 text-center p-1">Avance (@CurrentSubElement?.Type)</label>
-                                    <input value="@CurrentProgressLog?.Pieces" @onchange="@((ChangeEventArgs e) => PiecesInput(e))" type="number" min="0" class="h-5 w-12 self-center rounded px-2 text-center">
+                                    <input value="@CurrentProgressLog?.Pieces" @onchange="@((ChangeEventArgs e) => PiecesInput(e))" type="number" min="0" max="@CurrentProgressReport?.TotalPieces" class="h-5 w-12 self-center rounded px-2 text-center">
                                 </span>
                             </div>
                             <div class="flex justify-center my-3">
@@ -277,7 +277,7 @@
                             <div class="flex justify-center my-3">
                                 <span class="w-60 flex flex-col">
                                     <label class="text-xl text-white font-medium leading-6 text-center p-1 mb-2">Observaciones</label>
-                                    <input value="@CurrentProgressLog?.Observation" @onchange="@((ChangeEventArgs e) => ObservationInput(e))" type="text" class="h-20 w-48 self-center rounded px-2 text-center">
+                                    <textarea value="@CurrentProgressLog?.Observation" @onchange="@((ChangeEventArgs e) => ObservationInput(e))" type="text" class="h-40 w-48 self-center rounded px-2"/>
                                 </span>
                                 <span class="w-60 flex flex-col">
                                     <label class="text-xl text-white font-medium leading-6 text-center p-1 mb-2">Fotografias</label>
