@@ -6,9 +6,9 @@ else
 {
     <EditForm EditContext="CurrentBlobFileEditContext">
     <DataAnnotationsValidator />
-    <div class="h-20 w-48 self-center rounded px-2 text-center bg-white">
+    <div class="h-40 w-48 self-center rounded px-2 text-center bg-white">
         <label for="fileinput" class="label-wrapper">
-            <span class="oi oi-camera-slr"></span>
+            <span class="oi oi-camera-slr border"> Subir imagen</span>
             <InputFile id="fileinput" class="custom-input-hide"
                 OnChange="@((InputFileChangeEventArgs args) => OnChangeAsync(args))" />
         </label>
@@ -21,10 +21,10 @@ else
             @if (CurrentBlobs?.Count > 0)
             {
 
-            <div class="grid grid-cols-4 gap-1 w-full">
+            <div class="grid grid-cols-3 gap-1 w-full">
                 @foreach (var blob in CurrentBlobs)
                 {
-                <div><img class="w-20 h-10 " src="@blob.Uri" /></div>
+                <div><img class="w-100 h-100 " src="@blob.Uri" /></div>
                 }
             </div>
             }

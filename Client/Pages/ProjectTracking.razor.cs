@@ -1,5 +1,8 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿using Blazored.Toast;
+using Blazored.Toast.Services;
+using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
+using Obra.Client.Components;
 using Obra.Client.Components.Blobs;
 using Obra.Client.Interfaces;
 using Obra.Client.Services;
@@ -20,7 +23,9 @@ namespace Obra.Client.Pages
         private readonly ISubElementsService _subElementsService;
         private readonly IProgressReportService _progressReportService;
         private readonly IProgressLogsService _progressLogsService;
+        private readonly IToastService _toastService;
         private readonly AuthenticationStateProvider _getAuthenticationStateAsync;
+        private readonly NavigationManager _navigate;
 
         public ProjectTracking(IBuildingsService buildingsService,
                                IApartmentsService apartmentsService,
@@ -30,7 +35,9 @@ namespace Obra.Client.Pages
                                ISubElementsService subElementsService,
                                IProgressReportService progressReportService,
                                IProgressLogsService progressLogsService,
-                               AuthenticationStateProvider getAuthenticationStateAsync)
+                               AuthenticationStateProvider getAuthenticationStateAsync,
+                               NavigationManager navigate,
+                               IToastService toastService)
         {
             _buildingsService = buildingsService;
             _apartmentsService = apartmentsService;
@@ -41,6 +48,8 @@ namespace Obra.Client.Pages
             _progressReportService = progressReportService;
             _progressLogsService = progressLogsService;
             _getAuthenticationStateAsync = getAuthenticationStateAsync;
+            _navigate = navigate;
+            _toastService = toastService;
         }
 
         public List<Apartment> ApartmentsList { get; private set; }
@@ -216,6 +225,14 @@ namespace Obra.Client.Pages
                     IdStatus = CurrentProgressLog.IdStatus
                 });
             }
+            if(e.Value?.ToString() == CurrentProgressReport?.TotalPieces)
+            {
+                CheckboxClicked(3, null);
+            }
+            else
+            {
+                CheckboxClicked(2, null);
+            }
 
             StateHasChanged();
         }
@@ -294,6 +311,8 @@ namespace Obra.Client.Pages
         }
         public async void SaveButtonClicked()
         {
+            if (NewProgressLogs.Count < 1)
+                return;
             var authstate = await _getAuthenticationStateAsync.GetAuthenticationStateAsync();
             foreach (var progressLog in NewProgressLogs)
             {
@@ -301,6 +320,10 @@ namespace Obra.Client.Pages
                 progressLog.DateCreated = DateTime.Now;
                 _ = await _progressLogsService.PostProgressLogAsync(progressLog);
             }
+            NewProgressLogs.Clear();
+            //_toastService.ShowSuccess("Se guardaron los campos del detalle de avance");
+            _toastService.ShowToast<MyToastComponent>(new ToastInstanceSettings(5, false));
+            //_navigate.NavigateTo("/");
         }
     }
 }
