@@ -358,7 +358,7 @@ namespace Obra.Client.Pages
 
             if (progressLogs == null || progressLogs.Count() < 1 || progressReports == null || progressReports.Count() < 1)
             {
-                menssageError = "No se puede generar un reporte de este sub-elemento, ya que no tienen ningun progreso que mostrar";
+                menssageError = "No se puede generar un reporte, ya que no tienen ningun progreso que mostrar";
                 alert = true;
             }
         }
@@ -391,7 +391,7 @@ namespace Obra.Client.Pages
 
             if (progressLogs == null || progressLogs.Count() < 1 || progressReports == null || progressReports.Count() < 1)
             {
-                menssageError = "No se puede generar un reporte de este elemento, ya que no tienen ningun progreso que mostrar";
+                menssageError = "No se puede generar un reporte, ya que no tienen ningun progreso que mostrar";
                 alert = true;
             }
         }
