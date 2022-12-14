@@ -14,18 +14,6 @@
     height: 120px;
 }
 
-@media screen and (max-height: 1080px) {
-    .scaleTab {
-        transform: scale(.75);
-    }
-}
-
-@media screen and (min-width: 1081px) {
-    .scaleDesk {
-        transform: scale(1);
-    }
-}
-
 @media screen and (min-width: 1081px) {
     .margin {
         margin: 2.5rem;

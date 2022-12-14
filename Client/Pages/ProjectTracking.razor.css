@@ -5,27 +5,34 @@
     background-position: center;
     background-repeat: no-repeat;
 }
-/* Removes "No File Chosen" in File Input Control */
-input[type='file'] {
-    color: transparent;
+.loading {
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background-color: rgba(0,0,0,.5);
 }
-.label-wrapper:hover {
-    cursor: pointer;
+.dimmed {
+    position: relative;
 }
 
-.custom-input-hide {
-    width: 0;
-    height: 0;
-    overflow: hidden;
-}
-@media screen and (max-height: 1080px) {
-    .scaleTab {
-        transform: scale(.58);
+    .dimmed:after {
+        content: " ";
+        border-radius: 1rem;
+        z-index: 10;
+        display: block;
+        position: absolute;
+        height: 100%;
+        top: 0;
+        left: 0;
+        right: 0;
+        background: rgba(0, 0, 0, 0.25);
     }
-}
-
-@media screen and (min-width: 1081px) {
-    .scaleDesk {
-        transform: scale(1);
+@media only screen and (min-width: 1280px) and (max-width: 1849px) {
+    .marginv2 {
+        margin-left: -10rem;
     }
 }

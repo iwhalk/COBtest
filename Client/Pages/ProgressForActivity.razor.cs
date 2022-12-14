@@ -6,96 +6,97 @@ using SharedLibrary.Models;
 
 namespace Obra.Client.Pages
 {
-    public partial class ProgressForApartment : ComponentBase
-    {
+    public partial class ProgressForActivity : ComponentBase
+    {        
         private readonly ApplicationContext _context;
-        private readonly IApartmentsService _apartmentsService;
+        private readonly IActivitiesService _activityService;
         private readonly IProgressLogsService _progressLogsService;
         private readonly IProgressReportService _progressReportService;
         private readonly IJSRuntime _JS;
         //Variable locales
-        private Dictionary<int, Tuple<int, int>> _idsAparmentSelect { get; set; } = new();
-        private bool _isFullAparment { get; set;}
-        public ProgressForApartment(ApplicationContext context, IApartmentsService apartmentsService, IProgressLogsService progressLogsService, IProgressReportService progressReportService, IJSRuntime jS)
+        private Dictionary<int, Tuple<int, int>> _idsActivitySelect { get; set; } = new();
+        private bool _isFullActivity { get; set; }
+        public ProgressForActivity(ApplicationContext context, IActivitiesService activityService, IProgressLogsService progressLogsService, IProgressReportService progressReportService, IJSRuntime jS)
         {
             _context = context;
-            _apartmentsService = apartmentsService;
+            _activityService = activityService;
             _progressLogsService = progressLogsService;
             _progressReportService = progressReportService;
             _JS = jS;
         }
         protected async override Task OnInitializedAsync()
         {
-            _context.Apartment = await _apartmentsService.GetApartmentsAsync();                        
+            _context.Activity = await _activityService.GetActivitiesAsync();
         }
-        private async void AddIdAparmentSelect(int idDeparment)
+        private async void AddIdActivitySelect(int idActivity)
         {
-            if (!_idsAparmentSelect.ContainsKey(idDeparment))
+            if (!_idsActivitySelect.ContainsKey(idActivity))
             {
-                var infoProgress = await _progressReportService.GetProgresReportViewAsync(idDeparment);
+                //change for real endpoint for this view
+                var infoProgress = await _progressReportService.GetProgresReportViewAsync(idActivity);
                 if (infoProgress != null)
                 {
                     var porcentageProgress = (int)Math.Round(infoProgress.FirstOrDefault().ApartmentProgress);
                     var porcentage = new Tuple<int, int>(porcentageProgress, 100 - porcentageProgress);
-                    _idsAparmentSelect.Add(idDeparment, porcentage);
+                    _idsActivitySelect.Add(idActivity, porcentage);
                 }
                 else
                 {
-                    _idsAparmentSelect.Add(idDeparment, new Tuple<int, int>(0, 100));
+                    _idsActivitySelect.Add(idActivity, new Tuple<int, int>(0, 100));
                 }
             }
             else
             {
-                _idsAparmentSelect = _idsAparmentSelect.Where(x => x.Key != idDeparment).Select(x => new { x.Key, x.Value }).ToDictionary(x => x.Key, x => x.Value);
+                _idsActivitySelect = _idsActivitySelect.Where(x => x.Key != idActivity).Select(x => new { x.Key, x.Value }).ToDictionary(x => x.Key, x => x.Value);
             }
             StateHasChanged();
         }
-        private async void FullAparment()
+        private async void FullActivity()
         {
-            if (_idsAparmentSelect.Count() == _context.Apartment.Count())
+            if (_idsActivitySelect.Count() == _context.Activity.Count())
             {
-                _isFullAparment = false;
-                _idsAparmentSelect.Clear();
+                _isFullActivity = false;
+                _idsActivitySelect.Clear();
             }
             else
             {
-                _idsAparmentSelect.Clear();
+                _idsActivitySelect.Clear();
                 var infoProgress = await _progressReportService.GetProgresReportViewAsync(null);
                 if (infoProgress != null)
                 {
-                    foreach (var aparment in _context.Apartment)
+                    foreach (var activity in _context.Activity)
                     {
-                        if (infoProgress.Exists(x => x.ApartmentNumber == aparment.ApartmentNumber))
+                        if (infoProgress.Exists(x => x.ApartmentNumber == activity.ActivityName))
                         {
-                            var porcentageProgress = (int)Math.Round(infoProgress.Where(x => x.ApartmentNumber == aparment.ApartmentNumber).FirstOrDefault().ApartmentProgress);
+                            var porcentageProgress = (int)Math.Round(infoProgress.Where(x => x.ApartmentNumber == activity.ActivityName).FirstOrDefault().ApartmentProgress);
                             var porcentage = new Tuple<int, int>(porcentageProgress, 100 - porcentageProgress);
-                            _idsAparmentSelect.Add(aparment.IdApartment, porcentage);
+                            _idsActivitySelect.Add(activity.IdActivity, porcentage);
                         }
                         else
                         {
-                            _idsAparmentSelect.Add(aparment.IdApartment, new Tuple<int, int>(0, 100));
+                            _idsActivitySelect.Add(activity.IdActivity, new Tuple<int, int>(0, 100));
                         }
                     }
-                    _isFullAparment = true;
-                }                
+                    _isFullActivity = true;
+                }
             }
             StateHasChanged();
         }
         private async void GeneratePDfPorgressaprment()
         {
-            var listAparmentProgress = _idsAparmentSelect.Select(x => new AparmentProgress
+            var listAparmentProgress = _idsActivitySelect.Select(x => new AparmentProgress
             {
                 ApartmentNumber = _context.Apartment.Find(o => o.IdApartment == x.Key).ApartmentNumber,
                 ApartmentProgress = x.Value.Item1 * 1.0
 
             }).ToList();
 
-            var bytesForPDF = await  _progressReportService.PostProgressReporPDFtAsync(listAparmentProgress);
+            var bytesForPDF = await _progressReportService.PostProgressReporPDFtAsync(listAparmentProgress);
 
             if (bytesForPDF != null)
             {
 
-                var fileName = "AvancePorDepartamento.pdf";
+                var fileName = "AvancePorActividad.pdf";
                 var fileStream = new MemoryStream(bytesForPDF);
                 using var streamRef = new DotNetStreamReference(stream: fileStream);
                 await _JS.InvokeVoidAsync("downloadFileFromStream", fileName, streamRef);

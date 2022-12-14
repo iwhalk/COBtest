@@ -1,6 +1,7 @@
 ﻿using Obra.Client.Interfaces;
 using Obra.Client.Models;
 using Obra.Client.Stores;
+using SharedLibrary;
 using SharedLibrary.Models;
 
 namespace Obra.Client.Services
