@@ -722,6 +722,7 @@ namespace ReportesObra.Utilities
                                 else
                                     rowData = _table.Rows[indexCombination];
                                 rowData.Cells[0].AddParagraph(beforeName);
+                                rowData.Cells[0].MergeDown = countCombination - 1;
                                 rowData.Cells[0].VerticalAlignment = VerticalAlignment.Center;
                                 return i;
                             }
@@ -804,6 +805,7 @@ namespace ReportesObra.Utilities
                     else
                         rowData = _table.Rows[indexCombination];
                     rowData.Cells[0].AddParagraph(beforeName);
+                    rowData.Cells[0].MergeDown = countCombination - 1;
                     rowData.Cells[0].VerticalAlignment = VerticalAlignment.Center;
                 }
 

@@ -31,11 +31,11 @@ namespace ReportesObra.Endpoints
             .Produces<HttpValidationProblemDetails>(StatusCodes.Status400BadRequest, "application/problem+json")
             .Produces<HttpValidationProblemDetails>(StatusCodes.Status500InternalServerError, "application/problem+json");
 
-            routes.MapGet("/ReporteDetalladoPorActividad", async (int idBuilding, [FromUri] int[]? idActivities, [FromUri] int[]? idElements, [FromUri] int[] idApartments, IReportesService _reportesService, ILogger<Program> _logger) =>
+            routes.MapPost("/ReporteDetalladoPorActividad", async (DetailsActivity detailsActivity, IReportesService _reportesService, ILogger<Program> _logger) =>
             {
                 try
                 {
-                    var newModule = await _reportesService.GetReporteDetallesActividad(idBuilding, idActivities.ToList(), idElements.ToList(), idApartments.ToList());
+                    var newModule = await _reportesService.GetReporteDetallesActividad(detailsActivity.idBuilding, detailsActivity.idActivities, detailsActivity.idElements, detailsActivity.idApartments);
                     if (newModule == null) return Results.NotFound();
                     return Results.File(newModule, "application/pdf");
                 }
