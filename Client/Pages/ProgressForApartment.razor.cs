@@ -11,23 +11,29 @@ namespace Obra.Client.Pages
         private readonly ApplicationContext _context;
         private readonly IApartmentsService _apartmentsService;
         private readonly IProgressLogsService _progressLogsService;
+        private readonly NavigationManager _navigationManager;
         private readonly IProgressReportService _progressReportService;
         private readonly IJSRuntime _JS;
         //Variable locales
         private Dictionary<int, Tuple<int, int>> _idsAparmentSelect { get; set; } = new();
         public bool _isLoadingProcess { get; set; }
         private bool _isFullAparment { get; set;}
-        public ProgressForApartment(ApplicationContext context, IApartmentsService apartmentsService, IProgressLogsService progressLogsService, IProgressReportService progressReportService, IJSRuntime jS)
+        public ProgressForApartment(ApplicationContext context, NavigationManager navigationManager, IApartmentsService apartmentsService, IProgressLogsService progressLogsService, IProgressReportService progressReportService, IJSRuntime jS)
         {
             _context = context;
             _apartmentsService = apartmentsService;
             _progressLogsService = progressLogsService;
+            _navigationManager = navigationManager;
             _progressReportService = progressReportService;
             _JS = jS;
         }
         protected async override Task OnInitializedAsync()
         {
             _context.Apartment = await _apartmentsService.GetApartmentsAsync();                        
+        }
+        private void ReturnToPage()
+        {
+            _navigationManager.NavigateTo("/ProjectOverview"); 
         }
         private async void AddIdAparmentSelect(int idDeparment)
         {
