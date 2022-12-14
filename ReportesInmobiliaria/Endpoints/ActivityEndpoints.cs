@@ -8,11 +8,11 @@ namespace ReportesObra.Endpoints
     {
         public static void MapActivityEndpoints(this IEndpointRouteBuilder routes)
         {
-            routes.MapGet("/Activities", async (IActivitiesService _activitiesService, ILogger<Program> _logger) =>
+            routes.MapGet("/Activities", async (int? idArea, IActivitiesService _activitiesService, ILogger<Program> _logger) =>
             {
                 try
                 {
-                    var activities = await _activitiesService.GetActivitiesAsync();
+                    var activities = await _activitiesService.GetActivitiesAsync(idArea);
                     return Results.Ok(activities);
                 }
                 catch (Exception e)

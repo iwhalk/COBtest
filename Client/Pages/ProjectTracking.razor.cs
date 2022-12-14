@@ -111,7 +111,7 @@ namespace Obra.Client.Pages
             SelectedSubElement = 0;
             ShowDetalle = false;
 
-            ActivitiesList = ActivitiesList ?? await _activitiesService.GetActivitiesAsync();
+            ActivitiesList = await _activitiesService.GetActivitiesAsync(idArea);
             CurrentArea = AreasList.First(x => x.IdArea == idArea);
             StateHasChanged();
         }

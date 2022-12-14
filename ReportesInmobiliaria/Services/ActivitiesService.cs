@@ -2,6 +2,7 @@
 using ReportesObra.Interfaces;
 using SharedLibrary.Data;
 using SharedLibrary.Models;
+using SixLabors.ImageSharp.ColorSpaces;
 
 namespace ReportesObra.Services
 {
@@ -14,9 +15,13 @@ namespace ReportesObra.Services
             _dbContext = dbContext;
         }
 
-        public async Task<List<Activity>?> GetActivitiesAsync()
+        public async Task<List<Activity>?> GetActivitiesAsync(int? idArea)
         {
-            return await _dbContext.Activities.ToListAsync();
+            IQueryable<Activity> activities = _dbContext.Activities;
+            if (idArea != null)
+                activities = activities.Where(x => x.IdAreas.Any(y => y.IdArea == idArea));
+
+            return await activities.ToListAsync();
         }
 
         public async Task<Activity?> GetActivityAsync(int id)
