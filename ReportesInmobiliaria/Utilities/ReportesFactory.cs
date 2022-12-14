@@ -317,9 +317,9 @@ namespace ReportesObra.Utilities
             section.PageSetup.Orientation = Orientation.Portrait;
 
             headerFrame = section.AddTextFrame();
-            headerFrame.Width = "20.0cm";
-            headerFrame.Left = ShapePosition.Center;
-            headerFrame.RelativeHorizontal = RelativeHorizontal.Margin;
+            headerFrame.Width = "22.5cm";
+            headerFrame.Left = "15cm";
+            headerFrame.RelativeHorizontal = RelativeHorizontal.Page;
             headerFrame.Top = "2.70cm";
             headerFrame.RelativeVertical = RelativeVertical.Page;
 
@@ -394,10 +394,10 @@ namespace ReportesObra.Utilities
 
 
             // Put header in header frame
-            Paragraph paragraph = headerFrame.AddParagraph("Reporte Avance");//Titulo
+            Paragraph paragraph = headerFrame.AddParagraph("Resumen de Avance General Por Departamento");//Titulo
             paragraph.AddLineBreak();
             paragraph.Format.Font.Name = "Times New Roman";
-            paragraph.Format.Font.Size = 16;
+            paragraph.Format.Font.Size = 14;
             paragraph.Format.Font.Bold = true;
             paragraph.Format.Alignment = ParagraphAlignment.Center;
 
@@ -434,7 +434,7 @@ namespace ReportesObra.Utilities
             rowo.Borders.Visible = false;
             rowo.BottomPadding = "1cm";
             rowo.Cells[0].AddParagraph("Departamento");
-            rowo.Cells[1].AddParagraph("Avance");
+            rowo.Cells[1].AddParagraph("Avance General");
           
             FillChartContent(reporteAvance.Apartments, table);
         }
@@ -483,10 +483,10 @@ namespace ReportesObra.Utilities
             chart.YAxis.MinimumScale = 0;
             chart.YAxis.MaximumScale = 1;
 
-            chart.PlotArea.LineFormat.Color = Colors.Black;
-            chart.PlotArea.LineFormat.Width = 0.2;
-            chart.PlotArea.LineFormat.Visible = true;
-            chart.PlotArea.FillFormat.Color = Colors.OrangeRed;
+            chart.PlotArea.LineFormat.Color = Colors.OrangeRed;
+            chart.PlotArea.LineFormat.Width = 2;
+            chart.PlotArea.LineFormat.Visible = false;
+            chart.PlotArea.FillFormat.Color = Colors.OrangeRed;            
 
             foreach (var item in value)
             {
@@ -509,6 +509,8 @@ namespace ReportesObra.Utilities
                             var elements = series.Elements.Cast<MigraDocCore.DocumentObjectModel.Shapes.Charts.Point>().ToArray();
                           
                             elements[0].FillFormat.Color = Colors.MediumSeaGreen;
+                            elements[0].LineFormat.Color = Colors.MediumSeaGreen;
+                            elements[0].LineFormat.Width= 3;
                             var xseries = clone_chart.XValues.AddXSeries();
                             xseries.Add("");
                             row.Cells[index].Add(clone_chart);
