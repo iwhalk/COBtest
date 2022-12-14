@@ -15,6 +15,7 @@ namespace Obra.Client.Pages
         private readonly IJSRuntime _JS;
         //Variable locales
         private Dictionary<int, Tuple<int, int>> _idsAparmentSelect { get; set; } = new();
+        public bool _isLoadingProcess { get; set; }
         private bool _isFullAparment { get; set;}
         public ProgressForApartment(ApplicationContext context, IApartmentsService apartmentsService, IProgressLogsService progressLogsService, IProgressReportService progressReportService, IJSRuntime jS)
         {
@@ -30,6 +31,7 @@ namespace Obra.Client.Pages
         }
         private async void AddIdAparmentSelect(int idDeparment)
         {
+            _isLoadingProcess = true;
             if (!_idsAparmentSelect.ContainsKey(idDeparment))
             {
                 var infoProgress = await _progressReportService.GetProgresReportViewAsync(idDeparment);
@@ -48,10 +50,12 @@ namespace Obra.Client.Pages
             {
                 _idsAparmentSelect = _idsAparmentSelect.Where(x => x.Key != idDeparment).Select(x => new { x.Key, x.Value }).ToDictionary(x => x.Key, x => x.Value);
             }
+            _isLoadingProcess = false;
             StateHasChanged();
         }
         private async void FullAparment()
         {
+            _isLoadingProcess = true;
             if (_idsAparmentSelect.Count() == _context.Apartment.Count())
             {
                 _isFullAparment = false;
@@ -79,10 +83,12 @@ namespace Obra.Client.Pages
                     _isFullAparment = true;
                 }                
             }
+            _isLoadingProcess = false;
             StateHasChanged();
         }
         private async void GeneratePDfPorgressaprment()
         {
+            _isLoadingProcess = true;
             var listAparmentProgress = _idsAparmentSelect.Select(x => new AparmentProgress
             {
                 ApartmentNumber = _context.Apartment.Find(o => o.IdApartment == x.Key).ApartmentNumber,
@@ -98,9 +104,10 @@ namespace Obra.Client.Pages
                 var fileName = "AvancePorDepartamento.pdf";
                 var fileStream = new MemoryStream(bytesForPDF);
                 using var streamRef = new DotNetStreamReference(stream: fileStream);
-                await _JS.InvokeVoidAsync("downloadFileFromStream", fileName, streamRef);
-
+                await _JS.InvokeVoidAsync("downloadFileFromStream", fileName, streamRef);                
             }
+            _isLoadingProcess = false;
+            StateHasChanged();
         }
     }
 }
