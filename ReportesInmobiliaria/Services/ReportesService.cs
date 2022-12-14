@@ -63,51 +63,6 @@ namespace ReportesObra.Services
             return _reportesFactory.CrearPdf(reporteDetalles);
         }
 
-        //public async Task<byte[]> GetReporteDetalles(int idBuilding, int idApartment, List<int> actividades, int? idElement, int? idSubElement)
-        //{
-        //    //Se obtiene la lista de nombres de las actividades
-        //    List<string> actividadesStr = new List<string>();
-        //    foreach (var actividad in actividades)
-        //    {
-        //        var result = listActivities.FirstOrDefault(x => x.IdActivity == actividad);
-        //        if (result == null)
-        //            continue;
-        //        actividadesStr.Add(result.ActivityName);
-        //    }
-        //    ReporteDetalles reporteDetalles = new()
-        //    {
-        //        detalladoActividades = GetSubElementsAsync(idBuilding, idApartment)
-        //    };
-        //    //Se obtiene la nueva lista de objetos para el reporte filtrando las correspondientes actividades            
-        //    List<DetalladoActividades> subList = new List<DetalladoActividades>();
-        //    foreach (string actividad in actividadesStr)
-        //    {
-        //        var result = reporteDetalles.detalladoActividades.Where(x => x.actividad == actividad);
-        //        if (result == null)
-        //            continue;
-        //        subList.AddRange(result);
-        //    }
-        //    ReporteDetalles reporteDetallesActividades = new() { detalladoActividades = subList };
-        //    if (idElement != null)
-        //    {
-        //        string currentElement = getElemento(idElement);
-        //        if (currentElement == null)
-        //            return null;
-        //        reporteDetallesActividades.detalladoActividades = reporteDetallesActividades.detalladoActividades.Where(x => x.elemento == currentElement).ToList();
-        //    }
-        //    if (idSubElement != null)
-        //    {
-        //        string currentSubElement = getSubElemento(idSubElement);
-        //        if (currentSubElement == null)
-        //            return null;
-        //        reporteDetallesActividades.detalladoActividades = reporteDetallesActividades.detalladoActividades.Where(x => x.subElemento == currentSubElement).ToList();
-        //    }
-        //    if (reporteDetallesActividades.detalladoActividades.Count == 0)
-        //        return null;
-        //    string apartmentNumber = listApartments.FirstOrDefault(x => x.IdApartment == idApartment).ApartmentNumber;
-        //    return _reportesFactory.CrearPdf(reporteDetallesActividades, apartmentNumber);
-        //}
-
         public List<DetalladoActividades> GetSubElementsAsync(List<ProgressReport> progressList)
         {
             int contador = 0;
@@ -163,17 +118,24 @@ namespace ReportesObra.Services
             if (idAparment != null)
                 progressReports = progressReports.Where(x => x.IdApartment == idAparment);
 
+            List<TotalPicesByAparment> totalOfPicesByAparment = progressReports.GroupBy(x => x.IdApartment)
+                    .Select(x => new TotalPicesByAparment
+                    {
+                        IdAparment = x.Key,
+                        Pices = x.Sum(s => Convert.ToInt32(s.TotalPieces))
+                    }).ToList();
+
             var progressReportsByAparment = progressReports.Join(progressLogs, x => x.IdProgressReport, y => y.IdProgressReport, (report, log) => new {report, log}).GroupBy(x => x.report.IdApartment);
 
             var list = new List<AparmentProgress>();
             foreach (var aparment in progressReportsByAparment)
             {                
-                var total = aparment.Sum(x => long.Parse(x.report.TotalPieces));
-                var current = aparment.GroupBy(x => x.log.IdProgressReport).Select(x => x.OrderByDescending(x => x.log.DateCreated).FirstOrDefault()).Sum(x => long.Parse(x.log.Pieces));
+                long total = totalOfPicesByAparment.FirstOrDefault(x => x.IdAparment == aparment.Key).Pices;
+                long current = aparment.GroupBy(x => x.log.IdProgressReport).Select(x => x.OrderByDescending(x => x.log.DateCreated).FirstOrDefault()).Sum(x => long.Parse(x.log.Pieces));
                 list.Add(new AparmentProgress()
                 {
                     ApartmentNumber = apartments.FirstOrDefault(x => x.IdApartment == aparment.Key).ApartmentNumber,
-                    ApartmentProgress = (100 / Convert.ToSingle(total)) * current
+                    ApartmentProgress = 100.00 / total * current
                 });
             }
             return list;
@@ -189,17 +151,24 @@ namespace ReportesObra.Services
             if (idAparment != null)
                 progressReports = progressReports.Where(x => x.IdApartment == idAparment);
 
+            List<TotalPicesByAparment> totalOfPicesByAparment = progressReports.GroupBy(x => x.IdApartment)
+                    .Select(x => new TotalPicesByAparment
+                    {
+                        IdAparment = x.Key,
+                        Pices = x.Sum(s => Convert.ToInt32(s.TotalPieces))
+                    }).ToList();
+
             var progressReportsByAparment = progressReports.Join(progressLogs, x => x.IdProgressReport, y => y.IdProgressReport, (report, log) => new { report, log }).GroupBy(x => x.report.IdApartment);
 
             var list = new List<AparmentProgress>();
             foreach (var aparment in progressReportsByAparment)
             {
-                var total = aparment.Sum(x => long.Parse(x.report.TotalPieces));
-                var current = aparment.GroupBy(x => x.log.IdProgressReport).Select(x => x.OrderByDescending(x => x.log.DateCreated).FirstOrDefault()).Sum(x => long.Parse(x.log.Pieces));
+                long total = totalOfPicesByAparment.FirstOrDefault(x => x.IdAparment == aparment.Key).Pices;
+                long current = aparment.GroupBy(x => x.log.IdProgressReport).Select(x => x.OrderByDescending(x => x.log.DateCreated).FirstOrDefault()).Sum(x => long.Parse(x.log.Pieces));
                 list.Add(new AparmentProgress()
                 {
                     ApartmentNumber = apartments.FirstOrDefault(x => x.IdApartment == aparment.Key).ApartmentNumber,
-                    ApartmentProgress = (100 / Convert.ToSingle(total)) * current
+                    ApartmentProgress = 100.00 / total * current
                 });
             }
             return list;
