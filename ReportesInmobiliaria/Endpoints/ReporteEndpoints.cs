@@ -9,11 +9,12 @@ namespace ReportesObra.Endpoints
     {
         public static void MapReporteEndpoints(this IEndpointRouteBuilder routes)
         {
-            routes.MapGet("/ReporteDetalles", async (int idBuilding, [FromUri] int[] idApartments, [FromUri] int[] idActivy, [FromUri] int[] idElement, [FromUri] int[]? idSubElements, IReportesService _reportesService, ILogger<Program> _logger) =>
+            //routes.MapGet("/ReporteDetalles", async (int idBuilding, [FromUri] int[] idApartments, [FromUri] int[] idActivy, [FromUri] int[] idElement, [FromUri] int[]? idSubElements, IReportesService _reportesService, ILogger<Program> _logger) =>
+            routes.MapPost("/ReporteDetalles", async (DetallesActividad detallesActividad, IReportesService _reportesService, ILogger<Program> _logger) =>
             {
                 try
                 {
-                    var newModule = await _reportesService.GetReporteDetalles(idBuilding, idApartments.ToList(), idActivy.ToList(), idElement.ToList(), idSubElements.ToList());
+                    var newModule = await _reportesService.GetReporteDetalles(detallesActividad.idBuilding, detallesActividad.idApartments, detallesActividad.idActivy, detallesActividad.idElement, detallesActividad.idSubElements);
                     if (newModule == null) return Results.NotFound();
                     return Results.File(newModule, "application/pdf");
                 }
@@ -26,6 +27,27 @@ namespace ReportesObra.Endpoints
                 }
             })
             .WithName("GetReporteDetalles")
+            .Produces<IResult>(StatusCodes.Status200OK, "application/pdf")
+            .Produces<HttpValidationProblemDetails>(StatusCodes.Status400BadRequest, "application/problem+json")
+            .Produces<HttpValidationProblemDetails>(StatusCodes.Status500InternalServerError, "application/problem+json");
+
+            routes.MapGet("/ReporteDetalladoPorActividad", async (int idBuilding, [FromUri] int[]? idActivities, [FromUri] int[]? idElements, [FromUri] int[] idApartments, IReportesService _reportesService, ILogger<Program> _logger) =>
+            {
+                try
+                {
+                    var newModule = await _reportesService.GetReporteDetallesActividad(idBuilding, idActivities.ToList(), idElements.ToList(), idApartments.ToList());
+                    if (newModule == null) return Results.NotFound();
+                    return Results.File(newModule, "application/pdf");
+                }
+                catch (Exception e)
+                {
+                    _logger.LogError(e, e.Message);
+                    if (e.GetType() == typeof(ValidationException))
+                        return Results.Problem(e.Message, statusCode: 400);
+                    return Results.Problem(e.Message);
+                }
+            })
+            .WithName("GetReporteDetalladoActividad")
             .Produces<IResult>(StatusCodes.Status200OK, "application/pdf")
             .Produces<HttpValidationProblemDetails>(StatusCodes.Status400BadRequest, "application/problem+json")
             .Produces<HttpValidationProblemDetails>(StatusCodes.Status500InternalServerError, "application/problem+json");
