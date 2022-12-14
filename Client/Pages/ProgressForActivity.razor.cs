@@ -3,6 +3,7 @@ using Microsoft.JSInterop;
 using Obra.Client.Interfaces;
 using Obra.Client.Stores;
 using SharedLibrary.Models;
+using System.ComponentModel;
 
 namespace Obra.Client.Pages
 {
@@ -15,6 +16,7 @@ namespace Obra.Client.Pages
         private readonly IJSRuntime _JS;
         //Variable locales
         private Dictionary<int, Tuple<int, int>> _idsActivitySelect { get; set; } = new();
+        public bool _isLoadingProcess { get; set; }
         private bool _isFullActivity { get; set; }
         public ProgressForActivity(ApplicationContext context, IActivitiesService activityService, IProgressLogsService progressLogsService, IProgressReportService progressReportService, IJSRuntime jS)
         {
@@ -30,6 +32,7 @@ namespace Obra.Client.Pages
         }
         private async void AddIdActivitySelect(int idActivity)
         {
+            _isLoadingProcess = true;
             if (!_idsActivitySelect.ContainsKey(idActivity))
             {
                 //change for real endpoint for this view
@@ -49,10 +52,12 @@ namespace Obra.Client.Pages
             {
                 _idsActivitySelect = _idsActivitySelect.Where(x => x.Key != idActivity).Select(x => new { x.Key, x.Value }).ToDictionary(x => x.Key, x => x.Value);
             }
+            _isLoadingProcess = false;
             StateHasChanged();
         }
         private async void FullActivity()
         {
+            _isLoadingProcess = true;
             if (_idsActivitySelect.Count() == _context.Activity.Count())
             {
                 _isFullActivity = false;
@@ -80,10 +85,12 @@ namespace Obra.Client.Pages
                     _isFullActivity = true;
                 }
             }
+            _isLoadingProcess = false;
             StateHasChanged();
         }
         private async void GeneratePDfPorgressaprment()
         {
+            _isLoadingProcess = true;
             var listAparmentProgress = _idsActivitySelect.Select(x => new AparmentProgress
             {
                 ApartmentNumber = _context.Apartment.Find(o => o.IdApartment == x.Key).ApartmentNumber,
@@ -102,6 +109,8 @@ namespace Obra.Client.Pages
                 await _JS.InvokeVoidAsync("downloadFileFromStream", fileName, streamRef);
 
             }
+            _isLoadingProcess = false;
+            StateHasChanged();
         }
     }
 }
