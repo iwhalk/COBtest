@@ -19,7 +19,7 @@ namespace Obra.Client.Pages
         private readonly ISubElementsService _subElementsService;
         private readonly IProgressReportService _progressReportService;
         private readonly IProgressLogsService _progressLogsService;
-        private readonly IBlobsService _blobsService;
+        private readonly IReportesService _reportesService;
 
         private List<Apartment> apartments { get; set; }
         private List<SharedLibrary.Models.Activity> activities { get; set; }
@@ -58,7 +58,7 @@ namespace Obra.Client.Pages
         private bool isFirstView { get; set; } = true;
         private bool showModal { get; set; } = false;
 
-        public ApartmentDetails(ApplicationContext context, IApartmentsService apartmentsService, IActivitiesService activitiesService, IElementsService elementsService, ISubElementsService subElementsService, IProgressReportService progressReportService, IProgressLogsService progressLogsService, IBlobsService blobsService)
+        public ApartmentDetails(ApplicationContext context, IApartmentsService apartmentsService, IActivitiesService activitiesService, IElementsService elementsService, ISubElementsService subElementsService, IProgressReportService progressReportService, IProgressLogsService progressLogsService, IReportesService reportesService)
         {
             _context = context;
             _apartmentsService = apartmentsService;
@@ -67,7 +67,7 @@ namespace Obra.Client.Pages
             _subElementsService = subElementsService;
             _progressReportService = progressReportService;
             _progressLogsService = progressLogsService;
-            _blobsService = blobsService;
+            _reportesService = reportesService;
         }
 
         protected async override Task OnInitializedAsync()
@@ -267,13 +267,55 @@ namespace Obra.Client.Pages
         public async Task ShowElements() => showElements = false;
         public async Task ShowSubElements() => showSubElements = false;
 
-        private void ChangeShowModal()
+        public async Task GoBack()
+        {
+            _idsAparmentSelect.Clear();
+
+            await ShowMenssage();
+
+            _idsActivitiesSelect.Clear();
+
+            if (elements != null)
+            {
+                await ShowElements();
+                elements.Clear();
+                _idsElementsSelect.Clear();
+
+                if (subElements != null)
+                {
+                    await ShowSubElements();
+                    subElements.Clear();
+                    _idsSubElementsSelect.Clear();
+                }
+            }
+
+            buttonReport = false;
+            apartmentDetails = true;
+
+            progressLogs.Clear();
+            progressReports.Clear();
+            subElementsSelect.Clear();
+            apartmentsSelect.Clear();
+
+            activity = null;
+            element = null;
+
+            greenPercentage.Clear();
+            redPercentage.Clear();
+        }
+
+        public void ChangeShowModal()
         {
             showModal = showModal ? false : true;
             observations = "";
             images.Clear();
         }
-        private void ChangeView() => isFirstView = isFirstView ? false : true;
+        public void ChangeView()
+        {
+            isFirstView = isFirstView ? false : true;
+
+
+        }
 
         public async Task ShowReportAndHideApartment()
         {
@@ -428,7 +470,7 @@ namespace Obra.Client.Pages
             {
                 foreach (var item in aux.IdBlobs)
                 {
-                    images.Add(item.Uri); 
+                    images.Add(item.Uri);
                 }
             }
 
