@@ -59,10 +59,5 @@ namespace Obra.Client.Services
 
             return content;
         }
-
-        public async Task<byte[]> GetBlobImage(int id)
-        {
-            return await _repository.GetAsync(id, path: "api/Blobs/Image");
-        }
     }
 }
