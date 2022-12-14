@@ -13,7 +13,7 @@ namespace Obra.Client.Components.Blobs
         [Parameter]
         public Blob InputBlob { get; set; }
         [Parameter]
-        public List<Blob> InputBlobs { get; set; }
+        public ICollection<Blob> InputBlobs { get; set; }
 
         [Parameter]
         public string[] AllowedExtensions { get; set; } = new[] { ".png", ".jpg", ".jpeg" };
@@ -21,25 +21,14 @@ namespace Obra.Client.Components.Blobs
         public int MaxAllowedSize { get; set; } = 2097152;
         [Parameter]
         public EventCallback<Blob> AddedBlob { get; set; }
-        [Parameter]
-        public string HeigthContent { get; set; }
-        [Parameter]
-        public string SizeImg { get; set; }
-        [Parameter]
-        public EventCallback<Blob> CurrentBlob { get; set; }
 
         private readonly IBlobsService _blobService;
         public BlobFile CurrentBlobFile { get; set; }
-        public List<BlobFile> CurrentBlobFiles { get; set; } = new();
-        public List<Blob> CurrentBlobs { get; set; } = new();
-        public ImageFile CurrentImageFile { get; set; } = new();
-        public List<ImageFile> CurrentImageFiles { get; set; } = new();
+        public ICollection<Blob> CurrentBlobs { get; set; }
+        public string ValidationError { get; private set; }
 
         public EditContext CurrentBlobFileEditContext;
 
-        public List<string> ListBase64Blobs { get; set; } = new();
-
-        private string FileName = "";
 
         public FormBlob(IBlobsService blobService)
         {
@@ -49,14 +38,14 @@ namespace Obra.Client.Components.Blobs
 
         protected override async Task OnInitializedAsync()
         {
-            //CurrentBlobs = InputBlobs ?? new List<Blob>();
+            CurrentBlobs = InputBlobs ?? new List<Blob>();
 
-            //CurrentBlobFile = new BlobFile()
-            //{
-            //    Blob = InputBlob ?? new()
-            //};
+            CurrentBlobFile = new BlobFile()
+            {
+                Blob = InputBlob ?? new()
+            };
 
-            //CurrentBlobFileEditContext = new EditContext(CurrentBlobFile);
+            CurrentBlobFileEditContext = new EditContext(CurrentBlobFile);
         }
         protected override async Task OnParametersSetAsync()
         {
@@ -111,29 +100,29 @@ namespace Obra.Client.Components.Blobs
                 {
                     CurrentBlobFile.Blob = newBlob;
                     CurrentBlobs.Add(newBlob);
-                    StateHasChanged();
                     await AddedBlob.InvokeAsync(newBlob);
                 }
+                StateHasChanged();
 
                 //BlobService.BlobFiles.Add(CurrentBlobFile);
             }
 
         }
 
-        //private bool FileValidation(IBrowserFile file)
-        //{
-        //    var extension = Path.GetExtension(file.Name);
-        //    if (!AllowedExtensions.Contains(extension, StringComparer.OrdinalIgnoreCase))
-        //    {
-        //        validationError = $"File must have one of the following extensions: {string.Join(", ", AllowedExtensions)}.";
-        //        return false;
-        //    }
-        //    if (file.Size > MaxAllowedSize)
-        //    {
-        //        validationError = $"Maximum allowed file size is: {MaxAllowedSize/1048576} MB.";
-        //        return false;
-        //    }
-        //    return true;
-        //}
+        private bool FileValidation(IBrowserFile file)
+        {
+            var extension = Path.GetExtension(file.Name);
+            if (!AllowedExtensions.Contains(extension, StringComparer.OrdinalIgnoreCase))
+            {
+                ValidationError = $"File must have one of the following extensions: {string.Join(", ", AllowedExtensions)}.";
+                return false;
+            }
+            if (file.Size > MaxAllowedSize)
+            {
+                ValidationError = $"Maximum allowed file size is: {MaxAllowedSize / 1048576} MB.";
+                return false;
+            }
+            return true;
+        }
     }
 }

@@ -9,6 +9,7 @@ using Obra.Client.Interfaces;
 using Obra.Client.Repositories;
 using Obra.Client.Services;
 using Obra.Client.Stores;
+using Blazored.Toast;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.RootComponents.Add<App>("#app");
@@ -22,7 +23,8 @@ builder.Services.AddScoped(sp => sp.GetRequiredService<IHttpClientFactory>()
 
 builder.Services.AddSingleton(serviceProvider => (IJSInProcessRuntime)serviceProvider.GetRequiredService<IJSRuntime>());
 
-builder.Services.AddComponents();
+builder.Services.AddComponents(); 
+builder.Services.AddBlazoredToast();
 builder.Services.AddFluentUIComponents();
 
 // Supply HttpClient instances that include access tokens when making requests to the server project

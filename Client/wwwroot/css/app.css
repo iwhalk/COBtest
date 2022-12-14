@@ -100,6 +100,45 @@ a, .btn-link {
         content: var(--blazor-load-percentage-text, "Loading");
     }
 
+@media only screen and (min-width: 768px) and (max-width: 1079px) {
+    .scaleTab {
+        transform: scale(.47);
+        margin-bottom: -5rem;
+        margin-top: -5rem;
+    }
+}
+
+@media only screen and (min-width: 1080px) and (max-width: 1279px) {
+    .scaleTabHD {
+        transform: scale(.59);
+    }
+}
+
+@media only screen and (min-width: 1280px) and (max-width: 1849px) {
+    .scaleTabFullHD {
+        transform: scale(.70);
+    }
+}
+
+
+@media only screen and (min-width: 858px) and (max-width: 1079px) {
+    .scaleTab2 {
+        transform: scale(.47);
+    }
+}
+
+@media only screen and (min-width: 1080px) and (max-width: 1279px) {
+    .scaleTabHD2 {
+        transform: scale(.59);
+    }
+}
+
+@media only screen and (min-width: 1280px) and (max-width: 1849px) {
+    .scaleTabFullHD2 {
+        transform: scale(.70);
+    }
+}
+
 /* INICIO */
 
 
