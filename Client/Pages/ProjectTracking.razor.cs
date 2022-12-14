@@ -66,6 +66,7 @@ namespace Obra.Client.Pages
         public Apartment CurrentApartment { get; private set; }
         public ProgressLog CurrentProgressLog { get; private set; }
         public List<ProgressLog> NewProgressLogs { get; private set; }
+        public bool Loading { get; private set; }
 
         private FormBlob FormBlob;
         private int SelectedApartment;
@@ -128,9 +129,9 @@ namespace Obra.Client.Pages
         }
         public async void ElementButtonClicked(int idElement)
         {
+            if (SelectedElement == idElement) return;
             SelectedElement= idElement;
-            SelectedSubElement = 0;
-            ShowDetalle = false;
+            SelectedSubElement = 0;          
 
             CurrentElement = CurrentElementsList.First(x => x.IdElement == idElement);
             CurrentSubElementsList = await _subElementsService.GetSubElementsAsync(idElement);
@@ -138,6 +139,10 @@ namespace Obra.Client.Pages
             {
                 GetCurrentProgressReport(idElement: idElement);
                 ShowDetalle= true;
+            }
+            else
+            {
+                ShowDetalle = false;
             }
 
             StateHasChanged();
@@ -193,6 +198,7 @@ namespace Obra.Client.Pages
 
         public async void SubElementButtonClicked(int idSubElement)
         {
+            if (SelectedSubElement == idSubElement) return;
             SelectedSubElement= idSubElement;
             CurrentSubElement = CurrentSubElementsList.First(x => x.IdSubElement == idSubElement);
             CurrentProgressLog = new ();
@@ -313,6 +319,7 @@ namespace Obra.Client.Pages
         {
             if (NewProgressLogs.Count < 1)
                 return;
+            Loading = true;
             var authstate = await _getAuthenticationStateAsync.GetAuthenticationStateAsync();
             foreach (var progressLog in NewProgressLogs)
             {
@@ -321,6 +328,8 @@ namespace Obra.Client.Pages
                 _ = await _progressLogsService.PostProgressLogAsync(progressLog);
             }
             NewProgressLogs.Clear();
+            Loading = false;
+            StateHasChanged();
             //_toastService.ShowSuccess("Se guardaron los campos del detalle de avance");
             _toastService.ShowToast<MyToastComponent>(new ToastInstanceSettings(5, false));
             //_navigate.NavigateTo("/");
