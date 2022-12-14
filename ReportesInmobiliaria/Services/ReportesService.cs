@@ -118,17 +118,24 @@ namespace ReportesObra.Services
             if (idAparment != null)
                 progressReports = progressReports.Where(x => x.IdApartment == idAparment);
 
+            List<TotalPicesByAparment> totalOfPicesByAparment = progressReports.GroupBy(x => x.IdApartment)
+                    .Select(x => new TotalPicesByAparment
+                    {
+                        IdAparment = x.Key,
+                        Pices = x.Sum(s => Convert.ToInt32(s.TotalPieces))
+                    }).ToList();
+
             var progressReportsByAparment = progressReports.Join(progressLogs, x => x.IdProgressReport, y => y.IdProgressReport, (report, log) => new {report, log}).GroupBy(x => x.report.IdApartment);
 
             var list = new List<AparmentProgress>();
             foreach (var aparment in progressReportsByAparment)
             {                
-                var total = aparment.Sum(x => long.Parse(x.report.TotalPieces));
-                var current = aparment.GroupBy(x => x.log.IdProgressReport).Select(x => x.OrderByDescending(x => x.log.DateCreated).FirstOrDefault()).Sum(x => long.Parse(x.log.Pieces));
+                long total = totalOfPicesByAparment.FirstOrDefault(x => x.IdAparment == aparment.Key).Pices;
+                long current = aparment.GroupBy(x => x.log.IdProgressReport).Select(x => x.OrderByDescending(x => x.log.DateCreated).FirstOrDefault()).Sum(x => long.Parse(x.log.Pieces));
                 list.Add(new AparmentProgress()
                 {
                     ApartmentNumber = apartments.FirstOrDefault(x => x.IdApartment == aparment.Key).ApartmentNumber,
-                    ApartmentProgress = (100 / Convert.ToSingle(total)) * current
+                    ApartmentProgress = 100.00 / total * current
                 });
             }
             return list;
@@ -144,17 +151,24 @@ namespace ReportesObra.Services
             if (idAparment != null)
                 progressReports = progressReports.Where(x => x.IdApartment == idAparment);
 
+            List<TotalPicesByAparment> totalOfPicesByAparment = progressReports.GroupBy(x => x.IdApartment)
+                    .Select(x => new TotalPicesByAparment
+                    {
+                        IdAparment = x.Key,
+                        Pices = x.Sum(s => Convert.ToInt32(s.TotalPieces))
+                    }).ToList();
+
             var progressReportsByAparment = progressReports.Join(progressLogs, x => x.IdProgressReport, y => y.IdProgressReport, (report, log) => new { report, log }).GroupBy(x => x.report.IdApartment);
 
             var list = new List<AparmentProgress>();
             foreach (var aparment in progressReportsByAparment)
             {
-                var total = aparment.Sum(x => long.Parse(x.report.TotalPieces));
-                var current = aparment.GroupBy(x => x.log.IdProgressReport).Select(x => x.OrderByDescending(x => x.log.DateCreated).FirstOrDefault()).Sum(x => long.Parse(x.log.Pieces));
+                long total = totalOfPicesByAparment.FirstOrDefault(x => x.IdAparment == aparment.Key).Pices;
+                long current = aparment.GroupBy(x => x.log.IdProgressReport).Select(x => x.OrderByDescending(x => x.log.DateCreated).FirstOrDefault()).Sum(x => long.Parse(x.log.Pieces));
                 list.Add(new AparmentProgress()
                 {
                     ApartmentNumber = apartments.FirstOrDefault(x => x.IdApartment == aparment.Key).ApartmentNumber,
-                    ApartmentProgress = (100 / Convert.ToSingle(total)) * current
+                    ApartmentProgress = 100.00 / total * current
                 });
             }
             return list;

@@ -456,15 +456,6 @@ namespace ReportesObra.Utilities
             footer.Format.Font.Size = 8;
             footer.Format.Alignment = ParagraphAlignment.Center;
             
-            // Put a logo in the header
-            //Image image = section.Headers.Primary.AddImage(Path.Combine(Environment.CurrentDirectory, @"Imagenes\", "ferromex.png"));
-            //image.Height = "0.75cm"; image.Width = "5.25cm";
-            //image.LockAspectRatio = true;
-            //image.RelativeVertical = RelativeVertical.Margin;
-            //image.RelativeHorizontal = RelativeHorizontal.Margin;
-            //image.Top = ShapePosition.Top;
-            //image.Left = ShapePosition.Right; 
-            //image.WrapFormat.Style = WrapStyle.Through;
         }
 
         void FillChartContent<T>(List<T> value, Table table, int fontSize = 12)
@@ -502,9 +493,13 @@ namespace ReportesObra.Utilities
                         {
                             var clone_chart = chart.Clone();
                             var series = clone_chart.SeriesCollection.AddSeries();
-                            series.Add(new double[] { (Double)prop.GetValue(item, null) / 100 });
-                            series.DataLabel.Format = "#0.0%";
-                            series.DataLabel.Position = MigraDocCore.DocumentObjectModel.Shapes.Charts.DataLabelPosition.InsideEnd;
+                            series.Add((Double)prop.GetValue(item, null) / 100.0000 );
+                            series.DataLabel.Format = "#0.00%";
+                            var asdasda = (Double)prop.GetValue(item, null);
+                            if ((Double)prop.GetValue(item, null) < 90 && (Double)prop.GetValue(item, null) > 0)
+                                series.DataLabel.Position = MigraDocCore.DocumentObjectModel.Shapes.Charts.DataLabelPosition.OutsideEnd;
+                            else
+                                series.DataLabel.Position = MigraDocCore.DocumentObjectModel.Shapes.Charts.DataLabelPosition.InsideEnd;
                             series.DataLabel.Font.Color = Colors.White;
                             var elements = series.Elements.Cast<MigraDocCore.DocumentObjectModel.Shapes.Charts.Point>().ToArray();
                           
