@@ -262,10 +262,10 @@ namespace ReportesObra.Utilities
             if (_title == "")
             {
                 // Put header in header frame
-                paragraph = headerFrame.AddParagraph("Reporte Detallado");//Titulo
+                paragraph = headerFrame.AddParagraph("Reporte Detallado Por Departamento");//Titulo
                 paragraph.AddLineBreak();
                 paragraph.Format.Font.Name = "Times New Roman";
-                paragraph.Format.Font.Size = 20;
+                paragraph.Format.Font.Size = 17;
                 paragraph.Format.Font.Bold = true;
                 paragraph.Format.Alignment = ParagraphAlignment.Center;
             }

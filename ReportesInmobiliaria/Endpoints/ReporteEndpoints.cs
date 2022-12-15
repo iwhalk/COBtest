@@ -10,11 +10,11 @@ namespace ReportesObra.Endpoints
         public static void MapReporteEndpoints(this IEndpointRouteBuilder routes)
         {
             //routes.MapGet("/ReporteDetalles", async (int idBuilding, [FromUri] int[] idApartments, [FromUri] int[] idActivy, [FromUri] int[] idElement, [FromUri] int[]? idSubElements, IReportesService _reportesService, ILogger<Program> _logger) =>
-            routes.MapPost("/ReporteDetalles", async (DetallesActividad detallesActividad, IReportesService _reportesService, ILogger<Program> _logger) =>
+            routes.MapPost("/ReporteDetalles", async (ActivitiesDetail detallesActividad, IReportesService _reportesService, ILogger<Program> _logger) =>
             {
                 try
                 {
-                    var newModule = await _reportesService.GetReporteDetalles(detallesActividad.idBuilding, detallesActividad.idApartments, detallesActividad.idActivy, detallesActividad.idElement, detallesActividad.idSubElements);
+                    var newModule = await _reportesService.GetReporteDetalles(detallesActividad.IdBuilding, detallesActividad.Apartments, detallesActividad.Activities, detallesActividad.Elements, detallesActividad.SubElements);
                     if (newModule == null) return Results.NotFound();
                     return Results.File(newModule, "application/pdf");
                 }
@@ -31,11 +31,11 @@ namespace ReportesObra.Endpoints
             .Produces<HttpValidationProblemDetails>(StatusCodes.Status400BadRequest, "application/problem+json")
             .Produces<HttpValidationProblemDetails>(StatusCodes.Status500InternalServerError, "application/problem+json");
 
-            routes.MapPost("/ReporteDetalladoPorActividad", async (DetailsActivity detailsActivity, IReportesService _reportesService, ILogger<Program> _logger) =>
+            routes.MapPost("/ReporteDetalladoPorActividad", async (ActivitiesDetail detallesActividad, IReportesService _reportesService, ILogger<Program> _logger) =>
             {
                 try
                 {
-                    var newModule = await _reportesService.GetReporteDetallesActividad(detailsActivity.idBuilding, detailsActivity.idActivities, detailsActivity.idElements, detailsActivity.idApartments);
+                    var newModule = await _reportesService.GetReporteDetallesActividad(detallesActividad.IdBuilding, detallesActividad.Activities, detallesActividad.Elements, detallesActividad.Apartments);
                     if (newModule == null) return Results.NotFound();
                     return Results.File(newModule, "application/pdf");
                 }
