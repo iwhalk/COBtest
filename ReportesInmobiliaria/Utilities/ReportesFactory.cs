@@ -713,19 +713,22 @@ namespace ReportesObra.Utilities
                                 table.Rows.RemoveObjectAt(table.Rows.Count - 1);
                                 if (lastRow != null)
                                     lastRow.Cells[0].Borders.Bottom.Width = 1.5;
+                                //Agrega el último nombre de actividad a la tabla, combina las celdas restantes
                                 Row rowData;
                                 if (indexCombination == 0)
                                     rowData = _table.Rows[indexCombination + 1];
                                 else
                                     rowData = _table.Rows[indexCombination];
                                 rowData.Cells[0].AddParagraph(beforeName);
-                                rowData.Cells[0].MergeDown = countCombination - 1;
+                                if (countCombination < 45)
+                                    rowData.Cells[0].MergeDown = countCombination - 1;
                                 rowData.Cells[0].VerticalAlignment = VerticalAlignment.Center;
                                 return i;
                             }
                         }
                         else
                         {
+                            //No coloca el nombre de la actividad hasta que haya cambiado
                             if (index == 1)
                             {
                                 currentName = prop.GetValue(item, null)?.ToString();
@@ -767,13 +770,15 @@ namespace ReportesObra.Utilities
                                 }
                                 else
                                 {
+                                    //Coloca el nombre de la actividad y combina las celdas de su respectivo conjunto
                                     Row rowData;
                                     row.Cells[0].Borders.Top.Width = 1.5;
                                     if (!_firstActivity)
                                     {
                                         rowData = _table.Rows[indexCombination];
                                         rowData.Cells[0].AddParagraph(beforeName);
-                                        rowData.Cells[0].MergeDown = countCombination - 1;
+                                        if (countCombination < 45)
+                                            rowData.Cells[0].MergeDown = countCombination - 1;
                                     }
 
                                     else
@@ -781,7 +786,8 @@ namespace ReportesObra.Utilities
                                         rowData = _table.Rows[indexCombination + 1];
                                         _firstActivity = false;
                                         rowData.Cells[0].AddParagraph(beforeName);
-                                        rowData.Cells[0].MergeDown = countCombination - 2;
+                                        if (countCombination < 45)
+                                            rowData.Cells[0].MergeDown = countCombination - 2;
                                     }
                                     rowData.Cells[0].VerticalAlignment = VerticalAlignment.Center;
                                     indexCombination += countCombination;
@@ -797,18 +803,19 @@ namespace ReportesObra.Utilities
                 {
                     Row rowData;
                     row.Cells[0].Borders.Bottom.Width = 1.5;
+                    //Agrega el último nombre de actividad a la tabla, combina las celdas restantes
                     if (indexCombination == 0)
                         rowData = _table.Rows[indexCombination + 1];
                     else
                         rowData = _table.Rows[indexCombination];
                     rowData.Cells[0].AddParagraph(beforeName);
-                    rowData.Cells[0].MergeDown = countCombination - 1;
+                    if(countCombination < 45)
+                        rowData.Cells[0].MergeDown = countCombination - 1;
                     rowData.Cells[0].VerticalAlignment = VerticalAlignment.Center;
                 }
-
+                //Cambia el color de relleno de las celdas cuya fila sea par
                 if (i % 2 == 0)
                 {
-                    //row.Shading.Color= Colors.LightGray;
                     row.Cells[1].Shading.Color = newColorGray;
                     row.Cells[2].Shading.Color = newColorGray;
                     row.Cells[3].Shading.Color = newColorGray;

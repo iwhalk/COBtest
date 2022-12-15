@@ -82,6 +82,8 @@ namespace ReportesObra.Services
                     title = "(Seleccionadas)";
                 }
 
+            if (reporteDetalles.detalladoActividades.Count == 0)
+                return null;
             return _reportesFactory.CrearPdf(reporteDetalles, title);
         }
 
