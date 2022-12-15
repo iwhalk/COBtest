@@ -6,6 +6,6 @@ namespace Obra.Client.Interfaces
 {
     public interface IReportesService
     {
-        Task<byte[]> PostReporteDetallesAsync(ReporteDetalle reporteDetalle);
+        Task<byte[]> PostReporteDetallesAsync(ActivitiesDetail reporteDetalle);
     }
 }

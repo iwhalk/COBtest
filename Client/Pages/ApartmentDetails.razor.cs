@@ -326,24 +326,24 @@ namespace Obra.Client.Pages
         {
             isFirstView = isFirstView ? false : true;
 
-            ReporteDetalle reporte = new();
-            reporte.idActivy = new();
-            reporte.idElement = new();
+            ActivitiesDetail reporte = new();
+            reporte.Activities = new();
+            reporte.Elements = new();
 
             if (subElementsSelect != null)
             {
-                reporte.idBuilding = 1;
-                reporte.idApartments = _idsAparmentSelect;
-                reporte.idActivy.Add(activity.IdActivity);
-                reporte.idElement.Add(element.IdElement);
-                reporte.idSubElements = _idsSubElementsSelect;
+                reporte.IdBuilding = 1;
+                reporte.Apartments = _idsAparmentSelect;
+                reporte.Activities.Add(activity.IdActivity);
+                reporte.Elements.Add(element.IdElement);
+                reporte.SubElements = _idsSubElementsSelect;
             }
             else
             {
-                reporte.idBuilding = 1;
-                reporte.idApartments = _idsAparmentSelect;
-                reporte.idActivy.Add(activity.IdActivity);
-                reporte.idElement.Add(element.IdElement);
+                reporte.IdBuilding = 1;
+                reporte.Apartments = _idsAparmentSelect;
+                reporte.Activities.Add(activity.IdActivity);
+                reporte.Elements.Add(element.IdElement);
             }
 
             var pdf = await _reportesService.PostReporteDetallesAsync(reporte);

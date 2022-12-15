@@ -1,6 +1,7 @@
 ﻿using Obra.Client.Interfaces;
 using Obra.Client.Models;
 using Obra.Client.Stores;
+using SharedLibrary.Models;
 
 namespace Obra.Client.Services
 {
@@ -14,7 +15,7 @@ namespace Obra.Client.Services
             _context = context;
         }
 
-        public async Task<byte[]> PostReporteDetallesAsync(ReporteDetalle reporteDetalle)
+        public async Task<byte[]> PostReporteDetallesAsync(ActivitiesDetail reporteDetalle)
         {
             return await _repository.PostAsync<byte[]>(reporteDetalle, path: "api/Reportes/Detalles");
         }

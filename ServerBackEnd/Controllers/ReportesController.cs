@@ -20,7 +20,7 @@ namespace ApiGateway.Controllers
         }
 
         [HttpPost("Detalles")]
-        public async Task<ActionResult> PostReporteDetalles(ReporteDetalle reporteDetalle)
+        public async Task<ActionResult> PostReporteDetalles(ActivitiesDetail reporteDetalle)
         {
             var result = await _reportesService.PostReporteDetallesAsync(reporteDetalle);
 
