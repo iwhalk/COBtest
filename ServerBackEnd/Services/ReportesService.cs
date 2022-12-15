@@ -15,7 +15,7 @@ namespace ApiGateway.Services
 
         public async Task<ApiResponse<byte[]>> PostReporteDetallesAsync(ReporteDetalle reporteDetalle)
         {
-            return await PostAsync<byte[]>(reporteDetalle, path: "ReporteDetalle");
+            return await PostAsync<byte[]>(reporteDetalle, path: "ReporteDetalles");
         }
     }
 }

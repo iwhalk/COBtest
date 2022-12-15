@@ -19,14 +19,14 @@ namespace ApiGateway.Controllers
             _reportesService = reportesService;
         }
 
-        [HttpPost]
+        [HttpPost("Detalles")]
         public async Task<ActionResult> PostReporteDetalles(ReporteDetalle reporteDetalle)
         {
             var result = await _reportesService.PostReporteDetallesAsync(reporteDetalle);
 
             if (result.Succeeded)
             {
-                return File(result.Content, "application/pdf", "ReportesDetalles.pdf");
+                return Ok(result);
             }
 
             return BadRequest(result);

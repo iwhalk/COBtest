@@ -16,7 +16,7 @@ namespace Obra.Client.Services
 
         public async Task<byte[]> PostReporteDetallesAsync(ReporteDetalle reporteDetalle)
         {
-            return await _repository.PostAsync<byte[]>(reporteDetalle, path: "api/ReporteDetalle");
+            return await _repository.PostAsync<byte[]>(reporteDetalle, path: "api/Reportes/Detalles");
         }
     }
 }

@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Microsoft.EntityFrameworkCore.SqlServer.Query.Internal;
 using Microsoft.Fast.Components.FluentUI.DesignTokens;
+using Microsoft.JSInterop;
 using Obra.Client.Interfaces;
+using Obra.Client.Models;
 using Obra.Client.Stores;
 using SharedLibrary.Models;
 using System.Diagnostics;
@@ -27,6 +29,7 @@ namespace Obra.Client.Pages
         private List<SubElement> subElements { get; set; }
         private List<ProgressReport> progressReports { get; set; } = new();
         private List<ProgressLog> progressLogs { get; set; } = new();
+        private readonly IJSRuntime _JS;
 
         private List<SubElement> subElementsSelect { get; set; } = new();
         private List<Apartment> apartmentsSelect { get; set; } = new();
@@ -58,7 +61,7 @@ namespace Obra.Client.Pages
         private bool isFirstView { get; set; } = true;
         private bool showModal { get; set; } = false;
 
-        public ApartmentDetails(ApplicationContext context, IApartmentsService apartmentsService, IActivitiesService activitiesService, IElementsService elementsService, ISubElementsService subElementsService, IProgressReportService progressReportService, IProgressLogsService progressLogsService, IReportesService reportesService)
+        public ApartmentDetails(ApplicationContext context, IApartmentsService apartmentsService, IActivitiesService activitiesService, IElementsService elementsService, ISubElementsService subElementsService, IProgressReportService progressReportService, IProgressLogsService progressLogsService, IReportesService reportesService, IJSRuntime jS)
         {
             _context = context;
             _apartmentsService = apartmentsService;
@@ -68,6 +71,7 @@ namespace Obra.Client.Pages
             _progressReportService = progressReportService;
             _progressLogsService = progressLogsService;
             _reportesService = reportesService;
+            _JS = jS;
         }
 
         protected async override Task OnInitializedAsync()
@@ -270,24 +274,15 @@ namespace Obra.Client.Pages
         public async Task GoBack()
         {
             _idsAparmentSelect.Clear();
-
-            await ShowMenssage();
-
             _idsActivitiesSelect.Clear();
 
-            if (elements != null)
-            {
-                await ShowElements();
-                elements.Clear();
-                _idsElementsSelect.Clear();
+            await ShowElements();
+            elements.Clear();
+            _idsElementsSelect.Clear();
 
-                if (subElements != null)
-                {
-                    await ShowSubElements();
-                    subElements.Clear();
-                    _idsSubElementsSelect.Clear();
-                }
-            }
+            await ShowSubElements();
+            subElements.Clear();
+            _idsSubElementsSelect.Clear();
 
             buttonReport = false;
             apartmentDetails = true;
@@ -300,6 +295,8 @@ namespace Obra.Client.Pages
             activity = null;
             element = null;
 
+            subElementsNulls = false;
+
             greenPercentage.Clear();
             redPercentage.Clear();
         }
@@ -310,11 +307,39 @@ namespace Obra.Client.Pages
             observations = "";
             images.Clear();
         }
-        public void ChangeView()
+        public async Task ChangeView()
         {
             isFirstView = isFirstView ? false : true;
 
+            ReporteDetalle reporte = new();
+            reporte.idActivy = new();
+            reporte.idElement = new();
 
+            if (subElementsSelect != null)
+            {
+                reporte.idBuilding = 1;
+                reporte.idApartments = _idsAparmentSelect;
+                reporte.idActivy.Add(activity.IdActivity);
+                reporte.idElement.Add(element.IdElement);
+                reporte.idSubElements = _idsSubElementsSelect;
+            }
+            else
+            {
+                reporte.idBuilding = 1;
+                reporte.idApartments = _idsAparmentSelect;
+                reporte.idActivy.Add(activity.IdActivity);
+                reporte.idElement.Add(element.IdElement);
+            }
+
+            var pdf = await _reportesService.PostReporteDetallesAsync(reporte);
+
+            if (pdf != null)
+            {
+                var fileName = "DetallePorDepartemento.pdf";
+                var fileStream = new MemoryStream(pdf);
+                using var streamRef = new DotNetStreamReference(stream: fileStream);
+                await _JS.InvokeVoidAsync("downloadFileFromStream", fileName, streamRef);
+            }
         }
 
         public async Task ShowReportAndHideApartment()
@@ -371,12 +396,14 @@ namespace Obra.Client.Pages
             {
                 foreach (var idsSubElement in _idsSubElementsSelect)
                 {
-                    ProgressReport progressReport = (await _progressReportService.GetProgressReportsAsync(idAparment: idAparment, idElemnet: _idsElementsSelect.FirstOrDefault(), idSubElement: idsSubElement)).OrderByDescending(x => x.DateCreated).FirstOrDefault();
+                    List<ProgressReport> progressReport = await _progressReportService.GetProgressReportsAsync(idBuilding: 1, idAparment: idAparment, idElemnet: _idsElementsSelect.FirstOrDefault(), idSubElement: idsSubElement);
 
                     if (progressReport != null)
-
                     {
-                        progressReports.Add(new ProgressReport() { IdProgressReport = progressReport.IdProgressReport, DateCreated = progressReport.DateCreated, IdBuilding = progressReport.IdBuilding, IdApartment = progressReport.IdApartment, IdArea = progressReport.IdArea, IdElement = progressReport.IdElement, IdSubElement = progressReport.IdSubElement, TotalPieces = progressReport.TotalPieces, IdSupervisor = progressReport.IdSupervisor });
+                        foreach (var item in progressReport)
+                        {
+                            progressReports.Add(new ProgressReport() { IdProgressReport = item.IdProgressReport, DateCreated = item.DateCreated, IdBuilding = item.IdBuilding, IdApartment = item.IdApartment, IdArea = item.IdArea, IdElement = item.IdElement, IdSubElement = item.IdSubElement, TotalPieces = item.TotalPieces, IdSupervisor = item.IdSupervisor });
+                        }
                     }
                 }
 
@@ -409,11 +436,14 @@ namespace Obra.Client.Pages
         {
             foreach (var idAparment in _idsAparmentSelect)
             {
-                ProgressReport progressReport = (await _progressReportService.GetProgressReportsAsync(idAparment: idAparment, idElemnet: _idsElementsSelect.FirstOrDefault())).OrderByDescending(x => x.DateCreated).FirstOrDefault();
+                List<ProgressReport> progressReport = await _progressReportService.GetProgressReportsAsync(idBuilding: 1, idAparment: idAparment, idElemnet: _idsElementsSelect.FirstOrDefault());
 
                 if (progressReport != null)
                 {
-                    progressReports.Add(new ProgressReport() { IdProgressReport = progressReport.IdProgressReport, DateCreated = progressReport.DateCreated, IdBuilding = progressReport.IdBuilding, IdApartment = progressReport.IdApartment, IdArea = progressReport.IdArea, IdElement = progressReport.IdElement, IdSubElement = progressReport.IdSubElement, TotalPieces = progressReport.TotalPieces, IdSupervisor = progressReport.IdSupervisor });
+                    foreach (var item in progressReport)
+                    {
+                        progressReports.Add(new ProgressReport() { IdProgressReport = item.IdProgressReport, DateCreated = item.DateCreated, IdBuilding = item.IdBuilding, IdApartment = item.IdApartment, IdArea = item.IdArea, IdElement = item.IdElement, IdSubElement = item.IdSubElement, TotalPieces = item.TotalPieces, IdSupervisor = item.IdSupervisor });
+                    }
                 }
 
                 foreach (var item in progressReports)
@@ -453,6 +483,12 @@ namespace Obra.Client.Pages
                     decimal auxRed = Convert.ToInt32(auxResult.ToString("0.##"));
 
                     redPercentage.Add($"{item.IdProgressReport}", (100 - auxRed).ToString());
+                }
+                else
+                {
+                    greenPercentage.Add($"{item.IdProgressReport}", 0.ToString());
+
+                    redPercentage.Add($"{item.IdProgressReport}", 100.ToString());
                 }
             }
         }
