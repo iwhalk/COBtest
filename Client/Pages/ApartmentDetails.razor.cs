@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Microsoft.EntityFrameworkCore.SqlServer.Query.Internal;
 using Microsoft.Fast.Components.FluentUI.DesignTokens;
+using Microsoft.JSInterop;
 using Obra.Client.Interfaces;
+using Obra.Client.Models;
 using Obra.Client.Stores;
 using SharedLibrary.Models;
 using System.Diagnostics;
@@ -19,7 +21,7 @@ namespace Obra.Client.Pages
         private readonly ISubElementsService _subElementsService;
         private readonly IProgressReportService _progressReportService;
         private readonly IProgressLogsService _progressLogsService;
-        private readonly IBlobsService _blobsService;
+        private readonly IReportesService _reportesService;
 
         private List<Apartment> apartments { get; set; }
         private List<SharedLibrary.Models.Activity> activities { get; set; }
@@ -27,6 +29,7 @@ namespace Obra.Client.Pages
         private List<SubElement> subElements { get; set; }
         private List<ProgressReport> progressReports { get; set; } = new();
         private List<ProgressLog> progressLogs { get; set; } = new();
+        private readonly IJSRuntime _JS;
 
         private List<SubElement> subElementsSelect { get; set; } = new();
         private List<Apartment> apartmentsSelect { get; set; } = new();
@@ -58,7 +61,7 @@ namespace Obra.Client.Pages
         private bool isFirstView { get; set; } = true;
         private bool showModal { get; set; } = false;
 
-        public ApartmentDetails(ApplicationContext context, IApartmentsService apartmentsService, IActivitiesService activitiesService, IElementsService elementsService, ISubElementsService subElementsService, IProgressReportService progressReportService, IProgressLogsService progressLogsService, IBlobsService blobsService)
+        public ApartmentDetails(ApplicationContext context, IApartmentsService apartmentsService, IActivitiesService activitiesService, IElementsService elementsService, ISubElementsService subElementsService, IProgressReportService progressReportService, IProgressLogsService progressLogsService, IReportesService reportesService, IJSRuntime jS)
         {
             _context = context;
             _apartmentsService = apartmentsService;
@@ -67,7 +70,8 @@ namespace Obra.Client.Pages
             _subElementsService = subElementsService;
             _progressReportService = progressReportService;
             _progressLogsService = progressLogsService;
-            _blobsService = blobsService;
+            _reportesService = reportesService;
+            _JS = jS;
         }
 
         protected async override Task OnInitializedAsync()
@@ -263,17 +267,95 @@ namespace Obra.Client.Pages
             }
         }
 
+        public async Task AllSubElements()
+        {
+            if (_idsSubElementsSelect.Count() < 1)
+            {
+                foreach (var idSubElement in subElements)
+                {
+                    _idsSubElementsSelect.Add(idSubElement.IdSubElement);
+                }
+            }
+            else
+            {
+                _idsSubElementsSelect.Clear();
+            }
+        }
+
         public async Task ShowMenssage() => alert = false;
         public async Task ShowElements() => showElements = false;
         public async Task ShowSubElements() => showSubElements = false;
 
-        private void ChangeShowModal()
+        public async Task GoBack()
+        {
+            _idsAparmentSelect.Clear();
+            _idsActivitiesSelect.Clear();
+
+            await ShowElements();
+            elements.Clear();
+            _idsElementsSelect.Clear();
+
+            await ShowSubElements();
+            subElements.Clear();
+            _idsSubElementsSelect.Clear();
+
+            buttonReport = false;
+            apartmentDetails = true;
+
+            progressLogs.Clear();
+            progressReports.Clear();
+            subElementsSelect.Clear();
+            apartmentsSelect.Clear();
+
+            activity = null;
+            element = null;
+
+            subElementsNulls = false;
+
+            greenPercentage.Clear();
+            redPercentage.Clear();
+        }
+
+        public void ChangeShowModal()
         {
             showModal = showModal ? false : true;
             observations = "";
             images.Clear();
         }
-        private void ChangeView() => isFirstView = isFirstView ? false : true;
+        public async Task ChangeView()
+        {
+            isFirstView = isFirstView ? false : true;
+
+            ActivitiesDetail reporte = new();
+            reporte.Activities = new();
+            reporte.Elements = new();
+
+            if (subElementsSelect != null)
+            {
+                reporte.IdBuilding = 1;
+                reporte.Apartments = _idsAparmentSelect;
+                reporte.Activities.Add(activity.IdActivity);
+                reporte.Elements.Add(element.IdElement);
+                reporte.SubElements = _idsSubElementsSelect;
+            }
+            else
+            {
+                reporte.IdBuilding = 1;
+                reporte.Apartments = _idsAparmentSelect;
+                reporte.Activities.Add(activity.IdActivity);
+                reporte.Elements.Add(element.IdElement);
+            }
+
+            var pdf = await _reportesService.PostReporteDetallesAsync(reporte);
+
+            if (pdf != null)
+            {
+                var fileName = "DetallePorDepartemento.pdf";
+                var fileStream = new MemoryStream(pdf);
+                using var streamRef = new DotNetStreamReference(stream: fileStream);
+                await _JS.InvokeVoidAsync("downloadFileFromStream", fileName, streamRef);
+            }
+        }
 
         public async Task ShowReportAndHideApartment()
         {
@@ -329,12 +411,14 @@ namespace Obra.Client.Pages
             {
                 foreach (var idsSubElement in _idsSubElementsSelect)
                 {
-                    ProgressReport progressReport = (await _progressReportService.GetProgressReportsAsync(idAparment: idAparment, idElemnet: _idsElementsSelect.FirstOrDefault(), idSubElement: idsSubElement)).OrderByDescending(x => x.DateCreated).FirstOrDefault();
+                    List<ProgressReport> progressReport = await _progressReportService.GetProgressReportsAsync(idBuilding: 1, idAparment: idAparment, idElemnet: _idsElementsSelect.FirstOrDefault(), idSubElement: idsSubElement);
 
                     if (progressReport != null)
-
                     {
-                        progressReports.Add(new ProgressReport() { IdProgressReport = progressReport.IdProgressReport, DateCreated = progressReport.DateCreated, IdBuilding = progressReport.IdBuilding, IdApartment = progressReport.IdApartment, IdArea = progressReport.IdArea, IdElement = progressReport.IdElement, IdSubElement = progressReport.IdSubElement, TotalPieces = progressReport.TotalPieces, IdSupervisor = progressReport.IdSupervisor });
+                        foreach (var item in progressReport)
+                        {
+                            progressReports.Add(new ProgressReport() { IdProgressReport = item.IdProgressReport, DateCreated = item.DateCreated, IdBuilding = item.IdBuilding, IdApartment = item.IdApartment, IdArea = item.IdArea, IdElement = item.IdElement, IdSubElement = item.IdSubElement, TotalPieces = item.TotalPieces, IdSupervisor = item.IdSupervisor });
+                        }
                     }
                 }
 
@@ -355,23 +439,20 @@ namespace Obra.Client.Pages
 
                 apartmentsSelect.Add(new Apartment() { IdApartment = apartment.IdApartment, ApartmentNumber = apartment.ApartmentNumber });
             }
-
-            if (progressLogs == null || progressLogs.Count() < 1 || progressReports == null || progressReports.Count() < 1)
-            {
-                menssageError = "No se puede generar un reporte, ya que no tienen ningun progreso que mostrar";
-                alert = true;
-            }
         }
 
         public async Task AdvancementProgress()
         {
             foreach (var idAparment in _idsAparmentSelect)
             {
-                ProgressReport progressReport = (await _progressReportService.GetProgressReportsAsync(idAparment: idAparment, idElemnet: _idsElementsSelect.FirstOrDefault())).OrderByDescending(x => x.DateCreated).FirstOrDefault();
+                List<ProgressReport> progressReport = await _progressReportService.GetProgressReportsAsync(idBuilding: 1, idAparment: idAparment, idElemnet: _idsElementsSelect.FirstOrDefault());
 
                 if (progressReport != null)
                 {
-                    progressReports.Add(new ProgressReport() { IdProgressReport = progressReport.IdProgressReport, DateCreated = progressReport.DateCreated, IdBuilding = progressReport.IdBuilding, IdApartment = progressReport.IdApartment, IdArea = progressReport.IdArea, IdElement = progressReport.IdElement, IdSubElement = progressReport.IdSubElement, TotalPieces = progressReport.TotalPieces, IdSupervisor = progressReport.IdSupervisor });
+                    foreach (var item in progressReport)
+                    {
+                        progressReports.Add(new ProgressReport() { IdProgressReport = item.IdProgressReport, DateCreated = item.DateCreated, IdBuilding = item.IdBuilding, IdApartment = item.IdApartment, IdArea = item.IdArea, IdElement = item.IdElement, IdSubElement = item.IdSubElement, TotalPieces = item.TotalPieces, IdSupervisor = item.IdSupervisor });
+                    }
                 }
 
                 foreach (var item in progressReports)
@@ -387,12 +468,6 @@ namespace Obra.Client.Pages
                 Apartment apartment = apartments.FirstOrDefault(x => x.IdApartment == idAparment);
 
                 apartmentsSelect.Add(new Apartment() { IdApartment = apartment.IdApartment, ApartmentNumber = apartment.ApartmentNumber });
-            }
-
-            if (progressLogs == null || progressLogs.Count() < 1 || progressReports == null || progressReports.Count() < 1)
-            {
-                menssageError = "No se puede generar un reporte, ya que no tienen ningun progreso que mostrar";
-                alert = true;
             }
         }
 
@@ -412,6 +487,12 @@ namespace Obra.Client.Pages
 
                     redPercentage.Add($"{item.IdProgressReport}", (100 - auxRed).ToString());
                 }
+                else
+                {
+                    greenPercentage.Add($"{item.IdProgressReport}", 0.ToString());
+
+                    redPercentage.Add($"{item.IdProgressReport}", 100.ToString());
+                }
             }
         }
 
@@ -428,7 +509,7 @@ namespace Obra.Client.Pages
             {
                 foreach (var item in aux.IdBlobs)
                 {
-                    images.Add(item.Uri); 
+                    images.Add(item.Uri);
                 }
             }
 

@@ -285,6 +285,7 @@ builder.Services.AddScoped<ISubElementsService, SubElementsService>();
 builder.Services.AddScoped<IProgressLogsService, ProgressLogsService>();
 builder.Services.AddScoped<IBlobsService, BlobsService>();
 builder.Services.AddScoped<IProgressReportService, ProgressReportService>();
+builder.Services.AddScoped<IReportesService, ReportesService>();
 
 var app = builder.Build();
 
