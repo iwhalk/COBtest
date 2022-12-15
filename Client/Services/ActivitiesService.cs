@@ -19,9 +19,16 @@ namespace Obra.Client.Services
             return await _repository.GetAsync<Activity>(id, path: "api/Activities");
         }
 
-        public async Task<List<Activity>> GetActivitiesAsync()
-        {            
-            _context.Activity = await _repository.GetAsync<List<Activity>>(path: "api/Activities");            
+        public async Task<List<Activity>> GetActivitiesAsync(int? idArea)
+        {
+            Dictionary<string, string> parameters = new();
+
+            if (idArea != null && idArea > 0)
+            {
+                parameters.Add("idArea", idArea.ToString());
+            }
+
+            _context.Activity = await _repository.GetAsync<List<Activity>>(parameters, "api/Activities");            
             return _context.Activity;
         }
 

@@ -1,0 +1,18 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace SharedLibrary.Models
+{
+    public partial class ActivitiesDetail
+    {
+        public int IdBuilding { get; set; }
+        public List<int> Apartments { get; set; }
+        public List<int>? Activities { get; set; }
+        public List<int>? Elements { get; set; }
+        public List<int>? SubElements { get; set; }
+
+    }
+}

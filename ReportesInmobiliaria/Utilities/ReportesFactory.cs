@@ -262,10 +262,10 @@ namespace ReportesObra.Utilities
             if (_title == "")
             {
                 // Put header in header frame
-                paragraph = headerFrame.AddParagraph("Reporte Detallado");//Titulo
+                paragraph = headerFrame.AddParagraph("Reporte Detallado Por Departamento");//Titulo
                 paragraph.AddLineBreak();
                 paragraph.Format.Font.Name = "Times New Roman";
-                paragraph.Format.Font.Size = 20;
+                paragraph.Format.Font.Size = 17;
                 paragraph.Format.Font.Bold = true;
                 paragraph.Format.Alignment = ParagraphAlignment.Center;
             }
@@ -363,9 +363,9 @@ namespace ReportesObra.Utilities
             section.PageSetup.Orientation = Orientation.Portrait;
 
             headerFrame = section.AddTextFrame();
-            headerFrame.Width = "20.0cm";
-            headerFrame.Left = ShapePosition.Center;
-            headerFrame.RelativeHorizontal = RelativeHorizontal.Margin;
+            headerFrame.Width = "22.5cm";
+            headerFrame.Left = "15cm";
+            headerFrame.RelativeHorizontal = RelativeHorizontal.Page;
             headerFrame.Top = "2.70cm";
             headerFrame.RelativeVertical = RelativeVertical.Page;
 
@@ -440,10 +440,10 @@ namespace ReportesObra.Utilities
 
 
             // Put header in header frame
-            Paragraph paragraph = headerFrame.AddParagraph("Reporte Avance");//Titulo
+            Paragraph paragraph = headerFrame.AddParagraph("Resumen de Avance General Por Departamento");//Titulo
             paragraph.AddLineBreak();
             paragraph.Format.Font.Name = "Times New Roman";
-            paragraph.Format.Font.Size = 16;
+            paragraph.Format.Font.Size = 14;
             paragraph.Format.Font.Bold = true;
             paragraph.Format.Alignment = ParagraphAlignment.Center;
 
@@ -480,7 +480,7 @@ namespace ReportesObra.Utilities
             rowo.Borders.Visible = false;
             rowo.BottomPadding = "1cm";
             rowo.Cells[0].AddParagraph("Departamento");
-            rowo.Cells[1].AddParagraph("Avance");
+            rowo.Cells[1].AddParagraph("Avance General");
           
             FillChartContent(reporteAvance.Apartments, table);
         }
@@ -502,15 +502,6 @@ namespace ReportesObra.Utilities
             footer.Format.Font.Size = 8;
             footer.Format.Alignment = ParagraphAlignment.Center;
             
-            // Put a logo in the header
-            //Image image = section.Headers.Primary.AddImage(Path.Combine(Environment.CurrentDirectory, @"Imagenes\", "ferromex.png"));
-            //image.Height = "0.75cm"; image.Width = "5.25cm";
-            //image.LockAspectRatio = true;
-            //image.RelativeVertical = RelativeVertical.Margin;
-            //image.RelativeHorizontal = RelativeHorizontal.Margin;
-            //image.Top = ShapePosition.Top;
-            //image.Left = ShapePosition.Right; 
-            //image.WrapFormat.Style = WrapStyle.Through;
         }
 
         void FillChartContent<T>(List<T> value, Table table, int fontSize = 12)
@@ -529,10 +520,10 @@ namespace ReportesObra.Utilities
             chart.YAxis.MinimumScale = 0;
             chart.YAxis.MaximumScale = 1;
 
-            chart.PlotArea.LineFormat.Color = Colors.Black;
-            chart.PlotArea.LineFormat.Width = 0.2;
-            chart.PlotArea.LineFormat.Visible = true;
-            chart.PlotArea.FillFormat.Color = Colors.OrangeRed;
+            chart.PlotArea.LineFormat.Color = Colors.OrangeRed;
+            chart.PlotArea.LineFormat.Width = 2;
+            chart.PlotArea.LineFormat.Visible = false;
+            chart.PlotArea.FillFormat.Color = Colors.OrangeRed;            
 
             foreach (var item in value)
             {
@@ -548,13 +539,19 @@ namespace ReportesObra.Utilities
                         {
                             var clone_chart = chart.Clone();
                             var series = clone_chart.SeriesCollection.AddSeries();
-                            series.Add(new double[] { (Double)prop.GetValue(item, null) / 100 });
-                            series.DataLabel.Format = "#0.0%";
-                            series.DataLabel.Position = MigraDocCore.DocumentObjectModel.Shapes.Charts.DataLabelPosition.InsideEnd;
+                            series.Add((Double)prop.GetValue(item, null) / 100.0000 );
+                            series.DataLabel.Format = "#0.00%";
+                            var asdasda = (Double)prop.GetValue(item, null);
+                            if ((Double)prop.GetValue(item, null) < 90 && (Double)prop.GetValue(item, null) > 0)
+                                series.DataLabel.Position = MigraDocCore.DocumentObjectModel.Shapes.Charts.DataLabelPosition.OutsideEnd;
+                            else
+                                series.DataLabel.Position = MigraDocCore.DocumentObjectModel.Shapes.Charts.DataLabelPosition.InsideEnd;
                             series.DataLabel.Font.Color = Colors.White;
                             var elements = series.Elements.Cast<MigraDocCore.DocumentObjectModel.Shapes.Charts.Point>().ToArray();
                           
                             elements[0].FillFormat.Color = Colors.MediumSeaGreen;
+                            elements[0].LineFormat.Color = Colors.MediumSeaGreen;
+                            elements[0].LineFormat.Width= 3;
                             var xseries = clone_chart.XValues.AddXSeries();
                             xseries.Add("");
                             row.Cells[index].Add(clone_chart);
@@ -716,18 +713,22 @@ namespace ReportesObra.Utilities
                                 table.Rows.RemoveObjectAt(table.Rows.Count - 1);
                                 if (lastRow != null)
                                     lastRow.Cells[0].Borders.Bottom.Width = 1.5;
+                                //Agrega el último nombre de actividad a la tabla, combina las celdas restantes
                                 Row rowData;
                                 if (indexCombination == 0)
                                     rowData = _table.Rows[indexCombination + 1];
                                 else
                                     rowData = _table.Rows[indexCombination];
                                 rowData.Cells[0].AddParagraph(beforeName);
+                                if (countCombination < 45)
+                                    rowData.Cells[0].MergeDown = countCombination - 1;
                                 rowData.Cells[0].VerticalAlignment = VerticalAlignment.Center;
                                 return i;
                             }
                         }
                         else
                         {
+                            //No coloca el nombre de la actividad hasta que haya cambiado
                             if (index == 1)
                             {
                                 currentName = prop.GetValue(item, null)?.ToString();
@@ -769,13 +770,15 @@ namespace ReportesObra.Utilities
                                 }
                                 else
                                 {
+                                    //Coloca el nombre de la actividad y combina las celdas de su respectivo conjunto
                                     Row rowData;
                                     row.Cells[0].Borders.Top.Width = 1.5;
                                     if (!_firstActivity)
                                     {
                                         rowData = _table.Rows[indexCombination];
                                         rowData.Cells[0].AddParagraph(beforeName);
-                                        rowData.Cells[0].MergeDown = countCombination - 1;
+                                        if (countCombination < 45)
+                                            rowData.Cells[0].MergeDown = countCombination - 1;
                                     }
 
                                     else
@@ -783,7 +786,8 @@ namespace ReportesObra.Utilities
                                         rowData = _table.Rows[indexCombination + 1];
                                         _firstActivity = false;
                                         rowData.Cells[0].AddParagraph(beforeName);
-                                        rowData.Cells[0].MergeDown = countCombination - 2;
+                                        if (countCombination < 45)
+                                            rowData.Cells[0].MergeDown = countCombination - 2;
                                     }
                                     rowData.Cells[0].VerticalAlignment = VerticalAlignment.Center;
                                     indexCombination += countCombination;
@@ -799,17 +803,19 @@ namespace ReportesObra.Utilities
                 {
                     Row rowData;
                     row.Cells[0].Borders.Bottom.Width = 1.5;
+                    //Agrega el último nombre de actividad a la tabla, combina las celdas restantes
                     if (indexCombination == 0)
                         rowData = _table.Rows[indexCombination + 1];
                     else
                         rowData = _table.Rows[indexCombination];
                     rowData.Cells[0].AddParagraph(beforeName);
+                    if(countCombination < 45)
+                        rowData.Cells[0].MergeDown = countCombination - 1;
                     rowData.Cells[0].VerticalAlignment = VerticalAlignment.Center;
                 }
-
+                //Cambia el color de relleno de las celdas cuya fila sea par
                 if (i % 2 == 0)
                 {
-                    //row.Shading.Color= Colors.LightGray;
                     row.Cells[1].Shading.Color = newColorGray;
                     row.Cells[2].Shading.Color = newColorGray;
                     row.Cells[3].Shading.Color = newColorGray;

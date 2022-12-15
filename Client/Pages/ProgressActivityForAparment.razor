@@ -71,6 +71,15 @@
             <button @onclick="() => GeneratePDfPorgressaprment()" class="mx-auto bg-[#B9352E] hover:bg-red-500 w-32 p-2 rounded-2xl text-lg text-white font-medium leading-6 border border-stone-400 hover:border-white">Descargar</button>
         </div>
     </div>
+    @if (_isLoadingProcess)
+    {
+        <div class="fixed inset-0 flex inset-0 fixed justify-center items-center h-screen fixed bg-gray-200 bg-opacity-75 transition-opacity"></div>
+        <div class="flex inset-0 fixed justify-center items-center h-screen">
+            <FluentProgressRing style="width: 102px; height: 102px;">
+                <ChildContent>100%</ChildContent>
+            </FluentProgressRing>
+        </div>
+    }
 }
 else
 {

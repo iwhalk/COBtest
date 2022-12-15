@@ -39,9 +39,9 @@ namespace ApiGateway.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult> GetActivities()
+        public async Task<ActionResult> GetActivities(int? idArea)
         {
-            var result = await _activitiesService.GetActivitiesAsync();
+            var result = await _activitiesService.GetActivitiesAsync(idArea);
 
             if (result.Succeeded)
             {
