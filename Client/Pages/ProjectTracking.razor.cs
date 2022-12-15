@@ -331,7 +331,7 @@ namespace Obra.Client.Pages
             Loading = false;
             StateHasChanged();
             //_toastService.ShowSuccess("Se guardaron los campos del detalle de avance");
-            _toastService.ShowToast<MyToastComponent>(new ToastInstanceSettings(5, false));
+            _toastService.ShowToast<ToastComponent>(new ToastInstanceSettings(5, false));
             //_navigate.NavigateTo("/");
         }
     }
