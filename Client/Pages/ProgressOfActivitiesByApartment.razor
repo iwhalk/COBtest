@@ -1,4 +1,4 @@
-﻿@page "/ProgressActivityForAparmentFake"
+﻿@page "/ProgressActivityForAparment"
 
 <div id="Contenedor" class="min-h-screen bg-[url('/assets/img/imgFondo.png')] z-0 opacity-25 imgfondo fixed inset-0 bg-gray-500 bg-opacity-25 transition-opacity"></div>
 @if (_context.Apartment is not null)
@@ -41,9 +41,9 @@
                                 </div>
                             </div>
                             @if (_idsAparmentSelect.ContainsKey(aparment.IdApartment))
-                            {                                
+                            {
                                 <div class="md:w-4/6 xl:w-5/6 p-0.5 h-full overflow-y-auto">
-                                    @foreach(var activity in _context.Activity)
+                                    @foreach (var activity in _context.Activity)
                                     {
                                         <div class="inline-flex w-full">
                                             <div class="bg-[#254260] border border-stone-400 h-12 p-0.5 mx-2 md:w-2/4 xl:w-2/5">
@@ -60,8 +60,8 @@
                                             </div>
                                         </div>
                                     }
-                                </div>                                    
-                            }                                                                              
+                                </div>
+                            }
                         </div>
                     }
                 </div>
@@ -73,7 +73,7 @@
     </div>
     @if (_isLoadingProcess)
     {
-        <div class="flex inset-0 fixed justify-center items-center h-screen fixed bg-black opacity-50 transition-opacity"></div>
+        <div class="fixed inset-0 flex inset-0 fixed justify-center items-center h-screen fixed bg-black bg-opacity-75 transition-opacity"></div>
         <div class="flex inset-0 fixed justify-center items-center h-screen">
             <FluentProgressRing style="width: 102px; height: 102px;">
                 <ChildContent>100%</ChildContent>
