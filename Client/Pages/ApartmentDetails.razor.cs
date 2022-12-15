@@ -267,6 +267,21 @@ namespace Obra.Client.Pages
             }
         }
 
+        public async Task AllSubElements()
+        {
+            if (_idsSubElementsSelect.Count() < 1)
+            {
+                foreach (var idSubElement in subElements)
+                {
+                    _idsSubElementsSelect.Add(idSubElement.IdSubElement);
+                }
+            }
+            else
+            {
+                _idsSubElementsSelect.Clear();
+            }
+        }
+
         public async Task ShowMenssage() => alert = false;
         public async Task ShowElements() => showElements = false;
         public async Task ShowSubElements() => showSubElements = false;
@@ -424,12 +439,6 @@ namespace Obra.Client.Pages
 
                 apartmentsSelect.Add(new Apartment() { IdApartment = apartment.IdApartment, ApartmentNumber = apartment.ApartmentNumber });
             }
-
-            if (progressLogs == null || progressLogs.Count() < 1 || progressReports == null || progressReports.Count() < 1)
-            {
-                menssageError = "No se puede generar un reporte, ya que no tienen ningun progreso que mostrar";
-                alert = true;
-            }
         }
 
         public async Task AdvancementProgress()
@@ -459,12 +468,6 @@ namespace Obra.Client.Pages
                 Apartment apartment = apartments.FirstOrDefault(x => x.IdApartment == idAparment);
 
                 apartmentsSelect.Add(new Apartment() { IdApartment = apartment.IdApartment, ApartmentNumber = apartment.ApartmentNumber });
-            }
-
-            if (progressLogs == null || progressLogs.Count() < 1 || progressReports == null || progressReports.Count() < 1)
-            {
-                menssageError = "No se puede generar un reporte, ya que no tienen ningun progreso que mostrar";
-                alert = true;
             }
         }
 
