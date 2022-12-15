@@ -20,7 +20,7 @@ namespace ReportesObra.Services
             return await _dbContext.ProgressReports.FirstOrDefaultAsync(x => x.IdProgressReport == idProgressReport);
         }
 
-        public Task<List<ProgressReport>?> GetProgressReportsAsync(int? idProgressReport, int? idBuilding, int? idAparment, int? idArea, int? idElemnet, int? idSubElement, string? idSupervisor)
+        public async Task<List<ProgressReport>?> GetProgressReportsAsync(int? idProgressReport, int? idBuilding, int? idAparment, int? idArea, int? idElemnet, int? idSubElement, string? idSupervisor)
         {
             IQueryable<ProgressReport> progressReports = _dbContext.ProgressReports;
 
@@ -39,7 +39,7 @@ namespace ReportesObra.Services
             if (idSupervisor != null)
                 progressReports = progressReports.Where(x => x.IdSupervisor == idSupervisor);
 
-            return progressReports.ToListAsync();
+            return await progressReports.ToListAsync();
         }
 
         public async Task<ProgressReport?> CreateProgressReportAsync(ProgressReport progressReport)

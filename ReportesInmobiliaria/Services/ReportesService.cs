@@ -42,25 +42,49 @@ namespace ReportesObra.Services
             listApartments = _dbContext.Apartments.ToList();
         }
 
-        public async Task<byte[]> GetReporteDetalles(int idBuilding, List<int> idApartments, List<int> idActivities, List<int> idElements, List<int>? idSubElements)
+        public async Task<byte[]> GetReporteDetalles(int idBuilding, List<int> idApartments, List<int>? idActivities, List<int>? idElements, List<int>? idSubElements)
         {
-            var ByBuilding = progressReportsComplete.Where(x => x.IdBuilding == idBuilding);
-            var ByAparments = FiltradoIdApartments(ByBuilding.ToList(), idApartments);
-            var ByElement = FiltradoIdElements(ByAparments.ToList(), idElements);
-            if (idSubElements != null)
-            if (idSubElements.Count() != 0)
-            {
-                ByElement = FiltradoIdSubElements(ByElement.ToList(), idSubElements);
-            }
+            List<ProgressReport> listReport = new List<ProgressReport>();
+            listReport = progressReportsComplete.Where(x => x.IdBuilding == idBuilding).ToList();
+            listReport = FiltradoIdApartments(listReport, idApartments);
+            if(idElements != null && idElements.Count() != 0)
+                listReport = FiltradoIdElements(listReport, idElements);
+            if (idSubElements != null && idSubElements.Count() != 0)
+                listReport = FiltradoIdSubElements(listReport, idSubElements);
 
             ReporteDetalles reporteDetalles = new()
             {
-                detalladoActividades = GetSubElementsAsync(ByElement.ToList())
+                detalladoActividades = GetSubElementsAsync(listReport)
             };
-            reporteDetalles.detalladoActividades = FiltradoIdActivities(reporteDetalles.detalladoActividades, idActivities);
+            if(idActivities != null && idActivities.Count() != 0)
+                reporteDetalles.detalladoActividades = FiltradoIdActivities(reporteDetalles.detalladoActividades, idActivities);
             if (reporteDetalles.detalladoActividades.Count == 0)
                 return null;
             return _reportesFactory.CrearPdf(reporteDetalles);
+        }
+
+        public async Task<byte[]> GetReporteDetallesActividad(int idBuilding, List<int>? idActivities, List<int>? idElements, List<int> idApartments)
+        {
+            List<ProgressReport> listReport = new List<ProgressReport>();
+            string title = "(Todas)";
+            listReport = progressReportsComplete.Where(x => x.IdBuilding == idBuilding).ToList();
+            if(idElements != null && idElements.Count() != 0)
+                listReport = FiltradoIdElements(listReport, idElements);
+            listReport = FiltradoIdApartments(listReport, idApartments);
+            ReporteDetalles reporteDetalles = new()
+            {
+                detalladoActividades = GetSubElementsAsync(listReport)
+            };
+            if (idActivities != null)
+                if (idActivities.Count() != 0)
+                {
+                    reporteDetalles.detalladoActividades = FiltradoIdActivities(reporteDetalles.detalladoActividades, idActivities);
+                    title = "(Seleccionadas)";
+                }
+
+            if (reporteDetalles.detalladoActividades.Count == 0)
+                return null;
+            return _reportesFactory.CrearPdf(reporteDetalles, title);
         }
 
         public List<DetalladoActividades> GetSubElementsAsync(List<ProgressReport> progressList)
