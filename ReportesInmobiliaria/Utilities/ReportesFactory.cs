@@ -159,7 +159,7 @@ namespace ReportesObra.Utilities
             // Because all styles are derived from Normal, the next line changes the 
             // font of the whole document. Or, more exactly, it changes the font of
             // all styles and paragraphs that do not redefine the font.
-            style.Font.Name = "Times New Roman";
+            style.Font.Name = "DejaVu Serif";
 
             style = document.Styles[StyleNames.Header];
             style.ParagraphFormat.AddTabStop("10cm", TabAlignment.Right);
@@ -169,8 +169,8 @@ namespace ReportesObra.Utilities
 
             // Create a new style called Table based on style Normal
             style = document.Styles.AddStyle("Table", "Normal");
-            style.Font.Name = "Times New Roman";
-            style.Font.Size = 12;
+            style.Font.Name = "DejaVu Serif";
+            style.Font.Size = 10;
 
             // Create a new style called Reference based on style Normal
             style = document.Styles.AddStyle("Reference", "Normal");
@@ -203,7 +203,7 @@ namespace ReportesObra.Utilities
             dataParametersFrameRight.Height = "2.0cm";
             dataParametersFrameRight.Width = "6.5cm";
             //dataParametersFrameRight.Left = ShapePosition.Right;
-            dataParametersFrameRight.Left = "13.0cm";
+            dataParametersFrameRight.Left = "12.5cm";
             dataParametersFrameRight.RelativeHorizontal = RelativeHorizontal.Margin;
             dataParametersFrameRight.Top = "4.0cm";
             dataParametersFrameRight.RelativeVertical = RelativeVertical.Page;
@@ -264,8 +264,8 @@ namespace ReportesObra.Utilities
                 // Put header in header frame
                 paragraph = headerFrame.AddParagraph("Reporte Detallado Por Departamento");//Titulo
                 paragraph.AddLineBreak();
-                paragraph.Format.Font.Name = "Times New Roman";
-                paragraph.Format.Font.Size = 17;
+                paragraph.Format.Font.Name = "DejaVu Serif";
+                paragraph.Format.Font.Size = 12;
                 paragraph.Format.Font.Bold = true;
                 paragraph.Format.Alignment = ParagraphAlignment.Center;
             }
@@ -274,8 +274,8 @@ namespace ReportesObra.Utilities
                 paragraph = headerFrame.AddParagraph("Reporte Detallado Por Actividad");//Titulo
                 paragraph.AddLineBreak();
                 paragraph.AddText(_title);
-                paragraph.Format.Font.Name = "Times New Roman";
-                paragraph.Format.Font.Size = 18;
+                paragraph.Format.Font.Name = "DejaVu Serif";
+                paragraph.Format.Font.Size = 12;
                 paragraph.Format.Font.Bold = true;
                 paragraph.Format.Alignment = ParagraphAlignment.Center;
 
@@ -287,12 +287,13 @@ namespace ReportesObra.Utilities
             // Put parameters in data Frame
             paragraph = dataParametersFrameRight.AddParagraph();
             paragraph.Format.Font.Bold = true;
-            paragraph.Format.Font.Size = 10;
+            paragraph.Format.Font.Size = 9;
             paragraph.AddText("Fecha de creación: ");
 
             // Put values in data Frame
             paragraph = dataValuesFrameRight.AddParagraph();
             paragraph.AddText(DateTime.Now.ToString("dd/MM/yyyy"));
+            paragraph.Format.Font.Size = 9;
             reporteDetalles.detalladoActividades = reporteDetalles.detalladoActividades.OrderBy(x => x.numeroApartamento).ToList();
 
             for (int i = 0; i < reporteDetalles.detalladoActividades.Count; i++)
@@ -303,8 +304,8 @@ namespace ReportesObra.Utilities
                 paragraph.AddLineBreak();
                 paragraph.Format.SpaceBefore = "0.8cm";
                 paragraph.AddText("Departamento " + apartmentTitle);
-                paragraph.Format.Font.Name = "Times New Roman";
-                paragraph.Format.Font.Size = 16;
+                paragraph.Format.Font.Name = "DejaVu Serif";
+                paragraph.Format.Font.Size = 12;
                 if (_title == "")
                 {
                     paragraph.Format.Font.Bold = true;
@@ -341,7 +342,7 @@ namespace ReportesObra.Utilities
                 row.HeadingFormat = true;
                 row.Format.Alignment = ParagraphAlignment.Center;
                 //row.Format.Font.Bold = true;
-                row.Format.Font.Size = 14;
+                row.Format.Font.Size = 12;
                 row.Borders.Visible = false;
                 //row.Shading.Color = TableColor;
                 row.Cells[0].AddParagraph("Actividad");
@@ -570,7 +571,7 @@ namespace ReportesObra.Utilities
             }
         }
 
-        int FillGenericContent<T>(List<T> value, Table table, int tableIndex, string title, int fontSize = 10)
+        int FillGenericContent<T>(List<T> value, Table table, int tableIndex, string title, int fontSize = 8)
         {
             Table _table = table;
             //foreach (var item in value)
@@ -585,6 +586,7 @@ namespace ReportesObra.Utilities
                 var item = value.ElementAt(i);
                 Row row = _table.AddRow();
                 row.Format.Font.Size = (Unit)fontSize;
+                row.Format.Font.Bold = false;
                 row.VerticalAlignment = VerticalAlignment.Center;
                 if (item != null)
                     foreach (var (prop, index) in item.GetType().GetProperties().Select((v, i) => (v, i)))
@@ -684,7 +686,7 @@ namespace ReportesObra.Utilities
             return value.Count;
         }
 
-        int FillGenericContentCombination<T>(List<T> value, Table table, int tableIndex, string title, int fontSize = 10)
+        int FillGenericContentCombination<T>(List<T> value, Table table, int tableIndex, string title, int fontSize = 8)
         {
             Table _table = table;
             //foreach (var item in value)
@@ -699,6 +701,7 @@ namespace ReportesObra.Utilities
                 var item = value.ElementAt(i);
                 Row row = _table.AddRow();
                 row.Format.Font.Size = (Unit)fontSize;
+                row.Format.Font.Bold = false;
                 row.VerticalAlignment = VerticalAlignment.Center;
                 if (item != null)
                     foreach (var (prop, index) in item.GetType().GetProperties().Select((v, i) => (v, i)))
