@@ -296,7 +296,7 @@ namespace ReportesObra.Utilities
             paragraph.Format.Font.Size = 9;
             reporteDetalles.detalladoActividades = reporteDetalles.detalladoActividades.OrderBy(x => x.numeroApartamento).ToList();
 
-            for (int i = 0; i < reporteDetalles.detalladoActividades.Count; i++)
+            for (int i = 0; i < reporteDetalles.detalladoActividades.Count(); i++)
             {
                 string apartmentTitle = reporteDetalles.detalladoActividades.ElementAt(i).numeroApartamento;
                 // Create the item table
@@ -356,6 +356,8 @@ namespace ReportesObra.Utilities
                     i = FillGenericContent(reporteDetalles.detalladoActividades, tableAreas, i, apartmentTitle) - 1;
                 else
                     i = FillGenericContentCombination(reporteDetalles.detalladoActividades, tableAreas, i, apartmentTitle) - 1;
+                if (i < reporteDetalles.detalladoActividades.Count() - 1)
+                    document.LastSection.AddPageBreak();
             }
         }
 
