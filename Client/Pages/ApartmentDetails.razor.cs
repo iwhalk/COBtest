@@ -421,7 +421,7 @@ namespace Obra.Client.Pages
 
             foreach (var apart in _idsAparmentSelect)
             {
-                List<ProgressReport> progresses = await _progressReportService.GetProgressReportsAsync(idBuilding: 1, idAparment: apart);
+                List<ProgressReport> progresses = await _progressReportService.GetProgressReportsAsync(idBuilding: 1, idAparment: apart, includeProgressLogs: true);
 
                 foreach (var act in activity.IdAreas)
                 {
@@ -487,7 +487,7 @@ namespace Obra.Client.Pages
 
             foreach (var apart in _idsAparmentSelect)
             {
-                List<ProgressReport> progresses = await _progressReportService.GetProgressReportsAsync(idBuilding: 1, idAparment: apart);
+                List<ProgressReport> progresses = await _progressReportService.GetProgressReportsAsync(idBuilding: 1, idAparment: apart, includeProgressLogs: true);
 
                 foreach (var act in activity.IdAreas)
                 {

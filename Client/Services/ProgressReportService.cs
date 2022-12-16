@@ -21,7 +21,7 @@ namespace Obra.Client.Services
             return await _repository.GetAsync<ProgressReport>(id, path: "api/ProgressReport");
         }
 
-        public async Task<List<ProgressReport>> GetProgressReportsAsync(int? idProgressReport = null, int? idBuilding = null, int? idAparment = null, int? idArea = null, int? idElemnet = null, int? idSubElement = null, string? idSupervisor = null)
+        public async Task<List<ProgressReport>> GetProgressReportsAsync(int? idProgressReport = null, int? idBuilding = null, int? idAparment = null, int? idArea = null, int? idElemnet = null, int? idSubElement = null, string? idSupervisor = null, bool includeProgressLogs = false)
         {
             Dictionary<string, string> parameters = new();
 
@@ -54,16 +54,18 @@ namespace Obra.Client.Services
                 parameters.Add("idSupervisor", idSupervisor);
             }
 
+            parameters.Add("includeProgressLogs", includeProgressLogs.ToString());
+
             return await _repository.GetAsync<List<ProgressReport>>(parameters, path: "api/ProgressReport"); ;
         }
         public async Task<List<AparmentProgress>?> GetProgresReportViewAsync(int? id)
         {
             Dictionary<string, string> parameters = new();
-            parameters.Add("id", id.ToString());            
+            parameters.Add("id", id.ToString());
             return await _repository.GetAsync<List<AparmentProgress>?>(parameters, path: "api/ProgressReport/ProgressReportView");
         }
         public async Task<byte[]> PostProgressReporPDFtAsync(List<AparmentProgress> progressReportList)
-        {            
+        {
             //Dictionary<string, List<AparmentProgress>> parameters = new();
             //parameters.Add("progressAparmentList", progressReportList);
             return await _repository.PostAsync<byte[]>(progressReportList, path: "api/ProgressReport/AparmentProgressPDF");

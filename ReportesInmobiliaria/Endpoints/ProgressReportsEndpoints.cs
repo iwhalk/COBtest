@@ -30,11 +30,11 @@ namespace ReportesObra.Endpoints
             .Produces<HttpValidationProblemDetails>(StatusCodes.Status500InternalServerError, "application/problem+json")
             .AllowAnonymous();
 
-            routes.MapGet("/ProgressReports", async (int? idProgressReport, int? idBuilding, int? idAparment, int? idArea, int? idElemnet, int? idSubElement, string? idSupervisor, IProgressReportsService _progressReportsService, ILogger<Program> _logger) =>
+            routes.MapGet("/ProgressReports", async (int? idProgressReport, int? idBuilding, int? idAparment, int? idArea, int? idElemnet, int? idSubElement, string? idSupervisor, bool includeProgressLogs, IProgressReportsService _progressReportsService, ILogger<Program> _logger) =>
             {
                 try
                 {
-                    var progressReports = await _progressReportsService.GetProgressReportsAsync(idProgressReport, idBuilding, idAparment, idArea, idElemnet, idSubElement, idSupervisor);
+                    var progressReports = await _progressReportsService.GetProgressReportsAsync(idProgressReport, idBuilding, idAparment, idArea, idElemnet, idSubElement, idSupervisor, includeProgressLogs);
                     return Results.Ok(progressReports);
                 }
                 catch (Exception e)
