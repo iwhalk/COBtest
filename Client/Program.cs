@@ -26,7 +26,7 @@ builder.Services.AddSingleton(serviceProvider => (IJSInProcessRuntime)servicePro
 builder.Services.AddComponents(); 
 builder.Services.AddBlazoredToast();
 builder.Services.AddFluentUIComponents();
-
+builder.Logging.SetMinimumLevel(LogLevel.None);
 // Supply HttpClient instances that include access tokens when making requests to the server project
 
 builder.Services.AddOidcAuthentication(options =>
