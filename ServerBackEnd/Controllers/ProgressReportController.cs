@@ -38,7 +38,7 @@ namespace ApiGateway.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult> GetProgressReports(string? idProgressReport, string? idBuilding, string? idAparment, string? idArea, string? idElemnet, string? idSubElement, string? idSupervisor)
+        public async Task<ActionResult> GetProgressReports(string? idProgressReport, string? idBuilding, string? idAparment, string? idArea, string? idElemnet, string? idSubElement, string? idSupervisor, bool includeProgressLogs)
         {
             idSupervisor = GetNullableString(idSupervisor);
 
@@ -75,7 +75,7 @@ namespace ApiGateway.Controllers
             }
 
 
-            var result = await _progressReportService.GetProgressReportsAsync(idProgressReportInt, idBuildingInt, idAparmentInt, idAreaInt, idElemnetInt, idSubElementInt, idSupervisor); 
+            var result = await _progressReportService.GetProgressReportsAsync(idProgressReportInt, idBuildingInt, idAparmentInt, idAreaInt, idElemnetInt, idSubElementInt, idSupervisor, includeProgressLogs); 
 
             if (result.Succeeded)
             {

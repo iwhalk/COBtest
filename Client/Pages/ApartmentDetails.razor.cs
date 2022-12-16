@@ -421,7 +421,7 @@ namespace Obra.Client.Pages
 
             foreach (var apart in _idsAparmentSelect)
             {
-                List<ProgressReport> progresses = await _progressReportService.GetProgressReportsAsync(idBuilding: 1, idAparment: apart);
+                List<ProgressReport> progresses = await _progressReportService.GetProgressReportsAsync(idBuilding: 1, idAparment: apart, includeProgressLogs: true);
 
                 foreach (var act in activity.IdAreas)
                 {
@@ -483,32 +483,61 @@ namespace Obra.Client.Pages
 
         public async Task AdvancementProgress()
         {
-            foreach (var idAparment in _idsAparmentSelect)
+            //Lo nuevo super rapido alv
+
+            foreach (var apart in _idsAparmentSelect)
             {
-                List<ProgressReport> progressReport = await _progressReportService.GetProgressReportsAsync(idBuilding: 1, idAparment: idAparment, idElemnet: _idsElementsSelect.FirstOrDefault());
+                List<ProgressReport> progresses = await _progressReportService.GetProgressReportsAsync(idBuilding: 1, idAparment: apart, includeProgressLogs: true);
 
-                if (progressReport != null)
+                foreach (var act in activity.IdAreas)
                 {
-                    foreach (var item in progressReport)
-                    {
-                        progressReports.Add(new ProgressReport() { IdProgressReport = item.IdProgressReport, DateCreated = item.DateCreated, IdBuilding = item.IdBuilding, IdApartment = item.IdApartment, IdArea = item.IdArea, IdElement = item.IdElement, IdSubElement = item.IdSubElement, TotalPieces = item.TotalPieces, IdSupervisor = item.IdSupervisor });
-                    }
+                    ProgressReport aux = progresses.OrderByDescending(x => x.DateCreated).FirstOrDefault(x => x.IdArea == act.IdArea && x.IdElement == _idsElementsSelect.FirstOrDefault());
+
+                    if (aux != null)
+                        progressReports.Add(aux);
                 }
 
-                foreach (var item in progressReports)
-                {
-                    ProgressLog progressLog = (await _progressLogsService.GetProgressLogsAsync(idProgressReport: item.IdProgressReport)).OrderByDescending(x => x.DateCreated).FirstOrDefault();
-
-                    if (progressLog != null)
-                    {
-                        progressLogs.Add(new ProgressLog() { IdProgressLog = progressLog.IdProgressLog, IdProgressReport = progressLog.IdProgressReport, DateCreated = progressLog.DateCreated, IdStatus = progressLog.IdStatus, Pieces = progressLog.Pieces, Observation = progressLog.Observation, IdSupervisor = progressLog.IdSupervisor, IdBlobs = progressLog.IdBlobs });
-                    }
-                }
-
-                Apartment apartment = apartments.FirstOrDefault(x => x.IdApartment == idAparment);
+                Apartment apartment = apartments.FirstOrDefault(x => x.IdApartment == apart);
 
                 apartmentsSelect.Add(new Apartment() { IdApartment = apartment.IdApartment, ApartmentNumber = apartment.ApartmentNumber });
             }
+
+            foreach (var item in progressReports)
+            {
+                if (item.ProgressLogs != null && item.ProgressLogs.Count() > 0)
+                {
+                    ProgressLog aux = item.ProgressLogs.OrderByDescending(x => x.DateCreated).FirstOrDefault();
+
+                    progressLogs.Add(new ProgressLog() { IdProgressLog = aux.IdProgressLog, IdProgressReport = aux.IdProgressReport, DateCreated = aux.DateCreated, IdStatus = aux.IdStatus, Pieces = aux.Pieces, Observation = aux.Observation, IdSupervisor = aux.IdSupervisor, IdBlobs = aux.IdBlobs });
+                }
+            }
+
+            //foreach (var idAparment in _idsAparmentSelect)
+            //{
+            //    List<ProgressReport> progressReport = await _progressReportService.GetProgressReportsAsync(idBuilding: 1, idAparment: idAparment, idElemnet: _idsElementsSelect.FirstOrDefault());
+
+            //    if (progressReport != null)
+            //    {
+            //        foreach (var item in progressReport)
+            //        {
+            //            progressReports.Add(new ProgressReport() { IdProgressReport = item.IdProgressReport, DateCreated = item.DateCreated, IdBuilding = item.IdBuilding, IdApartment = item.IdApartment, IdArea = item.IdArea, IdElement = item.IdElement, IdSubElement = item.IdSubElement, TotalPieces = item.TotalPieces, IdSupervisor = item.IdSupervisor });
+            //        }
+            //    }
+
+            //    foreach (var item in progressReports)
+            //    {
+            //        ProgressLog progressLog = (await _progressLogsService.GetProgressLogsAsync(idProgressReport: item.IdProgressReport)).OrderByDescending(x => x.DateCreated).FirstOrDefault();
+
+            //        if (progressLog != null)
+            //        {
+            //            progressLogs.Add(new ProgressLog() { IdProgressLog = progressLog.IdProgressLog, IdProgressReport = progressLog.IdProgressReport, DateCreated = progressLog.DateCreated, IdStatus = progressLog.IdStatus, Pieces = progressLog.Pieces, Observation = progressLog.Observation, IdSupervisor = progressLog.IdSupervisor, IdBlobs = progressLog.IdBlobs });
+            //        }
+            //    }
+
+            //    Apartment apartment = apartments.FirstOrDefault(x => x.IdApartment == idAparment);
+
+            //    apartmentsSelect.Add(new Apartment() { IdApartment = apartment.IdApartment, ApartmentNumber = apartment.ApartmentNumber });
+            //}
         }
 
         public async Task DivisionOfColors()
