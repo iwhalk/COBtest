@@ -10,6 +10,7 @@ namespace Obra.Client.Pages
     {
         private readonly ApplicationContext _context;
         private readonly IActivitiesService _activityService;
+        private readonly NavigationManager _navigationManager;
         private readonly IProgressLogsService _progressLogsService;
         private readonly IProgressReportService _progressReportService;
         private readonly IJSRuntime _JS;
@@ -17,10 +18,11 @@ namespace Obra.Client.Pages
         private Dictionary<int, Tuple<int, int>> _idsActivitySelect { get; set; } = new();
         public bool _isLoadingProcess { get; set; }
         private bool _isFullActivity { get; set; }
-        public ProgressByActivity(ApplicationContext context, IActivitiesService activityService, IProgressLogsService progressLogsService, IProgressReportService progressReportService, IJSRuntime jS)
+        public ProgressByActivity(ApplicationContext context, NavigationManager navigationManager, IActivitiesService activityService, IProgressLogsService progressLogsService, IProgressReportService progressReportService, IJSRuntime jS)
         {
             _context = context;
             _activityService = activityService;
+            _navigationManager = navigationManager;
             _progressLogsService = progressLogsService;
             _progressReportService = progressReportService;
             _JS = jS;
@@ -29,6 +31,7 @@ namespace Obra.Client.Pages
         {
             _context.Activity = await _activityService.GetActivitiesAsync();
         }
+        private void BackPage() => _navigationManager.NavigateTo("/ProjectOverview");
         private async void AddIdActivitySelect(int idActivity)
         {
             _isLoadingProcess = true;

@@ -31,10 +31,7 @@ namespace Obra.Client.Pages
         {
             _context.Apartment = await _apartmentsService.GetApartmentsAsync();
         }
-        private void ReturnToPage()
-        {
-            _navigationManager.NavigateTo("/ProjectOverview");
-        }
+        private void BackPage() => _navigationManager.NavigateTo("/ProjectOverview");        
         private async void AddIdAparmentSelect(int idDeparment)
         {
             _isLoadingProcess = true;
