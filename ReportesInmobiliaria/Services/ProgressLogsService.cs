@@ -2,6 +2,7 @@
 using ReportesObra.Interfaces;
 using SharedLibrary.Data;
 using SharedLibrary.Models;
+using System.Linq.Expressions;
 
 namespace ReportesObra.Services
 {
@@ -19,7 +20,7 @@ namespace ReportesObra.Services
             return await _dbContext.ProgressLogs.FirstOrDefaultAsync(x => x.IdProgressLog == idProgressLog);
         }
 
-        public Task<List<ProgressLog>?>? GetProgressLogsAsync(int? idProgressLog, int? idProgressReport, int? idStatus, string? idSupervisor)
+        public async Task<List<ProgressLog>?>? GetProgressLogsAsync(int? idProgressLog, int? idProgressReport, int? idStatus, string? idSupervisor)
         {
             IQueryable<ProgressLog> progressLogs = _dbContext.ProgressLogs;
 
@@ -32,7 +33,7 @@ namespace ReportesObra.Services
             if (idSupervisor != null)
                 progressLogs = progressLogs.Where(x => x.IdSupervisor == idSupervisor);
 
-            System.Linq.Expressions.Expression<Func<ProgressLog, ProgressLog>> selector = x => new ProgressLog
+            Expression<Func<ProgressLog, ProgressLog>> selector = x => new ProgressLog
             {
                 IdProgressLog = x.IdProgressLog,
                 IdProgressReport = x.IdProgressReport,
@@ -50,7 +51,7 @@ namespace ReportesObra.Services
                     BlobSize = y.BlobSize
                 }).ToList()
             };
-            return progressLogs?.Select(selector).ToListAsync();
+            return await progressLogs?.Select(selector).ToListAsync();
         }
 
         public async Task<ProgressLog?> CreateProgressLogsAsync(ProgressLog progressLog)
