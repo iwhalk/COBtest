@@ -383,7 +383,7 @@ namespace ReportesObra.Utilities
             dataParametersFrameRight.Height = "2.0cm";
             dataParametersFrameRight.Width = "6.5cm";
             //dataParametersFrameRight.Left = ShapePosition.Right;
-            dataParametersFrameRight.Left = "13.0cm";
+            dataParametersFrameRight.Left = "11.8cm";
             dataParametersFrameRight.RelativeHorizontal = RelativeHorizontal.Margin;
             dataParametersFrameRight.Top = "4.0cm";
             dataParametersFrameRight.RelativeVertical = RelativeVertical.Page;
@@ -391,14 +391,14 @@ namespace ReportesObra.Utilities
             // Create the text frame for the data values
             dataValuesFrame = section.AddTextFrame();
             dataValuesFrame.Width = "7.5cm";
-            dataValuesFrame.Left = "2.3cm";//"3.5cm"
+            dataValuesFrame.Left = "2.3cm";//"3.5cm"            
             dataValuesFrame.RelativeHorizontal = RelativeHorizontal.Margin;
             dataValuesFrame.Top = "4.0cm";
             dataValuesFrame.RelativeVertical = RelativeVertical.Page;
 
             dataValuesFrameRight = section.AddTextFrame();
             dataValuesFrameRight.Width = "6.5cm";
-            dataValuesFrameRight.Left = "16.0cm";//"3.5cm"
+            dataValuesFrameRight.Left = "15.4cm";//"3.5cm"
             dataValuesFrameRight.RelativeHorizontal = RelativeHorizontal.Margin;
             dataValuesFrameRight.Top = "4.0cm";
             dataValuesFrameRight.RelativeVertical = RelativeVertical.Page;
@@ -443,15 +443,15 @@ namespace ReportesObra.Utilities
             // Put header in header frame
             Paragraph paragraph = headerFrame.AddParagraph("Resumen de Avance General Por Departamento");//Titulo
             paragraph.AddLineBreak();
-            paragraph.Format.Font.Name = "Times New Roman";
-            paragraph.Format.Font.Size = 14;
+            paragraph.Format.Font.Name = "DejaVu Serif";
+            paragraph.Format.Font.Size = 11;
             paragraph.Format.Font.Bold = true;
             paragraph.Format.Alignment = ParagraphAlignment.Center;
 
             // Put parameters in data Frame
             paragraph = dataParametersFrameRight.AddParagraph();
             paragraph.Format.Font.Bold = true;
-            paragraph.Format.Font.Size = 10;
+            paragraph.Format.Font.Size = 9;
             paragraph.AddText("Fecha de creación: ");
 
             // Put values in data Frame
@@ -461,7 +461,7 @@ namespace ReportesObra.Utilities
             // Add the data separation field
             paragraph = section.AddParagraph();
             paragraph.Format.SpaceBefore = "2.0cm";//"2.0cm"
-            paragraph.Format.Font.Size = 10;
+            paragraph.Format.Font.Size = 8;
             paragraph.Style = "Reference";
             paragraph.AddFormattedText("", TextFormat.Bold);
 
@@ -477,9 +477,9 @@ namespace ReportesObra.Utilities
             rowo.HeadingFormat = true;
             rowo.Format.Alignment = ParagraphAlignment.Center;
             rowo.Format.Font.Bold = true;
-            rowo.Format.Font.Size = 14;
+            rowo.Format.Font.Size = 10;
             rowo.Borders.Visible = false;
-            rowo.BottomPadding = "1cm";
+            rowo.BottomPadding = "0.5cm";
             rowo.Cells[0].AddParagraph("Departamento");
             rowo.Cells[1].AddParagraph("Avance General");
           
