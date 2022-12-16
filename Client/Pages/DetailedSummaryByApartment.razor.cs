@@ -1,18 +1,12 @@
 ﻿using Microsoft.AspNetCore.Components;
-using Microsoft.EntityFrameworkCore.SqlServer.Query.Internal;
-using Microsoft.Fast.Components.FluentUI.DesignTokens;
 using Microsoft.JSInterop;
 using Obra.Client.Interfaces;
-using Obra.Client.Models;
 using Obra.Client.Stores;
 using SharedLibrary.Models;
-using System.Diagnostics;
-using System.Runtime.CompilerServices;
-using System.Text.Encodings.Web;
 
 namespace Obra.Client.Pages
 {
-    public partial class ApartmentDetails : ComponentBase
+    public partial class DetailedSummaryByApartment : ComponentBase
     {
         private readonly ApplicationContext _context;
         private readonly IApartmentsService _apartmentsService;
@@ -63,7 +57,7 @@ namespace Obra.Client.Pages
         private bool isFirstView { get; set; } = true;
         private bool showModal { get; set; } = false;
 
-        public ApartmentDetails(ApplicationContext context, IApartmentsService apartmentsService, IActivitiesService activitiesService, IElementsService elementsService, ISubElementsService subElementsService, IProgressReportService progressReportService, IProgressLogsService progressLogsService, IReportesService reportesService, IJSRuntime jS)
+        public DetailedSummaryByApartment(ApplicationContext context, IApartmentsService apartmentsService, IActivitiesService activitiesService, IElementsService elementsService, ISubElementsService subElementsService, IProgressReportService progressReportService, IProgressLogsService progressLogsService, IReportesService reportesService, IJSRuntime jS)
         {
             _context = context;
             _apartmentsService = apartmentsService;
@@ -421,7 +415,7 @@ namespace Obra.Client.Pages
 
             foreach (var apart in _idsAparmentSelect)
             {
-                List<ProgressReport> progresses = await _progressReportService.GetProgressReportsAsync(idBuilding: 1, idAparment: apart, includeProgressLogs: true);
+                List<ProgressReport> progresses = await _progressReportService.GetProgressReportsAsync(idBuilding: 1, idApartment: apart, includeProgressLogs: true);
 
                 foreach (var act in activity.IdAreas)
                 {
@@ -487,7 +481,7 @@ namespace Obra.Client.Pages
 
             foreach (var apart in _idsAparmentSelect)
             {
-                List<ProgressReport> progresses = await _progressReportService.GetProgressReportsAsync(idBuilding: 1, idAparment: apart, includeProgressLogs: true);
+                List<ProgressReport> progresses = await _progressReportService.GetProgressReportsAsync(idBuilding: 1, idApartment: apart, includeProgressLogs: true);
 
                 foreach (var act in activity.IdAreas)
                 {
