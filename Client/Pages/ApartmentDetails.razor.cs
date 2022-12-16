@@ -427,7 +427,10 @@ namespace Obra.Client.Pages
                 {
                     foreach (var sub in _idsSubElementsSelect)
                     {
-                        progressReports.Add((progresses.OrderByDescending(x => x.DateCreated).FirstOrDefault(x => x.IdArea == act.IdArea && x.IdElement == _idsElementsSelect.FirstOrDefault() && x.IdSubElement == sub)));
+                        ProgressReport aux = progresses.OrderByDescending(x => x.DateCreated).FirstOrDefault(x => x.IdArea == act.IdArea && x.IdElement == _idsElementsSelect.FirstOrDefault() && x.IdSubElement == sub);
+
+                        if (aux != null)
+                            progressReports.Add(aux);
                     }
                 }
 
@@ -440,12 +443,9 @@ namespace Obra.Client.Pages
             {
                 if (item.ProgressLogs != null && item.ProgressLogs.Count() > 0)
                 {
-                    List<ProgressLog> aux = (List<ProgressLog>)item.ProgressLogs;
+                    ProgressLog aux = item.ProgressLogs.OrderByDescending(x => x.DateCreated).FirstOrDefault();
 
-                    foreach (var log in aux)
-                    {
-                        progressLogs.Add(new ProgressLog() { IdProgressLog = log.IdProgressLog, IdProgressReport = log.IdProgressReport, DateCreated = log.DateCreated, IdStatus = log.IdStatus, Pieces = log.Pieces, Observation = log.Observation, IdSupervisor = log.IdSupervisor, IdBlobs = log.IdBlobs });
-                    }
+                    progressLogs.Add(new ProgressLog() { IdProgressLog = aux.IdProgressLog, IdProgressReport = aux.IdProgressReport, DateCreated = aux.DateCreated, IdStatus = aux.IdStatus, Pieces = aux.Pieces, Observation = aux.Observation, IdSupervisor = aux.IdSupervisor, IdBlobs = aux.IdBlobs });
                 }
             }
 
