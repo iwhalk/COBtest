@@ -16,7 +16,7 @@ namespace ReportesObra.Services
         }
 
         public async Task<ProgressReport> GetProgressReportAsync(int idProgressReport)
-        {           
+        {
             return await _dbContext.ProgressReports.FirstOrDefaultAsync(x => x.IdProgressReport == idProgressReport);
         }
 
@@ -39,7 +39,40 @@ namespace ReportesObra.Services
             if (idSupervisor != null)
                 progressReports = progressReports.Where(x => x.IdSupervisor == idSupervisor);
 
-            return await progressReports.ToListAsync();
+
+            System.Linq.Expressions.Expression<Func<ProgressReport, ProgressReport>> selector = x => new ProgressReport
+            {
+                IdProgressReport = x.IdProgressReport,
+                DateCreated = x.DateCreated,
+                IdBuilding = x.IdBuilding,
+                IdApartment = x.IdApartment,
+                IdArea = x.IdArea,
+                IdElement = x.IdElement,
+                IdSubElement = x.IdSubElement,
+                TotalPieces = x.TotalPieces,
+                IdSupervisor = x.IdSupervisor,
+                ProgressLogs = x.ProgressLogs.Select(y => new ProgressLog
+                {
+                    IdProgressLog = y.IdProgressLog,
+                    IdProgressReport = y.IdProgressReport,
+                    DateCreated = y.DateCreated,
+                    IdStatus = y.IdStatus,
+                    Pieces = y.Pieces,
+                    Observation = y.Observation,
+                    IdSupervisor = y.IdSupervisor,
+                    IdBlobs = y.IdBlobs.Select(z => new Blob
+                    {
+                        IdBlob = z.IdBlob,
+                        ContainerName = z.ContainerName,
+                        IsPrivate = z.IsPrivate,
+                        Uri = z.Uri,
+                        BlobSize = z.BlobSize
+                    }).ToList()
+
+                }).ToList()
+            };
+
+            return await progressReports.Select(selector).ToListAsync();
         }
 
         public async Task<ProgressReport?> CreateProgressReportAsync(ProgressReport progressReport)

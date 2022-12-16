@@ -21,7 +21,19 @@ namespace ReportesObra.Services
             if (idArea != null)
                 activities = activities.Where(x => x.IdAreas.Any(y => y.IdArea == idArea));
 
-            return await activities.ToListAsync();
+            System.Linq.Expressions.Expression<Func<Activity, Activity>> selector = x => new Activity
+            {
+                IdActivity = x.IdActivity,
+                ActivityName = x.ActivityName,
+                Elements = x.Elements,
+                IdAreas = x.IdAreas.Select(y => new Area
+                {
+                    IdArea = y.IdArea,
+                    AreaName = y.AreaName,                    
+                }).ToList()                
+            };
+
+            return await activities.Select(selector).ToListAsync();
         }
 
         public async Task<Activity?> GetActivityAsync(int id)

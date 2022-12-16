@@ -6,8 +6,8 @@ using SharedLibrary.Models;
 
 namespace Obra.Client.Pages
 {
-    public partial class ProgressForApartment : ComponentBase
-    {
+    public partial class ProgressByApartment : ComponentBase
+    {        
         private readonly ApplicationContext _context;
         private readonly IApartmentsService _apartmentsService;
         private readonly IProgressLogsService _progressLogsService;
@@ -17,8 +17,8 @@ namespace Obra.Client.Pages
         //Variable locales
         private Dictionary<int, Tuple<double, double>> _idsAparmentSelect { get; set; } = new();
         public bool _isLoadingProcess { get; set; }
-        private bool _isFullAparment { get; set;}
-        public ProgressForApartment(ApplicationContext context, NavigationManager navigationManager, IApartmentsService apartmentsService, IProgressLogsService progressLogsService, IProgressReportService progressReportService, IJSRuntime jS)
+        private bool _isFullAparment { get; set; }
+        public ProgressByApartment(ApplicationContext context, NavigationManager navigationManager, IApartmentsService apartmentsService, IProgressLogsService progressLogsService, IProgressReportService progressReportService, IJSRuntime jS)
         {
             _context = context;
             _apartmentsService = apartmentsService;
@@ -29,12 +29,9 @@ namespace Obra.Client.Pages
         }
         protected async override Task OnInitializedAsync()
         {
-            _context.Apartment = await _apartmentsService.GetApartmentsAsync();                        
+            _context.Apartment = await _apartmentsService.GetApartmentsAsync();
         }
-        private void ReturnToPage()
-        {
-            _navigationManager.NavigateTo("/ProjectOverview"); 
-        }
+        private void BackPage() => _navigationManager.NavigateTo("/ProjectOverview");        
         private async void AddIdAparmentSelect(int idDeparment)
         {
             _isLoadingProcess = true;
@@ -88,7 +85,7 @@ namespace Obra.Client.Pages
                         }
                     }
                     _isFullAparment = true;
-                }                
+                }
             }
             _isLoadingProcess = false;
             StateHasChanged();
@@ -103,7 +100,7 @@ namespace Obra.Client.Pages
 
             }).ToList();
 
-            var bytesForPDF = await  _progressReportService.PostProgressReporPDFtAsync(listAparmentProgress);
+            var bytesForPDF = await _progressReportService.PostProgressReporPDFtAsync(listAparmentProgress);
 
             if (bytesForPDF != null)
             {
@@ -111,7 +108,7 @@ namespace Obra.Client.Pages
                 var fileName = "AvancePorDepartamento.pdf";
                 var fileStream = new MemoryStream(bytesForPDF);
                 using var streamRef = new DotNetStreamReference(stream: fileStream);
-                await _JS.InvokeVoidAsync("downloadFileFromStream", fileName, streamRef);                
+                await _JS.InvokeVoidAsync("downloadFileFromStream", fileName, streamRef);
             }
             _isLoadingProcess = false;
             StateHasChanged();

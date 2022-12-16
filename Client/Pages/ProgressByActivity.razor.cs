@@ -6,24 +6,23 @@ using SharedLibrary.Models;
 
 namespace Obra.Client.Pages
 {
-    public partial class ProgressActivityForAparment : ComponentBase
+    public partial class ProgressByActivity : ComponentBase
     {
-        public int MyProperty { get; set; }
         private readonly ApplicationContext _context;
         private readonly IActivitiesService _activityService;
-        private readonly IApartmentsService _apartmentService;
+        private readonly NavigationManager _navigationManager;
         private readonly IProgressLogsService _progressLogsService;
         private readonly IProgressReportService _progressReportService;
         private readonly IJSRuntime _JS;
         //Variable locales
-        private Dictionary<int, Tuple<int, int>> _idsAparmentSelect { get; set; } = new();
+        private Dictionary<int, Tuple<int, int>> _idsActivitySelect { get; set; } = new();
         public bool _isLoadingProcess { get; set; }
-        private bool _isFullAparment { get; set; }
-        public ProgressActivityForAparment(ApplicationContext context, IActivitiesService activityService, IApartmentsService apartmentService, IProgressLogsService progressLogsService, IProgressReportService progressReportService, IJSRuntime jS)
+        private bool _isFullActivity { get; set; }
+        public ProgressByActivity(ApplicationContext context, NavigationManager navigationManager, IActivitiesService activityService, IProgressLogsService progressLogsService, IProgressReportService progressReportService, IJSRuntime jS)
         {
             _context = context;
             _activityService = activityService;
-            _apartmentService = apartmentService;
+            _navigationManager = navigationManager;
             _progressLogsService = progressLogsService;
             _progressReportService = progressReportService;
             _JS = jS;
@@ -31,12 +30,12 @@ namespace Obra.Client.Pages
         protected async override Task OnInitializedAsync()
         {
             _context.Activity = await _activityService.GetActivitiesAsync();
-            _context.Apartment = await _apartmentService.GetApartmentsAsync();
         }
-        private async void AddIdAparmentSelect(int idActivity)
+        private void BackPage() => _navigationManager.NavigateTo("/ProjectOverview");
+        private async void AddIdActivitySelect(int idActivity)
         {
             _isLoadingProcess = true;
-            if (!_idsAparmentSelect.ContainsKey(idActivity))
+            if (!_idsActivitySelect.ContainsKey(idActivity))
             {
                 //change for real endpoint for this view
                 var infoProgress = await _progressReportService.GetProgresReportViewAsync(idActivity);
@@ -44,16 +43,16 @@ namespace Obra.Client.Pages
                 {
                     var porcentageProgress = (int)Math.Round(infoProgress.FirstOrDefault().ApartmentProgress);
                     var porcentage = new Tuple<int, int>(porcentageProgress, 100 - porcentageProgress);
-                    _idsAparmentSelect.Add(idActivity, porcentage);
+                    _idsActivitySelect.Add(idActivity, porcentage);
                 }
                 else
                 {
-                    _idsAparmentSelect.Add(idActivity, new Tuple<int, int>(0, 100));
+                    _idsActivitySelect.Add(idActivity, new Tuple<int, int>(0, 100));
                 }
             }
             else
             {
-                _idsAparmentSelect = _idsAparmentSelect.Where(x => x.Key != idActivity).Select(x => new { x.Key, x.Value }).ToDictionary(x => x.Key, x => x.Value);
+                _idsActivitySelect = _idsActivitySelect.Where(x => x.Key != idActivity).Select(x => new { x.Key, x.Value }).ToDictionary(x => x.Key, x => x.Value);
             }
             _isLoadingProcess = false;
             StateHasChanged();
@@ -61,14 +60,14 @@ namespace Obra.Client.Pages
         private async void FullActivity()
         {
             _isLoadingProcess = true;
-            if (_idsAparmentSelect.Count() == _context.Activity.Count())
+            if (_idsActivitySelect.Count() == _context.Activity.Count())
             {
-                _isFullAparment = false;
-                _idsAparmentSelect.Clear();
+                _isFullActivity = false;
+                _idsActivitySelect.Clear();
             }
             else
             {
-                _idsAparmentSelect.Clear();
+                _idsActivitySelect.Clear();
                 var infoProgress = await _progressReportService.GetProgresReportViewAsync(null);
                 if (infoProgress != null)
                 {
@@ -78,14 +77,14 @@ namespace Obra.Client.Pages
                         {
                             var porcentageProgress = (int)Math.Round(infoProgress.Where(x => x.ApartmentNumber == activity.ActivityName).FirstOrDefault().ApartmentProgress);
                             var porcentage = new Tuple<int, int>(porcentageProgress, 100 - porcentageProgress);
-                            _idsAparmentSelect.Add(activity.IdActivity, porcentage);
+                            _idsActivitySelect.Add(activity.IdActivity, porcentage);
                         }
                         else
                         {
-                            _idsAparmentSelect.Add(activity.IdActivity, new Tuple<int, int>(0, 100));
+                            _idsActivitySelect.Add(activity.IdActivity, new Tuple<int, int>(0, 100));
                         }
                     }
-                    _isFullAparment = true;
+                    _isFullActivity = true;
                 }
             }
             _isLoadingProcess = false;
@@ -94,7 +93,7 @@ namespace Obra.Client.Pages
         private async void GeneratePDfPorgressaprment()
         {
             _isLoadingProcess = true;
-            var listAparmentProgress = _idsAparmentSelect.Select(x => new AparmentProgress
+            var listAparmentProgress = _idsActivitySelect.Select(x => new AparmentProgress
             {
                 ApartmentNumber = _context.Apartment.Find(o => o.IdApartment == x.Key).ApartmentNumber,
                 ApartmentProgress = x.Value.Item1 * 1.0
@@ -106,7 +105,7 @@ namespace Obra.Client.Pages
             if (bytesForPDF != null)
             {
 
-                var fileName = "AvanceActividadPorDepartamento.pdf";
+                var fileName = "AvancePorActividad.pdf";
                 var fileStream = new MemoryStream(bytesForPDF);
                 using var streamRef = new DotNetStreamReference(stream: fileStream);
                 await _JS.InvokeVoidAsync("downloadFileFromStream", fileName, streamRef);
