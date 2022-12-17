@@ -21,7 +21,7 @@ namespace Obra.Client.Services
             return await _repository.GetAsync<ProgressReport>(id, path: "api/ProgressReport");
         }
 
-        public async Task<List<ProgressReport>> GetProgressReportsAsync(int? idProgressReport = null, int? idBuilding = null, int? idAparment = null, int? idArea = null, int? idElemnet = null, int? idSubElement = null, string? idSupervisor = null, bool includeProgressLogs = false)
+        public async Task<List<ProgressReport>> GetProgressReportsAsync(int? idProgressReport = null, int? idBuilding = null, int? idApartment = null, int? idArea = null, int? idElement = null, int? idSubElement = null, string? idSupervisor = null, bool includeProgressLogs = false)
         {
             Dictionary<string, string> parameters = new();
 
@@ -33,17 +33,17 @@ namespace Obra.Client.Services
             {
                 parameters.Add("idBuilding", idBuilding.ToString());
             }
-            if (idAparment != null && idAparment > 0)
+            if (idApartment != null && idApartment > 0)
             {
-                parameters.Add("idAparment", idAparment.ToString());
+                parameters.Add("idApartment", idApartment.ToString());
             }
             if (idArea != null && idArea > 0)
             {
                 parameters.Add("idArea", idArea.ToString());
             }
-            if (idElemnet != null && idElemnet > 0)
+            if (idElement != null && idElement > 0)
             {
-                parameters.Add("idElemnet", idElemnet.ToString());
+                parameters.Add("idElement", idElement.ToString());
             }
             if (idSubElement != null && idSubElement > 0)
             {

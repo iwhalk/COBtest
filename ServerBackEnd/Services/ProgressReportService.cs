@@ -18,7 +18,7 @@ namespace ApiGateway.Services
             return await GetAsync<ProgressReport>(id, path: "ProgressReport");
         }
 
-        public async Task<ApiResponse<List<ProgressReport>>> GetProgressReportsAsync(int? idProgressReport, int? idBuilding, int? idAparment, int? idArea, int? idElemnet, int? idSubElement, string? idSupervisor, bool includeProgressLogs)
+        public async Task<ApiResponse<List<ProgressReport>>> GetProgressReportsAsync(int? idProgressReport, int? idBuilding, int? idApartment, int? idArea, int? idElement, int? idSubElement, string? idSupervisor, bool includeProgressLogs)
         {
             Dictionary<string, string> parameters = new();
 
@@ -30,17 +30,17 @@ namespace ApiGateway.Services
             {
                 parameters.Add("idBuilding", idBuilding.ToString());
             }
-            if (idAparment != null && idAparment > 0)
+            if (idApartment != null && idApartment > 0)
             {
-                parameters.Add("idAparment", idAparment.ToString());
+                parameters.Add("idApartment", idApartment.ToString());
             }
             if (idArea != null && idArea > 0)
             {
                 parameters.Add("idArea", idArea.ToString());
             }
-            if (idElemnet != null && idElemnet > 0)
+            if (idElement != null && idElement > 0)
             {
-                parameters.Add("idElemnet", idElemnet.ToString());
+                parameters.Add("idElement", idElement.ToString());
             }
             if (idSubElement != null && idSubElement > 0)
             {

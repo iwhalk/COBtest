@@ -20,7 +20,7 @@ namespace ReportesObra.Services
             return await _dbContext.ProgressReports.FirstOrDefaultAsync(x => x.IdProgressReport == idProgressReport);
         }
 
-        public async Task<List<ProgressReport>?> GetProgressReportsAsync(int? idProgressReport, int? idBuilding, int? idAparment, int? idArea, int? idElemnet, int? idSubElement, string? idSupervisor, bool includeProgressLogs)
+        public async Task<List<ProgressReport>?> GetProgressReportsAsync(int? idProgressReport, int? idBuilding, int? idApartment, int? idArea, int? idElement, int? idSubElement, string? idSupervisor, bool includeProgressLogs)
         {
             IQueryable<ProgressReport> progressReports = _dbContext.ProgressReports;
 
@@ -28,12 +28,12 @@ namespace ReportesObra.Services
                 progressReports = progressReports.Where(x => x.IdProgressReport == idProgressReport);
             if (idBuilding != null)
                 progressReports = progressReports.Where(x => x.IdBuilding == idBuilding);
-            if (idAparment != null)
-                progressReports = progressReports.Where(x => x.IdApartment == idAparment);
+            if (idApartment != null)
+                progressReports = progressReports.Where(x => x.IdApartment == idApartment);
             if (idArea != null)
                 progressReports = progressReports.Where(x => x.IdArea == idArea);
-            if (idElemnet != null)
-                progressReports = progressReports.Where(x => x.IdElement == idElemnet);
+            if (idElement != null)
+                progressReports = progressReports.Where(x => x.IdElement == idElement);
             if (idSubElement != null)
                 progressReports = progressReports.Where(x => x.IdSubElement == idSubElement);
             if (idSupervisor != null)

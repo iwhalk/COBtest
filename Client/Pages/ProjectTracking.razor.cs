@@ -150,8 +150,8 @@ namespace Obra.Client.Pages
 
         public async Task GetCurrentProgressReport(int? idElement =  null, int? idSubElement = null)
         {
-            CurrentProgressReport = (await _progressReportService.GetProgressReportsAsync(idBuilding: 1, idAparment: CurrentApartment?.IdApartment, idArea: CurrentArea?.IdArea, 
-                idElemnet: idElement ?? CurrentElement?.IdElement, idSubElement: idSubElement))?.OrderByDescending(x => x.DateCreated).FirstOrDefault();
+            CurrentProgressReport = (await _progressReportService.GetProgressReportsAsync(idBuilding: 1, idApartment: CurrentApartment?.IdApartment, idArea: CurrentArea?.IdArea, 
+                idElement: idElement ?? CurrentElement?.IdElement, idSubElement: idSubElement))?.OrderByDescending(x => x.DateCreated).FirstOrDefault();
             if (CurrentProgressReport != null)
             {
                 var NewProgressLog = NewProgressLogs.FirstOrDefault(x => x.IdProgressReport == CurrentProgressReport.IdProgressReport);
