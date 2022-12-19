@@ -1,7 +1,6 @@
 ﻿using ReportesObra.Interfaces;
 using SharedLibrary.Models;
 using System.ComponentModel.DataAnnotations;
-using System.Web.Http;
 
 namespace ReportesObra.Endpoints
 {

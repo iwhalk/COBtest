@@ -150,8 +150,8 @@ namespace Obra.Client.Pages
 
         public async Task GetCurrentProgressReport(int? idElement =  null, int? idSubElement = null)
         {
-            CurrentProgressReport = (await _progressReportService.GetProgressReportsAsync(idBuilding: 1, idAparment: CurrentApartment?.IdApartment, idArea: CurrentArea?.IdArea, 
-                idElemnet: idElement ?? CurrentElement?.IdElement, idSubElement: idSubElement))?.OrderByDescending(x => x.DateCreated).FirstOrDefault();
+            CurrentProgressReport = (await _progressReportService.GetProgressReportsAsync(idBuilding: 1, idApartment: CurrentApartment?.IdApartment, idArea: CurrentArea?.IdArea, 
+                idElement: idElement ?? CurrentElement?.IdElement, idSubElement: idSubElement))?.OrderByDescending(x => x.DateCreated).FirstOrDefault();
             if (CurrentProgressReport != null)
             {
                 var NewProgressLog = NewProgressLogs.FirstOrDefault(x => x.IdProgressReport == CurrentProgressReport.IdProgressReport);
@@ -331,7 +331,7 @@ namespace Obra.Client.Pages
             Loading = false;
             StateHasChanged();
             //_toastService.ShowSuccess("Se guardaron los campos del detalle de avance");
-            _toastService.ShowToast<MyToastComponent>(new ToastInstanceSettings(5, false));
+            _toastService.ShowToast<ToastComponent>(new ToastInstanceSettings(5, false));
             //_navigate.NavigateTo("/");
         }
     }
