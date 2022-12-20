@@ -31,8 +31,8 @@ builder.Logging.SetMinimumLevel(LogLevel.None);
 
 builder.Services.AddOidcAuthentication(options =>
 {
-    options.ProviderOptions.ClientId = "blazor-cob";
-    //options.ProviderOptions.ClientId = "blazor-client";
+    //options.ProviderOptions.ClientId = "blazor-cob";
+    options.ProviderOptions.ClientId = "blazor-client";
     options.ProviderOptions.Authority = builder.HostEnvironment.BaseAddress;
     options.ProviderOptions.ResponseType = "code";
 
