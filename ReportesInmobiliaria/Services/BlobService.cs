@@ -24,7 +24,7 @@ namespace ReportesObra.Services
             var blob = await _dbContext.Blobs.FindAsync(id);
             if (blob == null) return null;
 
-            var blobContainerClient = _blobServiceClient.GetBlobContainerClient("inventoryblobs");
+            var blobContainerClient = _blobServiceClient.GetBlobContainerClient("imagescob");
             var blobClient = blobContainerClient.GetBlobClient(blob.BlobName);
 
             var blobFile = await blobClient.DownloadAsync();
@@ -48,7 +48,7 @@ namespace ReportesObra.Services
 
             try
             {
-                var blobContainerClient = _blobServiceClient.GetBlobContainerClient("inventoryblobs");
+                var blobContainerClient = _blobServiceClient.GetBlobContainerClient("imagescob");
                 var extensionFile = file.ContentType == "" ? "jpeg" : file.ContentType.Split("/")[1]?? "jpeg";
                 var blobName = Guid.NewGuid().ToString() + "." + extensionFile;
                 var blobClient = blobContainerClient.GetBlobClient(blobName);
@@ -58,7 +58,7 @@ namespace ReportesObra.Services
                     BlobName = blobName,
                     Uri = blobClient.Uri.ToString(),
                     BlobSize = file.Length.ToString(),
-                    ContainerName = "inventoryblobs",
+                    ContainerName = "imagescob",
                     IsPrivate = false,
                     BlobTypeId = "",
                     ContentType = file.ContentType == "" ? "image/jpeg" : file.ContentType?? "image/jpeg",
@@ -105,7 +105,7 @@ namespace ReportesObra.Services
                 return false;
 
             var blobName = blob.BlobName;
-            var blobContainerClient = _blobServiceClient.GetBlobContainerClient("inventoryblobs");
+            var blobContainerClient = _blobServiceClient.GetBlobContainerClient("imagescob");
             var blobClient = blobContainerClient.GetBlobClient(blobName);
             var response = await blobClient.DeleteAsync();
 

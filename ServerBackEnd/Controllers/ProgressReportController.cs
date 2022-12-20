@@ -38,15 +38,15 @@ namespace ApiGateway.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult> GetProgressReports(string? idProgressReport, string? idBuilding, string? idAparment, string? idArea, string? idElemnet, string? idSubElement, string? idSupervisor)
+        public async Task<ActionResult> GetProgressReports(string? idProgressReport, string? idBuilding, string? idApartment, string? idArea, string? idElement, string? idSubElement, string? idSupervisor, bool includeProgressLogs)
         {
             idSupervisor = GetNullableString(idSupervisor);
 
             int idProgressReportInt = 0;
             int idBuildingInt = 0;
-            int idAparmentInt = 0;
+            int idApartmentInt = 0;
             int idAreaInt = 0;
-            int idElemnetInt = 0;
+            int idElementInt = 0;
             int idSubElementInt = 0;
 
             if (idProgressReport != null)
@@ -57,17 +57,17 @@ namespace ApiGateway.Controllers
             {
                 idBuildingInt = Convert.ToInt16(idBuilding);
             }
-            if (idAparment != null)
+            if (idApartment != null)
             {
-                idAparmentInt = Convert.ToInt16(idAparment);
+                idApartmentInt = Convert.ToInt16(idApartment);
             }
             if (idArea != null)
             {
                 idAreaInt = Convert.ToInt16(idArea);
             }
-            if (idElemnet != null)
+            if (idElement != null)
             {
-                idElemnetInt = Convert.ToInt16(idElemnet);
+                idElementInt = Convert.ToInt16(idElement);
             }
             if (idSubElement != null)
             {
@@ -75,7 +75,7 @@ namespace ApiGateway.Controllers
             }
 
 
-            var result = await _progressReportService.GetProgressReportsAsync(idProgressReportInt, idBuildingInt, idAparmentInt, idAreaInt, idElemnetInt, idSubElementInt, idSupervisor); 
+            var result = await _progressReportService.GetProgressReportsAsync(idProgressReportInt, idBuildingInt, idApartmentInt, idAreaInt, idElementInt, idSubElementInt, idSupervisor, includeProgressLogs); 
 
             if (result.Succeeded)
             {

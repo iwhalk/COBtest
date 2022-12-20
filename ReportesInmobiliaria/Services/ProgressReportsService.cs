@@ -20,7 +20,7 @@ namespace ReportesObra.Services
             return await _dbContext.ProgressReports.FirstOrDefaultAsync(x => x.IdProgressReport == idProgressReport);
         }
 
-        public async Task<List<ProgressReport>?> GetProgressReportsAsync(int? idProgressReport, int? idBuilding, int? idAparment, int? idArea, int? idElemnet, int? idSubElement, string? idSupervisor)
+        public async Task<List<ProgressReport>?> GetProgressReportsAsync(int? idProgressReport, int? idBuilding, int? idApartment, int? idArea, int? idElement, int? idSubElement, string? idSupervisor, bool includeProgressLogs)
         {
             IQueryable<ProgressReport> progressReports = _dbContext.ProgressReports;
 
@@ -28,51 +28,55 @@ namespace ReportesObra.Services
                 progressReports = progressReports.Where(x => x.IdProgressReport == idProgressReport);
             if (idBuilding != null)
                 progressReports = progressReports.Where(x => x.IdBuilding == idBuilding);
-            if (idAparment != null)
-                progressReports = progressReports.Where(x => x.IdApartment == idAparment);
+            if (idApartment != null)
+                progressReports = progressReports.Where(x => x.IdApartment == idApartment);
             if (idArea != null)
                 progressReports = progressReports.Where(x => x.IdArea == idArea);
-            if (idElemnet != null)
-                progressReports = progressReports.Where(x => x.IdElement == idElemnet);
+            if (idElement != null)
+                progressReports = progressReports.Where(x => x.IdElement == idElement);
             if (idSubElement != null)
                 progressReports = progressReports.Where(x => x.IdSubElement == idSubElement);
             if (idSupervisor != null)
                 progressReports = progressReports.Where(x => x.IdSupervisor == idSupervisor);
 
-
-            System.Linq.Expressions.Expression<Func<ProgressReport, ProgressReport>> selector = x => new ProgressReport
+            if (includeProgressLogs == true)
             {
-                IdProgressReport = x.IdProgressReport,
-                DateCreated = x.DateCreated,
-                IdBuilding = x.IdBuilding,
-                IdApartment = x.IdApartment,
-                IdArea = x.IdArea,
-                IdElement = x.IdElement,
-                IdSubElement = x.IdSubElement,
-                TotalPieces = x.TotalPieces,
-                IdSupervisor = x.IdSupervisor,
-                ProgressLogs = x.ProgressLogs.Select(y => new ProgressLog
+                System.Linq.Expressions.Expression<Func<ProgressReport, ProgressReport>> selector = x => new ProgressReport
                 {
-                    IdProgressLog = y.IdProgressLog,
-                    IdProgressReport = y.IdProgressReport,
-                    DateCreated = y.DateCreated,
-                    IdStatus = y.IdStatus,
-                    Pieces = y.Pieces,
-                    Observation = y.Observation,
-                    IdSupervisor = y.IdSupervisor,
-                    IdBlobs = y.IdBlobs.Select(z => new Blob
+                    IdProgressReport = x.IdProgressReport,
+                    DateCreated = x.DateCreated,
+                    IdBuilding = x.IdBuilding,
+                    IdApartment = x.IdApartment,
+                    IdArea = x.IdArea,
+                    IdElement = x.IdElement,
+                    IdSubElement = x.IdSubElement,
+                    TotalPieces = x.TotalPieces,
+                    IdSupervisor = x.IdSupervisor,
+                    ProgressLogs = x.ProgressLogs.Select(y => new ProgressLog
                     {
-                        IdBlob = z.IdBlob,
-                        ContainerName = z.ContainerName,
-                        IsPrivate = z.IsPrivate,
-                        Uri = z.Uri,
-                        BlobSize = z.BlobSize
+                        IdProgressLog = y.IdProgressLog,
+                        IdProgressReport = y.IdProgressReport,
+                        DateCreated = y.DateCreated,
+                        IdStatus = y.IdStatus,
+                        Pieces = y.Pieces,
+                        Observation = y.Observation,
+                        IdSupervisor = y.IdSupervisor,
+                        IdBlobs = y.IdBlobs.Select(z => new Blob
+                        {
+                            IdBlob = z.IdBlob,
+                            ContainerName = z.ContainerName,
+                            IsPrivate = z.IsPrivate,
+                            Uri = z.Uri,
+                            BlobSize = z.BlobSize
+                        }).ToList()
+
                     }).ToList()
+                };
 
-                }).ToList()
-            };
+                return await progressReports.Select(selector).ToListAsync();
+            }
 
-            return await progressReports.Select(selector).ToListAsync();
+            return await progressReports.ToListAsync();
         }
 
         public async Task<ProgressReport?> CreateProgressReportAsync(ProgressReport progressReport)
