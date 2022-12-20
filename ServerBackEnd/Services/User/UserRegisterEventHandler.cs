@@ -2,9 +2,7 @@
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 using System.ComponentModel.DataAnnotations;
-using ApiGateway.Data;
 using MimeKit;
-using static Duende.IdentityServer.Models.IdentityResources;
 //using ApiGateway.Interfaces;
 
 namespace ApiGateway.Services.User

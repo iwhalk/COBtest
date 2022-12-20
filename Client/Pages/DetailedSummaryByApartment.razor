@@ -1,4 +1,4 @@
-﻿@page "/DetallesPorDepartamento"
+﻿@page "/DetailedSummaryByApartment"
 
 @*Pantalla completa*@
 
@@ -19,7 +19,7 @@
                     <div class="flex justify-center rounded-br-2xl-2xl overflow-y-scroll overflow-x-hidden" style="height: 43rem; direction: rtl;">
                         <div>
                             <div class="grid grid-col-1 gap-1 p-1 w-80">
-                                <button @onclick="() => AllApartments()" class="bg-[#55595E]">
+                                <button @onclick="() => AllApartments()" class="@(allApartments ? "bg-[#9CA2A8]" : "bg-[#55595E]")">
                                     <h1 class="text-md text-white font-medium leading-6 text-center p-1">TODOS</h1>
                                 </button>
                                 @if (apartments != null)
@@ -89,7 +89,7 @@
                             <div class="flex justify-center rounded-br-2xl-2xl" style="height: 43rem; direction: ltr;">
                                 <div>
                                     <div class="grid grid-col-1 gap-1 p-1 w-80">
-                                        <button @onclick="() => AllSubElements()" class="bg-[#55595E]">
+                                        <button @onclick="() => AllSubElements()" class="@(allSubElements ? "bg-[#9CA2A8]" : "bg-[#55595E]")">
                                             <h1 class="text-md text-white font-medium leading-6 text-center p-1">TODOS</h1>
                                         </button>
                                         @if (subElements != null)

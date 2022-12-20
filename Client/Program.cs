@@ -26,12 +26,12 @@ builder.Services.AddSingleton(serviceProvider => (IJSInProcessRuntime)servicePro
 builder.Services.AddComponents(); 
 builder.Services.AddBlazoredToast();
 builder.Services.AddFluentUIComponents();
-
+builder.Logging.SetMinimumLevel(LogLevel.None);
 // Supply HttpClient instances that include access tokens when making requests to the server project
 
 builder.Services.AddOidcAuthentication(options =>
 {
-    //options.ProviderOptions.ClientId = "blazor-soft2245";
+    //options.ProviderOptions.ClientId = "blazor-cob";
     options.ProviderOptions.ClientId = "blazor-client";
     options.ProviderOptions.Authority = builder.HostEnvironment.BaseAddress;
     options.ProviderOptions.ResponseType = "code";
