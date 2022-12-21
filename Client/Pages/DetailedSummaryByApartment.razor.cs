@@ -23,7 +23,7 @@ namespace Obra.Client.Pages
         private List<Element> elements { get; set; }
         private List<SubElement> subElements { get; set; }
         private List<ProgressReport> progressReports { get; set; } = new();
-        private List<ProgressLog> progressLogs { get; set; } = new();     
+        private List<ProgressLog> progressLogs { get; set; } = new();
 
         private List<SubElement> subElementsSelect { get; set; } = new();
         private List<Apartment> apartmentsSelect { get; set; } = new();
