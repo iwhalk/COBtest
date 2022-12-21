@@ -92,14 +92,11 @@
                                         <button @onclick="() => AllSubElements()" class="@(allSubElements ? "bg-[#9CA2A8]" : "bg-[#55595E]")">
                                             <h1 class="text-md text-white font-medium leading-6 text-center p-1">TODOS</h1>
                                         </button>
-                                        @if (subElements != null)
+                                        @foreach (var subElement in subElements)
                                         {
-                                            @foreach (var subElement in subElements)
-                                            {
-                                                <button @onclick="() => AddIdSelect(subElement.IdSubElement, 4)" class="@(_idsSubElementsSelect.Contains(subElement.IdSubElement) ? "bg-[#9CA2A8]" : "bg-[#55595E]")">
-                                                    <h1 class="text-md text-white font-medium leading-6 text-center p-1">@subElement.SubElementName</h1>
-                                                </button>
-                                            }
+                                            <button @onclick="() => AddIdSelect(subElement.IdSubElement, 4)" class="@(_idsSubElementsSelect.Contains(subElement.IdSubElement) ? "bg-[#9CA2A8]" : "bg-[#55595E]")">
+                                                <h1 class="text-md text-white font-medium leading-6 text-center p-1">@subElement.SubElementName</h1>
+                                            </button>
                                         }
                                     </div>
                                 </div>
