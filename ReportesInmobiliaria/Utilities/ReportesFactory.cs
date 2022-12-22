@@ -182,6 +182,8 @@ namespace ReportesObra.Utilities
         void CrearReporteDetalle(ReporteDetalles? reporteDetalles)
         {
             section.PageSetup.Orientation = Orientation.Portrait;
+            //Margen para evitar que las tablas largas se encimen con el encabezado
+            section.PageSetup.TopMargin = "5cm";
 
             headerFrame = section.Headers.Primary.AddTextFrame();
             headerFrame.Width = "20.0cm";
@@ -199,7 +201,7 @@ namespace ReportesObra.Utilities
             dataParametersFrameLeft.Top = "4.0cm";
             dataParametersFrameLeft.RelativeVertical = RelativeVertical.Page;
 
-            dataParametersFrameRight = section.AddTextFrame();
+            dataParametersFrameRight = section.Headers.Primary.AddTextFrame();
             dataParametersFrameRight.Height = "2.0cm";
             dataParametersFrameRight.Width = "6.5cm";
             //dataParametersFrameRight.Left = ShapePosition.Right;
@@ -216,7 +218,7 @@ namespace ReportesObra.Utilities
             dataValuesFrame.Top = "4.0cm";
             dataValuesFrame.RelativeVertical = RelativeVertical.Page;
 
-            dataValuesFrameRight = section.AddTextFrame();
+            dataValuesFrameRight = section.Headers.Primary.AddTextFrame();
             dataValuesFrameRight.Width = "6.5cm";
             dataValuesFrameRight.Left = "16.0cm";//"3.5cm"
             dataValuesFrameRight.RelativeHorizontal = RelativeHorizontal.Margin;
@@ -280,9 +282,9 @@ namespace ReportesObra.Utilities
                 paragraph.Format.Font.Bold = true;
                 paragraph.Format.Alignment = ParagraphAlignment.Center; 
 
-                paragraph = section.AddParagraph();
-                paragraph.AddLineBreak();
-                paragraph.Format.SpaceBefore = "0.6cm";
+                //paragraph = section.AddParagraph();
+                //paragraph.AddLineBreak();
+                //paragraph.Format.SpaceBefore = "0.6cm";
             }
 
             // Put parameters in data Frame
@@ -303,7 +305,7 @@ namespace ReportesObra.Utilities
                 // Create the item table
                 paragraph = section.AddParagraph();
                 paragraph.AddLineBreak();
-                paragraph.Format.SpaceBefore = "0.8cm";
+                paragraph.Format.SpaceBefore = "-1.0cm";
                 paragraph.AddText("Departamento " + apartmentTitle);
                 paragraph.Format.Font.Name = "DejaVu Serif";
                 paragraph.Format.Font.Size = 12;
@@ -317,7 +319,7 @@ namespace ReportesObra.Utilities
 
                 paragraph = section.AddParagraph();
                 paragraph.AddLineBreak();
-                paragraph.Format.SpaceBefore = "0.8cm";
+                paragraph.Format.SpaceAfter = "0.5cm";
 
                 tableAreas = section.AddTable();
                 tableAreas.Style = "Table";
@@ -510,30 +512,6 @@ namespace ReportesObra.Utilities
 
         void CreateLayoutDetails<T>(T reporte)
         {
-
-            //WebClient client = new WebClient();
-            //MemoryStream stream = new MemoryStream(client.DownloadData("https://aeriblobs.blob.core.windows.net/inventoryblobs/282039e4-b91f-4c4a-8356-eb359c9c4ece.jpeg"));
-            //stream.Position = 0;
-            //var logoSOF2245 = section.Headers.Primary.AddImage(ImageSource.FromStream("logoSOF", () => stream));
-            //logoSOF2245.Width = "4.5cm";
-            //logoSOF2245.LockAspectRatio = true;
-            //logoSOF2245.RelativeHorizontal = RelativeHorizontal.Margin;
-            //logoSOF2245.RelativeVertical = RelativeVertical.Page;
-            //logoSOF2245.Top = "1.7cm";
-            //logoSOF2245.Left = "-1.3cm";
-            //logoSOF2245.WrapFormat.Style = WrapStyle.Through;
-
-            //MemoryStream stream1 = new MemoryStream(client.DownloadData("https://aeriblobs.blob.core.windows.net/inventoryblobs/63450fd9-9af2-4c14-88ec-0752b1b6f1ae.jpeg"));
-            //stream1.Position = 0;
-            //var logoGeneric = section.Headers.Primary.AddImage(ImageSource.FromStream("logoGEN", () => stream1));
-            //logoGeneric.Width = "3.5cm";
-            //logoGeneric.LockAspectRatio = true;
-            //logoGeneric.RelativeHorizontal = RelativeHorizontal.Margin;
-            //logoGeneric.RelativeVertical = RelativeVertical.Page;
-            //logoGeneric.Top = "1.7cm";
-            //logoGeneric.Left = "14.0cm";
-            //logoGeneric.WrapFormat.Style = WrapStyle.Through;
-
             Paragraph footer = section.Footers.Primary.AddParagraph();
             footer.AddLineBreak();
             footer.AddText("SOF2245");
@@ -544,7 +522,6 @@ namespace ReportesObra.Utilities
             footer.AddNumPagesField();
             footer.Format.Font.Size = 8;
             footer.Format.Alignment = ParagraphAlignment.Center;
-
         }
 
         void FillChartContent<T>(List<T> value, Table table, int fontSize = 12)
