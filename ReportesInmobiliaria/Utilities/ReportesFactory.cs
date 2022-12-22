@@ -134,7 +134,7 @@ namespace ReportesObra.Utilities
             _title = title;
 
             DefineStyles();
-            CreateLayout(reporte);
+            CreateLayoutDetails(reporte);
             CrearReporteDetalle(reporte as ReporteDetalles);
             PdfDocumentRenderer pdfRenderer = new(true)
             {
@@ -182,12 +182,14 @@ namespace ReportesObra.Utilities
         void CrearReporteDetalle(ReporteDetalles? reporteDetalles)
         {
             section.PageSetup.Orientation = Orientation.Portrait;
+            //Margen para evitar que las tablas largas se encimen con el encabezado
+            section.PageSetup.TopMargin = "5cm";
 
-            headerFrame = section.AddTextFrame();
+            headerFrame = section.Headers.Primary.AddTextFrame();
             headerFrame.Width = "20.0cm";
             headerFrame.Left = ShapePosition.Center;
             headerFrame.RelativeHorizontal = RelativeHorizontal.Margin;
-            headerFrame.Top = "2.70cm";
+            headerFrame.Top = "2.40cm";
             headerFrame.RelativeVertical = RelativeVertical.Page;
 
             // Create the text frame for the data parameters
@@ -199,7 +201,7 @@ namespace ReportesObra.Utilities
             dataParametersFrameLeft.Top = "4.0cm";
             dataParametersFrameLeft.RelativeVertical = RelativeVertical.Page;
 
-            dataParametersFrameRight = section.AddTextFrame();
+            dataParametersFrameRight = section.Headers.Primary.AddTextFrame();
             dataParametersFrameRight.Height = "2.0cm";
             dataParametersFrameRight.Width = "6.5cm";
             //dataParametersFrameRight.Left = ShapePosition.Right;
@@ -216,7 +218,7 @@ namespace ReportesObra.Utilities
             dataValuesFrame.Top = "4.0cm";
             dataValuesFrame.RelativeVertical = RelativeVertical.Page;
 
-            dataValuesFrameRight = section.AddTextFrame();
+            dataValuesFrameRight = section.Headers.Primary.AddTextFrame();
             dataValuesFrameRight.Width = "6.5cm";
             dataValuesFrameRight.Left = "16.0cm";//"3.5cm"
             dataValuesFrameRight.RelativeHorizontal = RelativeHorizontal.Margin;
@@ -239,7 +241,7 @@ namespace ReportesObra.Utilities
             WebClient client = new WebClient();
             MemoryStream stream = new MemoryStream(client.DownloadData("https://aeriblobs.blob.core.windows.net/inventoryblobs/282039e4-b91f-4c4a-8356-eb359c9c4ece.jpeg"));
             stream.Position = 0;
-            var logoSOF2245 = section.AddImage(ImageSource.FromStream("logoSOF", () => stream));
+            var logoSOF2245 = section.Headers.Primary.AddImage(ImageSource.FromStream("logoSOF", () => stream));
             logoSOF2245.Width = "4.5cm";
             logoSOF2245.LockAspectRatio = true;
             logoSOF2245.RelativeHorizontal = RelativeHorizontal.Margin;
@@ -250,7 +252,7 @@ namespace ReportesObra.Utilities
 
             MemoryStream stream1 = new MemoryStream(client.DownloadData("https://aeriblobs.blob.core.windows.net/inventoryblobs/63450fd9-9af2-4c14-88ec-0752b1b6f1ae.jpeg"));
             stream1.Position = 0;
-            var logoGeneric = section.AddImage(ImageSource.FromStream("logoGEN", () => stream1));
+            var logoGeneric = section.Headers.Primary.AddImage(ImageSource.FromStream("logoGEN", () => stream1));
             logoGeneric.Width = "3.5cm";
             logoGeneric.LockAspectRatio = true;
             logoGeneric.RelativeHorizontal = RelativeHorizontal.Margin;
@@ -259,11 +261,12 @@ namespace ReportesObra.Utilities
             logoGeneric.Left = "14.0cm";
             logoGeneric.WrapFormat.Style = WrapStyle.Through;
             Paragraph paragraph;
-            if (_title == "")
+            if (_title.Contains("os"))
             {
                 // Put header in header frame
                 paragraph = headerFrame.AddParagraph("Reporte Detallado Por Departamento");//Titulo
                 paragraph.AddLineBreak();
+                paragraph.AddText(_title);
                 paragraph.Format.Font.Name = "DejaVu Serif";
                 paragraph.Format.Font.Size = 12;
                 paragraph.Format.Font.Bold = true;
@@ -277,11 +280,11 @@ namespace ReportesObra.Utilities
                 paragraph.Format.Font.Name = "DejaVu Serif";
                 paragraph.Format.Font.Size = 12;
                 paragraph.Format.Font.Bold = true;
-                paragraph.Format.Alignment = ParagraphAlignment.Center;
+                paragraph.Format.Alignment = ParagraphAlignment.Center; 
 
-                paragraph = section.AddParagraph();
-                paragraph.AddLineBreak();
-                paragraph.Format.SpaceBefore = "0.6cm";
+                //paragraph = section.AddParagraph();
+                //paragraph.AddLineBreak();
+                //paragraph.Format.SpaceBefore = "0.6cm";
             }
 
             // Put parameters in data Frame
@@ -302,11 +305,11 @@ namespace ReportesObra.Utilities
                 // Create the item table
                 paragraph = section.AddParagraph();
                 paragraph.AddLineBreak();
-                paragraph.Format.SpaceBefore = "0.8cm";
+                paragraph.Format.SpaceBefore = "-1.0cm";
                 paragraph.AddText("Departamento " + apartmentTitle);
                 paragraph.Format.Font.Name = "DejaVu Serif";
                 paragraph.Format.Font.Size = 12;
-                if (_title == "")
+                if (_title.Contains("os"))
                 {
                     paragraph.Format.Font.Bold = true;
                     paragraph.Format.Alignment = ParagraphAlignment.Center;
@@ -316,7 +319,7 @@ namespace ReportesObra.Utilities
 
                 paragraph = section.AddParagraph();
                 paragraph.AddLineBreak();
-                paragraph.Format.SpaceBefore = "0.8cm";
+                paragraph.Format.SpaceAfter = "0.5cm";
 
                 tableAreas = section.AddTable();
                 tableAreas.Style = "Table";
@@ -352,7 +355,7 @@ namespace ReportesObra.Utilities
                 row.Cells[4].AddParagraph("Total");
                 row.Cells[5].AddParagraph("Avance");
 
-                if(_title == "")
+                if(_title.Contains("os"))
                     i = FillGenericContent(reporteDetalles.detalladoActividades, tableAreas, i, apartmentTitle) - 1;
                 else
                     i = FillGenericContentCombination(reporteDetalles.detalladoActividades, tableAreas, i, apartmentTitle) - 1;
@@ -505,6 +508,20 @@ namespace ReportesObra.Utilities
             footer.Format.Font.Size = 8;
             footer.Format.Alignment = ParagraphAlignment.Center;
             
+        }
+
+        void CreateLayoutDetails<T>(T reporte)
+        {
+            Paragraph footer = section.Footers.Primary.AddParagraph();
+            footer.AddLineBreak();
+            footer.AddText("SOF2245");
+            footer.AddLineBreak();
+            footer.AddText("Pagina ");
+            footer.AddPageField();
+            footer.AddText(" de ");
+            footer.AddNumPagesField();
+            footer.Format.Font.Size = 8;
+            footer.Format.Alignment = ParagraphAlignment.Center;
         }
 
         void FillChartContent<T>(List<T> value, Table table, int fontSize = 12)
