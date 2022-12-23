@@ -34,7 +34,7 @@ namespace ReportesObra.Endpoints
             {
                 try
                 {
-                    var newModule = await _reportesService.GetReporteDetallesActividad(detallesActividad.IdBuilding, detallesActividad.Activities, detallesActividad.Elements, detallesActividad.Apartments);
+                    var newModule = await _reportesService.GetReporteDetallesActividad(detallesActividad.IdBuilding, detallesActividad.Activities, detallesActividad.Elements, detallesActividad.SubElements, detallesActividad.Apartments);
                     if (newModule == null) return Results.NotFound();
                     return Results.File(newModule, "application/pdf");
                 }

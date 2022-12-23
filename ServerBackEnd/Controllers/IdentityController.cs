@@ -5,6 +5,7 @@ using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using NuGet.Configuration;
 using OpenIddict.Abstractions;
 using OpenIddict.Server.AspNetCore;
 using System.Net.Mime;
@@ -263,7 +264,11 @@ namespace ApiGateway.Controllers
 
         [HttpGet("logout")]
         [ApiExplorerSettings(IgnoreApi = true)]
-        public IActionResult Logout() => View();
+        public IActionResult Logout()
+        {
+            _signInManager.SignOutAsync();
+            return Redirect("/");
+        }
 
         [HttpPost("logout"), ActionName(nameof(Logout)), ValidateAntiForgeryToken]
         public async Task<IActionResult> LogoutPost()
