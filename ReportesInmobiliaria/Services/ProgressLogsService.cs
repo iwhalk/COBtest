@@ -64,6 +64,7 @@ namespace ReportesObra.Services
             await _dbContext.ProgressLogs.AddAsync(progressLog);
             try { await _dbContext.SaveChangesAsync(); }
             catch (DbUpdateConcurrencyException) { throw; }
+            progressLog.IdBlobs = null;
             return progressLog;
         }
 

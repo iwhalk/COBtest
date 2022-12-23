@@ -235,9 +235,13 @@ namespace Obra.Client.Pages
             {
                 CheckboxClicked(3, null);
             }
-            else
+            else if (e.Value?.ToString() != "0")
             {
                 CheckboxClicked(2, null);
+            }
+            else
+            {
+                CheckboxClicked(1, null);
             }
 
             StateHasChanged();
@@ -301,7 +305,7 @@ namespace Obra.Client.Pages
             }
             else
             {
-                CurrentProgressLog.IdBlobs.Add(blob);
+                //CurrentProgressLog.IdBlobs.Add(blob);
                 CurrentProgressLog.IdProgressReport = CurrentProgressReport?.IdProgressReport ?? 1;
                 NewProgressLogs.Add(new ProgressLog()
                 {
@@ -313,7 +317,7 @@ namespace Obra.Client.Pages
                 });
             }
             FormBlob.CurrentBlobFileEditContext.Validate();
-            StateHasChanged();
+            //StateHasChanged();
         }
         public async void SaveButtonClicked()
         {

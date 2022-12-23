@@ -24,7 +24,7 @@ using ReportesObra.Utilities;
 using ReportesObra.Endpoints;
 
 var builder = WebApplication.CreateBuilder(args);
-var connectionString = "Server=arisoft2245.database.windows.net;Database=prosisdb_4;User=PROSIS_DEVELOPER;Password=PR0515_D3ev3l0p3r;MultipleActiveResultSets=true";
+var connectionString = "Server=soft2245cob.database.windows.net;Database=prosisdb_4;User=PROSIS_DEVELOPER;Password=PR0515_D3ev3l0p3r;MultipleActiveResultSets=true";
 var secretKey = builder.Configuration.GetValue<string>("SecretKey");
 var key = Encoding.ASCII.GetBytes(secretKey);
 
@@ -65,9 +65,9 @@ builder.Services.AddAuthentication(options =>
 builder.Services.AddAuthentication();
 builder.Services.AddAuthorization(cfg =>
 {
-    //cfg.FallbackPolicy = new AuthorizationPolicyBuilder()
-    //    .RequireAuthenticatedUser()
-    //    .Build();
+    cfg.FallbackPolicy = new AuthorizationPolicyBuilder()
+        .RequireAuthenticatedUser()
+        .Build();
 });
 
 //builder.Services.AddLogging(loggingBuilder =>
@@ -105,9 +105,9 @@ var app = builder.Build();
 app.UseSwagger();
 app.UseSwaggerUI();
 
-//app.UseAuthentication();
+app.UseAuthentication();
 
-//app.UseAuthorization();
+app.UseAuthorization();
 
 //app.UseHttpsRedirection();
 

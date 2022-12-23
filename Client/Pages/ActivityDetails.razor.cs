@@ -347,7 +347,7 @@ namespace Obra.Client.Pages
 
         public async Task ShowMenssage() => alert = false;
         public async Task ShowElements() => showElements = false;
-        public async Task ShowSubElements() => showSubElements = false;        
+        public async Task ShowSubElements() => showSubElements = false;
         public async Task ShowDepartment() => department = true;
 
         public void ChangeShowModal()
@@ -359,8 +359,80 @@ namespace Obra.Client.Pages
 
         public async Task GoBack()
         {
-            activityDetails = true;
-        }     
+            if (apartments != null)
+            {
+                _idsAparmentSelect.Clear();
+                department = false;
+                allApartments = false;
+            }
+
+            _idsActivitiesSelect.Clear();
+
+            await ShowElements();
+            elements.Clear();
+            _idsElementsSelect.Clear();
+
+            await ShowSubElements();
+            subElements.Clear();
+            _idsSubElementsSelect.Clear();
+
+            buttonReport = false;
+            apartmentDetails = true;
+
+            progressLogs.Clear();
+            progressReports.Clear();
+            subElementsSelect.Clear();
+            apartmentsSelect.Clear();
+
+            activity = null;
+            element = null;
+
+            subElementsNulls = false;
+            allApartments = false;
+            allSubElements = false;
+
+            greenPercentage.Clear();
+            redPercentage.Clear();
+        }
+
+        public async Task ChangeView()
+        {
+            loading = true;
+            buttonReport = false;
+
+            ActivitiesDetail reporte = new();
+            reporte.Activities = new();
+            reporte.Elements = new();
+
+            if (subElementsSelect != null)
+            {
+                reporte.IdBuilding = 1;
+                reporte.Apartments = _idsAparmentSelect;
+                reporte.Activities.Add(activity.IdActivity);
+                reporte.Elements.Add(element.IdElement);
+                reporte.SubElements = _idsSubElementsSelect;
+            }
+            else
+            {
+                reporte.IdBuilding = 1;
+                reporte.Apartments = _idsAparmentSelect;
+                reporte.Activities.Add(activity.IdActivity);
+                reporte.Elements.Add(element.IdElement);
+            }
+
+            var pdf = await _reportesService.PostReporteDetallesPorActividadAsync(reporte);
+
+            if (pdf != null)
+            {
+                var fileName = "DetallePorActividad.pdf";
+                var fileStream = new MemoryStream(pdf);
+                using var streamRef = new DotNetStreamReference(stream: fileStream);
+                await _JS.InvokeVoidAsync("downloadFileFromStream", fileName, streamRef);
+            }
+
+            loading = false;
+            buttonReport = true;
+        }
 
         public async Task ShowReportAndHideApartment()
         {

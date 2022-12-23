@@ -31,5 +31,18 @@ namespace ApiGateway.Controllers
 
             return BadRequest(result);
         }
+
+        [HttpPost("DetallesPorActividad")]
+        public async Task<ActionResult> PostReporteDetallesPorActividad(ActivitiesDetail reporteDetalle)
+        {
+            var result = await _reportesService.PostReporteDetallesPorActividadesAsync(reporteDetalle);
+
+            if (result.Succeeded)
+            {
+                return Ok(result);
+            }
+
+            return BadRequest(result);
+        }
     }
 }
