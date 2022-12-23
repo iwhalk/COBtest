@@ -239,7 +239,7 @@ namespace ReportesObra.Utilities
             }
 
             WebClient client = new WebClient();
-            MemoryStream stream = new MemoryStream(client.DownloadData("https://aeriblobs.blob.core.windows.net/inventoryblobs/282039e4-b91f-4c4a-8356-eb359c9c4ece.jpeg"));
+            MemoryStream stream = new MemoryStream(client.DownloadData("https://imagenescob.blob.core.windows.net/imagescob/487a4f8d-f21d-4c3f-bf5f-35dc1ebf845b.jpeg"));
             stream.Position = 0;
             var logoSOF2245 = section.Headers.Primary.AddImage(ImageSource.FromStream("logoSOF", () => stream));
             logoSOF2245.Width = "4.5cm";
@@ -250,7 +250,7 @@ namespace ReportesObra.Utilities
             logoSOF2245.Left = "-1.3cm";
             logoSOF2245.WrapFormat.Style = WrapStyle.Through;
 
-            MemoryStream stream1 = new MemoryStream(client.DownloadData("https://aeriblobs.blob.core.windows.net/inventoryblobs/63450fd9-9af2-4c14-88ec-0752b1b6f1ae.jpeg"));
+            MemoryStream stream1 = new MemoryStream(client.DownloadData("https://imagenescob.blob.core.windows.net/imagescob/b2aa64fc-49e3-4abe-9e2f-eaede7a19216.jpeg"));
             stream1.Position = 0;
             var logoGeneric = section.Headers.Primary.AddImage(ImageSource.FromStream("logoGEN", () => stream1));
             logoGeneric.Width = "3.5cm";
@@ -422,7 +422,7 @@ namespace ReportesObra.Utilities
             }
 
             WebClient client = new WebClient();
-            MemoryStream stream = new MemoryStream(client.DownloadData("https://aeriblobs.blob.core.windows.net/inventoryblobs/282039e4-b91f-4c4a-8356-eb359c9c4ece.jpeg"));
+            MemoryStream stream = new MemoryStream(client.DownloadData("https://imagenescob.blob.core.windows.net/imagescob/487a4f8d-f21d-4c3f-bf5f-35dc1ebf845b.jpeg"));
             stream.Position = 0;
             var logoSOF2245 = section.AddImage(ImageSource.FromStream("logoSOF", () => stream));
             logoSOF2245.Width = "4.5cm";
@@ -433,7 +433,7 @@ namespace ReportesObra.Utilities
             logoSOF2245.Left = "-1.3cm";
             logoSOF2245.WrapFormat.Style = WrapStyle.Through;
 
-            MemoryStream stream1 = new MemoryStream(client.DownloadData("https://aeriblobs.blob.core.windows.net/inventoryblobs/63450fd9-9af2-4c14-88ec-0752b1b6f1ae.jpeg"));
+            MemoryStream stream1 = new MemoryStream(client.DownloadData("https://imagenescob.blob.core.windows.net/imagescob/b2aa64fc-49e3-4abe-9e2f-eaede7a19216.jpeg"));
             stream1.Position = 0;
             var logoGeneric = section.AddImage(ImageSource.FromStream("logoGEN", () => stream1));
             logoGeneric.Width = "3.5cm";
