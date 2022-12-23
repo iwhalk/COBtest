@@ -7,7 +7,7 @@ using SharedLibrary.Models;
 namespace ApiGateway.Controllers
 {
     [Route("api/[controller]")]
-    [Authorize]
+    //[Authorize]
     [ApiController]
     public class BlobsController : ControllerBase
     {
@@ -31,7 +31,7 @@ namespace ApiGateway.Controllers
 
             if (result.Succeeded)
             {
-                return File(result.Content, result.ContentType.Equals("image/jpeg") == false ? "image/jpeg" : "image/jpeg");                
+                return File(result.Content, result.ContentType.Equals("image/jpeg") == false ? "image/jpeg" : "image/jpeg");
             }
 
             return BadRequest(result);

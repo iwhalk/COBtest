@@ -54,7 +54,6 @@ namespace Obra.Client.Pages
 
         private bool showModal { get; set; } = false;
         private bool loading { get; set; } = false;
-        private bool modal { get; set; } = false;
 
         private string observations { get; set; } = "";
         private List<string> images { get; set; } = new();
@@ -348,32 +347,20 @@ namespace Obra.Client.Pages
 
         public async Task ShowMenssage() => alert = false;
         public async Task ShowElements() => showElements = false;
-        public async Task ShowSubElements() => showSubElements = false;
+        public async Task ShowSubElements() => showSubElements = false;        
+        public async Task ShowDepartment() => department = true;
 
-        public async Task ChangeView()
+        public void ChangeShowModal()
         {
-            activityDetails = false;
+            showModal = showModal ? false : true;
+            observations = "";
+            images.Clear();
         }
 
         public async Task GoBack()
         {
             activityDetails = true;
-        }
-
-        public async Task ShowSubElement()
-        {
-            subElement = true;
-        }
-
-        public async Task ShowDepartment()
-        {
-            department = true;
-        }
-
-        public void ChangeShowModal()
-        {
-            modal = modal ? false : true;
-        }
+        }     
 
         public async Task ShowReportAndHideApartment()
         {
