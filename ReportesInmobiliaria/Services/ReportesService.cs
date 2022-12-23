@@ -68,24 +68,25 @@ namespace ReportesObra.Services
             return _reportesFactory.CrearPdf(reporteDetalles, title);
         }
 
-        public async Task<byte[]> GetReporteDetallesActividad(int idBuilding, List<int>? idActivities, List<int>? idElements, List<int> idApartments)
+        public async Task<byte[]?> GetReporteDetallesActividad(int idBuilding, List<int>? idActivities, List<int>? idElements, List<int>? idSubElements, List<int>? idApartments)
         {
             List<ProgressReport> listReport = new List<ProgressReport>();
             string title = "(Todas)";
             listReport = progressReportsComplete.Where(x => x.IdBuilding == idBuilding).ToList();
             if(idElements != null && idElements.Count() != 0)
                 listReport = FiltradoIdElements(listReport, idElements);
-            listReport = FiltradoIdApartments(listReport, idApartments);
+            if (idSubElements != null && idSubElements.Count() != 0)
+                listReport = FiltradoIdSubElements(listReport, idSubElements);
+            if (idApartments != null && idApartments.Count() != 0)
+                listReport = FiltradoIdApartments(listReport, idApartments);
             ReporteDetalles reporteDetalles = new()
             {
                 detalladoActividades = GetSubElementsAsync(listReport)
             };
-            if (idActivities != null)
-                if (idActivities.Count() != 0)
-                {
-                    reporteDetalles.detalladoActividades = FiltradoIdActivities(reporteDetalles.detalladoActividades, idActivities);
-                    title = "(Seleccionadas)";
-                }
+            if (idActivities != null && idActivities.Count() != 0){
+                reporteDetalles.detalladoActividades = FiltradoIdActivities(reporteDetalles.detalladoActividades, idActivities);
+                title = "(Seleccionadas)";
+            }
 
             if (reporteDetalles.detalladoActividades.Count == 0)
                 return null;
