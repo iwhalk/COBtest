@@ -7,5 +7,6 @@ namespace ApiGateway.Interfaces
     public interface IReportesService
     {
         Task<ApiResponse<byte[]>> PostReporteDetallesAsync(ActivitiesDetail reporteDetalle);
+        Task<ApiResponse<byte[]>> PostReporteDetallesPorActividadesAsync(ActivitiesDetail reporteDetalle);
     }
 }
