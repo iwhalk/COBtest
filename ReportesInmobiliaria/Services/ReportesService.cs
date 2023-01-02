@@ -200,16 +200,32 @@ namespace ReportesObra.Services
 
         public async Task<List<AparmentProgress>> GetActivitiesByAparment(int? idAparment)
         {
-            IQueryable<ProgressReport> progressReports = _dbContext.ProgressReports.Include(x => x.IdAreaNavigation).Include(x => x.IdApartmentNavigation);
+            IQueryable<ProgressReport> progressReports = _dbContext.ProgressReports.Include(x => x.IdAreaNavigation).Include(x => x.IdApartmentNavigation).Include(x => x.IdElementNavigation).Include(x => x.IdElementNavigation.IdActivityNavigation);
             IQueryable<ProgressLog> progressLogs = _dbContext.ProgressLogs;                        
-            IQueryable<Element> elements = _dbContext.Elements.Include(x => x.IdActivityNavigation);
+            IQueryable<Element> elements = _dbContext.Elements.Include(x => x.IdActivityNavigation);            
 
-            var activities = progressReports.Select(x => x.IdAreaNavigation.IdActivities).ToList();
+            var progressReportsByArea = progressReports.Join(progressLogs, x => x.IdProgressReport, y => y.IdProgressReport, (report, log) => new { report, log }).GroupBy(x => x.report.IdArea);
+
+            foreach (var area in progressReportsByArea)
+            {
+                var proto = area.Select(x => x.report.IdAreaNavigation.IdActivities);
+            }
+
+            var progressReportsByElement = progressReports.Join(progressLogs, x => x.IdProgressReport, y => y.IdProgressReport, (report, log) => new { report, log }).GroupBy(x => x.report.IdArea);
+
+            foreach (var element in progressReportsByElement)
+            {
+                var protoElement = element.GroupBy(x => x.report.IdElementNavigation.IdActivityNavigation.ActivityName);
+                foreach(var activity in protoElement)
+                {
+                    activity
+                }
+            }
 
             if (idAparment != null)
                 progressReports = progressReports.Where(x => x.IdApartment == idAparment);
 
-            List<TotalPicesByAparment> totalOfPicesByAparment = progressReports.GroupBy(x => x.IdApartment)
+            List<TotalPicesByAparment> totalOfPicesByAparment = progressReports.GroupBy(x => x.IdElement)
                     .Select(x => new TotalPicesByAparment
                     {
                         IdAparment = x.Key,
@@ -219,10 +235,11 @@ namespace ReportesObra.Services
             var progressReportsByAparment = progressReports.Join(progressLogs, x => x.IdProgressReport, y => y.IdProgressReport, (report, log) => new { report, log }).GroupBy(x => x.report.IdApartment);
 
             var list = new List<AparmentProgress>();
-            foreach (var aparment in progressReportsByAparment)
+            foreach (var area in progressReportsByAparment)
             {
-                long total = totalOfPicesByAparment.FirstOrDefault(x => x.IdAparment == aparment.Key).Pices;
-                long current = aparment.GroupBy(x => x.log.IdProgressReport).Select(x => x.OrderByDescending(x => x.log.DateCreated).FirstOrDefault()).Sum(x => long.Parse(x.log.Pieces));
+                var prueba = area.GroupBy(x => x.report.IdElement);
+                long total = totalOfPicesByAparment.FirstOrDefault(x => x.IdAparment == area.Key).Pices;
+                long current = area.GroupBy(x => x.log.IdProgressReport).Select(x => x.OrderByDescending(x => x.log.DateCreated).FirstOrDefault()).Sum(x => long.Parse(x.log.Pieces));
                 list.Add(new AparmentProgress()
                 {
                     //ApartmentNumber = apartments.FirstOrDefault(x => x.IdApartment == aparment.Key).ApartmentNumber,
