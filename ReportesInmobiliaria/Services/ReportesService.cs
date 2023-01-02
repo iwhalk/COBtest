@@ -175,6 +175,8 @@ namespace ReportesObra.Services
             if (idAparment != null)
                 progressReports = progressReports.Where(x => x.IdApartment == idAparment);
 
+            progressReports = progressReports.Where(x => x.IdBuilding == 1);
+
             List<TotalPicesByAparment> totalOfPicesByAparment = progressReports.GroupBy(x => x.IdApartment)
                     .Select(x => new TotalPicesByAparment
                     {
