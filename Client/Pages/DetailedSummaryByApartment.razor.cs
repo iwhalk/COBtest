@@ -336,6 +336,7 @@ namespace Obra.Client.Pages
 
         public async Task GoBack()
         {
+            await ShowMenssage();
             _idsAparmentSelect.Clear();
             _idsActivitiesSelect.Clear();
 
@@ -405,6 +406,11 @@ namespace Obra.Client.Pages
                 var fileStream = new MemoryStream(pdf);
                 using var streamRef = new DotNetStreamReference(stream: fileStream);
                 await _JS.InvokeVoidAsync("downloadFileFromStream", fileName, streamRef);
+            }
+            else
+            {
+                menssageError = "No se pudo generar porque el avance esta totalmente completo o por algun error";
+                alert = true;
             }
 
             loading = false;
@@ -651,6 +657,8 @@ namespace Obra.Client.Pages
 
         public async Task CamareButton(int id)
         {
+            await ShowMenssage();
+
             ProgressLog aux = progressLogs.FirstOrDefault(x => x.IdProgressLog == id);
 
             if (aux.Observation != null)
@@ -666,7 +674,15 @@ namespace Obra.Client.Pages
                 }
             }
 
-            showModal = true;
+            if (observations != null && observations != "" || images.Count() > 0)
+            {
+                showModal = true;
+            }
+            else
+            {
+                menssageError = "No se tiene ninguna observación y tampoco alguna fotografia de este avance";
+                alert = true;
+            }
         }
     }
 }
