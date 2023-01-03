@@ -213,16 +213,6 @@ else if (buttonReport == true)
                 </div>
                 <div @onclick="() => ChangeView()" class="w-full flex py-3 fixed inset-x-0 bottom-12 justify-end">
                     <button class="mx-auto bg-[#B9352E] hover:bg-red-500 w-40 p-2 rounded-2xl text-lg text-white font-medium leading-6 border hover:border-white">Descargar</button>
-                    @if (alert == true)
-                    {
-                        <div class="bg-red-100 border border-red-400 text-red-700 pl-4 pr-12 py-2 rounded fixed inset-x-90 bottom-18 w-[32]" role="alert">
-                            <strong class="font-bold">¡Advertencia!</strong>
-                            <span class="block sm:inline">@menssageError</span>
-                            <span class="absolute top-0 bottom-0 right-0 px-4 py-2">
-                                <svg class="fill-current h-6 w-6 text-red-500" role="button" @onclick="() => ShowMenssage()" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><title>Close</title><path d="M14.348 14.849a1.2 1.2 0 0 1-1.697 0L10 11.819l-2.651 3.029a1.2 1.2 0 1 1-1.697-1.697l2.758-3.15-2.759-3.152a1.2 1.2 0 1 1 1.697-1.697L10 8.183l2.651-3.031a1.2 1.2 0 1 1 1.697 1.697l-2.758 3.152 2.758 3.15a1.2 1.2 0 0 1 0 1.698z" /></svg>
-                            </span>
-                        </div>
-                    }
                 </div>
             }
             else
@@ -299,16 +289,6 @@ else if (buttonReport == true)
                     <div @onclick="() => ChangeView()" class="w-full flex py-3 fixed inset-x-0 bottom-12">
                         <button class="mx-auto bg-[#B9352E] hover:bg-red-500 w-40 p-2 rounded-2xl text-lg text-white font-medium leading-6 border hover:border-white">Descargar</button>
                     </div>
-                    @if (alert == true)
-                    {
-                        <div class="bg-red-100 border border-red-400 text-red-700 pl-4 pr-12 py-2 rounded fixed inset-x-90 bottom-18 w-[32]" role="alert">
-                            <strong class="font-bold">¡Advertencia!</strong>
-                            <span class="block sm:inline">@menssageError</span>
-                            <span class="absolute top-0 bottom-0 right-0 px-4 py-2">
-                                <svg class="fill-current h-6 w-6 text-red-500" role="button" @onclick="() => ShowMenssage()" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><title>Close</title><path d="M14.348 14.849a1.2 1.2 0 0 1-1.697 0L10 11.819l-2.651 3.029a1.2 1.2 0 1 1-1.697-1.697l2.758-3.15-2.759-3.152a1.2 1.2 0 1 1 1.697-1.697L10 8.183l2.651-3.031a1.2 1.2 0 1 1 1.697 1.697l-2.758 3.152 2.758 3.15a1.2 1.2 0 0 1 0 1.698z" /></svg>
-                            </span>
-                        </div>
-                    }
                 </div>
             }
             @if (showModal == true)
@@ -345,8 +325,17 @@ else if (buttonReport == true)
                     </div>
                 </div>
             }
+            @if (alert == true)
+            {
+                <div class="bg-yellow-100 border border-yellow-400 text-yellow-700 pl-4 pr-12 py-2 rounded fixed right-4 w-[32]" style="top: 5.7rem;" role="alert">
+                    <strong class="font-bold">¡Advertencia!</strong>
+                    <span class="block sm:inline">@menssageError</span>
+                    <span class="absolute top-0 bottom-0 right-0 px-4 py-2">
+                        <svg class="fill-current h-6 w-6 text-yellow-500" role="button" @onclick="() => ShowMenssage()" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><title>Close</title><path d="M14.348 14.849a1.2 1.2 0 0 1-1.697 0L10 11.819l-2.651 3.029a1.2 1.2 0 1 1-1.697-1.697l2.758-3.15-2.759-3.152a1.2 1.2 0 1 1 1.697-1.697L10 8.183l2.651-3.031a1.2 1.2 0 1 1 1.697 1.697l-2.758 3.152 2.758 3.15a1.2 1.2 0 0 1 0 1.698z" /></svg>
+                    </span>
+                </div>
+            }
         </div>
-
         <button @onclick="() => GoBack()" class="fixed inset-x-5 top-24 w-12">
 
             <svg xmlns="http://www.w3.org/2000/svg" width="46" height="46" fill="#55595E" class="bi bi-arrow-left" viewBox="0 0 16 16">

@@ -1,8 +1,12 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿using Blazored.Toast;
+using Blazored.Toast.Services;
+using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
+using Obra.Client.Components;
 using Obra.Client.Interfaces;
 using Obra.Client.Stores;
 using SharedLibrary.Models;
+using System.Reflection.Metadata;
 
 namespace Obra.Client.Pages
 {
@@ -17,7 +21,7 @@ namespace Obra.Client.Pages
         private readonly IProgressLogsService _progressLogsService;
         private readonly IReportesService _reportesService;
         private readonly IJSRuntime _JS;
-
+        private readonly IToastService _toastService;
         private List<Apartment> apartments { get; set; }
         private List<SharedLibrary.Models.Activity> activities { get; set; }
         private List<Element> elements { get; set; }
@@ -59,7 +63,7 @@ namespace Obra.Client.Pages
         private bool isFirstView { get; set; } = true;
         private bool showModal { get; set; } = false;
 
-        public DetailedSummaryByApartment(ApplicationContext context, IApartmentsService apartmentsService, IActivitiesService activitiesService, IElementsService elementsService, ISubElementsService subElementsService, IProgressReportService progressReportService, IProgressLogsService progressLogsService, IReportesService reportesService, IJSRuntime jS)
+        public DetailedSummaryByApartment(ApplicationContext context, IApartmentsService apartmentsService, IActivitiesService activitiesService, IElementsService elementsService, ISubElementsService subElementsService, IProgressReportService progressReportService, IProgressLogsService progressLogsService, IReportesService reportesService, IJSRuntime jS, IToastService toastService)
         {
             _context = context;
             _apartmentsService = apartmentsService;
@@ -70,6 +74,7 @@ namespace Obra.Client.Pages
             _progressLogsService = progressLogsService;
             _reportesService = reportesService;
             _JS = jS;
+            _toastService = toastService;
         }
 
         protected async override Task OnInitializedAsync()
@@ -237,6 +242,7 @@ namespace Obra.Client.Pages
                 else if (elementIdAux != id)
                 {
                     _idsElementsSelect.Remove(elementIdAux);
+                    await ShowMenssage();
 
                     if (subElements != null)
                     {
@@ -254,6 +260,7 @@ namespace Obra.Client.Pages
                 }
                 else
                 {
+                    await ShowMenssage();
                     _idsElementsSelect.Remove(id);
 
                     if (subElements != null)
@@ -409,8 +416,7 @@ namespace Obra.Client.Pages
             }
             else
             {
-                menssageError = "No se pudo generar porque el avance esta totalmente completo o por algun error";
-                alert = true;
+                _toastService.ShowToast<ToastReport>(new ToastInstanceSettings(5, false));
             }
 
             loading = false;
@@ -680,8 +686,7 @@ namespace Obra.Client.Pages
             }
             else
             {
-                menssageError = "No se tiene ninguna observación y tampoco alguna fotografia de este avance";
-                alert = true;
+                _toastService.ShowToast<ToastImages>(new ToastInstanceSettings(5, false));
             }
         }
     }

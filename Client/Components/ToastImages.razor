@@ -1,0 +1,14 @@
+﻿@if (string.IsNullOrWhiteSpace(Title))
+{
+        <div class="text-white p-4 bg-warning rounded" style="margin-top: 5rem">
+            <strong class="font-bold">¡Advertencia!</strong>
+        <span class="block sm:inline">No se tienen observaciones y/o fotografias de este avance</span>
+        </div>
+}
+
+@code {
+    [CascadingParameter] private BlazoredToast ToastInstance { get; set; } = default!;
+
+    [Parameter] public string? Title { get; set; }
+    [Parameter] public string? ToastParam { get; set; }
+}
