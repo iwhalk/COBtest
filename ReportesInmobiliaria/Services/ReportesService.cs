@@ -204,6 +204,31 @@ namespace ReportesObra.Services
             return list;
         }
 
+        public async Task<List<ActivityProgress>> GetActivityProgress(int idBuilding, int? idActivity)
+        {
+            IQueryable<ProgressReport> progressReports = _dbContext.ProgressReports;
+            IQueryable<ProgressLog> progressLogs = _dbContext.ProgressLogs;
+            IQueryable<Activity> activities = _dbContext.Activities;
+            progressReports = progressReports.Where(x => x.IdBuilding == idBuilding);
+
+            if (idActivity != null)
+                progressReports = progressReports.Where(x => getIdActividadByElement(x.IdElement) == idActivity);
+
+            //List<TotalPiecesByActivity> totalPiecesByActivity = progressReports.GroupBy
+
+            var list = new List<ActivityProgress>();
+            return list;
+        }
+
+        public int? getIdActividadByElement(int idElement)
+        {
+            var localElement = listElements.FirstOrDefault(x => x.IdElement == idElement);
+            if (localElement == null)
+                return null;
+            var nombreActividad = listActivities.FirstOrDefault(x => x.IdActivity == localElement.IdActivity);
+            return nombreActividad == null ? null : nombreActividad.IdActivity;
+        }
+
         public string? getActividadByElement(int idElement)
         {
             var localElement = listElements.FirstOrDefault(x => x.IdElement == idElement);
