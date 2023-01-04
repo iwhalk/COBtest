@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using System.Data.Common;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
+using System.Diagnostics;
 using System.Linq;
 
 namespace ReportesObra.Services
@@ -24,7 +25,7 @@ namespace ReportesObra.Services
         List<ProgressReport> progressReportsComplete;
         List<ProgressLog> listProgressLog;
         List<Element> listElements;
-        List<Activity> listActivities;
+        List<SharedLibrary.Models.Activity> listActivities;
         List<SubElement> listSubElements;
         List<Apartment> listApartments;
         //private readonly InmobiliariaDbContextProcedures _dbContextProcedure;
@@ -208,17 +209,49 @@ namespace ReportesObra.Services
 
         public async Task<List<ActivityProgress>> GetActivityProgress(int idBuilding, int? idActivity)
         {
+            List<ProgressReportActivityAdded> progressReportsWithActivity = new List<ProgressReportActivityAdded>();
             IQueryable<ProgressReport> progressReports = _dbContext.ProgressReports;
             IQueryable<ProgressLog> progressLogs = _dbContext.ProgressLogs;
-            IQueryable<Activity> activities = _dbContext.Activities;
+            IQueryable<SharedLibrary.Models.Activity> activities = _dbContext.Activities;
             progressReports = progressReports.Where(x => x.IdBuilding == idBuilding);
 
+            foreach (var progressReport in progressReports)
+            {
+                progressReportsWithActivity.Add(new ProgressReportActivityAdded()
+                {
+                    IdProgressReport = progressReport.IdProgressReport,
+                    DateCreated = progressReport.DateCreated,
+                    IdApartment = progressReport.IdApartment,
+                    IdArea = progressReport.IdArea,
+                    IdActivity = getIdActividadByElement(progressReport.IdElement),
+                    IdElement = progressReport.IdElement,
+                    TotalPieces = progressReport.TotalPieces
+                });
+            }
+
             if (idActivity != null)
-                progressReports = progressReports.Where(x => getIdActividadByElement(x.IdElement) == idActivity);
+                progressReportsWithActivity = progressReportsWithActivity.Where(x => x.IdActivity == idActivity).ToList();            
 
-            //List<TotalPiecesByActivity> totalPiecesByActivity = progressReports.GroupBy
+            List<TotalPiecesByActivity> totalPieces = progressReportsWithActivity.GroupBy(x => x.IdActivity)
+                    .Select(x => new TotalPiecesByActivity
+                    {
+                        IdActivity = (int)x.Key,
+                        Pieces = x.Sum(s => Convert.ToInt32(s.TotalPieces))
+                    }).ToList();
 
+            var progressReportsByActivity = progressReportsWithActivity.Join(progressLogs, x => x.IdProgressReport, y => y.IdProgressReport,
+                (report, log) => new { report, log }).GroupBy(x => x.report.IdActivity);
             var list = new List<ActivityProgress>();
+            foreach (var activity in progressReportsByActivity)
+            {
+                long total = totalPieces.FirstOrDefault(x => x.IdActivity == activity.Key).Pieces;
+                long current = activity.GroupBy(x => x.log.IdProgressReport).Select(x => x.OrderByDescending(x => x.log.DateCreated).FirstOrDefault()).Sum(x => long.Parse(x.log.Pieces));
+                list.Add(new ActivityProgress()
+                {
+                    ActivityName = activities.FirstOrDefault(x => x.IdActivity == activity.Key).ActivityName,
+                    Progress = 100.00 / total * current
+                });
+            }
             return list;
         }
 
