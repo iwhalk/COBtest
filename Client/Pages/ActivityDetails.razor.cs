@@ -1,4 +1,7 @@
-﻿using Microsoft.JSInterop;
+﻿using Blazored.Toast;
+using Blazored.Toast.Services;
+using Microsoft.JSInterop;
+using Obra.Client.Components;
 using Obra.Client.Interfaces;
 using Obra.Client.Stores;
 using SharedLibrary.Models;
@@ -20,6 +23,7 @@ namespace Obra.Client.Pages
         private readonly IProgressLogsService _progressLogsService;
         private readonly IReportesService _reportesService;
         private readonly IJSRuntime _JS;
+        private readonly IToastService _toastService;
         private List<Apartment> apartments { get; set; }
         private List<SharedLibrary.Models.Activity> activities { get; set; }
         private List<Element> elements { get; set; }
@@ -37,7 +41,7 @@ namespace Obra.Client.Pages
         private SharedLibrary.Models.Activity activity { get; set; }
         private Element element { get; set; }
 
-        private string menssageError = "";
+        private string messageError = "";
         private int activityIdAux = 0;
         private int elementIdAux = 0;
         private bool alert = false;
@@ -61,7 +65,7 @@ namespace Obra.Client.Pages
         Dictionary<string, string> greenPercentage { get; set; } = new();
         Dictionary<string, string> redPercentage { get; set; } = new();
 
-        public ActivityDetails(ApplicationContext context, IApartmentsService apartmentsService, IActivitiesService activitiesService, IElementsService elementsService, ISubElementsService subElementsService, IProgressReportService progressReportService, IProgressLogsService progressLogsService, IReportesService reportesService, IJSRuntime jS)
+        public ActivityDetails(ApplicationContext context, IApartmentsService apartmentsService, IActivitiesService activitiesService, IElementsService elementsService, ISubElementsService subElementsService, IProgressReportService progressReportService, IProgressLogsService progressLogsService, IReportesService reportesService, IJSRuntime jS, IToastService toastService)
         {
             _context = context;
             _apartmentsService = apartmentsService;
@@ -72,6 +76,7 @@ namespace Obra.Client.Pages
             _progressLogsService = progressLogsService;
             _reportesService = reportesService;
             _JS = jS;
+            _toastService = toastService;   
         }
 
         protected async override Task OnInitializedAsync()
@@ -90,7 +95,7 @@ namespace Obra.Client.Pages
 
                     allApartments = false;
 
-                    await ShowMenssage();
+                    await ShowMessage();
                 }
                 else
                 {
@@ -108,13 +113,13 @@ namespace Obra.Client.Pages
                         showElements = true;
                         elements = await _elementsService.GetElementsAsync(id);
 
-                        await ShowMenssage();
+                        await ShowMessage();
                     }
                     else
                     {
                         _idsActivitiesSelect.Remove(id);
 
-                        await ShowMenssage();
+                        await ShowMessage();
 
                         if (elements != null)
                         {
@@ -140,7 +145,7 @@ namespace Obra.Client.Pages
                 {
                     _idsActivitiesSelect.Remove(activityIdAux);
 
-                    await ShowMenssage();
+                    await ShowMessage();
 
                     if (elements != null)
                     {
@@ -171,7 +176,7 @@ namespace Obra.Client.Pages
                 {
                     _idsActivitiesSelect.Remove(id);
 
-                    await ShowMenssage();
+                    await ShowMessage();
 
                     if (elements != null)
                     {
@@ -212,13 +217,13 @@ namespace Obra.Client.Pages
                                 department = true;
                             }
 
-                            await ShowMenssage();
+                            await ShowMessage();
                         }
                         else
                         {
                             _idsElementsSelect.Remove(id);
 
-                            await ShowMenssage();
+                            await ShowMessage();
 
                             if (subElements != null)
                             {
@@ -236,6 +241,7 @@ namespace Obra.Client.Pages
                     }
                     else if (elementIdAux != id)
                     {
+                        await ShowMessage();
                         _idsElementsSelect.Remove(elementIdAux);
 
                         if (subElements != null)
@@ -263,6 +269,7 @@ namespace Obra.Client.Pages
                     }
                     else
                     {
+                        await ShowMessage();
                         _idsElementsSelect.Remove(id);
 
                         if (subElements != null)
@@ -281,7 +288,7 @@ namespace Obra.Client.Pages
                 }
                 else
                 {
-                    menssageError = "Es necesario elegir una Actividad antes de un Elemento";
+                    messageError = "Es necesario elegir una Actividad antes de un Elemento";
                     alert = true;
                 }
             }
@@ -294,13 +301,13 @@ namespace Obra.Client.Pages
                     department = true;
                     allSubElements = false;
 
-                    await ShowMenssage();
+                    await ShowMessage();
                 }
                 else
                 {
                     _idsSubElementsSelect.Remove(id);
 
-                    await ShowMenssage();
+                    await ShowMessage();
 
                     if (_idsSubElementsSelect.Count() < 1)
                     {
@@ -341,11 +348,11 @@ namespace Obra.Client.Pages
 
                 _idsAparmentSelect.Clear();
 
-                await ShowMenssage();
+                await ShowMessage();
             }
         }
 
-        public async Task ShowMenssage() => alert = false;
+        public async Task ShowMessage() => alert = false;
         public async Task ShowElements() => showElements = false;
         public async Task ShowSubElements() => showSubElements = false;
         public async Task ShowDepartment() => department = true;
@@ -359,7 +366,7 @@ namespace Obra.Client.Pages
 
         public async Task GoBack()
         {
-            await ShowMenssage();
+            await ShowMessage();
             if (apartments != null)
             {
                 _idsAparmentSelect.Clear();
@@ -398,7 +405,7 @@ namespace Obra.Client.Pages
 
         public async Task ChangeView()
         {
-            await ShowMenssage();
+            await ShowMessage();
             loading = true;
             buttonReport = false;
 
@@ -433,8 +440,7 @@ namespace Obra.Client.Pages
             }
             else
             {
-                menssageError = "No se pudo generar porque el avance esta totalmente completo o por algun error";
-                alert = true;
+                _toastService.ShowToast<ToastReport>(new ToastInstanceSettings(5, false));
             }
 
             loading = false;
@@ -501,7 +507,7 @@ namespace Obra.Client.Pages
                 }
                 else
                 {
-                    menssageError = "Para generar el reporte es necesario elegir un Elemento antes";
+                    messageError = "Para generar el reporte es necesario elegir un Elemento antes";
                     alert = true;
                 }
             }
@@ -572,13 +578,13 @@ namespace Obra.Client.Pages
                 }
                 else
                 {
-                    menssageError = "Para generar el reporte es necesario elegir un Elemento antes";
+                    messageError = "Para generar el reporte es necesario elegir un Elemento antes";
                     alert = true;
                 }
             }
             else
             {
-                menssageError = "Para generar el reporte es necesario elegir uno o mas Departamentos antes";
+                messageError = "Para generar el reporte es necesario elegir uno o mas Departamentos antes";
                 alert = true;
             }
 
@@ -687,7 +693,7 @@ namespace Obra.Client.Pages
 
         public async Task CameraButton(int id)
         {
-            await ShowMenssage();
+            await ShowMessage();
 
             ProgressLog aux = progressLogs.FirstOrDefault(x => x.IdProgressLog == id);
 
@@ -710,9 +716,13 @@ namespace Obra.Client.Pages
             }
             else
             {
-                menssageError = "No se tiene ninguna observación y tampoco alguna fotografia de este avance";
-                alert = true;
+                _toastService.ShowToast<ToastImages>(new ToastInstanceSettings(5, false));
             }
+        }
+
+        public async Task NotificationImages()
+        {
+            _toastService.ShowToast<ToastImages>(new ToastInstanceSettings(5, false));
         }
     }
 }
