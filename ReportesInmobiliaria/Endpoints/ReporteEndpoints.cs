@@ -96,13 +96,13 @@ namespace ReportesObra.Endpoints
             .AllowAnonymous();
 
 
-            routes.MapGet("/ProgressByActivity", async (int idBuilding, int? idActivity, IReportesService _reportesService, ILogger<Program> _logger) =>
+            routes.MapPost("/ProgressByActivity", async (ActivitiesProgress activitiesProgress, IReportesService _reportesService, ILogger<Program> _logger) =>
             {
                 try
                 {
-                    var newModule = await _reportesService.GetActivityProgress(idBuilding, idActivity);
-                    if (newModule.Count == 0) return Results.NoContent();
-                    return Results.Ok(newModule);
+                    var newModule = await _reportesService.GetActivityProgress(activitiesProgress.IdBuilding, activitiesProgress.Activities);
+                    if (newModule == null) return Results.NoContent();
+                    return Results.File(newModule, "application/pdf");
                 }
                 catch (Exception e)
                 {
@@ -117,7 +117,6 @@ namespace ReportesObra.Endpoints
             .Produces<HttpValidationProblemDetails>(StatusCodes.Status400BadRequest, "application/problem+json")
             .Produces<HttpValidationProblemDetails>(StatusCodes.Status500InternalServerError, "application/problem+json")
             .AllowAnonymous();
-
 
             //routes.MapGet("/ReporteDetallesPorActividad", async (int idBuilding, int idApartment, [FromUri] int[] activityIds, int ? idElement, int ? idSubElement, IReportesService _reportesService, ILogger<Program> _logger) =>
             //{

@@ -207,13 +207,15 @@ namespace ReportesObra.Services
             return list;
         }
 
-        public async Task<List<ActivityProgress>> GetActivityProgress(int idBuilding, int? idActivity)
+        //public async Task<List<ActivityProgress>> GetActivityProgress(int idBuilding, List<int>? idActivities)
+        public async Task<byte[]> GetActivityProgress(int idBuilding, List<int>? idActivities)
         {
             List<ProgressReportActivityAdded> progressReportsWithActivity = new List<ProgressReportActivityAdded>();
             IQueryable<ProgressReport> progressReports = _dbContext.ProgressReports;
             IQueryable<ProgressLog> progressLogs = _dbContext.ProgressLogs;
             IQueryable<SharedLibrary.Models.Activity> activities = _dbContext.Activities;
             progressReports = progressReports.Where(x => x.IdBuilding == idBuilding);
+            string title = "(Todas)";
 
             foreach (var progressReport in progressReports)
             {
@@ -228,9 +230,12 @@ namespace ReportesObra.Services
                     TotalPieces = progressReport.TotalPieces
                 });
             }
-
-            if (idActivity != null)
-                progressReportsWithActivity = progressReportsWithActivity.Where(x => x.IdActivity == idActivity).ToList();            
+            //progressReportsWithActivity = progressReportsWithActivity.Where(x => x.IdActivity == idActivity).ToList();            
+            if (idActivities != null && idActivities.Count() != 0)
+            {
+                progressReportsWithActivity = FiltradoProgressByActivity(progressReportsWithActivity, idActivities);
+                title = "(Seleccionadas)";
+            }
 
             List<TotalPiecesByActivity> totalPieces = progressReportsWithActivity.GroupBy(x => x.IdActivity)
                     .Select(x => new TotalPiecesByActivity
@@ -252,7 +257,23 @@ namespace ReportesObra.Services
                     Progress = 100.00 / total * current
                 });
             }
-            return list;
+            list = list.OrderBy(x => x.ActivityName).ToList();
+            ReporteAvanceActividad reporteAvance = new()
+            {
+                FechaGeneracion = DateTime.Now,
+                Activities = list
+            };
+            return _reportesFactory.CrearPdf(reporteAvance, title);
+        }
+
+        public async Task<byte[]> GetReporteAvanceActividad(List<ActivityProgress> activityProgress)
+        {
+            ReporteAvanceActividad reporteAvance = new()
+            {
+                FechaGeneracion = DateTime.Now,
+                Activities = activityProgress
+            };
+            return _reportesFactory.CrearPdf(reporteAvance);
         }
 
         public int? getIdActividadByElement(int idElement)
@@ -333,6 +354,19 @@ namespace ReportesObra.Services
             if (result == null)
                 return null;
             return result.ApartmentNumber;
+        }
+
+        private List<ProgressReportActivityAdded> FiltradoProgressByActivity(List<ProgressReportActivityAdded> listProgress, List<int> idActivities)
+        {
+            List<ProgressReportActivityAdded> listProgressFiltred = new List<ProgressReportActivityAdded>();
+            foreach (var idActivity in idActivities)
+            {
+                var subListActivity = listProgress.Where(x => x.IdActivity == idActivity);
+                if (subListActivity == null)
+                    continue;
+                listProgressFiltred.AddRange(subListActivity.ToList());
+            }
+            return listProgressFiltred;
         }
 
         private List<ProgressReport> FiltradoIdApartments(List<ProgressReport>  ListAllAparments, List<int> idApartments)
