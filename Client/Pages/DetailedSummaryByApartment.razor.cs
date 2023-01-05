@@ -1,8 +1,12 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿using Blazored.Toast;
+using Blazored.Toast.Services;
+using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
+using Obra.Client.Components;
 using Obra.Client.Interfaces;
 using Obra.Client.Stores;
 using SharedLibrary.Models;
+using System.Reflection.Metadata;
 
 namespace Obra.Client.Pages
 {
@@ -17,7 +21,7 @@ namespace Obra.Client.Pages
         private readonly IProgressLogsService _progressLogsService;
         private readonly IReportesService _reportesService;
         private readonly IJSRuntime _JS;
-
+        private readonly IToastService _toastService;
         private List<Apartment> apartments { get; set; }
         private List<SharedLibrary.Models.Activity> activities { get; set; }
         private List<Element> elements { get; set; }
@@ -35,7 +39,7 @@ namespace Obra.Client.Pages
         private List<int> _idsElementsSelect { get; set; } = new();
         private List<int> _idsSubElementsSelect { get; set; } = new();
 
-        private string menssageError = "";
+        private string messageError = "";
         private bool alert = false;
         private bool allApartments = false;
         private bool allSubElements = false;
@@ -59,7 +63,7 @@ namespace Obra.Client.Pages
         private bool isFirstView { get; set; } = true;
         private bool showModal { get; set; } = false;
 
-        public DetailedSummaryByApartment(ApplicationContext context, IApartmentsService apartmentsService, IActivitiesService activitiesService, IElementsService elementsService, ISubElementsService subElementsService, IProgressReportService progressReportService, IProgressLogsService progressLogsService, IReportesService reportesService, IJSRuntime jS)
+        public DetailedSummaryByApartment(ApplicationContext context, IApartmentsService apartmentsService, IActivitiesService activitiesService, IElementsService elementsService, ISubElementsService subElementsService, IProgressReportService progressReportService, IProgressLogsService progressLogsService, IReportesService reportesService, IJSRuntime jS, IToastService toastService)
         {
             _context = context;
             _apartmentsService = apartmentsService;
@@ -70,6 +74,7 @@ namespace Obra.Client.Pages
             _progressLogsService = progressLogsService;
             _reportesService = reportesService;
             _JS = jS;
+            _toastService = toastService;
         }
 
         protected async override Task OnInitializedAsync()
@@ -88,13 +93,13 @@ namespace Obra.Client.Pages
 
                     allApartments = false;
 
-                    await ShowMenssage();
+                    await ShowMessage();
                 }
                 else if (_idsAparmentSelect.Count() == 1)
                 {
                     _idsAparmentSelect.Remove(id);
 
-                    await ShowMenssage();
+                    await ShowMessage();
 
                     _idsActivitiesSelect.Clear();
 
@@ -131,13 +136,13 @@ namespace Obra.Client.Pages
                             showElements = true;
                             elements = await _elementsService.GetElementsAsync(id);
 
-                            await ShowMenssage();
+                            await ShowMessage();
                         }
                         else
                         {
                             _idsActivitiesSelect.Remove(id);
 
-                            await ShowMenssage();
+                            await ShowMessage();
 
                             if (elements != null)
                             {
@@ -157,7 +162,7 @@ namespace Obra.Client.Pages
                     {
                         _idsActivitiesSelect.Remove(activityIdAux);
 
-                        await ShowMenssage();
+                        await ShowMessage();
 
                         if (elements != null)
                         {
@@ -183,7 +188,7 @@ namespace Obra.Client.Pages
                     {
                         _idsActivitiesSelect.Remove(id);
 
-                        await ShowMenssage();
+                        await ShowMessage();
 
                         if (elements != null)
                         {
@@ -203,7 +208,7 @@ namespace Obra.Client.Pages
                 }
                 else
                 {
-                    menssageError = "Es necesario elegir un Departamento antes de una Actividad";
+                    messageError = "Es necesario elegir un Departamento antes de una Actividad";
                     alert = true;
                 }
             }
@@ -218,13 +223,13 @@ namespace Obra.Client.Pages
                         showSubElements = true;
                         subElements = await _subElementsService.GetSubElementsAsync(id);
 
-                        await ShowMenssage();
+                        await ShowMessage();
                     }
                     else
                     {
                         _idsElementsSelect.Remove(id);
 
-                        await ShowMenssage();
+                        await ShowMessage();
 
                         if (subElements != null)
                         {
@@ -237,6 +242,7 @@ namespace Obra.Client.Pages
                 else if (elementIdAux != id)
                 {
                     _idsElementsSelect.Remove(elementIdAux);
+                    await ShowMessage();
 
                     if (subElements != null)
                     {
@@ -254,6 +260,7 @@ namespace Obra.Client.Pages
                 }
                 else
                 {
+                    await ShowMessage();
                     _idsElementsSelect.Remove(id);
 
                     if (subElements != null)
@@ -273,13 +280,13 @@ namespace Obra.Client.Pages
 
                     allSubElements = false;
 
-                    await ShowMenssage();
+                    await ShowMessage();
                 }
                 else
                 {
                     _idsSubElementsSelect.Remove(id);
 
-                    await ShowMenssage();
+                    await ShowMessage();
                 }
             }
         }
@@ -296,7 +303,7 @@ namespace Obra.Client.Pages
 
                 _idsAparmentSelect.Clear();
 
-                await ShowMenssage();
+                await ShowMessage();
 
                 _idsActivitiesSelect.Clear();
 
@@ -330,13 +337,13 @@ namespace Obra.Client.Pages
             }
         }
 
-        public async Task ShowMenssage() => alert = false;
+        public async Task ShowMessage() => alert = false;
         public async Task ShowElements() => showElements = false;
         public async Task ShowSubElements() => showSubElements = false;
 
         public async Task GoBack()
         {
-            await ShowMenssage();
+            await ShowMessage();
             _idsAparmentSelect.Clear();
             _idsActivitiesSelect.Clear();
 
@@ -409,8 +416,7 @@ namespace Obra.Client.Pages
             }
             else
             {
-                menssageError = "No se pudo generar porque el avance esta totalmente completo o por algun error";
-                alert = true;
+                _toastService.ShowToast<ToastReport>(new ToastInstanceSettings(5, false));
             }
 
             loading = false;
@@ -476,7 +482,7 @@ namespace Obra.Client.Pages
                 }
                 else
                 {
-                    menssageError = "Para generar el reporte es necesario elegir un Elemento antes";
+                    messageError = "Para generar el reporte es necesario elegir un Elemento antes";
                     alert = true;
                 }
             }
@@ -547,7 +553,7 @@ namespace Obra.Client.Pages
                 }
                 else
                 {
-                    menssageError = "Para generar el reporte es necesario elegir un Elemento antes";
+                    messageError = "Para generar el reporte es necesario elegir un Elemento antes";
                     alert = true;
                 }
             }
@@ -655,34 +661,47 @@ namespace Obra.Client.Pages
             }
         }
 
-        public async Task CamareButton(int id)
+        public async Task CamareButton(int idProgreesReport)
         {
-            await ShowMenssage();
+            await ShowMessage();
 
-            ProgressLog aux = progressLogs.FirstOrDefault(x => x.IdProgressLog == id);
+            int id = progressLogs.FirstOrDefault(x => x.IdProgressReport == idProgreesReport).IdProgressLog;
 
-            if (aux.Observation != null)
+            if (id != null)
             {
-                observations = aux.Observation;
-            }
+                ProgressLog aux = progressLogs.FirstOrDefault(x => x.IdProgressLog == id);
 
-            if (aux.IdBlobs != null)
-            {
-                foreach (var item in aux.IdBlobs)
+                if (aux.Observation != null)
                 {
-                    images.Add(item.Uri);
+                    observations = aux.Observation;
                 }
-            }
 
-            if (observations != null && observations != "" || images.Count() > 0)
-            {
-                showModal = true;
+                if (aux.IdBlobs != null)
+                {
+                    foreach (var item in aux.IdBlobs)
+                    {
+                        images.Add(item.Uri);
+                    }
+                }
+
+                if (observations != null && observations != "" || images.Count() > 0)
+                {
+                    showModal = true;
+                }
+                else
+                {
+                    _toastService.ShowToast<ToastImages>(new ToastInstanceSettings(5, false));
+                }
             }
             else
             {
-                menssageError = "No se tiene ninguna observación y tampoco alguna fotografia de este avance";
-                alert = true;
+                _toastService.ShowToast<ToastImages>(new ToastInstanceSettings(5, false));
             }
+        }
+
+        public async Task NotificationImages()
+        {
+            _toastService.ShowToast<ToastImages>(new ToastInstanceSettings(5, false));
         }
     }
 }
