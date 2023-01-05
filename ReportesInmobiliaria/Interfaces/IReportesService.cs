@@ -10,7 +10,7 @@ namespace ReportesObra.Interfaces
         //Task <List<AparmentProgress>> GetAparmentsAsync(int? idAparment);
         //Task<byte[]> GetReporteAvance(int? idAparment);
         Task<List<AparmentProgress>> GetAparments(int? idAparment);
-        Task<byte[]> GetActivityProgress(int idBuilding, List<int>? idActivities);
+        Task<List<ActivityProgress>> GetActivityProgress(int? idBuilding, int? idActivity);
         Task<byte[]> GetReporteAvanceActividad(List<ActivityProgress> activityProgress);
     }
 }

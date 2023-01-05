@@ -22,6 +22,7 @@ namespace ReportesObra.Services
         private readonly ObraDbContext _dbContext;
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly ReportesFactory _reportesFactory;
+        private static string titleActividades = "(Todas)";
         List<ProgressReport> progressReportsComplete;
         List<ProgressLog> listProgressLog;
         List<Element> listElements;
@@ -206,16 +207,16 @@ namespace ReportesObra.Services
             }
             return list;
         }
-
-        //public async Task<List<ActivityProgress>> GetActivityProgress(int idBuilding, List<int>? idActivities)
-        public async Task<byte[]> GetActivityProgress(int idBuilding, List<int>? idActivities)
+        //public async Task<byte[]> GetActivityProgress(int idBuilding, List<int>? idActivities)
+        public async Task<List<ActivityProgress>> GetActivityProgress(int? idBuilding, int? idActivity)
         {
+            if (idBuilding == null)
+                idBuilding = 1;
             List<ProgressReportActivityAdded> progressReportsWithActivity = new List<ProgressReportActivityAdded>();
             IQueryable<ProgressReport> progressReports = _dbContext.ProgressReports;
             IQueryable<ProgressLog> progressLogs = _dbContext.ProgressLogs;
             IQueryable<SharedLibrary.Models.Activity> activities = _dbContext.Activities;
-            progressReports = progressReports.Where(x => x.IdBuilding == idBuilding);
-            string title = "(Todas)";
+            progressReports = progressReports.Where(x => x.IdBuilding == idBuilding);            
 
             foreach (var progressReport in progressReports)
             {
@@ -230,11 +231,10 @@ namespace ReportesObra.Services
                     TotalPieces = progressReport.TotalPieces
                 });
             }
-            //progressReportsWithActivity = progressReportsWithActivity.Where(x => x.IdActivity == idActivity).ToList();            
-            if (idActivities != null && idActivities.Count() != 0)
+            if (idActivity != null)
             {
-                progressReportsWithActivity = FiltradoProgressByActivity(progressReportsWithActivity, idActivities);
-                title = "(Seleccionadas)";
+                progressReportsWithActivity = progressReportsWithActivity.Where(x => x.IdActivity == idActivity).ToList();
+                titleActividades = "(Seleccionadas)";
             }
 
             List<TotalPiecesByActivity> totalPieces = progressReportsWithActivity.GroupBy(x => x.IdActivity)
@@ -257,13 +257,14 @@ namespace ReportesObra.Services
                     Progress = 100.00 / total * current
                 });
             }
-            list = list.OrderBy(x => x.ActivityName).ToList();
-            ReporteAvanceActividad reporteAvance = new()
-            {
-                FechaGeneracion = DateTime.Now,
-                Activities = list
-            };
-            return _reportesFactory.CrearPdf(reporteAvance, title);
+            //list = list.OrderBy(x => x.ActivityName).ToList();
+            return list;
+            //ReporteAvanceActividad reporteAvance = new()
+            //{
+            //    FechaGeneracion = DateTime.Now,
+            //    Activities = list
+            //};
+            //return _reportesFactory.CrearPdf(reporteAvance, title);
         }
 
         public async Task<byte[]> GetReporteAvanceActividad(List<ActivityProgress> activityProgress)
@@ -273,7 +274,7 @@ namespace ReportesObra.Services
                 FechaGeneracion = DateTime.Now,
                 Activities = activityProgress
             };
-            return _reportesFactory.CrearPdf(reporteAvance);
+            return _reportesFactory.CrearPdf(reporteAvance, titleActividades);
         }
 
         public int? getIdActividadByElement(int idElement)
