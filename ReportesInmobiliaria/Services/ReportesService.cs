@@ -78,7 +78,7 @@ namespace ReportesObra.Services
             };
             if (idActivities != null)
                 if (idActivities.Count() != 0)
-                {
+                { 
                     reporteDetalles.detalladoActividades = FiltradoIdActivities(reporteDetalles.detalladoActividades, idActivities);
                     title = "(Seleccionadas)";
                 }
@@ -175,6 +175,8 @@ namespace ReportesObra.Services
             if (idAparment != null)
                 progressReports = progressReports.Where(x => x.IdApartment == idAparment);
 
+            progressReports = progressReports.Where(x => x.IdBuilding == 1);
+
             List<TotalPicesByAparment> totalOfPicesByAparment = progressReports.GroupBy(x => x.IdApartment)
                     .Select(x => new TotalPicesByAparment
                     {
@@ -198,55 +200,47 @@ namespace ReportesObra.Services
             return list;
         }
 
-        public async Task<List<AparmentProgress>> GetActivitiesByAparment(int? idAparment)
+        public async Task<List<IGrouping<string,AparmentProgress>>> GetActivitiesByAparment(int? idAparment)
         {
-            IQueryable<ProgressReport> progressReports = _dbContext.ProgressReports.Include(x => x.IdAreaNavigation).Include(x => x.IdApartmentNavigation).Include(x => x.IdElementNavigation).Include(x => x.IdElementNavigation.IdActivityNavigation);
-            IQueryable<ProgressLog> progressLogs = _dbContext.ProgressLogs;                        
-            IQueryable<Element> elements = _dbContext.Elements.Include(x => x.IdActivityNavigation);            
+            IQueryable<ProgressReport> progressReports = _dbContext.ProgressReports.Include(x => x.IdApartmentNavigation).Include(x => x.IdElementNavigation).Include(x => x.IdElementNavigation.IdActivityNavigation);
+            IQueryable<Activity> Activities = _dbContext.Activities;
+            IQueryable<ProgressLog> progressLogs = _dbContext.ProgressLogs;                              
+            var list = new List<AparmentProgress>();
 
-            var progressReportsByArea = progressReports.Join(progressLogs, x => x.IdProgressReport, y => y.IdProgressReport, (report, log) => new { report, log }).GroupBy(x => x.report.IdArea);
+            progressReports = progressReports.Where(x => x.IdBuilding == 1);
 
-            foreach (var area in progressReportsByArea)
+            foreach(var activity in Activities)
             {
-                var proto = area.Select(x => x.report.IdAreaNavigation.IdActivities);
-            }
+                var progressReportsCurrentActivity = progressReports.Where(x => x.IdElementNavigation.IdActivityNavigation.IdActivity.Equals(activity.IdActivity));
 
-            var progressReportsByElement = progressReports.Join(progressLogs, x => x.IdProgressReport, y => y.IdProgressReport, (report, log) => new { report, log }).GroupBy(x => x.report.IdArea);
-
-            foreach (var element in progressReportsByElement)
-            {
-                var protoElement = element.GroupBy(x => x.report.IdElementNavigation.IdActivityNavigation.ActivityName);
-                foreach(var activity in protoElement)
-                {
-                    activity
-                }
-            }
-
-            if (idAparment != null)
-                progressReports = progressReports.Where(x => x.IdApartment == idAparment);
-
-            List<TotalPicesByAparment> totalOfPicesByAparment = progressReports.GroupBy(x => x.IdElement)
+                List<TotalPicesByAparment> totalOfPicesByAparment = progressReportsCurrentActivity.GroupBy(x => x.IdApartment)
                     .Select(x => new TotalPicesByAparment
                     {
                         IdAparment = x.Key,
                         Pices = x.Sum(s => Convert.ToInt32(s.TotalPieces))
                     }).ToList();
 
-            var progressReportsByAparment = progressReports.Join(progressLogs, x => x.IdProgressReport, y => y.IdProgressReport, (report, log) => new { report, log }).GroupBy(x => x.report.IdApartment);
+                var progressReportsCurrentActivityByAparment = progressReportsCurrentActivity.Join(progressLogs, x => x.IdProgressReport, y => y.IdProgressReport, (report, log) => new { report, log }).GroupBy(x => x.report.IdApartment);
 
-            var list = new List<AparmentProgress>();
-            foreach (var area in progressReportsByAparment)
-            {
-                var prueba = area.GroupBy(x => x.report.IdElement);
-                long total = totalOfPicesByAparment.FirstOrDefault(x => x.IdAparment == area.Key).Pices;
-                long current = area.GroupBy(x => x.log.IdProgressReport).Select(x => x.OrderByDescending(x => x.log.DateCreated).FirstOrDefault()).Sum(x => long.Parse(x.log.Pieces));
-                list.Add(new AparmentProgress()
+                foreach (var apartment in progressReportsCurrentActivityByAparment)
                 {
-                    //ApartmentNumber = apartments.FirstOrDefault(x => x.IdApartment == aparment.Key).ApartmentNumber,
-                    ApartmentProgress = 100.00 / total * current
-                });
-            }
-            return list;
+                    long total = totalOfPicesByAparment.FirstOrDefault(x => x.IdAparment == apartment.Key).Pices;
+                    long current;
+                    if (apartment != null)
+                        current = apartment.GroupBy(x => x.log.IdProgressReport).Select(x => x.OrderByDescending(x => x.log.DateCreated).FirstOrDefault()).Sum(x => long.Parse(x.log.Pieces));
+                    else
+                        current = 99999999999999;
+                    list.Add(new AparmentProgress()
+                    {
+                        Activity_ = apartment.FirstOrDefault().report.IdElementNavigation.IdActivityNavigation.ActivityName,
+                        ApartmentNumber = apartment.FirstOrDefault().report.IdApartmentNavigation.ApartmentNumber,
+                        ApartmentProgress = 100.00 / total * current
+                    });
+                }
+
+            }            
+            var listGroupedByActivity = list.GroupBy(x => x.Activity_).ToList();
+            return listGroupedByActivity;
         }
 
         public string? getActividadByElement(int idElement)

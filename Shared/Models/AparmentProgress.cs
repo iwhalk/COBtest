@@ -8,6 +8,7 @@ namespace SharedLibrary.Models
 {
     public class AparmentProgress
     {
+        public string? Activity_ { get; set; }
         public string ApartmentNumber { get; set; }
 
         public double ApartmentProgress { get; set; }
