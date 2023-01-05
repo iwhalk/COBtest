@@ -4,6 +4,8 @@ using Microsoft.EntityFrameworkCore;
 using ReportesObra.Interfaces;
 using SharedLibrary.Data;
 using SharedLibrary.Models;
+using SixLabors.ImageSharp;
+using SixLabors.ImageSharp.Formats.Jpeg;
 using System.IO;
 
 namespace ReportesObra.Services
@@ -24,7 +26,7 @@ namespace ReportesObra.Services
             var blob = await _dbContext.Blobs.FindAsync(id);
             if (blob == null) return null;
 
-            var blobContainerClient = _blobServiceClient.GetBlobContainerClient("inventoryblobs");
+            var blobContainerClient = _blobServiceClient.GetBlobContainerClient("imagescob");
             var blobClient = blobContainerClient.GetBlobClient(blob.BlobName);
 
             var blobFile = await blobClient.DownloadAsync();
@@ -46,33 +48,44 @@ namespace ReportesObra.Services
         public async Task<Blob?> CreateBlobAsync(IFormFile file)
         {
 
-            try
+            var blobContainerClient = _blobServiceClient.GetBlobContainerClient("imagescob");
+            var extensionFile = file.ContentType == "" ? "jpeg" : file.ContentType.Split("/")[1]?? "jpeg";
+            var blobName = Guid.NewGuid().ToString() + "." + extensionFile;
+            var blobClient = blobContainerClient.GetBlobClient(blobName);
+
+            var newBlob = new Blob
             {
-                var blobContainerClient = _blobServiceClient.GetBlobContainerClient("inventoryblobs");
-                var extensionFile = file.ContentType == "" ? "jpeg" : file.ContentType.Split("/")[1]?? "jpeg";
-                var blobName = Guid.NewGuid().ToString() + "." + extensionFile;
-                var blobClient = blobContainerClient.GetBlobClient(blobName);
+                BlobName = blobName,
+                Uri = blobClient.Uri.ToString(),
+                BlobSize = file.Length.ToString(),
+                ContainerName = "imagescob",
+                IsPrivate = false,
+                BlobTypeId = "",
+                ContentType = file.ContentType == "" ? "image/jpeg" : file.ContentType?? "image/jpeg",
+                DateCreated = DateTime.Now,
+                DateModified = DateTime.Now
+            };
 
-                var newBlob = new Blob
+            using (var memoryStream = new MemoryStream())
+            using (var image = Image.Load(file.OpenReadStream()))
+            {
+                var encoder = new JpegEncoder()
                 {
-                    BlobName = blobName,
-                    Uri = blobClient.Uri.ToString(),
-                    BlobSize = file.Length.ToString(),
-                    ContainerName = "inventoryblobs",
-                    IsPrivate = false,
-                    BlobTypeId = "",
-                    ContentType = file.ContentType == "" ? "image/jpeg" : file.ContentType?? "image/jpeg",
-                    DateCreated = DateTime.Now,
-                    DateModified = DateTime.Now
+                    Quality = file.Length > 100000 ? 15 : 30 //Use variable to set between 5-30 based on your requirements
                 };
-
+                image.Save(memoryStream, encoder);
+                memoryStream.Position = 0; 
                 var response = await blobClient.UploadAsync(
-                file.OpenReadStream(),
+                memoryStream,
                 new BlobHttpHeaders
                 {
                     ContentType = file.ContentType == "" ? "image/jpeg" : file.ContentType ?? "image/jpeg"
                 });
+            }
 
+
+            try
+            {
                 await _dbContext.Blobs.AddAsync(newBlob);
                 await _dbContext.SaveChangesAsync();
 
@@ -105,7 +118,7 @@ namespace ReportesObra.Services
                 return false;
 
             var blobName = blob.BlobName;
-            var blobContainerClient = _blobServiceClient.GetBlobContainerClient("inventoryblobs");
+            var blobContainerClient = _blobServiceClient.GetBlobContainerClient("imagescob");
             var blobClient = blobContainerClient.GetBlobClient(blobName);
             var response = await blobClient.DeleteAsync();
 
