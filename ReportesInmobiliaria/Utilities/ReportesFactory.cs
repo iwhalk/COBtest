@@ -109,6 +109,9 @@ namespace ReportesObra.Utilities
                 case nameof(ReporteAvanceActividad):
                     CrearReporteAvanceActividad(reporte as ReporteAvanceActividad);
                     break;
+                case nameof(List<IGrouping<string, AparmentProgress>>):
+                    CrearReporteAvanceDeActividadPorDepartamento(reporte as List<IGrouping<string, AparmentProgress>>);
+                    break;
                 default:
                     break;
             }
@@ -508,6 +511,133 @@ namespace ReportesObra.Utilities
             rowo.Cells[1].AddParagraph("Avance General");
           
             FillChartContent(reporteAvance.Apartments, table);
+        }
+
+        void CrearReporteAvanceDeActividadPorDepartamento(List<IGrouping<string, AparmentProgress>>? reporteAvance)
+        {
+            section.PageSetup.Orientation = Orientation.Portrait;
+
+            headerFrame = section.AddTextFrame();
+            headerFrame.Width = "22.5cm";
+            headerFrame.Left = "15cm";
+            headerFrame.RelativeHorizontal = RelativeHorizontal.Page;
+            headerFrame.Top = "2.70cm";
+            headerFrame.RelativeVertical = RelativeVertical.Page;
+
+            // Create the text frame for the data parameters
+            dataParametersFrameLeft = section.AddTextFrame();
+            dataParametersFrameLeft.Height = "2.0cm";
+            dataParametersFrameLeft.Width = "7.0cm";
+            dataParametersFrameLeft.Left = ShapePosition.Left;
+            dataParametersFrameLeft.RelativeHorizontal = RelativeHorizontal.Margin;
+            dataParametersFrameLeft.Top = "4.0cm";
+            dataParametersFrameLeft.RelativeVertical = RelativeVertical.Page;
+
+            dataParametersFrameRight = section.AddTextFrame();
+            dataParametersFrameRight.Height = "2.0cm";
+            dataParametersFrameRight.Width = "6.5cm";
+            //dataParametersFrameRight.Left = ShapePosition.Right;
+            dataParametersFrameRight.Left = "11.8cm";
+            dataParametersFrameRight.RelativeHorizontal = RelativeHorizontal.Margin;
+            dataParametersFrameRight.Top = "4.0cm";
+            dataParametersFrameRight.RelativeVertical = RelativeVertical.Page;
+
+            // Create the text frame for the data values
+            dataValuesFrame = section.AddTextFrame();
+            dataValuesFrame.Width = "7.5cm";
+            dataValuesFrame.Left = "2.3cm";//"3.5cm"            
+            dataValuesFrame.RelativeHorizontal = RelativeHorizontal.Margin;
+            dataValuesFrame.Top = "4.0cm";
+            dataValuesFrame.RelativeVertical = RelativeVertical.Page;
+
+            dataValuesFrameRight = section.AddTextFrame();
+            dataValuesFrameRight.Width = "6.5cm";
+            dataValuesFrameRight.Left = "15.4cm";//"3.5cm"
+            dataValuesFrameRight.RelativeHorizontal = RelativeHorizontal.Margin;
+            dataValuesFrameRight.Top = "4.0cm";
+            dataValuesFrameRight.RelativeVertical = RelativeVertical.Page;
+
+            dataValueTable = section.AddTextFrame();
+            dataValueTable.Width = "5.0cm";
+            dataValueTable.Left = ShapePosition.Left;
+            dataValueTable.RelativeHorizontal = RelativeHorizontal.Margin;
+            dataValueTable.Top = "6.6cm";
+            dataValueTable.RelativeVertical = RelativeVertical.Page;
+
+            //Control de NullReferenceException al llamar a las imágenes
+            if (ImageSource.ImageSourceImpl == null)
+            {
+                ImageSource.ImageSourceImpl = new ImageSharpImageSource<Rgba32>();
+            }
+
+            WebClient client = new WebClient();
+            MemoryStream stream = new MemoryStream(client.DownloadData("https://imagenescob.blob.core.windows.net/imagescob/487a4f8d-f21d-4c3f-bf5f-35dc1ebf845b.jpeg"));
+            stream.Position = 0;
+            var logoSOF2245 = section.AddImage(ImageSource.FromStream("logoSOF", () => stream));
+            logoSOF2245.Width = "4.5cm";
+            logoSOF2245.LockAspectRatio = true;
+            logoSOF2245.RelativeHorizontal = RelativeHorizontal.Margin;
+            logoSOF2245.RelativeVertical = RelativeVertical.Page;
+            logoSOF2245.Top = "1.7cm";
+            logoSOF2245.Left = "-1.3cm";
+            logoSOF2245.WrapFormat.Style = WrapStyle.Through;
+
+            MemoryStream stream1 = new MemoryStream(client.DownloadData("https://imagenescob.blob.core.windows.net/imagescob/b2aa64fc-49e3-4abe-9e2f-eaede7a19216.jpeg"));
+            stream1.Position = 0;
+            var logoGeneric = section.AddImage(ImageSource.FromStream("logoGEN", () => stream1));
+            logoGeneric.Width = "3.5cm";
+            logoGeneric.LockAspectRatio = true;
+            logoGeneric.RelativeHorizontal = RelativeHorizontal.Margin;
+            logoGeneric.RelativeVertical = RelativeVertical.Page;
+            logoGeneric.Top = "1.7cm";
+            logoGeneric.Left = "14.0cm";
+            logoGeneric.WrapFormat.Style = WrapStyle.Through;
+
+
+            // Put header in header frame
+            Paragraph paragraph = headerFrame.AddParagraph("Resumen de Avance General Por Departamento");//Titulo
+            paragraph.AddLineBreak();
+            paragraph.Format.Font.Name = "DejaVu Serif";
+            paragraph.Format.Font.Size = 11;
+            paragraph.Format.Font.Bold = true;
+            paragraph.Format.Alignment = ParagraphAlignment.Center;
+
+            // Put parameters in data Frame
+            paragraph = dataParametersFrameRight.AddParagraph();
+            paragraph.Format.Font.Bold = true;
+            paragraph.Format.Font.Size = 9;
+            paragraph.AddText("Fecha de creación: ");
+
+            // Put values in data Frame
+            paragraph = dataValuesFrameRight.AddParagraph();
+            paragraph.AddText(DateTime.Now.ToString("dd/MM/yyyy"));
+            //paragraph.AddText(reporteActaEntrega.header.ElementAt(0).FechaHora.ToString("dd/MM/yyyy hh:mm tt"));
+            // Add the data separation field
+            paragraph = section.AddParagraph();
+            paragraph.Format.SpaceBefore = "2.0cm";//"2.0cm"
+            paragraph.Format.Font.Size = 8;
+            paragraph.Style = "Reference";
+            paragraph.AddFormattedText("", TextFormat.Bold);
+
+            Table table = section.AddTable();
+            table.Rows.Alignment = RowAlignment.Center;
+
+            Column columna = table.AddColumn("3cm");
+            columna.Format.Alignment = ParagraphAlignment.Center;
+            columna = table.AddColumn("14cm");
+            columna.Format.Alignment = ParagraphAlignment.Center;
+
+            Row rowo = table.AddRow();
+            rowo.HeadingFormat = true;
+            rowo.Format.Alignment = ParagraphAlignment.Center;
+            rowo.Format.Font.Bold = true;
+            rowo.Format.Font.Size = 10;
+            rowo.Borders.Visible = false;
+            rowo.BottomPadding = "0.5cm";
+            rowo.Cells[0].AddParagraph("Departamento");
+            rowo.Cells[1].AddParagraph("Avance General");
+
+            //FillChartContent(reporteAvance.Apartments, table);
         }
 
         void CrearReporteAvanceActividad(ReporteAvanceActividad? reporteAvance)
