@@ -95,11 +95,11 @@ namespace ReportesObra.Endpoints
             .Produces<HttpValidationProblemDetails>(StatusCodes.Status500InternalServerError, "application/problem+json")
             .AllowAnonymous();
 
-            routes.MapGet("/ReporteActividadesPorDepartamentoVista", async (int? idAparment, IReportesService _reportesService, ILogger<Program> _logger) =>
+            routes.MapGet("/ReporteActividadesPorDepartamentoVista", async (int? idActivity, IReportesService _reportesService, ILogger<Program> _logger) =>
             {
                 try
                 {
-                    var newModule = await _reportesService.GetActivitiesByAparment(idAparment);
+                    var newModule = await _reportesService.GetActivitiesByAparment(idActivity);
                     if (newModule.Count == 0) return Results.NoContent();
                     return Results.Ok(newModule);
                 }
@@ -123,7 +123,7 @@ namespace ReportesObra.Endpoints
                 {
                     var newModule = await _reportesService.GetReporteAvancDeActividadPorDepartamento(aparmentProgresses);
                     if (newModule == null) return Results.NoContent();
-                    return Results.Ok();
+                    return Results.File(newModule,"application/pdf");
                 }
                 catch (Exception e)
                 {

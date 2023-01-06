@@ -286,12 +286,15 @@ namespace ReportesObra.Services
             return nombreActividad == null ? null : nombreActividad.IdActivity;
         }
 
-        public async Task<List<AparmentProgress>> GetActivitiesByAparment(int? idAparment)
+        public async Task<List<AparmentProgress>> GetActivitiesByAparment(int? idActividad)
         {
             IQueryable<ProgressReport> progressReports = _dbContext.ProgressReports.Include(x => x.IdApartmentNavigation).Include(x => x.IdElementNavigation).Include(x => x.IdElementNavigation.IdActivityNavigation);
             IQueryable<Activity> Activities = _dbContext.Activities;
             IQueryable<ProgressLog> progressLogs = _dbContext.ProgressLogs;                              
             var list = new List<AparmentProgress>();
+
+            if (idActividad != null)
+                progressReports = progressReports.Where(x => x.IdElementNavigation.IdActivityNavigation.IdActivity == idActividad);
 
             progressReports = progressReports.Where(x => x.IdBuilding == 1);
 
@@ -332,13 +335,17 @@ namespace ReportesObra.Services
         public async Task<byte[]> GetReporteAvancDeActividadPorDepartamento(List<AparmentProgress> aparmentProgress)
         {
             var listGroupedByActivity = aparmentProgress.GroupBy(x => x.Activity_).ToList();
+            var list = new List<ReporteActividadPorDepartamento>();
 
-            ReporteAvance reporteAvance = new()
+            foreach (var actividad in listGroupedByActivity)
             {
-                FechaGeneracion = DateTime.Now,
-                Apartments = aparmentProgress
-            };
-            return _reportesFactory.CrearPdf(listGroupedByActivity);
+                list.Add(new ReporteActividadPorDepartamento()
+                {
+                    Actividad = actividad.Key,
+                    Apartments = aparmentProgress.Where(x => x.Activity_ == actividad.Key).ToList()
+                });
+            }            
+            return _reportesFactory.CrearPdf(list);
         }
 
         public string? getActividadByElement(int idElement)
