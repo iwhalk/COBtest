@@ -32,7 +32,7 @@
 
                     @foreach (var activity in _context.Activity)
                     {
-                        <div class="@(_idsAparmentSelect.ContainsKey(activity.IdActivity) ? "h-80" : "h-12") w-full inline-flex">
+                        <div class="@(_idsActivitySelect.ContainsKey(activity.IdActivity) ? "h-80" : "h-12") w-full inline-flex">
                             <div class="md:w-2/6 xl:w-1/6 p-0.5">
                                 <div class="@(_idsAparmentSelect.ContainsKey(activity.IdActivity) && _isFullAparment == false ? "bg-[#9CA2A8]" : "bg-[#55595E]") border border-stone-400 h-full flex justfy-center">
                                     <button @onclick="() => AddIdActivitySelect(activity.IdActivity)" class="w-full">
@@ -40,23 +40,26 @@
                                     </button>
                                 </div>
                             </div>
-                            @if (_idsAparmentSelect.ContainsKey(activity.IdActivity))
+                            @if (_idsActivitySelect.ContainsKey(activity.IdActivity))
                             {
                                 <div class="md:w-4/6 xl:w-5/6 p-0.5 h-full overflow-y-auto">
-                                    @foreach (var aparment in _context.Apartment)
+                                    @foreach (var aparment in _idsActivitySelect[activity.IdActivity])
                                     {
                                         <div class="inline-flex w-full">
                                             <div class="bg-[#254260] border border-stone-400 h-12 p-0.5 mx-2 md:w-2/4 xl:w-2/5">
                                                 <button class="w-full">
-                                                    <p class="text-lg md:text-sm xl:text-lg text-white font-medium leading-6 text-center">@aparment.ApartmentNumber</p>
+                                                    <p class="text-lg md:text-sm xl:text-lg text-white font-medium leading-6 text-center">@aparment.aparmentNumber</p>
                                                 </button>
                                             </div>
                                             <div class="inline-flex md:w-2/4 xl:w-3/5 ml-3 p-0.5">
-                                                @if (_idsAparmentSelect[activity.IdActivity].Item1 > 0)
+                                                @if (aparment.porcentage.Item1 > 0)
                                                 {
-                                                    <div class="bg-[#115D28] z-10 h-full md:text-sm xl:text-lg text-white text-end w-[@Convert.ToInt32(_idsAparmentSelect[activity.IdActivity].Item1)%] md:p-1 xl:p-3">@_idsAparmentSelect[activity.IdActivity].Item1.ToString("0.##")%</div>
+                                                    <div class="bg-[#115D28] z-10 h-full md:text-sm xl:text-lg text-white text-end w-[@Convert.ToInt32(aparment.porcentage.Item1)%] md:p-1 xl:p-3">@aparment.porcentage.Item1.ToString("0.##")%</div>
                                                 }
-                                                <div class="bg-[#CB3030] z-10 h-full md:text-sm xl:text-lg text-white text-end w-[@Convert.ToInt32(_idsAparmentSelect[activity.IdActivity].Item2)%] md:p-1 xl:p-3">@_idsAparmentSelect[activity.IdActivity].Item2.ToString("0.##")%</div>
+                                                @if (aparment.porcentage.Item1 > 100)
+                                                {
+                                                    <div class="bg-[#CB3030] z-10 h-full md:text-sm xl:text-lg text-white text-end w-[@Convert.ToInt32(aparment.porcentage.Item2)%] md:p-1 xl:p-3">@aparment.porcentage.Item2.ToString("0.##")%</div>
+                                                }
                                             </div>
                                         </div>
                                     }

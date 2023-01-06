@@ -49,10 +49,10 @@ namespace Obra.Client.Services
             return await _repository.PostAsync<byte[]>(progressReportList, path: "api/Reports/ProgressByActivityPDF");
         }
 
-        public async Task<List<AparmentProgress>?> GetProgressOfAparmentByActivityDataViewAsync(int? idAparment)
+        public async Task<List<AparmentProgress>?> GetProgressOfAparmentByActivityDataViewAsync(int? idActivity)
         {
             Dictionary<string, string> parameters = new();
-            parameters.Add("idAparment", idAparment.ToString());
+            parameters.Add("idActivity", idActivity.ToString());
             return await _repository.GetAsync<List<AparmentProgress>?>(parameters, path: "api/Reports/ProgressOfAparmentByActivityDataView");
         }
 
