@@ -95,7 +95,7 @@ namespace ReportesObra.Endpoints
             .Produces<HttpValidationProblemDetails>(StatusCodes.Status500InternalServerError, "application/problem+json")
             .AllowAnonymous();
 
-            routes.MapGet("/ReporteActividades", async (int? idAparment, IReportesService _reportesService, ILogger<Program> _logger) =>
+            routes.MapGet("/ReporteActividadesPorDepartamentoVista", async (int? idAparment, IReportesService _reportesService, ILogger<Program> _logger) =>
             {
                 try
                 {
@@ -112,6 +112,28 @@ namespace ReportesObra.Endpoints
                 }
             })
             .WithName("GetActivitiesByAparment")
+            .Produces<IResult>(StatusCodes.Status200OK)
+            .Produces<HttpValidationProblemDetails>(StatusCodes.Status400BadRequest, "application/problem+json")
+            .Produces<HttpValidationProblemDetails>(StatusCodes.Status500InternalServerError, "application/problem+json")
+            .AllowAnonymous();
+
+            routes.MapPost("/ReporteActividadesPorDepartamento", async (List<ActividadPorDepartamento> actividadPorDepartamentos, IReportesService _reportesService, ILogger<Program> _logger) =>
+            {
+                try
+                {
+                    //var newModule = await _reportesService.GetActivitiesByAparment(idAparment);
+                    //if (newModule.Count == 0) return Results.NoContent();
+                    return Results.Ok();
+                }
+                catch (Exception e)
+                {
+                    _logger.LogError(e, e.Message);
+                    if (e.GetType() == typeof(ValidationException))
+                        return Results.Problem(e.Message, statusCode: 400);
+                    return Results.Problem(e.Message);
+                }
+            })
+            .WithName("GG")
             .Produces<IResult>(StatusCodes.Status200OK)
             .Produces<HttpValidationProblemDetails>(StatusCodes.Status400BadRequest, "application/problem+json")
             .Produces<HttpValidationProblemDetails>(StatusCodes.Status500InternalServerError, "application/problem+json")

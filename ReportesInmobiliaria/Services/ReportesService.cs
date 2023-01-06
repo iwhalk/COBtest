@@ -13,7 +13,7 @@ using System.Data.Common;
 //using System.Data.Entity;
 //using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
-using System.Diagnostics;
+//using System.Diagnostics;
 using System.Linq;
 
 namespace ReportesObra.Services
@@ -286,7 +286,7 @@ namespace ReportesObra.Services
             return nombreActividad == null ? null : nombreActividad.IdActivity;
         }
 
-        public async Task<List<IGrouping<string,AparmentProgress>>> GetActivitiesByAparment(int? idAparment)
+        public async Task<List<AparmentProgress>> GetActivitiesByAparment(int? idAparment)
         {
             IQueryable<ProgressReport> progressReports = _dbContext.ProgressReports.Include(x => x.IdApartmentNavigation).Include(x => x.IdElementNavigation).Include(x => x.IdElementNavigation.IdActivityNavigation);
             IQueryable<Activity> Activities = _dbContext.Activities;
@@ -325,8 +325,8 @@ namespace ReportesObra.Services
                 }
 
             }            
-            var listGroupedByActivity = list.GroupBy(x => x.Activity_).ToList();
-            return listGroupedByActivity;
+            //var listGroupedByActivity = list.GroupBy(x => x.Activity_).ToList();
+            return list;
         }
 
         public string? getActividadByElement(int idElement)
