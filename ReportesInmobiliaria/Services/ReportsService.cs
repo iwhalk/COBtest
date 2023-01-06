@@ -18,7 +18,7 @@ using System.Linq;
 
 namespace ReportesObra.Services
 {
-    public class ReportesService : IReportesService
+    public class ReportsService : IReportesService
     {
         private readonly ObraDbContext _dbContext;
         private readonly IHttpContextAccessor _httpContextAccessor;
@@ -31,7 +31,7 @@ namespace ReportesObra.Services
         List<Apartment> listApartments;
         //private readonly InmobiliariaDbContextProcedures _dbContextProcedure;
 
-        public ReportesService(ObraDbContext dbContext, IHttpContextAccessor httpContextAccessor, ReportesFactory reportesFactory)
+        public ReportsService(ObraDbContext dbContext, IHttpContextAccessor httpContextAccessor, ReportesFactory reportesFactory)
         {
             _dbContext = dbContext;
             _httpContextAccessor = httpContextAccessor;

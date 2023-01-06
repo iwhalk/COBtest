@@ -51,7 +51,7 @@ namespace ReportesObra.Endpoints
             .Produces<HttpValidationProblemDetails>(StatusCodes.Status400BadRequest, "application/problem+json")
             .Produces<HttpValidationProblemDetails>(StatusCodes.Status500InternalServerError, "application/problem+json");
 
-            routes.MapPost("/ReporteAvance", async (List<AparmentProgress> aparmentProgresses, IReportesService _reportesService, ILogger<Program> _logger) =>
+            routes.MapPost("/ReportProgressByAparmentPDF", async (List<AparmentProgress> aparmentProgresses, IReportesService _reportesService, ILogger<Program> _logger) =>
             {
                 try
                 {
@@ -73,7 +73,7 @@ namespace ReportesObra.Endpoints
             .Produces<HttpValidationProblemDetails>(StatusCodes.Status500InternalServerError, "application/problem+json")
             .AllowAnonymous();
 
-            routes.MapGet("/ReporteAvanceVista", async (int? idAparment, IReportesService _reportesService, ILogger<Program> _logger) =>
+            routes.MapGet("/ReportProgressByAparmentView", async (int? idAparment, IReportesService _reportesService, ILogger<Program> _logger) =>
             {
                 try
                 {

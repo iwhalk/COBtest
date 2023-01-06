@@ -21,7 +21,7 @@ namespace Obra.Client.Pages
         private readonly ISubElementsService _subElementsService;
         private readonly IProgressReportService _progressReportService;
         private readonly IProgressLogsService _progressLogsService;
-        private readonly IReportesService _reportesService;
+        private readonly IReportsService _reportesService;
         private readonly IJSRuntime _JS;
         private readonly IToastService _toastService;
         private List<Apartment> apartments { get; set; }
@@ -65,7 +65,7 @@ namespace Obra.Client.Pages
         Dictionary<string, string> greenPercentage { get; set; } = new();
         Dictionary<string, string> redPercentage { get; set; } = new();
 
-        public ActivityDetails(ApplicationContext context, IApartmentsService apartmentsService, IActivitiesService activitiesService, IElementsService elementsService, ISubElementsService subElementsService, IProgressReportService progressReportService, IProgressLogsService progressLogsService, IReportesService reportesService, IJSRuntime jS, IToastService toastService)
+        public ActivityDetails(ApplicationContext context, IApartmentsService apartmentsService, IActivitiesService activitiesService, IElementsService elementsService, ISubElementsService subElementsService, IProgressReportService progressReportService, IProgressLogsService progressLogsService, IReportsService reportesService, IJSRuntime jS, IToastService toastService)
         {
             _context = context;
             _apartmentsService = apartmentsService;

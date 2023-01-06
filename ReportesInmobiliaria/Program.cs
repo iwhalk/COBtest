@@ -88,7 +88,7 @@ builder.Services.AddScoped<IProgressLogsService, ProgressLogsService>();
 builder.Services.AddScoped<IBlobService, BlobService>();
 builder.Services.AddScoped<IElementsService, ElementsService>();
 builder.Services.AddScoped<ISubElementsService, SubElementsService>();
-builder.Services.AddScoped<IReportesService, ReportesService>();
+builder.Services.AddScoped<IReportesService, ReportsService>();
 
 builder.Services.AddScoped<ReportesFactory>();
 
