@@ -28,12 +28,12 @@ namespace Obra.Client.Pages
             _apartmentService = apartmentService;
             _progressLogsService = progressLogsService;
             _reportService = reportService;
-            _JS = jS;
+            _JS = jS;            
         }
         protected async override Task OnInitializedAsync()
         {
             _context.Activity = await _activityService.GetActivitiesAsync();
-            _context.Apartment = await _apartmentService.GetApartmentsAsync();
+            _context.Apartment = await _apartmentService.GetApartmentsAsync();            
         }
         private void BackPage() => _navigationManager.NavigateTo("/ProjectOverview");
         private async void AddIdAparmentSelect(int idActivity)

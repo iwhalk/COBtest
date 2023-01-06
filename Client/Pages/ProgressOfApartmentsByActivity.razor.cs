@@ -17,6 +17,7 @@ namespace Obra.Client.Pages
         private readonly IJSRuntime _JS;
         //Variable locales
         private Dictionary<int, Tuple<int, int>> _idsAparmentSelect { get; set; } = new();
+        private Dictionary<int, Dictionary<string, Tuple<int, int>>> _idsActivitySelect { get; set; } = new();
         public bool _isLoadingProcess { get; set; }
         private bool _isFullAparment { get; set; }
         public ProgressOfApartmentsByActivity(ApplicationContext context, NavigationManager navigationManager, IActivitiesService activityService, IApartmentsService apartmentService, IProgressLogsService progressLogsService, IReportsService reportService, IJSRuntime jS)
@@ -41,7 +42,9 @@ namespace Obra.Client.Pages
             if (!_idsAparmentSelect.ContainsKey(idActivity))
             {
                 //change for real endpoint for this view
-                var infoProgress = await _reportService.GetProgressByAparmentDataViewAsync(idActivity);
+                var infoProgress = await _reportService.GetProgressOfAparmentByActivityDataViewAsync(null);
+                infoProgress = infoProgress.Where(x => x.Activity_ == _context.Activity.Find(x => x.IdActivity == idActivity).ActivityName).ToList();
+
                 if (infoProgress != null)
                 {
                     var porcentageProgress = (int)Math.Round(infoProgress.FirstOrDefault().ApartmentProgress);
