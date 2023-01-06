@@ -56,7 +56,7 @@
                                                 {
                                                     <div class="bg-[#115D28] z-10 h-full md:text-sm xl:text-lg text-white text-end w-[@Convert.ToInt32(aparment.porcentage.Item1)%] md:p-1 xl:p-3">@aparment.porcentage.Item1.ToString("0.##")%</div>
                                                 }
-                                                @if (aparment.porcentage.Item1 > 100)
+                                                @if (aparment.porcentage.Item1 < 100)
                                                 {
                                                     <div class="bg-[#CB3030] z-10 h-full md:text-sm xl:text-lg text-white text-end w-[@Convert.ToInt32(aparment.porcentage.Item2)%] md:p-1 xl:p-3">@aparment.porcentage.Item2.ToString("0.##")%</div>
                                                 }
