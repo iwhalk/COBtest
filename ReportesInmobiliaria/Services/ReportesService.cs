@@ -22,7 +22,6 @@ namespace ReportesObra.Services
         private readonly ObraDbContext _dbContext;
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly ReportesFactory _reportesFactory;
-        private static string titleActividades = "(Todas)";
         List<ProgressReport> progressReportsComplete;
         List<ProgressLog> listProgressLog;
         List<Element> listElements;
@@ -232,10 +231,7 @@ namespace ReportesObra.Services
                 });
             }
             if (idActivity != null)
-            {
                 progressReportsWithActivity = progressReportsWithActivity.Where(x => x.IdActivity == idActivity).ToList();
-                titleActividades = "(Seleccionadas)";
-            }
 
             List<TotalPiecesByActivity> totalPieces = progressReportsWithActivity.GroupBy(x => x.IdActivity)
                     .Select(x => new TotalPiecesByActivity
@@ -269,12 +265,28 @@ namespace ReportesObra.Services
 
         public async Task<byte[]> GetReporteAvanceActividad(List<ActivityProgress> activityProgress)
         {
+            string reportTitle = "";
+            List<string> activityNames = new List<string>();
+            foreach (var activity in activityProgress)
+                activityNames.Add(activity.ActivityName);
+            foreach (var activity in listActivities)
+            {
+                if (activityNames.Contains(activity.ActivityName))
+                    reportTitle = "(Todas)";
+                else
+                {
+                    reportTitle = "(Seleccionadas)";
+                    break;
+                }
+            }
+
+            var name = listActivities.ElementAt(0).ActivityName;
             ReporteAvanceActividad reporteAvance = new()
             {
                 FechaGeneracion = DateTime.Now,
                 Activities = activityProgress
             };
-            return _reportesFactory.CrearPdf(reporteAvance, titleActividades);
+            return _reportesFactory.CrearPdf(reporteAvance, reportTitle);
         }
 
         public int? getIdActividadByElement(int idElement)
