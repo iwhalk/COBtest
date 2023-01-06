@@ -117,12 +117,12 @@ namespace ReportesObra.Endpoints
             .Produces<HttpValidationProblemDetails>(StatusCodes.Status500InternalServerError, "application/problem+json")
             .AllowAnonymous();
 
-            routes.MapPost("/ReporteActividadesPorDepartamento", async (List<ActividadPorDepartamento> actividadPorDepartamentos, IReportesService _reportesService, ILogger<Program> _logger) =>
+            routes.MapPost("/ReporteActividadesPorDepartamento", async (List<AparmentProgress> aparmentProgresses, IReportesService _reportesService, ILogger<Program> _logger) =>
             {
                 try
                 {
-                    //var newModule = await _reportesService.GetActivitiesByAparment(idAparment);
-                    //if (newModule.Count == 0) return Results.NoContent();
+                    var newModule = await _reportesService.GetReporteAvancDeActividadPorDepartamento(aparmentProgresses);
+                    if (newModule == null) return Results.NoContent();
                     return Results.Ok();
                 }
                 catch (Exception e)

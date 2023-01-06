@@ -12,5 +12,6 @@ namespace ReportesObra.Interfaces
         
         Task<List<ActivityProgress>> GetActivityProgress(int? idBuilding, int? idActivity);
         Task<byte[]> GetReporteAvanceActividad(List<ActivityProgress> activityProgress);
+        Task<byte[]> GetReporteAvancDeActividadPorDepartamento(List<AparmentProgress> activityProgress);
     }
 }

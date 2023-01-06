@@ -329,6 +329,18 @@ namespace ReportesObra.Services
             return list;
         }
 
+        public async Task<byte[]> GetReporteAvancDeActividadPorDepartamento(List<AparmentProgress> aparmentProgress)
+        {
+            var listGroupedByActivity = aparmentProgress.GroupBy(x => x.Activity_).ToList();
+
+            ReporteAvance reporteAvance = new()
+            {
+                FechaGeneracion = DateTime.Now,
+                Apartments = aparmentProgress
+            };
+            return _reportesFactory.CrearPdf(listGroupedByActivity);
+        }
+
         public string? getActividadByElement(int idElement)
         {
             var localElement = listElements.FirstOrDefault(x => x.IdElement == idElement);

@@ -109,6 +109,9 @@ namespace ReportesObra.Utilities
                 case nameof(ReporteAvanceActividad):
                     CrearReporteAvanceActividad(reporte as ReporteAvanceActividad);
                     break;
+                case nameof(List<IGrouping<string, AparmentProgress>>):
+                    CrearReporteAvanceDeActividadPorDepartamento(reporte as List<IGrouping<string, AparmentProgress>>);
+                    break;
                 default:
                     break;
             }
@@ -510,7 +513,7 @@ namespace ReportesObra.Utilities
             FillChartContent(reporteAvance.Apartments, table);
         }
 
-        void CrearReporteAvanceDeActividadPorDepartamento(ReporteAvance? reporteAvance)
+        void CrearReporteAvanceDeActividadPorDepartamento(List<IGrouping<string, AparmentProgress>>? reporteAvance)
         {
             section.PageSetup.Orientation = Orientation.Portrait;
 
@@ -634,7 +637,7 @@ namespace ReportesObra.Utilities
             rowo.Cells[0].AddParagraph("Departamento");
             rowo.Cells[1].AddParagraph("Avance General");
 
-            FillChartContent(reporteAvance.Apartments, table);
+            //FillChartContent(reporteAvance.Apartments, table);
         }
 
         void CrearReporteAvanceActividad(ReporteAvanceActividad? reporteAvance)
