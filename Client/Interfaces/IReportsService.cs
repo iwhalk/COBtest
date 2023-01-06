@@ -9,7 +9,11 @@ namespace Obra.Client.Interfaces
         Task<byte[]> PostReporteDetallesAsync(ActivitiesDetail reporteDetalle);
         Task<byte[]> PostReporteDetallesPorActividadAsync(ActivitiesDetail reporteDetalle);
         //MetodosReportes
-        Task<List<AparmentProgress>?> GetProgressByAparmentDataViewAsync(int? id);
+        Task<List<AparmentProgress>?> GetProgressByAparmentDataViewAsync(int? idAparment);
         Task<byte[]> PostProgressByAparmentPDFAsync(List<AparmentProgress> progressReportList);
+        Task<List<ActivityProgress>?> GetProgressByActivityDataViewAsync(int? idBuilding, int? idActivity);
+        Task<byte[]> PostProgressByActivityPDFAsync(List<ActivityProgress> progressReportList);
+        Task<List<AparmentProgress>?> GetProgressOfActivityByAparmentDataViewAsync(int? idAparment);
+        Task<byte[]> PostProgressOfActivitybyPDFAsync(List<AparmentProgress> progressReportList);
     }
 }

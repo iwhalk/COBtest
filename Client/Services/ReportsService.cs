@@ -25,15 +25,40 @@ namespace Obra.Client.Services
         }
 
         //MetodosReportes
-        public async Task<List<AparmentProgress>?> GetProgressByAparmentDataViewAsync(int? id)
+        public async Task<List<AparmentProgress>?> GetProgressByAparmentDataViewAsync(int? idAparment)
         {
             Dictionary<string, string> parameters = new();
-            parameters.Add("id", id.ToString());
+            parameters.Add("idAparment", idAparment.ToString());
             return await _repository.GetAsync<List<AparmentProgress>?>(parameters, path: "api/Reports/ProgressByAparmentDataView");
         }
         public async Task<byte[]> PostProgressByAparmentPDFAsync(List<AparmentProgress> progressReportList)
         {
             return await _repository.PostAsync<byte[]>(progressReportList, path: "api/Reports/ProgressByAparmentPDF");
+        }
+
+        public async Task<List<ActivityProgress>?> GetProgressByActivityDataViewAsync(int? idBuilding, int? idActivity)
+        {
+            Dictionary<string, string> parameters = new();
+            parameters.Add("idBuilding", idBuilding.ToString());
+            parameters.Add("idActivity", idActivity.ToString());
+            return await _repository.GetAsync<List<ActivityProgress>?>(parameters, path: "api/Reports/ProgressByActivityDataView");
+        }
+
+        public async Task<byte[]> PostProgressByActivityPDFAsync(List<ActivityProgress> progressReportList)
+        {
+            return await _repository.PostAsync<byte[]>(progressReportList, path: "api/Reports/ProgressByActivityPDF");
+        }
+
+        public async Task<List<AparmentProgress>?> GetProgressOfActivityByAparmentDataViewAsync(int? idAparment)
+        {
+            Dictionary<string, string> parameters = new();
+            parameters.Add("idAparment", idAparment.ToString());
+            return await _repository.GetAsync<List<AparmentProgress>?>(parameters, path: "api/Reports/ProgressOfActivityByAparmentDataView");
+        }
+
+        public async Task<byte[]> PostProgressOfActivitybyPDFAsync(List<AparmentProgress> progressReportList)
+        {
+            return await _repository.PostAsync<byte[]>(progressReportList, path: "api/Reports/ProgressOfActivityByAparmentPDF");
         }
     }
 }

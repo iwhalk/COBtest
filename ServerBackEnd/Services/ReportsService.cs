@@ -1,8 +1,10 @@
 ﻿using ApiGateway.Interfaces;
 using ApiGateway.Models;
 using ApiGateway.Proxies;
+using Obra.Client.Pages;
 using SharedLibrary;
 using SharedLibrary.Models;
+using System.Diagnostics;
 
 namespace ApiGateway.Services
 {
@@ -33,6 +35,40 @@ namespace ApiGateway.Services
         public async Task<ApiResponse<byte[]>> PostProgressByAparmentPDFAsync(List<AparmentProgress> progressReport)
         {
             return await PostAsync<byte[]>(progressReport, path: "ReportProgressByAparmentPDF");
+        }
+
+        public async Task<ApiResponse<List<ActivityProgress>>?> GetProgressByActivityViewAsync(int? idBuilding, int? idActivity)
+        {
+            Dictionary<string, string> parameters = new();
+            if (idBuilding != null)
+            {
+                parameters.Add("idBuilding", idBuilding.ToString());
+            }
+            if(idActivity != null)
+            {
+                parameters.Add("idActivity", idActivity.ToString());
+            }
+            return await GetAsync<List<ActivityProgress>?>(path: "ReportProgressByActivityView", parameters: parameters);
+        }
+
+        public async Task<ApiResponse<byte[]>> PostProgressByActivityPDFAsync(List<ActivityProgress> progressReport)
+        {
+            return await PostAsync<byte[]>(progressReport, path: "ReportProgressByActivityPDF");
+        }
+
+        public async Task<ApiResponse<List<AparmentProgress>>?> GetProgressOfActivityByAparmentViewAsync(int? idAparment)
+        {
+            Dictionary<string, string> parameters = new();
+            if (idAparment != null)
+            {
+                parameters.Add("idAparment", idAparment.ToString());
+            }            
+            return await GetAsync<List<AparmentProgress>?>(path: "ReportOfActivityByAparmentViewAsync", parameters: parameters);
+        }
+
+        public async Task<ApiResponse<byte[]>> PostProgressOfActivityByAparmentPDFAsync(List<AparmentProgress> progressReport)
+        {
+            return await PostAsync<byte[]>(progressReport, path: "ReportOfActivityByAparmentPDFAsync");
         }
     }
 }

@@ -95,7 +95,7 @@ namespace ReportesObra.Endpoints
             .Produces<HttpValidationProblemDetails>(StatusCodes.Status500InternalServerError, "application/problem+json")
             .AllowAnonymous();
 
-            routes.MapGet("/ReporteActividadesPorDepartamentoVista", async (int? idAparment, IReportesService _reportesService, ILogger<Program> _logger) =>
+            routes.MapGet("/ReportOfActivityByAparmentViewAsync", async (int? idAparment, IReportesService _reportesService, ILogger<Program> _logger) =>
             {
                 try
                 {
@@ -117,7 +117,7 @@ namespace ReportesObra.Endpoints
             .Produces<HttpValidationProblemDetails>(StatusCodes.Status500InternalServerError, "application/problem+json")
             .AllowAnonymous();
 
-            routes.MapPost("/ReporteActividadesPorDepartamento", async (List<AparmentProgress> aparmentProgresses, IReportesService _reportesService, ILogger<Program> _logger) =>
+            routes.MapPost("/ReportOfActivityByAparmentPDFAsync", async (List<AparmentProgress> aparmentProgresses, IReportesService _reportesService, ILogger<Program> _logger) =>
             {
                 try
                 {
@@ -139,7 +139,7 @@ namespace ReportesObra.Endpoints
             .Produces<HttpValidationProblemDetails>(StatusCodes.Status500InternalServerError, "application/problem+json")
             .AllowAnonymous();
 
-            routes.MapGet("/ProgressByActivity", async (int? idBuilding, int? idActivity, IReportesService _reportesService, ILogger<Program> _logger) =>
+            routes.MapGet("/ReportProgressByActivityView", async (int? idBuilding, int? idActivity, IReportesService _reportesService, ILogger<Program> _logger) =>
             {
                 try
                 {
@@ -160,7 +160,7 @@ namespace ReportesObra.Endpoints
             .Produces<HttpValidationProblemDetails>(StatusCodes.Status400BadRequest, "application/problem+json")
             .Produces<HttpValidationProblemDetails>(StatusCodes.Status500InternalServerError, "application/problem+json");
 
-            routes.MapPost("/ReporteProgresoPorActividad", async (List<ActivityProgress> aparmentProgresses, IReportesService _reportesService, ILogger<Program> _logger) =>
+            routes.MapPost("/ReportProgressByActivityPDF", async (List<ActivityProgress> aparmentProgresses, IReportesService _reportesService, ILogger<Program> _logger) =>
             {
                 try
                 {

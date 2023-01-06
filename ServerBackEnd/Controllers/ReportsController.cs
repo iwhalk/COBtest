@@ -47,9 +47,9 @@ namespace ApiGateway.Controllers
 
         //Reportes
         [HttpGet("ProgressByAparmentDataView")]
-        public async Task<ActionResult> GetProgressByAparmentView(int? id)
+        public async Task<ActionResult> GetProgressByAparmentView(int? idAparment)
         {
-            var result = await _reportesService.GetProgressByAparmentViewAsync(id);
+            var result = await _reportesService.GetProgressByAparmentViewAsync(idAparment);
             if (result != null)
             {
                 if (result.Succeeded)
@@ -62,9 +62,9 @@ namespace ApiGateway.Controllers
         }
 
         [HttpPost("ProgressByAparmentPDF")]
-        public async Task<ActionResult> PostProgressByAparmentPDF(List<AparmentProgress> progressAparmentList)
+        public async Task<ActionResult> PostProgressByAparmentPDF(List<AparmentProgress> progressReport)
         {
-            var result = await _reportesService.PostProgressByAparmentPDFAsync(progressAparmentList);
+            var result = await _reportesService.PostProgressByAparmentPDFAsync(progressReport);
 
             if (result.Succeeded)
             {
@@ -76,9 +76,9 @@ namespace ApiGateway.Controllers
 
 
         [HttpGet("ProgressByActivityDataView")]
-        public async Task<ActionResult> GetProgressByActivityView(int? id)
+        public async Task<ActionResult> GetProgressByActivityView(int? idBuilding, int? idActivity)
         {
-            var result = await _reportesService.GetProgressByAparmentViewAsync(id);
+            var result = await _reportesService.GetProgressByActivityViewAsync(idBuilding, idActivity);
             if (result != null)
             {
                 if (result.Succeeded)
@@ -91,9 +91,38 @@ namespace ApiGateway.Controllers
         }
 
         [HttpPost("ProgressByActivityPDF")]
-        public async Task<ActionResult> PostProgressByActivityPDF(List<AparmentProgress> progressAparmentList)
+        public async Task<ActionResult> PostProgressByActivityPDF(List<ActivityProgress> progressReport)
         {
-            var result = await _reportesService.PostProgressByAparmentPDFAsync(progressAparmentList);
+            var result = await _reportesService.PostProgressByActivityPDFAsync(progressReport);
+
+            if (result.Succeeded)
+            {
+                return Ok(result);
+            }
+
+            return BadRequest(result);
+        }
+
+
+        [HttpGet("ProgressOfActivityByAparmentDataView")]
+        public async Task<ActionResult> GetProgressOfActivityByAparmentView(int? idAparment)
+        {
+            var result = await _reportesService.GetProgressOfActivityByAparmentViewAsync(idAparment);
+            if (result != null)
+            {
+                if (result.Succeeded)
+                {
+                    return Ok(result);
+                }
+                return BadRequest(result);
+            }
+            return BadRequest(result);
+        }
+
+        [HttpPost("ProgressOfActivityByAparmentPDF")]
+        public async Task<ActionResult> PostProgressOfActivityByAparmentPDF(List<AparmentProgress> progressReport)
+        {
+            var result = await _reportesService.PostProgressOfActivityByAparmentPDFAsync(progressReport);
 
             if (result.Succeeded)
             {
