@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using System.Data.Common;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
+using System.Diagnostics;
 using System.Linq;
 
 namespace ReportesObra.Services
@@ -21,10 +22,11 @@ namespace ReportesObra.Services
         private readonly ObraDbContext _dbContext;
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly ReportesFactory _reportesFactory;
+        private static string titleActividades = "(Todas)";
         List<ProgressReport> progressReportsComplete;
         List<ProgressLog> listProgressLog;
         List<Element> listElements;
-        List<Activity> listActivities;
+        List<SharedLibrary.Models.Activity> listActivities;
         List<SubElement> listSubElements;
         List<Apartment> listApartments;
         //private readonly InmobiliariaDbContextProcedures _dbContextProcedure;
@@ -205,6 +207,84 @@ namespace ReportesObra.Services
             }
             return list;
         }
+        //public async Task<byte[]> GetActivityProgress(int idBuilding, List<int>? idActivities)
+        public async Task<List<ActivityProgress>> GetActivityProgress(int? idBuilding, int? idActivity)
+        {
+            if (idBuilding == null)
+                idBuilding = 1;
+            List<ProgressReportActivityAdded> progressReportsWithActivity = new List<ProgressReportActivityAdded>();
+            IQueryable<ProgressReport> progressReports = _dbContext.ProgressReports;
+            IQueryable<ProgressLog> progressLogs = _dbContext.ProgressLogs;
+            IQueryable<SharedLibrary.Models.Activity> activities = _dbContext.Activities;
+            progressReports = progressReports.Where(x => x.IdBuilding == idBuilding);            
+
+            foreach (var progressReport in progressReports)
+            {
+                progressReportsWithActivity.Add(new ProgressReportActivityAdded()
+                {
+                    IdProgressReport = progressReport.IdProgressReport,
+                    DateCreated = progressReport.DateCreated,
+                    IdApartment = progressReport.IdApartment,
+                    IdArea = progressReport.IdArea,
+                    IdActivity = getIdActividadByElement(progressReport.IdElement),
+                    IdElement = progressReport.IdElement,
+                    TotalPieces = progressReport.TotalPieces
+                });
+            }
+            if (idActivity != null)
+            {
+                progressReportsWithActivity = progressReportsWithActivity.Where(x => x.IdActivity == idActivity).ToList();
+                titleActividades = "(Seleccionadas)";
+            }
+
+            List<TotalPiecesByActivity> totalPieces = progressReportsWithActivity.GroupBy(x => x.IdActivity)
+                    .Select(x => new TotalPiecesByActivity
+                    {
+                        IdActivity = (int)x.Key,
+                        Pieces = x.Sum(s => Convert.ToInt32(s.TotalPieces))
+                    }).ToList();
+
+            var progressReportsByActivity = progressReportsWithActivity.Join(progressLogs, x => x.IdProgressReport, y => y.IdProgressReport,
+                (report, log) => new { report, log }).GroupBy(x => x.report.IdActivity);
+            var list = new List<ActivityProgress>();
+            foreach (var activity in progressReportsByActivity)
+            {
+                long total = totalPieces.FirstOrDefault(x => x.IdActivity == activity.Key).Pieces;
+                long current = activity.GroupBy(x => x.log.IdProgressReport).Select(x => x.OrderByDescending(x => x.log.DateCreated).FirstOrDefault()).Sum(x => long.Parse(x.log.Pieces));
+                list.Add(new ActivityProgress()
+                {
+                    ActivityName = activities.FirstOrDefault(x => x.IdActivity == activity.Key).ActivityName,
+                    Progress = 100.00 / total * current
+                });
+            }
+            //list = list.OrderBy(x => x.ActivityName).ToList();
+            return list;
+            //ReporteAvanceActividad reporteAvance = new()
+            //{
+            //    FechaGeneracion = DateTime.Now,
+            //    Activities = list
+            //};
+            //return _reportesFactory.CrearPdf(reporteAvance, title);
+        }
+
+        public async Task<byte[]> GetReporteAvanceActividad(List<ActivityProgress> activityProgress)
+        {
+            ReporteAvanceActividad reporteAvance = new()
+            {
+                FechaGeneracion = DateTime.Now,
+                Activities = activityProgress
+            };
+            return _reportesFactory.CrearPdf(reporteAvance, titleActividades);
+        }
+
+        public int? getIdActividadByElement(int idElement)
+        {
+            var localElement = listElements.FirstOrDefault(x => x.IdElement == idElement);
+            if (localElement == null)
+                return null;
+            var nombreActividad = listActivities.FirstOrDefault(x => x.IdActivity == localElement.IdActivity);
+            return nombreActividad == null ? null : nombreActividad.IdActivity;
+        }
 
         public string? getActividadByElement(int idElement)
         {
@@ -275,6 +355,19 @@ namespace ReportesObra.Services
             if (result == null)
                 return null;
             return result.ApartmentNumber;
+        }
+
+        private List<ProgressReportActivityAdded> FiltradoProgressByActivity(List<ProgressReportActivityAdded> listProgress, List<int> idActivities)
+        {
+            List<ProgressReportActivityAdded> listProgressFiltred = new List<ProgressReportActivityAdded>();
+            foreach (var idActivity in idActivities)
+            {
+                var subListActivity = listProgress.Where(x => x.IdActivity == idActivity);
+                if (subListActivity == null)
+                    continue;
+                listProgressFiltred.AddRange(subListActivity.ToList());
+            }
+            return listProgressFiltred;
         }
 
         private List<ProgressReport> FiltradoIdApartments(List<ProgressReport>  ListAllAparments, List<int> idApartments)
