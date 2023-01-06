@@ -17,7 +17,7 @@ namespace Obra.Client.Pages
         private readonly IJSRuntime _JS;
         //Variable locales
         private Dictionary<int, Tuple<int, int>> _idsAparmentSelect { get; set; } = new();
-        private Dictionary<int, Dictionary<string, Tuple<int, int>>> _idsActivitySelect { get; set; } = new();
+        private Dictionary<int, Dictionary<string, Tuple<double, double>>> _idsActivitySelect { get; set; } = new();
         public bool _isLoadingProcess { get; set; }
         private bool _isFullAparment { get; set; }
         public ProgressOfApartmentsByActivity(ApplicationContext context, NavigationManager navigationManager, IActivitiesService activityService, IApartmentsService apartmentService, IProgressLogsService progressLogsService, IReportsService reportService, IJSRuntime jS)
@@ -42,23 +42,34 @@ namespace Obra.Client.Pages
             if (!_idsAparmentSelect.ContainsKey(idActivity))
             {
                 //change for real endpoint for this view
-                var infoProgress = await _reportService.GetProgressOfAparmentByActivityDataViewAsync(null);
-                infoProgress = infoProgress.Where(x => x.Activity_ == _context.Activity.Find(x => x.IdActivity == idActivity).ActivityName).ToList();
-
+                var infoProgress = await _reportService.GetProgressOfAparmentByActivityDataViewAsync(idActivity);               
                 if (infoProgress != null)
                 {
-                    var porcentageProgress = (int)Math.Round(infoProgress.FirstOrDefault().ApartmentProgress);
-                    var porcentage = new Tuple<int, int>(porcentageProgress, 100 - porcentageProgress);
-                    _idsAparmentSelect.Add(idActivity, porcentage);
+                    var dictionaryIn = new Dictionary<string, Tuple<double, double>>();
+                    foreach(var item in infoProgress)
+                    {
+                        var porcentageProgress = Math.Round(infoProgress.FirstOrDefault().ApartmentProgress, 2);
+                        var porcentage = new Tuple<double, double>(porcentageProgress, 100 - porcentageProgress);
+                        dictionaryIn.Add(item.ApartmentNumber, porcentage);
+                    }
+                    _idsActivitySelect.Add(idActivity, dictionaryIn);
+                    //var porcentageProgress = (int)Math.Round(infoProgress.FirstOrDefault().ApartmentProgress);
+                    //var porcentage = new Tuple<int, int>(porcentageProgress, 100 - porcentageProgress);
+                    //_idsAparmentSelect.Add(idActivity, porcentage);
                 }
                 else
                 {
-                    _idsAparmentSelect.Add(idActivity, new Tuple<int, int>(0, 100));
+                    var dictionaryIn = new Dictionary<string, Tuple<double, double>>();
+                    foreach (var aparment in _context.Apartment)
+                    {
+                        dictionaryIn.Add(aparment.ApartmentNumber, new Tuple<double, double>(0, 100.0));
+                    }
+                    _idsActivitySelect.Add(idActivity, dictionaryIn);
                 }
             }
             else
             {
-                _idsAparmentSelect = _idsAparmentSelect.Where(x => x.Key != idActivity).Select(x => new { x.Key, x.Value }).ToDictionary(x => x.Key, x => x.Value);
+                _idsActivitySelect = _idsAparmentSelect.Where(x => x.Key != idActivity).Select(x => new { x.Key, x.Value }).ToDictionary(x => x.Key, x => x.Value);
             }
             _isLoadingProcess = false;
             StateHasChanged();

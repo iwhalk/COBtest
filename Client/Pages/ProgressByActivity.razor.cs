@@ -75,7 +75,7 @@ namespace Obra.Client.Pages
                     {
                         if (infoProgress.Exists(x => x.ActivityName == activity.ActivityName))
                         {
-                            var porcentageProgress = Math.Round(infoProgress.Where(x => x.ActivityName == activity.ActivityName).FirstOrDefault().Progress);
+                            var porcentageProgress = Math.Round(infoProgress.Where(x => x.ActivityName == activity.ActivityName).FirstOrDefault().Progress, 2);
                             var porcentage = new Tuple<double, double>(porcentageProgress, 100 - porcentageProgress);
                             _idsActivitySelect.Add(activity.IdActivity, porcentage);
                         }

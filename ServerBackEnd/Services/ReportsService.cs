@@ -56,19 +56,19 @@ namespace ApiGateway.Services
             return await PostAsync<byte[]>(progressReport, path: "ReportProgressByActivityPDF");
         }
 
-        public async Task<ApiResponse<List<AparmentProgress>>?> GetProgressOfActivityByAparmentViewAsync(int? idAparment)
+        public async Task<ApiResponse<List<AparmentProgress>>?> GetProgressOfAparmentByActivityViewAsync(int? idActivity)
         {
             Dictionary<string, string> parameters = new();
-            if (idAparment != null)
+            if (idActivity != null)
             {
-                parameters.Add("idAparment", idAparment.ToString());
+                parameters.Add("idActivity", idActivity.ToString());
             }            
-            return await GetAsync<List<AparmentProgress>?>(path: "ReportOfActivityByAparmentViewAsync", parameters: parameters);
+            return await GetAsync<List<AparmentProgress>?>(path: "ReportOfAparmentByActivityView", parameters: parameters);
         }
 
-        public async Task<ApiResponse<byte[]>> PostProgressOfActivityByAparmentPDFAsync(List<AparmentProgress> progressReport)
+        public async Task<ApiResponse<byte[]>> PostProgressOfAparmentByActivityPDFAsync(List<AparmentProgress> progressReport)
         {
-            return await PostAsync<byte[]>(progressReport, path: "ReportOfActivityByAparmentPDFAsync");
+            return await PostAsync<byte[]>(progressReport, path: "ReportOfAparmentByActivityPDF");
         }
     }
 }

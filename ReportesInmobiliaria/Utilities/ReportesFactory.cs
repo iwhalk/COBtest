@@ -109,8 +109,8 @@ namespace ReportesObra.Utilities
                 case nameof(ReporteAvanceActividad):
                     CrearReporteAvanceActividad(reporte as ReporteAvanceActividad);
                     break;
-                case nameof(List<IGrouping<string, AparmentProgress>>):
-                    CrearReporteAvanceDeActividadPorDepartamento(reporte as List<IGrouping<string, AparmentProgress>>);
+                case "List`1":
+                    CrearReporteAvanceDeActividadPorDepartamento(reporte as List<ReporteActividadPorDepartamento>);
                     break;
                 default:
                     break;
@@ -513,7 +513,7 @@ namespace ReportesObra.Utilities
             FillChartContent(reporteAvance.Apartments, table);
         }
 
-        void CrearReporteAvanceDeActividadPorDepartamento(List<IGrouping<string, AparmentProgress>>? reporteAvance)
+        void CrearReporteAvanceDeActividadPorDepartamento(List<ReporteActividadPorDepartamento> reporteActividadPorDepartamento)
         {
             section.PageSetup.Orientation = Orientation.Portrait;
 
@@ -624,7 +624,9 @@ namespace ReportesObra.Utilities
 
             Column columna = table.AddColumn("3cm");
             columna.Format.Alignment = ParagraphAlignment.Center;
-            columna = table.AddColumn("14cm");
+            columna = table.AddColumn("3cm");
+            columna.Format.Alignment = ParagraphAlignment.Center;
+            columna = table.AddColumn("11cm");
             columna.Format.Alignment = ParagraphAlignment.Center;
 
             Row rowo = table.AddRow();
@@ -634,10 +636,14 @@ namespace ReportesObra.Utilities
             rowo.Format.Font.Size = 10;
             rowo.Borders.Visible = false;
             rowo.BottomPadding = "0.5cm";
-            rowo.Cells[0].AddParagraph("Departamento");
-            rowo.Cells[1].AddParagraph("Avance General");
+            rowo.Cells[0].AddParagraph("Actividad");
+            rowo.Cells[1].AddParagraph("Departamento");
+            rowo.Cells[2].AddParagraph("Avance General");
 
-            //FillChartContent(reporteAvance.Apartments, table);
+            foreach(var actividad in reporteActividadPorDepartamento)
+            {
+                FillChartContentThreeColumns(actividad.Apartments, table, actividad.Actividad);
+            }
         }
 
         void CrearReporteAvanceActividad(ReporteAvanceActividad? reporteAvance)
@@ -847,6 +853,11 @@ namespace ReportesObra.Utilities
                 if (item != null)
                     foreach (var (prop, index) in item.GetType().GetProperties().Select((v, i) => (v, i)))
                     {
+                        int fixIndex;
+                        if (index== 0)
+                            continue;
+                        else
+                            fixIndex = index - 1;
                         var type = Nullable.GetUnderlyingType(prop.PropertyType) ?? prop.PropertyType;
                         if (type == typeof(Double))
                         {
@@ -867,13 +878,94 @@ namespace ReportesObra.Utilities
                             elements[0].LineFormat.Width= 3;
                             var xseries = clone_chart.XValues.AddXSeries();
                             xseries.Add("");
+                            row.Cells[fixIndex].Add(clone_chart);
+                            row.Cells[fixIndex].Row.TopPadding = "0.5cm";
+                        }
+                        if (type == typeof(string))
+                        {                            
+                            row.Cells[fixIndex].AddParagraph(prop.GetValue(item, null)?.ToString());
+                            row.Cells[fixIndex].Row.VerticalAlignment = VerticalAlignment.Top;
+                        }
+                        if (type == typeof(bool))
+                        {
+                            row.Cells[fixIndex].AddParagraph((bool?)prop.GetValue(item, null) ?? false ? "SI" : "NO");
+                        }
+                    }
+            }
+        }
+
+        void FillChartContentThreeColumns<T>(List<T> value, Table table, string fisrtColumnName, int fontSize = 12)
+        {
+            var newColorGray = MigraDocCore.DocumentObjectModel.Color.Parse("0xffE5E8E8");
+            var chart = new MigraDocCore.DocumentObjectModel.Shapes.Charts.Chart(MigraDocCore.DocumentObjectModel.Shapes.Charts.ChartType.Bar2D);
+            chart.Width = "11cm";
+            chart.Height = "1cm";
+
+
+            chart.XAxis.MajorTickMark = MigraDocCore.DocumentObjectModel.Shapes.Charts.TickMarkType.Outside;
+            chart.XAxis.Title.Caption = "";
+            chart.XAxis.HasMajorGridlines = true;
+
+            chart.YAxis.TickLabels.Format = " ";
+            chart.YAxis.MajorTickMark = MigraDocCore.DocumentObjectModel.Shapes.Charts.TickMarkType.Cross;
+            chart.YAxis.MinimumScale = 0;
+            chart.YAxis.MaximumScale = 1;
+
+            chart.PlotArea.LineFormat.Color = Colors.OrangeRed;
+            chart.PlotArea.LineFormat.Width = 2;
+            chart.PlotArea.LineFormat.Visible = false;
+            chart.PlotArea.FillFormat.Color = Colors.OrangeRed;
+
+            Row row = table.AddRow();
+            row.Format.Font.Size = (Unit)fontSize;
+            row.VerticalAlignment = VerticalAlignment.Center;
+
+            row.Cells[0].AddParagraph(fisrtColumnName);
+            row.Borders.Top.Color = newColorGray;
+            row.Borders.Top.Visible = true;
+            row.Borders.Top.Width = 1;
+        
+            row.Cells[0].Row.VerticalAlignment = VerticalAlignment.Top;
+
+            foreach (var item in value)
+            {
+                //Row row = table.AddRow();
+                //row.Format.Font.Size = (Unit)fontSize;
+                //row.VerticalAlignment = VerticalAlignment.Center;
+
+                if (item != null)
+                    foreach (var (prop, index) in item.GetType().GetProperties().Select((v, i) => (v, i)))
+                    {
+                        var type = Nullable.GetUnderlyingType(prop.PropertyType) ?? prop.PropertyType;
+                        if (index == 0)
+                            continue;
+                        if (type == typeof(Double))
+                        {
+                            var clone_chart = chart.Clone();
+                            var series = clone_chart.SeriesCollection.AddSeries();
+                            series.Add((Double)prop.GetValue(item, null) / 100.0000);
+                            series.DataLabel.Format = "#0.00%";
+                            var asdasda = (Double)prop.GetValue(item, null);
+                            if ((Double)prop.GetValue(item, null) < 90 && (Double)prop.GetValue(item, null) > 0)
+                                series.DataLabel.Position = MigraDocCore.DocumentObjectModel.Shapes.Charts.DataLabelPosition.OutsideEnd;
+                            else
+                                series.DataLabel.Position = MigraDocCore.DocumentObjectModel.Shapes.Charts.DataLabelPosition.InsideEnd;
+                            series.DataLabel.Font.Color = Colors.White;
+                            var elements = series.Elements.Cast<MigraDocCore.DocumentObjectModel.Shapes.Charts.Point>().ToArray();
+
+                            elements[0].FillFormat.Color = Colors.MediumSeaGreen;
+                            elements[0].LineFormat.Color = Colors.MediumSeaGreen;
+                            elements[0].LineFormat.Width = 3;
+                            var xseries = clone_chart.XValues.AddXSeries();
+                            xseries.Add("");
                             row.Cells[index].Add(clone_chart);
                             row.Cells[index].Row.TopPadding = "0.5cm";
                         }
                         if (type == typeof(string))
                         {
-                            row.Cells[index].AddParagraph(prop.GetValue(item, null)?.ToString());
+                            row.Cells[index].AddParagraph(prop.GetValue(item, null)?.ToString() + "\n\n");
                             row.Cells[index].Row.VerticalAlignment = VerticalAlignment.Top;
+                            //row.Cells[index].Row.BottomPadding = "cm";
                         }
                         if (type == typeof(bool))
                         {

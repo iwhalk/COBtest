@@ -104,10 +104,10 @@ namespace ApiGateway.Controllers
         }
 
 
-        [HttpGet("ProgressOfActivityByAparmentDataView")]
-        public async Task<ActionResult> GetProgressOfActivityByAparmentView(int? idAparment)
+        [HttpGet("ProgressOfAparmentByActivityDataView")]
+        public async Task<ActionResult> GetProgressOfAparmentByActivityView(int? idActivity)
         {
-            var result = await _reportesService.GetProgressOfActivityByAparmentViewAsync(idAparment);
+            var result = await _reportesService.GetProgressOfAparmentByActivityViewAsync(idActivity);
             if (result != null)
             {
                 if (result.Succeeded)
@@ -122,7 +122,7 @@ namespace ApiGateway.Controllers
         [HttpPost("ProgressOfActivityByAparmentPDF")]
         public async Task<ActionResult> PostProgressOfActivityByAparmentPDF(List<AparmentProgress> progressReport)
         {
-            var result = await _reportesService.PostProgressOfActivityByAparmentPDFAsync(progressReport);
+            var result = await _reportesService.PostProgressOfAparmentByActivityPDFAsync(progressReport);
 
             if (result.Succeeded)
             {

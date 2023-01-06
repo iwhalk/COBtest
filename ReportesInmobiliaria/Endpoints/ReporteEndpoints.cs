@@ -95,11 +95,11 @@ namespace ReportesObra.Endpoints
             .Produces<HttpValidationProblemDetails>(StatusCodes.Status500InternalServerError, "application/problem+json")
             .AllowAnonymous();
 
-            routes.MapGet("/ReportOfActivityByAparmentViewAsync", async (int? idAparment, IReportesService _reportesService, ILogger<Program> _logger) =>
+            routes.MapGet("/ReportOfAparmentByActivityView", async (int? idActivity, IReportesService _reportesService, ILogger<Program> _logger) =>
             {
                 try
                 {
-                    var newModule = await _reportesService.GetActivitiesByAparment(idAparment);
+                    var newModule = await _reportesService.GetActivitiesByAparment(idActivity);
                     if (newModule.Count == 0) return Results.NoContent();
                     return Results.Ok(newModule);
                 }
@@ -117,13 +117,13 @@ namespace ReportesObra.Endpoints
             .Produces<HttpValidationProblemDetails>(StatusCodes.Status500InternalServerError, "application/problem+json")
             .AllowAnonymous();
 
-            routes.MapPost("/ReportOfActivityByAparmentPDFAsync", async (List<AparmentProgress> aparmentProgresses, IReportesService _reportesService, ILogger<Program> _logger) =>
+            routes.MapPost("/ReportOfAparmentByActivityPDF", async (List<AparmentProgress> aparmentProgresses, IReportesService _reportesService, ILogger<Program> _logger) =>
             {
                 try
                 {
                     var newModule = await _reportesService.GetReporteAvancDeActividadPorDepartamento(aparmentProgresses);
                     if (newModule == null) return Results.NoContent();
-                    return Results.Ok();
+                    return Results.File(newModule,"application/pdf");
                 }
                 catch (Exception e)
                 {
