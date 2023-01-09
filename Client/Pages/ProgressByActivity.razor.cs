@@ -41,7 +41,7 @@ namespace Obra.Client.Pages
                 var infoProgress = await _reportService.GetProgressByActivityDataViewAsync(null, idActivity);
                 if (infoProgress != null)
                 {
-                    var porcentageProgress = Math.Round(infoProgress.FirstOrDefault().Progress);
+                    var porcentageProgress = Math.Round(infoProgress.FirstOrDefault().Progress, 2);
                     var porcentage = new Tuple<double, double>(porcentageProgress, 100 - porcentageProgress);
                     _idsActivitySelect.Add(idActivity, porcentage);
                 }
