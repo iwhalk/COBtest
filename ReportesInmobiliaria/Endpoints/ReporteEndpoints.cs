@@ -51,7 +51,7 @@ namespace ReportesObra.Endpoints
             .Produces<HttpValidationProblemDetails>(StatusCodes.Status400BadRequest, "application/problem+json")
             .Produces<HttpValidationProblemDetails>(StatusCodes.Status500InternalServerError, "application/problem+json");
 
-            routes.MapPost("/ReporteAvance", async (List<AparmentProgress> aparmentProgresses, IReportesService _reportesService, ILogger<Program> _logger) =>
+            routes.MapPost("/ReportProgressByAparmentPDF", async (List<AparmentProgress> aparmentProgresses, IReportesService _reportesService, ILogger<Program> _logger) =>
             {
                 try
                 {
@@ -73,7 +73,7 @@ namespace ReportesObra.Endpoints
             .Produces<HttpValidationProblemDetails>(StatusCodes.Status500InternalServerError, "application/problem+json")
             .AllowAnonymous();
 
-            routes.MapGet("/ReporteAvanceVista", async (int? idAparment, IReportesService _reportesService, ILogger<Program> _logger) =>
+            routes.MapGet("/ReportProgressByAparmentView", async (int? idAparment, IReportesService _reportesService, ILogger<Program> _logger) =>
             {
                 try
                 {
@@ -95,8 +95,51 @@ namespace ReportesObra.Endpoints
             .Produces<HttpValidationProblemDetails>(StatusCodes.Status500InternalServerError, "application/problem+json")
             .AllowAnonymous();
 
+            routes.MapGet("/ReportOfAparmentByActivityView", async (int? idActivity, IReportesService _reportesService, ILogger<Program> _logger) =>
+            {
+                try
+                {
+                    var newModule = await _reportesService.GetActivitiesByAparment(idActivity);
+                    if (newModule.Count == 0) return Results.NoContent();
+                    return Results.Ok(newModule);
+                }
+                catch (Exception e)
+                {
+                    _logger.LogError(e, e.Message);
+                    if (e.GetType() == typeof(ValidationException))
+                        return Results.Problem(e.Message, statusCode: 400);
+                    return Results.Problem(e.Message);
+                }
+            })
+            .WithName("GetActivitiesByAparment")
+            .Produces<IResult>(StatusCodes.Status200OK)
+            .Produces<HttpValidationProblemDetails>(StatusCodes.Status400BadRequest, "application/problem+json")
+            .Produces<HttpValidationProblemDetails>(StatusCodes.Status500InternalServerError, "application/problem+json")
+            .AllowAnonymous();
 
-            routes.MapGet("/ProgressByActivity", async (int? idBuilding, int? idActivity, IReportesService _reportesService, ILogger<Program> _logger) =>
+            routes.MapPost("/ReportOfAparmentByActivityPDF", async (List<AparmentProgress> aparmentProgresses, IReportesService _reportesService, ILogger<Program> _logger) =>
+            {
+                try
+                {
+                    var newModule = await _reportesService.GetReporteAvancDeActividadPorDepartamento(aparmentProgresses);
+                    if (newModule == null) return Results.NoContent();
+                    return Results.File(newModule,"application/pdf");
+                }
+                catch (Exception e)
+                {
+                    _logger.LogError(e, e.Message);
+                    if (e.GetType() == typeof(ValidationException))
+                        return Results.Problem(e.Message, statusCode: 400);
+                    return Results.Problem(e.Message);
+                }
+            })
+            .WithName("GG")
+            .Produces<IResult>(StatusCodes.Status200OK)
+            .Produces<HttpValidationProblemDetails>(StatusCodes.Status400BadRequest, "application/problem+json")
+            .Produces<HttpValidationProblemDetails>(StatusCodes.Status500InternalServerError, "application/problem+json")
+            .AllowAnonymous();
+
+            routes.MapGet("/ReportProgressByActivityView", async (int? idBuilding, int? idActivity, IReportesService _reportesService, ILogger<Program> _logger) =>
             {
                 try
                 {
@@ -117,7 +160,7 @@ namespace ReportesObra.Endpoints
             .Produces<HttpValidationProblemDetails>(StatusCodes.Status400BadRequest, "application/problem+json")
             .Produces<HttpValidationProblemDetails>(StatusCodes.Status500InternalServerError, "application/problem+json");
 
-            routes.MapPost("/ReporteProgresoPorActividad", async (List<ActivityProgress> aparmentProgresses, IReportesService _reportesService, ILogger<Program> _logger) =>
+            routes.MapPost("/ReportProgressByActivityPDF", async (List<ActivityProgress> aparmentProgresses, IReportesService _reportesService, ILogger<Program> _logger) =>
             {
                 try
                 {

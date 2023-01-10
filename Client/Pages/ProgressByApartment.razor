@@ -1,5 +1,6 @@
 ﻿@page "/ProgressForApartment"
 @using Microsoft.Fast.Components.FluentUI
+<PageTitle>COB</PageTitle>
 
 
 <div id="Contenedor" class="min-h-screen bg-[url('/assets/img/imgFondo.png')] z-0 opacity-25 imgfondo fixed inset-0 bg-gray-500 bg-opacity-25 transition-opacity"></div>
@@ -48,7 +49,10 @@
                                     {
                                         <div class="bg-[#115D28] z-10 md:h-8 xl:h-12 md:text-sm xl:text-lg text-white text-end w-[@Convert.ToInt32(_idsAparmentSelect[apartment.IdApartment].Item1)%] md:p-1 xl:p-3">@_idsAparmentSelect[apartment.IdApartment].Item1.ToString("0.##")%</div>
                                     }
-                                    <div class="bg-[#CB3030] md:h-8 xl:h-12 md:text-sm xl:text-lg text-white text-end w-[@Convert.ToInt32(_idsAparmentSelect[apartment.IdApartment].Item2)%] md:p-1 xl:p-3">@_idsAparmentSelect[apartment.IdApartment].Item2.ToString("0.##")%</div>
+                                    @if (@_idsAparmentSelect[apartment.IdApartment].Item1 < 100)
+                                    {
+                                        <div class="bg-[#CB3030] md:h-8 xl:h-12 md:text-sm xl:text-lg text-white text-end w-[@Convert.ToInt32(_idsAparmentSelect[apartment.IdApartment].Item2)%] md:p-1 xl:p-3">@_idsAparmentSelect[apartment.IdApartment].Item2.ToString("0.##")%</div>
+                                    }
                                 </div>
                             }
                         </div>

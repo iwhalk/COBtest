@@ -3,6 +3,8 @@ using Microsoft.JSInterop;
 using Obra.Client.Interfaces;
 using Obra.Client.Stores;
 using SharedLibrary.Models;
+using System.Diagnostics;
+using System.Reflection.Metadata.Ecma335;
 
 namespace Obra.Client.Pages
 {
@@ -13,20 +15,21 @@ namespace Obra.Client.Pages
         private readonly IApartmentsService _apartmentService;
         private readonly NavigationManager _navigationManager;
         private readonly IProgressLogsService _progressLogsService;
-        private readonly IProgressReportService _progressReportService;
+        private readonly IReportsService _reportService;
         private readonly IJSRuntime _JS;
         //Variable locales
         private Dictionary<int, Tuple<int, int>> _idsAparmentSelect { get; set; } = new();
+        private Dictionary<int, List<InfoAparmentIn>> _idsActivitySelect { get; set; } = new();
         public bool _isLoadingProcess { get; set; }
         private bool _isFullAparment { get; set; }
-        public ProgressOfApartmentsByActivity(ApplicationContext context, NavigationManager navigationManager, IActivitiesService activityService, IApartmentsService apartmentService, IProgressLogsService progressLogsService, IProgressReportService progressReportService, IJSRuntime jS)
+        public ProgressOfApartmentsByActivity(ApplicationContext context, NavigationManager navigationManager, IActivitiesService activityService, IApartmentsService apartmentService, IProgressLogsService progressLogsService, IReportsService reportService, IJSRuntime jS)
         {
             _context = context;
             _activityService = activityService;
             _apartmentService = apartmentService;
             _navigationManager = navigationManager;
             _progressLogsService = progressLogsService;
-            _progressReportService = progressReportService;
+            _reportService = reportService;
             _JS = jS;
         }
         protected async override Task OnInitializedAsync()
@@ -37,57 +40,87 @@ namespace Obra.Client.Pages
         private void BackPage() => _navigationManager.NavigateTo("/ProjectOverview");
         private async void AddIdActivitySelect(int idActivity)
         {
+
             _isLoadingProcess = true;
-            if (!_idsAparmentSelect.ContainsKey(idActivity))
+            if (!_idsActivitySelect.ContainsKey(idActivity))
             {
                 //change for real endpoint for this view
-                var infoProgress = await _progressReportService.GetProgresReportViewAsync(idActivity);
+                var infoProgress = await _reportService.GetProgressOfAparmentByActivityDataViewAsync(idActivity);
                 if (infoProgress != null)
                 {
-                    var porcentageProgress = (int)Math.Round(infoProgress.FirstOrDefault().ApartmentProgress);
-                    var porcentage = new Tuple<int, int>(porcentageProgress, 100 - porcentageProgress);
-                    _idsAparmentSelect.Add(idActivity, porcentage);
+                    List<InfoAparmentIn> listAparmentPorcentage = new List<InfoAparmentIn>();
+                    foreach (var item in infoProgress)
+                    {
+                        var porcentageProgress = Math.Round(item.ApartmentProgress, 2);
+                        var porcentage = new Tuple<double, double>(porcentageProgress, 100 - porcentageProgress);
+                        listAparmentPorcentage.Add(new InfoAparmentIn { aparmentNumber = item.ApartmentNumber, porcentage = porcentage });
+                    }
+                    _idsActivitySelect.Add(idActivity, listAparmentPorcentage);
                 }
                 else
                 {
-                    _idsAparmentSelect.Add(idActivity, new Tuple<int, int>(0, 100));
+                    var listAparmentPorcentage = new List<InfoAparmentIn>();
+                    foreach (var aparment in _context.Apartment)
+                    {
+                        listAparmentPorcentage.Add(new InfoAparmentIn
+                        {
+                            aparmentNumber = aparment.ApartmentNumber,
+                            porcentage = new Tuple<double, double>(0.0, 100.0)
+                        });
+                    }
+                    _idsActivitySelect.Add(idActivity, listAparmentPorcentage);
                 }
             }
             else
             {
-                _idsAparmentSelect = _idsAparmentSelect.Where(x => x.Key != idActivity).Select(x => new { x.Key, x.Value }).ToDictionary(x => x.Key, x => x.Value);
+                _idsActivitySelect = _idsActivitySelect.Where(x => x.Key != idActivity).Select(x => new { x.Key, x.Value }).ToDictionary(x => x.Key, x => x.Value);
             }
             _isLoadingProcess = false;
             StateHasChanged();
+
         }
         private async void FullActivity()
         {
             _isLoadingProcess = true;
-            if (_idsAparmentSelect.Count() == _context.Activity.Count())
+            if (_idsActivitySelect.Count() == _context.Activity.Count())
             {
                 _isFullAparment = false;
-                _idsAparmentSelect.Clear();
+                _idsActivitySelect.Clear();
             }
             else
             {
-                _idsAparmentSelect.Clear();
-                var infoProgress = await _progressReportService.GetProgresReportViewAsync(null);
+                _idsActivitySelect.Clear();
+                var infoProgress = await _reportService.GetProgressOfAparmentByActivityDataViewAsync(null);            
                 if (infoProgress != null)
                 {
+                    
                     foreach (var activity in _context.Activity)
                     {
-                        if (infoProgress.Exists(x => x.ApartmentNumber == activity.ActivityName))
+                        if (infoProgress.Any(x => x.Activity_ == activity.ActivityName))
                         {
-                            var porcentageProgress = (int)Math.Round(infoProgress.Where(x => x.ApartmentNumber == activity.ActivityName).FirstOrDefault().ApartmentProgress);
-                            var porcentage = new Tuple<int, int>(porcentageProgress, 100 - porcentageProgress);
-                            _idsAparmentSelect.Add(activity.IdActivity, porcentage);
+                            List<InfoAparmentIn> listAparmentPorcentage = new List<InfoAparmentIn>();
+                            foreach (var item in infoProgress.Where(x => x.Activity_ == activity.ActivityName))
+                            {
+                                var porcentageProgress = Math.Round(item.ApartmentProgress, 2);
+                                var porcentage = new Tuple<double, double>(porcentageProgress, 100 - porcentageProgress);
+                                listAparmentPorcentage.Add(new InfoAparmentIn { aparmentNumber = item.ApartmentNumber, porcentage = porcentage });
+                            }
+                            _idsActivitySelect.Add(activity.IdActivity, listAparmentPorcentage);
                         }
                         else
                         {
-                            _idsAparmentSelect.Add(activity.IdActivity, new Tuple<int, int>(0, 100));
+                            var listAparmentPorcentage = new List<InfoAparmentIn>();
+                            foreach (var aparment in _context.Apartment)
+                            {
+                                listAparmentPorcentage.Add(new InfoAparmentIn
+                                {
+                                    aparmentNumber = aparment.ApartmentNumber,
+                                    porcentage = new Tuple<double, double>(0.0, 100.0)
+                                });
+                            }
+                            _idsActivitySelect.Add(activity.IdActivity, listAparmentPorcentage);
                         }
                     }
-                    _isFullAparment = true;
                 }
             }
             _isLoadingProcess = false;
@@ -96,14 +129,21 @@ namespace Obra.Client.Pages
         private async void GeneratePDfPorgressaprment()
         {
             _isLoadingProcess = true;
-            var listAparmentProgress = _idsAparmentSelect.Select(x => new AparmentProgress
+            var listAparmentProgress = new List<AparmentProgress>();
+
+            foreach (var item in _idsActivitySelect)
             {
-                ApartmentNumber = _context.Apartment.Find(o => o.IdApartment == x.Key).ApartmentNumber,
-                ApartmentProgress = x.Value.Item1 * 1.0
-
-            }).ToList();
-
-            var bytesForPDF = await _progressReportService.PostProgressReporPDFtAsync(listAparmentProgress);
+                foreach(var aparment in item.Value)
+                {
+                    listAparmentProgress.Add(new AparmentProgress
+                    {
+                        Activity_ = _context.Activity.Find(x => x.IdActivity == item.Key).ActivityName,
+                        ApartmentNumber = aparment.aparmentNumber,
+                        ApartmentProgress = aparment.porcentage.Item1
+                    });
+                }
+            }
+            var bytesForPDF = await _reportService.PostProgressOfActivitybyActivityPDFAsync(listAparmentProgress);
 
             if (bytesForPDF != null)
             {
@@ -115,6 +155,11 @@ namespace Obra.Client.Pages
             }
             _isLoadingProcess = false;
             StateHasChanged();
+        }
+        public class InfoAparmentIn
+        {
+            public string aparmentNumber { get; set; }
+            public Tuple<double, double> porcentage { get; set; }
         }
     }
 }

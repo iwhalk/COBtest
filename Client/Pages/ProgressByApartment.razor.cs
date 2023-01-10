@@ -12,19 +12,19 @@ namespace Obra.Client.Pages
         private readonly IApartmentsService _apartmentsService;
         private readonly IProgressLogsService _progressLogsService;
         private readonly NavigationManager _navigationManager;
-        private readonly IProgressReportService _progressReportService;
+        private readonly IReportsService _reportService;
         private readonly IJSRuntime _JS;
         //Variable locales
         private Dictionary<int, Tuple<double, double>> _idsAparmentSelect { get; set; } = new();
         public bool _isLoadingProcess { get; set; }
         private bool _isFullAparment { get; set; }
-        public ProgressByApartment(ApplicationContext context, NavigationManager navigationManager, IApartmentsService apartmentsService, IProgressLogsService progressLogsService, IProgressReportService progressReportService, IJSRuntime jS)
+        public ProgressByApartment(ApplicationContext context, NavigationManager navigationManager, IApartmentsService apartmentsService, IProgressLogsService progressLogsService, IReportsService reportService, IJSRuntime jS)
         {
             _context = context;
             _apartmentsService = apartmentsService;
             _progressLogsService = progressLogsService;
             _navigationManager = navigationManager;
-            _progressReportService = progressReportService;
+            _reportService = reportService;
             _JS = jS;
         }
         protected async override Task OnInitializedAsync()
@@ -37,7 +37,7 @@ namespace Obra.Client.Pages
             _isLoadingProcess = true;
             if (!_idsAparmentSelect.ContainsKey(idDeparment))
             {
-                var infoProgress = await _progressReportService.GetProgresReportViewAsync(idDeparment);
+                var infoProgress = await _reportService.GetProgressByAparmentDataViewAsync(idDeparment);
                 if (infoProgress != null)
                 {
                     var porcentageProgress = Math.Round(infoProgress.FirstOrDefault().ApartmentProgress, 2);
@@ -67,7 +67,7 @@ namespace Obra.Client.Pages
             else
             {
                 _idsAparmentSelect.Clear();
-                var infoProgress = await _progressReportService.GetProgresReportViewAsync(null);
+                var infoProgress = await _reportService.GetProgressByAparmentDataViewAsync(null);
                 if (infoProgress != null)
                 {
                     foreach (var aparment in _context.Apartment)
@@ -100,7 +100,7 @@ namespace Obra.Client.Pages
 
             }).ToList();
 
-            var bytesForPDF = await _progressReportService.PostProgressReporPDFtAsync(listAparmentProgress);
+            var bytesForPDF = await _reportService.PostProgressByAparmentPDFAsync(listAparmentProgress);
 
             if (bytesForPDF != null)
             {

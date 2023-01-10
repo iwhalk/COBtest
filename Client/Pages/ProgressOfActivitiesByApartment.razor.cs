@@ -14,26 +14,26 @@ namespace Obra.Client.Pages
         private readonly IApartmentsService _apartmentService;
         private readonly NavigationManager _navigationManager;
         private readonly IProgressLogsService _progressLogsService;
-        private readonly IProgressReportService _progressReportService;
+        private readonly IReportsService _reportService;
         private readonly IJSRuntime _JS;
         //Variable locales
         private Dictionary<int, Tuple<int, int>> _idsAparmentSelect { get; set; } = new();
         public bool _isLoadingProcess { get; set; }
         private bool _isFullAparment { get; set; }
-        public ProgressOfActivitiesByApartment(ApplicationContext context, NavigationManager navigationManager, IActivitiesService activityService, IApartmentsService apartmentService, IProgressLogsService progressLogsService, IProgressReportService progressReportService, IJSRuntime jS)
+        public ProgressOfActivitiesByApartment(ApplicationContext context, NavigationManager navigationManager, IActivitiesService activityService, IApartmentsService apartmentService, IProgressLogsService progressLogsService, IReportsService reportService, IJSRuntime jS)
         {
             _context = context;
             _activityService = activityService;
             _navigationManager = navigationManager;
             _apartmentService = apartmentService;
             _progressLogsService = progressLogsService;
-            _progressReportService = progressReportService;
-            _JS = jS;
+            _reportService = reportService;
+            _JS = jS;            
         }
         protected async override Task OnInitializedAsync()
         {
             _context.Activity = await _activityService.GetActivitiesAsync();
-            _context.Apartment = await _apartmentService.GetApartmentsAsync();
+            _context.Apartment = await _apartmentService.GetApartmentsAsync();            
         }
         private void BackPage() => _navigationManager.NavigateTo("/ProjectOverview");
         private async void AddIdAparmentSelect(int idActivity)
@@ -42,7 +42,7 @@ namespace Obra.Client.Pages
             if (!_idsAparmentSelect.ContainsKey(idActivity))
             {
                 //change for real endpoint for this view
-                var infoProgress = await _progressReportService.GetProgresReportViewAsync(idActivity);
+                var infoProgress = await _reportService.GetProgressByAparmentDataViewAsync(idActivity);
                 if (infoProgress != null)
                 {
                     var porcentageProgress = (int)Math.Round(infoProgress.FirstOrDefault().ApartmentProgress);
@@ -72,7 +72,7 @@ namespace Obra.Client.Pages
             else
             {
                 _idsAparmentSelect.Clear();
-                var infoProgress = await _progressReportService.GetProgresReportViewAsync(null);
+                var infoProgress = await _reportService.GetProgressByAparmentDataViewAsync(null);
                 if (infoProgress != null)
                 {
                     foreach (var activity in _context.Activity)
@@ -104,7 +104,7 @@ namespace Obra.Client.Pages
 
             }).ToList();
 
-            var bytesForPDF = await _progressReportService.PostProgressReporPDFtAsync(listAparmentProgress);
+            var bytesForPDF = await _reportService.PostProgressByAparmentPDFAsync(listAparmentProgress);
 
             if (bytesForPDF != null)
             {
