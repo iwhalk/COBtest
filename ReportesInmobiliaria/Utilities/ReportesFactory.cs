@@ -109,6 +109,9 @@ namespace ReportesObra.Utilities
                 case nameof(ReporteAvanceActividad):
                     CrearReporteAvanceActividad(reporte as ReporteAvanceActividad);
                     break;
+                case "List`1":
+                    CrearReporteAvanceDeActividadPorDepartamento(reporte as List<ReporteActividadPorDepartamento>);
+                    break;
                 default:
                     break;
             }
@@ -510,6 +513,139 @@ namespace ReportesObra.Utilities
             FillChartContent(reporteAvance.Apartments, table);
         }
 
+        void CrearReporteAvanceDeActividadPorDepartamento(List<ReporteActividadPorDepartamento> reporteActividadPorDepartamento)
+        {
+            section.PageSetup.Orientation = Orientation.Portrait;
+
+            headerFrame = section.AddTextFrame();
+            headerFrame.Width = "22.5cm";
+            headerFrame.Left = "15cm";
+            headerFrame.RelativeHorizontal = RelativeHorizontal.Page;
+            headerFrame.Top = "2.70cm";
+            headerFrame.RelativeVertical = RelativeVertical.Page;
+
+            // Create the text frame for the data parameters
+            dataParametersFrameLeft = section.AddTextFrame();
+            dataParametersFrameLeft.Height = "2.0cm";
+            dataParametersFrameLeft.Width = "7.0cm";
+            dataParametersFrameLeft.Left = ShapePosition.Left;
+            dataParametersFrameLeft.RelativeHorizontal = RelativeHorizontal.Margin;
+            dataParametersFrameLeft.Top = "4.0cm";
+            dataParametersFrameLeft.RelativeVertical = RelativeVertical.Page;
+
+            dataParametersFrameRight = section.AddTextFrame();
+            dataParametersFrameRight.Height = "2.0cm";
+            dataParametersFrameRight.Width = "6.5cm";
+            //dataParametersFrameRight.Left = ShapePosition.Right;
+            dataParametersFrameRight.Left = "11.8cm";
+            dataParametersFrameRight.RelativeHorizontal = RelativeHorizontal.Margin;
+            dataParametersFrameRight.Top = "4.0cm";
+            dataParametersFrameRight.RelativeVertical = RelativeVertical.Page;
+
+            // Create the text frame for the data values
+            dataValuesFrame = section.AddTextFrame();
+            dataValuesFrame.Width = "7.5cm";
+            dataValuesFrame.Left = "2.3cm";//"3.5cm"            
+            dataValuesFrame.RelativeHorizontal = RelativeHorizontal.Margin;
+            dataValuesFrame.Top = "4.0cm";
+            dataValuesFrame.RelativeVertical = RelativeVertical.Page;
+
+            dataValuesFrameRight = section.AddTextFrame();
+            dataValuesFrameRight.Width = "6.5cm";
+            dataValuesFrameRight.Left = "15.4cm";//"3.5cm"
+            dataValuesFrameRight.RelativeHorizontal = RelativeHorizontal.Margin;
+            dataValuesFrameRight.Top = "4.0cm";
+            dataValuesFrameRight.RelativeVertical = RelativeVertical.Page;
+
+            dataValueTable = section.AddTextFrame();
+            dataValueTable.Width = "5.0cm";
+            dataValueTable.Left = ShapePosition.Left;
+            dataValueTable.RelativeHorizontal = RelativeHorizontal.Margin;
+            dataValueTable.Top = "6.6cm";
+            dataValueTable.RelativeVertical = RelativeVertical.Page;
+
+            //Control de NullReferenceException al llamar a las imágenes
+            if (ImageSource.ImageSourceImpl == null)
+            {
+                ImageSource.ImageSourceImpl = new ImageSharpImageSource<Rgba32>();
+            }
+
+            WebClient client = new WebClient();
+            MemoryStream stream = new MemoryStream(client.DownloadData("https://imagenescob.blob.core.windows.net/imagescob/487a4f8d-f21d-4c3f-bf5f-35dc1ebf845b.jpeg"));
+            stream.Position = 0;
+            var logoSOF2245 = section.AddImage(ImageSource.FromStream("logoSOF", () => stream));
+            logoSOF2245.Width = "4.5cm";
+            logoSOF2245.LockAspectRatio = true;
+            logoSOF2245.RelativeHorizontal = RelativeHorizontal.Margin;
+            logoSOF2245.RelativeVertical = RelativeVertical.Page;
+            logoSOF2245.Top = "1.7cm";
+            logoSOF2245.Left = "-1.3cm";
+            logoSOF2245.WrapFormat.Style = WrapStyle.Through;
+
+            MemoryStream stream1 = new MemoryStream(client.DownloadData("https://imagenescob.blob.core.windows.net/imagescob/b2aa64fc-49e3-4abe-9e2f-eaede7a19216.jpeg"));
+            stream1.Position = 0;
+            var logoGeneric = section.AddImage(ImageSource.FromStream("logoGEN", () => stream1));
+            logoGeneric.Width = "3.5cm";
+            logoGeneric.LockAspectRatio = true;
+            logoGeneric.RelativeHorizontal = RelativeHorizontal.Margin;
+            logoGeneric.RelativeVertical = RelativeVertical.Page;
+            logoGeneric.Top = "1.7cm";
+            logoGeneric.Left = "14.0cm";
+            logoGeneric.WrapFormat.Style = WrapStyle.Through;
+
+
+            // Put header in header frame
+            Paragraph paragraph = headerFrame.AddParagraph("Resumen de Avance General Por Departamento");//Titulo
+            paragraph.AddLineBreak();
+            paragraph.Format.Font.Name = "DejaVu Serif";
+            paragraph.Format.Font.Size = 11;
+            paragraph.Format.Font.Bold = true;
+            paragraph.Format.Alignment = ParagraphAlignment.Center;
+
+            // Put parameters in data Frame
+            paragraph = dataParametersFrameRight.AddParagraph();
+            paragraph.Format.Font.Bold = true;
+            paragraph.Format.Font.Size = 9;
+            paragraph.AddText("Fecha de creación: ");
+
+            // Put values in data Frame
+            paragraph = dataValuesFrameRight.AddParagraph();
+            paragraph.AddText(DateTime.Now.ToString("dd/MM/yyyy"));
+            //paragraph.AddText(reporteActaEntrega.header.ElementAt(0).FechaHora.ToString("dd/MM/yyyy hh:mm tt"));
+            // Add the data separation field
+            paragraph = section.AddParagraph();
+            paragraph.Format.SpaceBefore = "2.0cm";//"2.0cm"
+            paragraph.Format.Font.Size = 8;
+            paragraph.Style = "Reference";
+            paragraph.AddFormattedText("", TextFormat.Bold);
+
+            Table table = section.AddTable();
+            table.Rows.Alignment = RowAlignment.Center;
+
+            Column columna = table.AddColumn("3cm");
+            columna.Format.Alignment = ParagraphAlignment.Center;
+            columna = table.AddColumn("3cm");
+            columna.Format.Alignment = ParagraphAlignment.Center;
+            columna = table.AddColumn("11cm");
+            columna.Format.Alignment = ParagraphAlignment.Center;
+
+            Row rowo = table.AddRow();
+            rowo.HeadingFormat = true;
+            rowo.Format.Alignment = ParagraphAlignment.Center;
+            rowo.Format.Font.Bold = true;
+            rowo.Format.Font.Size = 10;
+            rowo.Borders.Visible = false;
+            rowo.BottomPadding = "0.5cm";
+            rowo.Cells[0].AddParagraph("Actividad");
+            rowo.Cells[1].AddParagraph("Departamento");
+            rowo.Cells[2].AddParagraph("Avance General");
+
+            foreach(var actividad in reporteActividadPorDepartamento)
+            {
+                FillChartContentThreeColumns(actividad.Apartments, table, actividad.Actividad);
+            }
+        }
+
         void CrearReporteAvanceActividad(ReporteAvanceActividad? reporteAvance)
         {
             section.PageSetup.Orientation = Orientation.Portrait;
@@ -717,6 +853,11 @@ namespace ReportesObra.Utilities
                 if (item != null)
                     foreach (var (prop, index) in item.GetType().GetProperties().Select((v, i) => (v, i)))
                     {
+                        int fixIndex;
+                        if (index== 0)
+                            continue;
+                        else
+                            fixIndex = index - 1;
                         var type = Nullable.GetUnderlyingType(prop.PropertyType) ?? prop.PropertyType;
                         if (type == typeof(Double))
                         {
@@ -737,13 +878,94 @@ namespace ReportesObra.Utilities
                             elements[0].LineFormat.Width= 3;
                             var xseries = clone_chart.XValues.AddXSeries();
                             xseries.Add("");
+                            row.Cells[fixIndex].Add(clone_chart);
+                            row.Cells[fixIndex].Row.TopPadding = "0.5cm";
+                        }
+                        if (type == typeof(string))
+                        {                            
+                            row.Cells[fixIndex].AddParagraph(prop.GetValue(item, null)?.ToString());
+                            row.Cells[fixIndex].Row.VerticalAlignment = VerticalAlignment.Top;
+                        }
+                        if (type == typeof(bool))
+                        {
+                            row.Cells[fixIndex].AddParagraph((bool?)prop.GetValue(item, null) ?? false ? "SI" : "NO");
+                        }
+                    }
+            }
+        }
+
+        void FillChartContentThreeColumns<T>(List<T> value, Table table, string fisrtColumnName, int fontSize = 12)
+        {
+            var newColorGray = MigraDocCore.DocumentObjectModel.Color.Parse("0xffE5E8E8");
+            var chart = new MigraDocCore.DocumentObjectModel.Shapes.Charts.Chart(MigraDocCore.DocumentObjectModel.Shapes.Charts.ChartType.Bar2D);
+            chart.Width = "11cm";
+            chart.Height = "1cm";
+
+
+            chart.XAxis.MajorTickMark = MigraDocCore.DocumentObjectModel.Shapes.Charts.TickMarkType.Outside;
+            chart.XAxis.Title.Caption = "";
+            chart.XAxis.HasMajorGridlines = true;
+
+            chart.YAxis.TickLabels.Format = " ";
+            chart.YAxis.MajorTickMark = MigraDocCore.DocumentObjectModel.Shapes.Charts.TickMarkType.Cross;
+            chart.YAxis.MinimumScale = 0;
+            chart.YAxis.MaximumScale = 1;
+
+            chart.PlotArea.LineFormat.Color = Colors.OrangeRed;
+            chart.PlotArea.LineFormat.Width = 2;
+            chart.PlotArea.LineFormat.Visible = false;
+            chart.PlotArea.FillFormat.Color = Colors.OrangeRed;
+
+            Row row = table.AddRow();
+            row.Format.Font.Size = (Unit)fontSize;
+            row.VerticalAlignment = VerticalAlignment.Center;
+
+            row.Cells[0].AddParagraph(fisrtColumnName);
+            row.Borders.Top.Color = newColorGray;
+            row.Borders.Top.Visible = true;
+            row.Borders.Top.Width = 1;
+        
+            row.Cells[0].Row.VerticalAlignment = VerticalAlignment.Top;
+
+            foreach (var item in value)
+            {
+                //Row row = table.AddRow();
+                //row.Format.Font.Size = (Unit)fontSize;
+                //row.VerticalAlignment = VerticalAlignment.Center;
+
+                if (item != null)
+                    foreach (var (prop, index) in item.GetType().GetProperties().Select((v, i) => (v, i)))
+                    {
+                        var type = Nullable.GetUnderlyingType(prop.PropertyType) ?? prop.PropertyType;
+                        if (index == 0)
+                            continue;
+                        if (type == typeof(Double))
+                        {
+                            var clone_chart = chart.Clone();
+                            var series = clone_chart.SeriesCollection.AddSeries();
+                            series.Add((Double)prop.GetValue(item, null) / 100.0000);
+                            series.DataLabel.Format = "#0.00%";
+                            var asdasda = (Double)prop.GetValue(item, null);
+                            if ((Double)prop.GetValue(item, null) < 90 && (Double)prop.GetValue(item, null) > 0)
+                                series.DataLabel.Position = MigraDocCore.DocumentObjectModel.Shapes.Charts.DataLabelPosition.OutsideEnd;
+                            else
+                                series.DataLabel.Position = MigraDocCore.DocumentObjectModel.Shapes.Charts.DataLabelPosition.InsideEnd;
+                            series.DataLabel.Font.Color = Colors.White;
+                            var elements = series.Elements.Cast<MigraDocCore.DocumentObjectModel.Shapes.Charts.Point>().ToArray();
+
+                            elements[0].FillFormat.Color = Colors.MediumSeaGreen;
+                            elements[0].LineFormat.Color = Colors.MediumSeaGreen;
+                            elements[0].LineFormat.Width = 3;
+                            var xseries = clone_chart.XValues.AddXSeries();
+                            xseries.Add("");
                             row.Cells[index].Add(clone_chart);
                             row.Cells[index].Row.TopPadding = "0.5cm";
                         }
                         if (type == typeof(string))
                         {
-                            row.Cells[index].AddParagraph(prop.GetValue(item, null)?.ToString());
+                            row.Cells[index].AddParagraph(prop.GetValue(item, null)?.ToString() + "\n\n");
                             row.Cells[index].Row.VerticalAlignment = VerticalAlignment.Top;
+                            //row.Cells[index].Row.BottomPadding = "cm";
                         }
                         if (type == typeof(bool))
                         {
