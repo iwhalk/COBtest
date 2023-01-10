@@ -1059,7 +1059,13 @@ namespace ReportesObra.Utilities
                             row.Cells[1].Shading.Color = newColorGray;
                             row.Cells[14].Shading.Color = newColorGray;
                         }
-                    }
+
+                        for (int i = 3; i <= 11; i++)
+                        {
+                            row.Cells[i].Borders.Right.Visible = false;
+                            row.Cells[i].Borders.Left.Visible = false;
+                        }
+                    }                
             }
         }
 
