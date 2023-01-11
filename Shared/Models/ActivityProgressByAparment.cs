@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace SharedLibrary.Models
 {
-    public class AparmentProgress
+    public class ActivityProgressByAparment
     {
-        public string? Activity_ { get; set; }
         public string ApartmentNumber { get; set; }
+        public string Activity_ { get; set; }
         public double ApartmentProgress { get; set; }
     }
 }

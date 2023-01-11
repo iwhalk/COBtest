@@ -105,7 +105,7 @@ var app = builder.Build();
 app.UseSwagger();
 app.UseSwaggerUI();
 
-app.UseAuthentication();
+//app.UseAuthentication();
 
 app.UseAuthorization();
 

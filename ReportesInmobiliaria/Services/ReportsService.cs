@@ -340,7 +340,6 @@ namespace ReportesObra.Services
                 }
 
             }            
-            //var listGroupedByActivity = list.GroupBy(x => x.Activity_).ToList();
             return list;
         }
 
@@ -355,6 +354,69 @@ namespace ReportesObra.Services
                 {
                     Actividad = actividad.Key,
                     Apartments = aparmentProgress.Where(x => x.Activity_ == actividad.Key).ToList()
+                });
+            }
+            return _reportesFactory.CrearPdf(list);
+        }
+
+        public async Task<List<ActivityProgressByAparment>> GetAparmentsByActivity(int? idActivity)
+        {
+            IQueryable<ProgressReport> progressReports = _dbContext.ProgressReports.Include(x => x.IdApartmentNavigation).Include(x => x.IdElementNavigation).Include(x => x.IdElementNavigation.IdActivityNavigation);
+            IQueryable<Activity> Activities = _dbContext.Activities;
+            IQueryable<Apartment> apartments = _dbContext.Apartments;
+            IQueryable<ProgressLog> progressLogs = _dbContext.ProgressLogs;
+            var list = new List<ActivityProgressByAparment>();
+
+            if (idActivity != null)
+                progressReports = progressReports.Where(x => x.IdElementNavigation.IdActivityNavigation.IdActivity == idActivity);
+
+            progressReports = progressReports.Where(x => x.IdBuilding == 1);
+
+            foreach (var aparment in apartments)
+            {
+                var progressReportsCurrentAparment = progressReports.Where(x => x.IdApartmentNavigation.IdApartment.Equals(aparment.IdApartment));
+
+                List<TotalPiecesByActivity> totalPiecesByActivity = progressReportsCurrentAparment.GroupBy(x => x.IdElementNavigation.IdActivity)
+                    .Select(x => new TotalPiecesByActivity
+                    {
+                        IdActivity = x.Key,
+                        Pieces = x.Sum(s => Convert.ToInt32(s.TotalPieces))
+                    }).ToList();
+
+                var progressReportsCurrentAparmentByActivity = progressReportsCurrentAparment.Join(progressLogs, x => x.IdProgressReport, y => y.IdProgressReport, (report, log) => new { report, log }).GroupBy(x => x.report.IdElementNavigation.IdActivity);
+
+                foreach (var activity in progressReportsCurrentAparmentByActivity)
+                {
+                    long total = totalPiecesByActivity.FirstOrDefault(x => x.IdActivity == activity.Key).Pieces;
+                    long current;
+                    if (activity != null)
+                        current = activity.GroupBy(x => x.log.IdProgressReport).Select(x => x.OrderByDescending(x => x.log.DateCreated).FirstOrDefault()).Sum(x => long.Parse(x.log.Pieces));
+                    else
+                        current = 99999999999999;
+                    list.Add(new ActivityProgressByAparment()
+                    {
+                        ApartmentNumber = activity.FirstOrDefault().report.IdApartmentNavigation.ApartmentNumber,
+                        Activity_ = activity.FirstOrDefault().report.IdElementNavigation.IdActivityNavigation.ActivityName,
+                        ApartmentProgress = 100.00 / total * current
+                    });
+                }
+
+            }
+            //var listasd = list.GroupBy(x => x.ApartmentNumber);
+            return list;
+        }
+
+        public async Task<byte[]> GetReporteAvanceDeDepartamentoPorActividad(List<ActivityProgressByAparment> activityProgressByAparment)
+        {
+            var listGroupedByActivity = activityProgressByAparment.GroupBy(x => x.ApartmentNumber).ToList();
+            var list = new List<ReporteDepartamentoPorActividad>();
+
+            foreach (var aparment in listGroupedByActivity)
+            {
+                list.Add(new ReporteDepartamentoPorActividad()
+                {
+                    Aparment = aparment.Key,
+                    Activitiess = activityProgressByAparment.Where(x => x.ApartmentNumber == aparment.Key).ToList()
                 });
             }            
             return _reportesFactory.CrearPdf(list);
