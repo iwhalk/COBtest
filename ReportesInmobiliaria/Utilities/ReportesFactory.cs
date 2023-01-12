@@ -597,12 +597,12 @@ namespace ReportesObra.Utilities
             logoGeneric.RelativeHorizontal = RelativeHorizontal.Margin;
             logoGeneric.RelativeVertical = RelativeVertical.Page;
             logoGeneric.Top = "1.7cm";
-            logoGeneric.Left = "14.0cm";
+            logoGeneric.Left = "14.1cm";
             logoGeneric.WrapFormat.Style = WrapStyle.Through;
 
 
             // Put header in header frame
-            Paragraph paragraph = headerFrame.AddParagraph("Resumen de Avance General Por Departamento");//Titulo
+            Paragraph paragraph = headerFrame.AddParagraph("Resumen de Avance Departamento por Actividad");//Titulo
             paragraph.AddLineBreak();
             paragraph.Format.Font.Name = "DejaVu Serif";
             paragraph.Format.Font.Size = 11;
@@ -628,6 +628,7 @@ namespace ReportesObra.Utilities
 
             Table table = section.AddTable();
             table.Rows.Alignment = RowAlignment.Center;
+            //table.Rows.Height = "3cm";
 
             Column columna = table.AddColumn("3cm");
             columna.Format.Alignment = ParagraphAlignment.Center;
@@ -730,12 +731,12 @@ namespace ReportesObra.Utilities
             logoGeneric.RelativeHorizontal = RelativeHorizontal.Margin;
             logoGeneric.RelativeVertical = RelativeVertical.Page;
             logoGeneric.Top = "1.7cm";
-            logoGeneric.Left = "14.0cm";
+            logoGeneric.Left = "14.1cm";
             logoGeneric.WrapFormat.Style = WrapStyle.Through;
 
 
             // Put header in header frame
-            Paragraph paragraph = headerFrame.AddParagraph("Resumen de Avance General Por Departamento");//Titulo
+            Paragraph paragraph = headerFrame.AddParagraph("Resumen de Avance Actividad por Departamento");//Titulo
             paragraph.AddLineBreak();
             paragraph.Format.Font.Name = "DejaVu Serif";
             paragraph.Format.Font.Size = 11;
@@ -1043,7 +1044,6 @@ namespace ReportesObra.Utilities
             chart.Width = "11cm";
             chart.Height = "1cm";
 
-
             chart.XAxis.MajorTickMark = MigraDocCore.DocumentObjectModel.Shapes.Charts.TickMarkType.Outside;
             chart.XAxis.Title.Caption = "";
             chart.XAxis.HasMajorGridlines = true;
@@ -1056,7 +1056,7 @@ namespace ReportesObra.Utilities
             chart.PlotArea.LineFormat.Color = newColorRed;
             chart.PlotArea.LineFormat.Width = 2;
             chart.PlotArea.LineFormat.Visible = false;
-            chart.PlotArea.FillFormat.Color = newColorRed;
+            chart.PlotArea.FillFormat.Color = newColorRed;         
 
             Row row = table.AddRow();
             row.Format.Font.Size = (Unit)fontSize;
@@ -1066,18 +1066,18 @@ namespace ReportesObra.Utilities
             row.Borders.Top.Color = newColorGray;
             row.Borders.Top.Visible = true;
             row.Borders.Top.Width = 1;
+            //row.Borders.Distance = "5cm";
         
             row.Cells[0].Row.VerticalAlignment = VerticalAlignment.Top;
 
             foreach (var item in value)
             {
-                //Row row = table.AddRow();
-                //row.Format.Font.Size = (Unit)fontSize;
-                //row.VerticalAlignment = VerticalAlignment.Center;
-
+                var isLenght2Spaces = false;
                 if (item != null)
                     foreach (var (prop, index) in item.GetType().GetProperties().Select((v, i) => (v, i)))
                     {
+                        if (prop.GetValue(item, null)?.ToString().Length > 15 && index == 1)
+                            isLenght2Spaces = true;
                         var type = Nullable.GetUnderlyingType(prop.PropertyType) ?? prop.PropertyType;
                         if (index == 0)
                             continue;
@@ -1100,11 +1100,14 @@ namespace ReportesObra.Utilities
 
                             elements[0].FillFormat.Color = newColorGreen;
                             elements[0].LineFormat.Color = newColorGreen;
-                            elements[0].LineFormat.Width = 3;
+                            elements[0].LineFormat.Width = 3;                            
                             var xseries = clone_chart.XValues.AddXSeries();
                             xseries.Add("");
                             row.Cells[index].Add(clone_chart);
-                            row.Cells[index].Row.TopPadding = "1.5cm";
+                            if (isLenght2Spaces)
+                                row.Cells[index].AddParagraph("\n");
+                            row.Cells[index].Row.TopPadding = "0.5cm";
+                            //row.Cells[index].Row.Height = "25cm";
                         }
                         if (type == typeof(string))
                         {
