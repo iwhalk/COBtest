@@ -302,7 +302,9 @@ namespace ReportesObra.Services
         {
             IQueryable<ProgressReport> progressReports = _dbContext.ProgressReports.Include(x => x.IdApartmentNavigation).Include(x => x.IdElementNavigation).Include(x => x.IdElementNavigation.IdActivityNavigation);
             IQueryable<Activity> Activities = _dbContext.Activities;
-            IQueryable<ProgressLog> progressLogs = _dbContext.ProgressLogs;                              
+            IQueryable<ProgressLog> progressLogs = _dbContext.ProgressLogs;
+            IQueryable<Apartment> apartments = _dbContext.Apartments;
+
             var list = new List<AparmentProgress>();
 
             if (idActividad != null)
@@ -321,26 +323,26 @@ namespace ReportesObra.Services
                         Pices = x.Sum(s => Convert.ToInt32(s.TotalPieces))
                     }).ToList();
 
-                var progressReportsCurrentActivityByAparment = progressReportsCurrentActivity.Join(progressLogs, x => x.IdProgressReport, y => y.IdProgressReport, (report, log) => new { report, log }).GroupBy(x => x.report.IdApartment);
+                var progressReportsCurrentActivityByAparment = progressReportsCurrentActivity.Join(progressLogs, x => x.IdProgressReport, y => y.IdProgressReport, (report, log) => new { report, log }).GroupBy(x => x.report.IdApartment).ToList();
 
-                foreach (var apartment in progressReportsCurrentActivityByAparment)
+                foreach (var apartment in apartments)
                 {
-                    long total = totalOfPicesByAparment.FirstOrDefault(x => x.IdAparment == apartment.Key).Pices;
-                    long current;
-                    if (apartment != null)
-                        current = apartment.GroupBy(x => x.log.IdProgressReport).Select(x => x.OrderByDescending(x => x.log.DateCreated).FirstOrDefault()).Sum(x => long.Parse(x.log.Pieces));
+                    Double total = totalOfPicesByAparment.FirstOrDefault(x => x.IdAparment == apartment.IdApartment).Pices;
+                    var progressReportsCurrentActivityCurrentAparment = progressReportsCurrentActivityByAparment.FirstOrDefault(x => x.Key == apartment.IdApartment);
+                    Double current;
+                    if (progressReportsCurrentActivityCurrentAparment != null)
+                        current = progressReportsCurrentActivityCurrentAparment.GroupBy(x => x.log.IdProgressReport).Select(x => x.OrderByDescending(x => x.log.DateCreated).FirstOrDefault()).Sum(x => long.Parse(x.log.Pieces));
                     else
-                        current = 99999999999999;
+                        current = 0;
                     list.Add(new AparmentProgress()
                     {
-                        Activity_ = apartment.FirstOrDefault().report.IdElementNavigation.IdActivityNavigation.ActivityName,
-                        ApartmentNumber = apartment.FirstOrDefault().report.IdApartmentNavigation.ApartmentNumber,
+                        Activity_ = activity.ActivityName,
+                        ApartmentNumber = apartment.ApartmentNumber,
                         ApartmentProgress = 100.00 / total * current
                     });
                 }
 
             }            
-            //var listGroupedByActivity = list.GroupBy(x => x.Activity_).ToList();
             return list;
         }
 
@@ -355,6 +357,70 @@ namespace ReportesObra.Services
                 {
                     Actividad = actividad.Key,
                     Apartments = aparmentProgress.Where(x => x.Activity_ == actividad.Key).ToList()
+                });
+            }
+            return _reportesFactory.CrearPdf(list);
+        }
+
+        public async Task<List<ActivityProgressByAparment>> GetAparmentsByActivity(int? idActivity)
+        {
+            IQueryable<ProgressReport> progressReports = _dbContext.ProgressReports.Include(x => x.IdApartmentNavigation).Include(x => x.IdElementNavigation).Include(x => x.IdElementNavigation.IdActivityNavigation);
+            IQueryable<Activity> Activities = _dbContext.Activities;
+            IQueryable<Apartment> apartments = _dbContext.Apartments;
+            IQueryable<ProgressLog> progressLogs = _dbContext.ProgressLogs;
+            var list = new List<ActivityProgressByAparment>();
+
+            if (idActivity != null)
+                progressReports = progressReports.Where(x => x.IdElementNavigation.IdActivityNavigation.IdActivity == idActivity);
+
+            progressReports = progressReports.Where(x => x.IdBuilding == 1);
+
+            foreach (var aparment in apartments)
+            {
+                var progressReportsCurrentAparment = progressReports.Where(x => x.IdApartmentNavigation.IdApartment.Equals(aparment.IdApartment));
+
+                List<TotalPiecesByActivity> totalPiecesByActivity = progressReportsCurrentAparment.GroupBy(x => x.IdElementNavigation.IdActivity)
+                    .Select(x => new TotalPiecesByActivity
+                    {
+                        IdActivity = x.Key,
+                        Pieces = x.Sum(s => Convert.ToInt32(s.TotalPieces))
+                    }).ToList();
+
+                var progressReportsCurrentAparmentByActivity = progressReportsCurrentAparment.Join(progressLogs, x => x.IdProgressReport, y => y.IdProgressReport, (report, log) => new { report, log }).GroupBy(x => x.report.IdElementNavigation.IdActivity).ToList();
+
+                foreach (var activity in Activities)
+                {
+                    Double total = totalPiecesByActivity.FirstOrDefault(x => x.IdActivity == activity.IdActivity).Pieces;
+                    Double current;
+                    var progressReportsCurrentAparmentByActivityCurrentActivity = progressReportsCurrentAparmentByActivity.FirstOrDefault(x => x.Key == activity.IdActivity);
+                    if (progressReportsCurrentAparmentByActivityCurrentActivity != null)
+                        current = progressReportsCurrentAparmentByActivityCurrentActivity.GroupBy(x => x.log.IdProgressReport).Select(x => x.OrderByDescending(x => x.log.DateCreated).FirstOrDefault()).Sum(x => long.Parse(x.log.Pieces));
+                    else
+                        current = 0;
+                    list.Add(new ActivityProgressByAparment()
+                    {
+                        ApartmentNumber = aparment.ApartmentNumber,
+                        Activity_ = activity.ActivityName,
+                        ApartmentProgress = 100.00 / total * current
+                    });
+                }
+
+            }
+            //var listasd = list.GroupBy(x => x.ApartmentNumber);
+            return list;
+        }
+
+        public async Task<byte[]> GetReporteAvanceDeDepartamentoPorActividad(List<ActivityProgressByAparment> activityProgressByAparment)
+        {
+            var listGroupedByActivity = activityProgressByAparment.GroupBy(x => x.ApartmentNumber).ToList();
+            var list = new List<ReporteDepartamentoPorActividad>();
+
+            foreach (var aparment in listGroupedByActivity)
+            {
+                list.Add(new ReporteDepartamentoPorActividad()
+                {
+                    Aparment = aparment.Key,
+                    Activitiess = activityProgressByAparment.Where(x => x.ApartmentNumber == aparment.Key).ToList()
                 });
             }            
             return _reportesFactory.CrearPdf(list);
