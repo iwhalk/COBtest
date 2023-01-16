@@ -314,6 +314,8 @@ namespace ReportesObra.Services
 
             foreach(var activity in Activities)
             {
+                if (idActividad != null && activity.IdActivity != idActividad)
+                    continue;
                 var progressReportsCurrentActivity = progressReports.Where(x => x.IdElementNavigation.IdActivityNavigation.IdActivity.Equals(activity.IdActivity));
 
                 List<TotalPicesByAparment> totalOfPicesByAparment = progressReportsCurrentActivity.GroupBy(x => x.IdApartment)
@@ -362,7 +364,7 @@ namespace ReportesObra.Services
             return _reportesFactory.CrearPdf(list);
         }
 
-        public async Task<List<ActivityProgressByAparment>> GetAparmentsByActivity(int? idActivity)
+        public async Task<List<ActivityProgressByAparment>> GetAparmentsByActivity(int? idApartment)
         {
             IQueryable<ProgressReport> progressReports = _dbContext.ProgressReports.Include(x => x.IdApartmentNavigation).Include(x => x.IdElementNavigation).Include(x => x.IdElementNavigation.IdActivityNavigation);
             IQueryable<Activity> Activities = _dbContext.Activities;
@@ -370,13 +372,15 @@ namespace ReportesObra.Services
             IQueryable<ProgressLog> progressLogs = _dbContext.ProgressLogs;
             var list = new List<ActivityProgressByAparment>();
 
-            if (idActivity != null)
-                progressReports = progressReports.Where(x => x.IdElementNavigation.IdActivityNavigation.IdActivity == idActivity);
+            if (idApartment != null)
+                progressReports = progressReports.Where(x => x.IdApartment == idApartment);
 
             progressReports = progressReports.Where(x => x.IdBuilding == 1);
 
             foreach (var aparment in apartments)
             {
+                if (idApartment != null && aparment.IdApartment != idApartment)
+                    continue;
                 var progressReportsCurrentAparment = progressReports.Where(x => x.IdApartmentNavigation.IdApartment.Equals(aparment.IdApartment));
 
                 List<TotalPiecesByActivity> totalPiecesByActivity = progressReportsCurrentAparment.GroupBy(x => x.IdElementNavigation.IdActivity)
