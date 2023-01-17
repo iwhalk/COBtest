@@ -14,6 +14,8 @@ namespace Obra.Client.Interfaces
         Task<List<ActivityProgress>?> GetProgressByActivityDataViewAsync(int? idBuilding, int? idActivity);
         Task<byte[]> PostProgressByActivityPDFAsync(List<ActivityProgress> progressReportList);
         Task<List<AparmentProgress>?> GetProgressOfAparmentByActivityDataViewAsync(int? idActivity);
-        Task<byte[]> PostProgressOfActivitybyActivityPDFAsync(List<AparmentProgress> progressReportList);
+        Task<byte[]> PostProgressOfAparmentByActivityPDFAsync(List<AparmentProgress> progressReportList);
+        Task<List<ActivityProgressByAparment>?> GetProgressOfActivityByAparmentDataViewAsync(int? idActivity);
+        Task<byte[]> PostProgressOfActivityByParmentPDFAsync(List<ActivityProgressByAparment> progressReportList);
     }
 }
