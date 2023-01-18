@@ -12,6 +12,7 @@ using Obra.Client.Stores;
 using Blazored.Toast;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
+var client = "blazor-client";
 builder.RootComponents.Add<App>("#app");
 builder.RootComponents.Add<HeadOutlet>("head::after");
 
@@ -28,11 +29,14 @@ builder.Services.AddBlazoredToast();
 builder.Services.AddFluentUIComponents();
 builder.Logging.SetMinimumLevel(LogLevel.None);
 // Supply HttpClient instances that include access tokens when making requests to the server project
-
+if (!builder.HostEnvironment.IsDevelopment())
+{
+    client = "blazor-cobgateway";
+}
 builder.Services.AddOidcAuthentication(options =>
 {
-    //options.ProviderOptions.ClientId = "blazor-cob";
-    options.ProviderOptions.ClientId = "blazor-client";
+    options.ProviderOptions.ClientId = client;
+    
     options.ProviderOptions.Authority = builder.HostEnvironment.BaseAddress;
     options.ProviderOptions.ResponseType = "code";
 

@@ -181,11 +181,11 @@ namespace ReportesObra.Endpoints
             .Produces<HttpValidationProblemDetails>(StatusCodes.Status400BadRequest, "application/problem+json")
             .Produces<HttpValidationProblemDetails>(StatusCodes.Status500InternalServerError, "application/problem+json");
 
-            routes.MapGet("/ReportOfActivityByAparmentView", async (int? idActivity, IReportesService _reportesService, ILogger<Program> _logger) =>
+            routes.MapGet("/ReportOfActivityByAparmentView", async (int? idApartment, IReportesService _reportesService, ILogger<Program> _logger) =>
             {
                 try
                 {
-                    var newModule = await _reportesService.GetAparmentsByActivity(idActivity);
+                    var newModule = await _reportesService.GetAparmentsByActivity(idApartment);
                     if (newModule.Count == 0) return Results.NoContent();
                     return Results.Ok(newModule);
                 }

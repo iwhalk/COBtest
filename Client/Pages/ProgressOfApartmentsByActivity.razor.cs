@@ -143,7 +143,7 @@ namespace Obra.Client.Pages
                     });
                 }
             }
-            var bytesForPDF = await _reportService.PostProgressOfActivitybyActivityPDFAsync(listAparmentProgress);
+            var bytesForPDF = await _reportService.PostProgressOfAparmentByActivityPDFAsync(listAparmentProgress);
 
             if (bytesForPDF != null)
             {

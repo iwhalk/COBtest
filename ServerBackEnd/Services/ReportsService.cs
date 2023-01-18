@@ -4,6 +4,7 @@ using ApiGateway.Proxies;
 using Obra.Client.Pages;
 using SharedLibrary;
 using SharedLibrary.Models;
+using System.Collections.Generic;
 using System.Diagnostics;
 
 namespace ApiGateway.Services
@@ -69,6 +70,20 @@ namespace ApiGateway.Services
         public async Task<ApiResponse<byte[]>> PostProgressOfAparmentByActivityPDFAsync(List<AparmentProgress> progressReport)
         {
             return await PostAsync<byte[]>(progressReport, path: "ReportOfAparmentByActivityPDF");
+        }
+
+        public async Task<ApiResponse<List<ActivityProgressByAparment>>?> GetProgressOfActivityByAparmentViewAsync(int? idActivity)
+        {
+            Dictionary<string, string> parameters = new();
+            if (idActivity != null)
+            {
+                parameters.Add("idActivity", idActivity.ToString());
+            }
+            return await GetAsync<List<ActivityProgressByAparment>>(path: "ReportOfActivityByAparmentView", parameters: parameters);
+        }
+        public async Task<ApiResponse<byte[]>> PostProgressOfActivityByAparmentPDFAsync(List<ActivityProgressByAparment> progressReport)
+        {
+            return await PostAsync<byte[]>(progressReport, path: "ReportOfActivityByAparmentPDF");
         }
     }
 }
