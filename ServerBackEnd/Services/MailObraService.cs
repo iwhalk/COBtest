@@ -34,21 +34,22 @@ namespace ApiGateway.Services
             try
             {
                 //From address
-                mimeMessage.From.Add(new MailboxAddress("PROSIS", "send1@grupo-prosis.com"));
+                mimeMessage.From.Add(new MailboxAddress("PROSIS", "desarrollo@grupo-prosis.com"));
 
                 //Configuration
-                using (var client = new SmtpClient())
+                using (var client = new MailKit.Net.Smtp.SmtpClient())
                 {
-                    client.Connect("smtpout.europe.secureserver.net", 465, true);
-                    client.Authenticate("send1@grupo-prosis.com", "Pr0s1s");
-                    client.Send(mimeMessage);
+                    client.Connect("smtp.sendgrid.net", 465, true);
+                    client.Authenticate("apikey", "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");
+                    var temp = client.Send(mimeMessage);
+                    Console.WriteLine(temp);
                     client.Disconnect(true);
                 }
                 return true;
             }
             catch (Exception ex)
             {
-
+                Console.WriteLine(ex.Message);
                 return false;
             }
         }
