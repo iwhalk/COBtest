@@ -27,6 +27,7 @@ using System.Drawing;
 using Color = MigraDocCore.DocumentObjectModel.Color;
 using System.Drawing.Imaging;
 using MimeKit.IO.Filters;
+using SharedLibrary.Data;
 
 namespace ReportesObra.Utilities
 {
@@ -79,8 +80,10 @@ namespace ReportesObra.Utilities
         /// <summary>
         /// Initializes a new instance of the class BillFrom and opens the specified XML document.
         /// </summary>
-        public ReportesFactory()
+        private readonly ObraDbContext _dbContext;
+        public ReportesFactory(ObraDbContext dbContex)
         {
+            _dbContext = dbContex;
             Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
             //invoice = new XmlDocument();
             //invoice.Load(filename);
@@ -602,7 +605,13 @@ namespace ReportesObra.Utilities
 
 
             // Put header in header frame
-            Paragraph paragraph = headerFrame.AddParagraph("Resumen de Avance Departamento por Actividad");//Titulo
+            string titulo = string.Empty;
+            if (reporteActividadPorDepartamento.Count() < _dbContext.Activities.Count())
+                titulo = "Resumen de Avance Departamento por Actividad\n(Seleccionados)";
+            else
+                titulo = "Resumen de Avance Departamento por Actividad";
+
+            Paragraph paragraph = headerFrame.AddParagraph(titulo);//Titulo
             paragraph.AddLineBreak();
             paragraph.Format.Font.Name = "DejaVu Serif";
             paragraph.Format.Font.Size = 11;
@@ -736,7 +745,12 @@ namespace ReportesObra.Utilities
 
 
             // Put header in header frame
-            Paragraph paragraph = headerFrame.AddParagraph("Resumen de Avance Actividad por Departamento");//Titulo
+            string titulo = string.Empty;
+            if (reporteDepartamentoPorActividad.Count() < _dbContext.Apartments.Count())
+                titulo = "Resumen de Avance Actividad por Departamento\n(Seleccionados)";
+            else
+                titulo = "Resumen de Avance Actividad por Departamento";
+            Paragraph paragraph = headerFrame.AddParagraph(titulo);//Titulo
             paragraph.AddLineBreak();
             paragraph.Format.Font.Name = "DejaVu Serif";
             paragraph.Format.Font.Size = 11;
