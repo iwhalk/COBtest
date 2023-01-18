@@ -5,6 +5,7 @@ using Obra.Client.Models;
 using Obra.Client.Interfaces;
 using System.Text;
 using System.Reflection.Metadata.Ecma335;
+using Microsoft.Fast.Components.FluentUI;
 
 namespace Obra.Client.Components.Blobs
 {
@@ -28,6 +29,7 @@ namespace Obra.Client.Components.Blobs
         public string ValidationError { get; private set; }
 
         public EditContext CurrentBlobFileEditContext;
+        private FluentDialog? MyFluentDialog;
 
 
         public FormBlob(IBlobsService blobService)
@@ -44,8 +46,12 @@ namespace Obra.Client.Components.Blobs
             {
                 Blob = InputBlob ?? new()
             };
-
             CurrentBlobFileEditContext = new EditContext(CurrentBlobFile);
+        }
+        protected override void OnAfterRender(bool firstRender)
+        {
+            if (firstRender)
+                MyFluentDialog!.Hide();
         }
         protected override async Task OnParametersSetAsync()
         {
@@ -108,7 +114,11 @@ namespace Obra.Client.Components.Blobs
             }
 
         }
+        private void OnClose()
+        {
+            MyFluentDialog!.Hide();
 
+        }
         private bool FileValidation(IBrowserFile file)
         {
             var extension = Path.GetExtension(file.Name);

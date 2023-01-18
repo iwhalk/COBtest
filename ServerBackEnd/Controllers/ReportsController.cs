@@ -119,10 +119,38 @@ namespace ApiGateway.Controllers
             return BadRequest(result);
         }
 
-        [HttpPost("ProgressOfActivityByAparmentPDF")]
-        public async Task<ActionResult> PostProgressOfActivityByAparmentPDF(List<AparmentProgress> progressReport)
+        [HttpPost("ProgressOfAparmentByActivityPDF")]
+        public async Task<ActionResult> PostProgressOfAparmentByActivityPDF(List<AparmentProgress> progressReport)
         {
             var result = await _reportesService.PostProgressOfAparmentByActivityPDFAsync(progressReport);
+
+            if (result.Succeeded)
+            {
+                return Ok(result);
+            }
+
+            return BadRequest(result);
+        }
+
+        [HttpGet("ProgressOfActivityByAparmentDataView")]
+        public async Task<ActionResult> GetProgressOfActivityByAparmentView(int? idActivity)
+        {
+            var result = await _reportesService.GetProgressOfActivityByAparmentViewAsync(idActivity);
+            if (result != null)
+            {
+                if (result.Succeeded)
+                {
+                    return Ok(result);
+                }
+                return BadRequest(result);
+            }
+            return BadRequest(result);
+        }
+
+        [HttpPost("ProgressOfActivityByAparmentPDF")]
+        public async Task<ActionResult> PostProgressOfActivityByAparmentPDF(List<ActivityProgressByAparment> progressReport)
+        {
+            var result = await _reportesService.PostProgressOfActivityByAparmentPDFAsync(progressReport);
 
             if (result.Succeeded)
             {
