@@ -77,7 +77,7 @@ namespace ApiGateway.Services
             Dictionary<string, string> parameters = new();
             if (idActivity != null)
             {
-                parameters.Add("idApartment", idActivity.ToString());
+                parameters.Add("idActivity", idActivity.ToString());
             }
             return await GetAsync<List<ActivityProgressByAparment>>(path: "ReportOfActivityByAparmentView", parameters: parameters);
         }
