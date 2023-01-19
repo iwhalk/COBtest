@@ -196,7 +196,7 @@ else if (buttonReport == true)
                                                 }
                                                 else
                                                 {
-                                                    <div class="flex justify-end text-white w-[@greenPercentage[$"{item.IdProgressReport}"]%] bg-[#115D28] h-8 mt-2">0</div>
+                                                    <div class="flex justify-end text-white w-[@greenPercentage[$"{item.IdProgressReport}"]%] bg-[#115D28] h-8 mt-2"></div>
                                                     <div class="flex justify-end text-white w-[@redPercentage[$"{item.IdProgressReport}"]%] bg-[#CB3030] h-8 mt-2">@item.TotalPieces</div>
                                                     <div class="self-center">
                                                         <button @onclick="() => NotificationImages()">
@@ -259,7 +259,7 @@ else if (buttonReport == true)
                                                 }
                                                 else
                                                 {
-                                                    <div class="flex justify-end text-white w-[@greenPercentage[$"{item.IdProgressReport}"]%] bg-[#115D28] h-8 mt-2">0</div>
+                                                    <div class="flex justify-end text-white w-[@greenPercentage[$"{item.IdProgressReport}"]%] bg-[#115D28] h-8 mt-2"></div>
                                                     <div class="flex justify-end text-white w-[@redPercentage[$"{item.IdProgressReport}"]%] bg-[#CB3030] h-8 mt-2">@item.TotalPieces</div>
                                                     <div class="self-center">
                                                         <button @onclick="() => NotificationImages()">
@@ -324,8 +324,8 @@ else if (buttonReport == true)
             }
         </div>
         <div class="w-full flex justify-end py-3">
-            <div @onclick="() => ChangeView()" class="w-full flex py-3 fixed inset-x-0 bottom-12">
-                <button class="mx-auto bg-[#B9352E] hover:bg-red-500 w-40 p-2 rounded-2xl text-lg text-white font-medium leading-6 border hover:border-white">Descargar</button>
+            <div class="w-full flex py-3 fixed inset-x-0 bottom-12">
+                <button @onclick="() => ChangeView()" class="mx-auto bg-[#B9352E] hover:bg-red-500 w-40 p-2 rounded-2xl text-lg text-white font-medium leading-6 border hover:border-white">Descargar</button>
             </div>
         </div>
 
