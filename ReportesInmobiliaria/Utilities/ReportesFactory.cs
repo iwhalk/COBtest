@@ -606,10 +606,10 @@ namespace ReportesObra.Utilities
 
             // Put header in header frame
             string titulo = string.Empty;
-            if (reporteActividadPorDepartamento.ElementAt(0).Apartments.Count() < _dbContext.Apartments.Count())
-                titulo = "Resumen de Avance Departamento por Actividad\n(Seleccionados)";
+            if (reporteActividadPorDepartamento.Count() < _dbContext.Activities.Count())
+                titulo = "Resumen de Avance Departamento por Actividad\n(Seleccionadas)";
             else
-                titulo = "Resumen de Avance Departamento por Actividad\n(Todos)";
+                titulo = "Resumen de Avance Departamento por Actividad\n(Todas)";
 
             Paragraph paragraph = headerFrame.AddParagraph(titulo);//Titulo
             paragraph.AddLineBreak();
@@ -747,10 +747,10 @@ namespace ReportesObra.Utilities
             // Put header in header frame
             string titulo = string.Empty;
             //if (reporteDepartamentoPorActividad.Count() < _dbContext.Apartments.Count())
-            if (reporteDepartamentoPorActividad.ElementAt(0).Activitiess.Count() < _dbContext.Activities.Count())
-                    titulo = "Resumen de Avance Actividad por Departamento\n(Seleccionadas)";
+            if (reporteDepartamentoPorActividad.Count() < _dbContext.Apartments.Count())
+                    titulo = "Resumen de Avance Actividad por Departamento\n(Seleccionados)";
             else
-                titulo = "Resumen de Avance Actividad por Departamento\n(Todas)";
+                titulo = "Resumen de Avance Actividad por Departamento\n(Todos)";
             Paragraph paragraph = headerFrame.AddParagraph(titulo);//Titulo
             paragraph.AddLineBreak();
             paragraph.Format.Font.Name = "DejaVu Serif";
