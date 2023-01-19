@@ -606,10 +606,10 @@ namespace ReportesObra.Utilities
 
             // Put header in header frame
             string titulo = string.Empty;
-            if (reporteActividadPorDepartamento.Count() < _dbContext.Activities.Count())
+            if (reporteActividadPorDepartamento.ElementAt(0).Apartments.Count() < _dbContext.Apartments.Count())
                 titulo = "Resumen de Avance Departamento por Actividad\n(Seleccionados)";
             else
-                titulo = "Resumen de Avance Departamento por Actividad";
+                titulo = "Resumen de Avance Departamento por Actividad\n(Todos)";
 
             Paragraph paragraph = headerFrame.AddParagraph(titulo);//Titulo
             paragraph.AddLineBreak();
@@ -746,10 +746,11 @@ namespace ReportesObra.Utilities
 
             // Put header in header frame
             string titulo = string.Empty;
-            if (reporteDepartamentoPorActividad.Count() < _dbContext.Apartments.Count())
-                titulo = "Resumen de Avance Actividad por Departamento\n(Seleccionados)";
+            //if (reporteDepartamentoPorActividad.Count() < _dbContext.Apartments.Count())
+            if (reporteDepartamentoPorActividad.ElementAt(0).Activitiess.Count() < _dbContext.Activities.Count())
+                    titulo = "Resumen de Avance Actividad por Departamento\n(Seleccionadas)";
             else
-                titulo = "Resumen de Avance Actividad por Departamento";
+                titulo = "Resumen de Avance Actividad por Departamento\n(Todas)";
             Paragraph paragraph = headerFrame.AddParagraph(titulo);//Titulo
             paragraph.AddLineBreak();
             paragraph.Format.Font.Name = "DejaVu Serif";
@@ -791,8 +792,8 @@ namespace ReportesObra.Utilities
             rowo.Format.Font.Size = 10;
             rowo.Borders.Visible = false;
             rowo.BottomPadding = "0.5cm";
-            rowo.Cells[0].AddParagraph("Actividad");
-            rowo.Cells[1].AddParagraph("Departamento");
+            rowo.Cells[0].AddParagraph("Departamento");
+            rowo.Cells[1].AddParagraph("Actividad");
             rowo.Cells[2].AddParagraph("Avance General");
 
             foreach (var departamento in reporteDepartamentoPorActividad)
