@@ -133,9 +133,9 @@ namespace ApiGateway.Controllers
         }
 
         [HttpGet("ProgressOfActivityByAparmentDataView")]
-        public async Task<ActionResult> GetProgressOfActivityByAparmentView(int? idActivity)
+        public async Task<ActionResult> GetProgressOfActivityByAparmentView(int? idApartment)
         {
-            var result = await _reportesService.GetProgressOfActivityByAparmentViewAsync(idActivity);
+            var result = await _reportesService.GetProgressOfActivityByAparmentViewAsync(idApartment);
             if (result != null)
             {
                 if (result.Succeeded)
