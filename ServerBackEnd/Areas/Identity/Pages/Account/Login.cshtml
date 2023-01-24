@@ -21,7 +21,7 @@
 </header>
 <body class="overflow-hidden">                              
     <div id="Global" class="d-flex flex-column justify-content-center align-items-center min-vh-100">
-        <div id="RecuadrosDesktop" class="d-flex justify-content-center scale4">
+        <div id="RecuadrosDesktop" class="d-flex justify-content-center scaleLogin">
 
             <div id="Imagen" class="position-relative shadow-sm -ms-25 d-none d-md-block" style="left:18rem;">
                 <img src="~/img/imagenInmuebles.jpg" class="rounded-3" style="width: 40.55em;">
@@ -136,3 +136,11 @@
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />        
 }
+
+
+
+    <style media="only screen and (min-width: 768px) and (max-width: 1023px)">
+    .scaleLogin {
+        transform: scale(.73);
+    }
+    </style>
