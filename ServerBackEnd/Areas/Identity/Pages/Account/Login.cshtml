@@ -21,11 +21,11 @@
 </header>
 <body class="overflow-hidden">                              
     <div id="Global" class="d-flex flex-column justify-content-center align-items-center min-vh-100">
-        <div id="RecuadrosDesktop" class="d-flex justify-content-center scale4">
+        <div id="RecuadrosDesktop" class="d-flex justify-content-center scaleLogin">
 
             <div id="Imagen" class="position-relative shadow-sm -ms-25 d-none d-md-block" style="left:18rem;">
                 <img src="~/img/imagenInmuebles.jpg" class="rounded-3" style="width: 40.55em;">
-                <label style="position: absolute; bottom: 50%; top: 30%; left: 27%; color:white; font-size: 4.5rem; font-weight: 500;">Sistema COB</label>
+                <label style="position: absolute; bottom: 50%; top: 30%; left: 30%; color:white; font-size: 4.5rem; font-weight: 500;">Sistema COB</label>
                 <label style="position: absolute; bottom: 50%; top: 43%; left: 50%; color:white; font-size: 2rem; font-style: italic;">Cierre de Obra Blanca</label>
             </div>            
             <div id="FormularioDesktop" class="bg-white border rounded-3 shadow-lg my-6 position-relative d-none d-md-block" style="left:-48rem;">
@@ -136,3 +136,11 @@
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />        
 }
+
+
+
+    <style media="only screen and (min-width: 768px) and (max-width: 1023px)">
+    .scaleLogin {
+        transform: scale(.73);
+    }
+    </style>
