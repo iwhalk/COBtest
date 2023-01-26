@@ -23,6 +23,10 @@ namespace Obra.Client.Components.Blobs
         [Parameter]
         public EventCallback<Blob> AddedBlob { get; set; }
 
+        [Parameter] public bool IsDisabled { get; set; }
+        [Parameter] public string ColorSpan { get; set; }
+        [Parameter] public string Cursor { get; set; }
+
         private readonly IBlobsService _blobService;
         public BlobFile CurrentBlobFile { get; set; }
         public ICollection<Blob> CurrentBlobs { get; set; }
