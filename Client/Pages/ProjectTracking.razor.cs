@@ -75,6 +75,8 @@ namespace Obra.Client.Pages
         private int SelectedElement;
         private int SelectedSubElement;
         private bool ShowDetalle;
+        private bool ShowFormBlob = true;
+        private string? piecesCondition;
 
         protected override async Task OnInitializedAsync()
         {
@@ -150,6 +152,7 @@ namespace Obra.Client.Pages
 
         public async Task GetCurrentProgressReport(int? idElement =  null, int? idSubElement = null)
         {
+            ShowFormBlob = true;
             CurrentProgressReport = (await _progressReportService.GetProgressReportsAsync(idBuilding: 1, idApartment: CurrentApartment?.IdApartment, idArea: CurrentArea?.IdArea, 
                 idElement: idElement ?? CurrentElement?.IdElement, idSubElement: idSubElement))?.OrderByDescending(x => x.DateCreated).FirstOrDefault();
             if (CurrentProgressReport != null)
@@ -182,7 +185,7 @@ namespace Obra.Client.Pages
                         };
                     }
                 }
-
+                piecesCondition = CurrentProgressLog.Pieces;
             }
             else
             {
@@ -218,6 +221,7 @@ namespace Obra.Client.Pages
             {
                 NewProgressLogs.FirstOrDefault(x => x.IdProgressReport == CurrentProgressReport.IdProgressReport).Pieces = e.Value?.ToString();
                 //NewProgressLogs.FirstOrDefault(x => x.IdProgressReport == CurrentProgressReport.IdProgressReport).IdProgressReport = CurrentProgressReport?.IdProgressReport ?? 1;
+                piecesCondition = e.Value?.ToString();
             }
             else
             {
@@ -230,7 +234,10 @@ namespace Obra.Client.Pages
                     Observation = CurrentProgressLog.Observation,
                     IdStatus = CurrentProgressLog.IdStatus
                 });
-            }
+
+                piecesCondition = CurrentProgressLog.Pieces;
+            }            
+
             if(e.Value?.ToString() == CurrentProgressReport?.TotalPieces)
             {
                 CheckboxClicked(3, null);
@@ -274,6 +281,7 @@ namespace Obra.Client.Pages
         {
             CurrentProgressLog.IdStatus = idStatus;
             var NewProgressLog = NewProgressLogs.FirstOrDefault(x => x.IdProgressReport == CurrentProgressReport.IdProgressReport);
+            ShowFormBlob = (idStatus != 1) ? true :  false;
             if (NewProgressLog != null)
             {
                 NewProgressLogs.FirstOrDefault(x => x.IdProgressReport == CurrentProgressReport.IdProgressReport).IdStatus = idStatus;

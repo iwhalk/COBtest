@@ -147,11 +147,24 @@
                                         <label class="text-xl text-white font-medium leading-6 text-center p-1 mb-2">Observaciones</label>
                                         <textarea value="@CurrentProgressLog?.Observation" @onchange="@((ChangeEventArgs e) => ObservationInput(e))" type="text" class="h-40 w-48 self-center rounded px-2" />
                                     </span>
+
+
+
                                     <span class="w-60 flex flex-col">
                                         <label class="text-xl text-white font-medium leading-6 text-center p-1 mb-2">Fotografias</label>
-                                        @*<input type="file" class="h-20 w-48 self-center rounded px-2 text-center bg-white">*@
-                                        <FormBlob @ref="FormBlob" InputBlobs="@CurrentProgressLog.IdBlobs" AddedBlob="HandleInputFile"></FormBlob>
+                                        @*<input type="file" class="h-20 w-48 self-center rounded px-2 text-center bg-white"> ShowFormBlob || (*@
+                                        @if (ShowFormBlob && (!string.IsNullOrEmpty(piecesCondition) && piecesCondition != "0"))
+                                        {
+                                            <FormBlob @ref="FormBlob" InputBlobs="@CurrentProgressLog.IdBlobs" AddedBlob="HandleInputFile" ColorSpan="color:black" Cursor="pointer" IsDisabled=false></FormBlob>
+                                        }
+                                        else
+                                        {
+                                            <FormBlob @ref="FormBlob" InputBlobs="@CurrentProgressLog.IdBlobs" AddedBlob="HandleInputFile" ColorSpan="color:gray" Cursor="not-allowed" IsDisabled=true></FormBlob>
+                                        }
                                     </span>
+
+
+
                                 </div>
 
                             </div>

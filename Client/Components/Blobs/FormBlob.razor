@@ -8,9 +8,9 @@ else
     <DataAnnotationsValidator />
     <div class="h-40 w-48 self-center rounded px-2 text-center bg-white">
         <label for="fileinput" class="label-wrapper">
-            <span class="oi oi-camera-slr border"> Subir imagen</span>
+                <span class="oi oi-camera-slr border" style="@ColorSpan"> Subir imagen</span>
             <InputFile id="fileinput" class="custom-input-hide"
-                OnChange="@((InputFileChangeEventArgs args) => OnChangeAsync(args))" />
+                OnChange="@((InputFileChangeEventArgs args) => OnChangeAsync(args))" disabled="@IsDisabled"/>
         </label>
         @*
         <InputFile OnChange="@((InputFileChangeEventArgs args) => OnChangeAsync(args))" />*@
@@ -35,7 +35,7 @@ else
 }
 <style>
      .label-wrapper:hover {
-         cursor: pointer;
+         cursor: @Cursor;
      }
 
      .custom-input-hide {
