@@ -183,6 +183,7 @@ builder.Services.AddOpenIddict()
                 .AllowAuthorizationCodeFlow()
                 .AllowPasswordFlow()
                 .AllowRefreshTokenFlow()
+                .DisableTokenStorage()
                 .AcceptAnonymousClients();
 
             options
