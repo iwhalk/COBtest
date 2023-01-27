@@ -220,8 +220,8 @@ else if (buttonReport == true)
                         {
                             <div class="flex w-full mt-10 px-16">
                                 <div class="flex justify-center w-3/6">
-                                    <label class="w-64 h-12 text-4xl text-white leading-6 text-center bg-[#162D4E] py-2 m-2">Actividad</label>
-                                    <label class="w-64 h-12 text-4xl text-white leading-6 text-center bg-[#162D4E] py-2 m-2">Elemento</label>
+                                    <label class="w-64 h-12 2xl:h-16 text-sm md:text-base lg:text-xl 2xl:text-4xl text-white leading-6 text-center bg-[#162D4E] py-2 m-2">Actividad</label>
+                                    <label class="w-64 h-12 2xl:h-16 text-sm md:text-base lg:text-xl 2xl:text-4xl text-white leading-6 text-center bg-[#162D4E] py-2 m-2">Elemento</label>
                                 </div>
                                 <div class="flex justify-center w-3/6">
                                     <label class="w-full text-4xl text-white leading-6 text-center bg-[#162D4E] rounded-lg py-3 my-2">Avance</label>
@@ -240,8 +240,8 @@ else if (buttonReport == true)
                                     {
                                         <div class="flex w-full mt-2 px-16">
                                             <div class="flex justify-center w-3/6">
-                                                <label class="w-64 h-10 text-2xl text-white leading-6 text-center bg-[#254260] rounded-lg py-1 m-2">@activity.ActivityName</label>
-                                                <label class="w-64 h-10 text-2xl text-white leading-6 text-center bg-[#254260] rounded-lg py-1 m-2">@element.ElementName</label>
+                                                <label class="w-32 md:w-44 lg:w-52 xl:w-64 h-10 text-xs md:text:base lg:text-xl xl:text-2xl text-white leading-6 text-center bg-[#254260] rounded-lg py-1 m-2">@activity.ActivityName</label>
+                                                <label class="w-32 md:w-44 lg:w-52 xl:w-64 h-10 text-xs md:text:base lg:text-xl xl:text-2xl text-white leading-6 text-center bg-[#254260] rounded-lg py-1 m-2">@element.ElementName</label>
                                             </div>
                                             <div class="flex w-3/6">
                                                 @if (progressLogs.FirstOrDefault(x => x.IdProgressReport == item.IdProgressReport)?.IdProgressLog != null)
