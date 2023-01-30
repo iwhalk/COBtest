@@ -4,7 +4,7 @@
 <AuthorizeView>
     <Authorized>
         @*<a href="authentication/profile">Hello, @context.User.Identity?.Name!</a>*@
-        <button class="nav-link btn btn-link ml-5 border border-red-600 hover:border-red-400 h-10 p-2" @onclick="ShowModalLogOut">Cerrar Sesion</button>
+        <button class="nav-link btn btn-link my-3 lg:-1my-1 lg:ml-5 border border-red-600 hover:border-red-400 h-10 p-2" @onclick="ShowModalLogOut">Cerrar Sesion</button>
     </Authorized>
     <NotAuthorized>
         <a href="authentication/register">Registrarse</a>
