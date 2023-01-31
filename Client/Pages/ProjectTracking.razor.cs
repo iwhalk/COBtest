@@ -225,11 +225,13 @@ namespace Obra.Client.Pages
             }
             else
             {
-                CurrentProgressLog.Pieces = e.Value?.ToString();
-                CurrentProgressLog.IdProgressReport = CurrentProgressReport?.IdProgressReport ?? 1;
+                int.TryParse(e.Value?.ToString(), out int pieces);
+                CurrentProgressLog.Pieces = pieces.ToString();
+                CurrentProgressLog.IdProgressReport = CurrentProgressReport?.IdProgressReport ?? 1;                
+
                 NewProgressLogs.Add(new ProgressLog()
                 {
-                    Pieces = e.Value?.ToString(),
+                    Pieces = pieces.ToString(),
                     IdProgressReport = CurrentProgressReport?.IdProgressReport ?? 1,
                     Observation = CurrentProgressLog.Observation,
                     IdStatus = CurrentProgressLog.IdStatus

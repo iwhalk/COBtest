@@ -81,7 +81,7 @@ namespace Obra.Client.Pages
         private async void FullActivity()
         {
             _isLoadingProcess = true;
-            if (_idsAparmentSelect.Count() == _context.Activity.Count())
+            if (_idsAparmentSelect.Count() == _context.Apartment.Count())
             {
                 _isFullAparment = false;
                 _idsAparmentSelect.Clear();
