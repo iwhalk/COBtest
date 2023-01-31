@@ -270,10 +270,11 @@ namespace ReportesObra.Utilities
                 ImageSource.ImageSourceImpl = new ImageSharpImageSource<Rgba32>();
             }
 
-            WebClient client = new WebClient();
-            MemoryStream stream = new MemoryStream(client.DownloadData("https://imagenescob.blob.core.windows.net/imagescob/487a4f8d-f21d-4c3f-bf5f-35dc1ebf845b.jpeg"));
-            stream.Position = 0;
-            var logoSOF2245 = section.Headers.Primary.AddImage(ImageSource.FromStream("logoSOF", () => stream));
+            //WebClient client = new WebClient();
+            //MemoryStream stream = new MemoryStream(client.DownloadData("https://imagenescob.blob.core.windows.net/imagescob/487a4f8d-f21d-4c3f-bf5f-35dc1ebf845b.jpeg"));
+            //stream.Position = 0;
+            //var logoSOF2245 = section.Headers.Primary.AddImage(ImageSource.FromStream("logoSOF", () => stream));
+            var logoSOF2245 = section.Headers.Primary.AddImage(ImageSource.FromFile(Path.Combine(Environment.CurrentDirectory, "Img", "SOF2245.jpg")));
             logoSOF2245.Width = "4.5cm";
             logoSOF2245.LockAspectRatio = true;
             logoSOF2245.RelativeHorizontal = RelativeHorizontal.Margin;
@@ -282,9 +283,10 @@ namespace ReportesObra.Utilities
             logoSOF2245.Left = "-1.3cm";
             logoSOF2245.WrapFormat.Style = WrapStyle.Through;
 
-            MemoryStream stream1 = new MemoryStream(client.DownloadData("https://imagenescob.blob.core.windows.net/imagescob/b2aa64fc-49e3-4abe-9e2f-eaede7a19216.jpeg"));
-            stream1.Position = 0;
-            var logoGeneric = section.Headers.Primary.AddImage(ImageSource.FromStream("logoGEN", () => stream1));
+            //MemoryStream stream1 = new MemoryStream(client.DownloadData("https://imagenescob.blob.core.windows.net/imagescob/b2aa64fc-49e3-4abe-9e2f-eaede7a19216.jpeg"));
+            //stream1.Position = 0;
+            //var logoGeneric = section.Headers.Primary.AddImage(ImageSource.FromStream("logoGEN", () => stream1));
+            var logoGeneric = section.Headers.Primary.AddImage(ImageSource.FromFile(Path.Combine(Environment.CurrentDirectory, "Img", "GenericLogo.jpg")));
             logoGeneric.Width = "3.5cm";
             logoGeneric.LockAspectRatio = true;
             logoGeneric.RelativeHorizontal = RelativeHorizontal.Margin;
@@ -453,10 +455,11 @@ namespace ReportesObra.Utilities
                 ImageSource.ImageSourceImpl = new ImageSharpImageSource<Rgba32>();
             }
 
-            WebClient client = new WebClient();
-            MemoryStream stream = new MemoryStream(client.DownloadData("https://imagenescob.blob.core.windows.net/imagescob/487a4f8d-f21d-4c3f-bf5f-35dc1ebf845b.jpeg"));
-            stream.Position = 0;
-            var logoSOF2245 = section.AddImage(ImageSource.FromStream("logoSOF", () => stream));
+            //WebClient client = new WebClient();
+            //MemoryStream stream = new MemoryStream(client.DownloadData("https://imagenescob.blob.core.windows.net/imagescob/487a4f8d-f21d-4c3f-bf5f-35dc1ebf845b.jpeg"));
+            //stream.Position = 0;
+            //var logoSOF2245 = section.AddImage(ImageSource.FromStream("logoSOF", () => stream));
+            var logoSOF2245 = section.Headers.Primary.AddImage(ImageSource.FromFile(Path.Combine(Environment.CurrentDirectory, "Img", "SOF2245.jpg")));
             logoSOF2245.Width = "4.5cm";
             logoSOF2245.LockAspectRatio = true;
             logoSOF2245.RelativeHorizontal = RelativeHorizontal.Margin;
@@ -465,9 +468,10 @@ namespace ReportesObra.Utilities
             logoSOF2245.Left = "-1.3cm";
             logoSOF2245.WrapFormat.Style = WrapStyle.Through;
 
-            MemoryStream stream1 = new MemoryStream(client.DownloadData("https://imagenescob.blob.core.windows.net/imagescob/b2aa64fc-49e3-4abe-9e2f-eaede7a19216.jpeg"));
-            stream1.Position = 0;
-            var logoGeneric = section.AddImage(ImageSource.FromStream("logoGEN", () => stream1));
+            //MemoryStream stream1 = new MemoryStream(client.DownloadData("https://imagenescob.blob.core.windows.net/imagescob/b2aa64fc-49e3-4abe-9e2f-eaede7a19216.jpeg"));
+            //stream1.Position = 0;
+            //var logoGeneric = section.AddImage(ImageSource.FromStream("logoGEN", () => stream1));
+            var logoGeneric = section.Headers.Primary.AddImage(ImageSource.FromFile(Path.Combine(Environment.CurrentDirectory, "Img", "GenericLogo.jpg")));
             logoGeneric.Width = "3.5cm";
             logoGeneric.LockAspectRatio = true;
             logoGeneric.RelativeHorizontal = RelativeHorizontal.Margin;
@@ -580,10 +584,11 @@ namespace ReportesObra.Utilities
                 ImageSource.ImageSourceImpl = new ImageSharpImageSource<Rgba32>();
             }
 
-            WebClient client = new WebClient();
-            MemoryStream stream = new MemoryStream(client.DownloadData("https://imagenescob.blob.core.windows.net/imagescob/487a4f8d-f21d-4c3f-bf5f-35dc1ebf845b.jpeg"));
-            stream.Position = 0;
-            var logoSOF2245 = section.AddImage(ImageSource.FromStream("logoSOF", () => stream));
+            //WebClient client = new WebClient();
+            //MemoryStream stream = new MemoryStream(client.DownloadData("https://imagenescob.blob.core.windows.net/imagescob/487a4f8d-f21d-4c3f-bf5f-35dc1ebf845b.jpeg"));
+            //stream.Position = 0;
+            //var logoSOF2245 = section.AddImage(ImageSource.FromStream("logoSOF", () => stream));
+            var logoSOF2245 = section.Headers.Primary.AddImage(ImageSource.FromFile(Path.Combine(Environment.CurrentDirectory, "Img", "SOF2245.jpg")));
             logoSOF2245.Width = "4.5cm";
             logoSOF2245.LockAspectRatio = true;
             logoSOF2245.RelativeHorizontal = RelativeHorizontal.Margin;
@@ -592,9 +597,10 @@ namespace ReportesObra.Utilities
             logoSOF2245.Left = "-1.3cm";
             logoSOF2245.WrapFormat.Style = WrapStyle.Through;
 
-            MemoryStream stream1 = new MemoryStream(client.DownloadData("https://imagenescob.blob.core.windows.net/imagescob/b2aa64fc-49e3-4abe-9e2f-eaede7a19216.jpeg"));
-            stream1.Position = 0;
-            var logoGeneric = section.AddImage(ImageSource.FromStream("logoGEN", () => stream1));
+            //MemoryStream stream1 = new MemoryStream(client.DownloadData("https://imagenescob.blob.core.windows.net/imagescob/b2aa64fc-49e3-4abe-9e2f-eaede7a19216.jpeg"));
+            //stream1.Position = 0;
+            //var logoGeneric = section.AddImage(ImageSource.FromStream("logoGEN", () => stream1));
+            var logoGeneric = section.Headers.Primary.AddImage(ImageSource.FromFile(Path.Combine(Environment.CurrentDirectory, "Img", "GenericLogo.jpg")));
             logoGeneric.Width = "3.5cm";
             logoGeneric.LockAspectRatio = true;
             logoGeneric.RelativeHorizontal = RelativeHorizontal.Margin;
@@ -720,10 +726,11 @@ namespace ReportesObra.Utilities
                 ImageSource.ImageSourceImpl = new ImageSharpImageSource<Rgba32>();
             }
 
-            WebClient client = new WebClient();
-            MemoryStream stream = new MemoryStream(client.DownloadData("https://imagenescob.blob.core.windows.net/imagescob/487a4f8d-f21d-4c3f-bf5f-35dc1ebf845b.jpeg"));
-            stream.Position = 0;
-            var logoSOF2245 = section.AddImage(ImageSource.FromStream("logoSOF", () => stream));
+            //WebClient client = new WebClient();
+            //MemoryStream stream = new MemoryStream(client.DownloadData("https://imagenescob.blob.core.windows.net/imagescob/487a4f8d-f21d-4c3f-bf5f-35dc1ebf845b.jpeg"));
+            //stream.Position = 0;
+            //var logoSOF2245 = section.AddImage(ImageSource.FromStream("logoSOF", () => stream));
+            var logoSOF2245 = section.Headers.Primary.AddImage(ImageSource.FromFile(Path.Combine(Environment.CurrentDirectory, "Img", "SOF2245.jpg")));
             logoSOF2245.Width = "4.5cm";
             logoSOF2245.LockAspectRatio = true;
             logoSOF2245.RelativeHorizontal = RelativeHorizontal.Margin;
@@ -732,9 +739,10 @@ namespace ReportesObra.Utilities
             logoSOF2245.Left = "-1.3cm";
             logoSOF2245.WrapFormat.Style = WrapStyle.Through;
 
-            MemoryStream stream1 = new MemoryStream(client.DownloadData("https://imagenescob.blob.core.windows.net/imagescob/b2aa64fc-49e3-4abe-9e2f-eaede7a19216.jpeg"));
-            stream1.Position = 0;
-            var logoGeneric = section.AddImage(ImageSource.FromStream("logoGEN", () => stream1));
+            //MemoryStream stream1 = new MemoryStream(client.DownloadData("https://imagenescob.blob.core.windows.net/imagescob/b2aa64fc-49e3-4abe-9e2f-eaede7a19216.jpeg"));
+            //stream1.Position = 0;
+            //var logoGeneric = section.AddImage(ImageSource.FromStream("logoGEN", () => stream1));
+            var logoGeneric = section.Headers.Primary.AddImage(ImageSource.FromFile(Path.Combine(Environment.CurrentDirectory, "Img", "GenericLogo.jpg")));
             logoGeneric.Width = "3.5cm";
             logoGeneric.LockAspectRatio = true;
             logoGeneric.RelativeHorizontal = RelativeHorizontal.Margin;
@@ -866,10 +874,11 @@ namespace ReportesObra.Utilities
                 ImageSource.ImageSourceImpl = new ImageSharpImageSource<Rgba32>();
             }
 
-            WebClient client = new WebClient();
-            MemoryStream stream = new MemoryStream(client.DownloadData("https://imagenescob.blob.core.windows.net/imagescob/487a4f8d-f21d-4c3f-bf5f-35dc1ebf845b.jpeg"));
-            stream.Position = 0;
-            var logoSOF2245 = section.AddImage(ImageSource.FromStream("logoSOF", () => stream));
+            //WebClient client = new WebClient();
+            //MemoryStream stream = new MemoryStream(client.DownloadData("https://imagenescob.blob.core.windows.net/imagescob/487a4f8d-f21d-4c3f-bf5f-35dc1ebf845b.jpeg"));
+            //stream.Position = 0;
+            //var logoSOF2245 = section.AddImage(ImageSource.FromStream("logoSOF", () => stream));
+            var logoSOF2245 = section.Headers.Primary.AddImage(ImageSource.FromFile(Path.Combine(Environment.CurrentDirectory, "Img", "SOF2245.jpg")));
             logoSOF2245.Width = "4.5cm";
             logoSOF2245.LockAspectRatio = true;
             logoSOF2245.RelativeHorizontal = RelativeHorizontal.Margin;
@@ -878,9 +887,10 @@ namespace ReportesObra.Utilities
             logoSOF2245.Left = "-1.3cm";
             logoSOF2245.WrapFormat.Style = WrapStyle.Through;
 
-            MemoryStream stream1 = new MemoryStream(client.DownloadData("https://imagenescob.blob.core.windows.net/imagescob/b2aa64fc-49e3-4abe-9e2f-eaede7a19216.jpeg"));
-            stream1.Position = 0;
-            var logoGeneric = section.AddImage(ImageSource.FromStream("logoGEN", () => stream1));
+            //MemoryStream stream1 = new MemoryStream(client.DownloadData("https://imagenescob.blob.core.windows.net/imagescob/b2aa64fc-49e3-4abe-9e2f-eaede7a19216.jpeg"));
+            //stream1.Position = 0;
+            //var logoGeneric = section.AddImage(ImageSource.FromStream("logoGEN", () => stream1));
+            var logoGeneric = section.Headers.Primary.AddImage(ImageSource.FromFile(Path.Combine(Environment.CurrentDirectory, "Img", "GenericLogo.jpg")));
             logoGeneric.Width = "3.5cm";
             logoGeneric.LockAspectRatio = true;
             logoGeneric.RelativeHorizontal = RelativeHorizontal.Margin;

@@ -403,7 +403,7 @@ namespace Obra.Client.Pages
             redPercentage.Clear();
         }
 
-        public async Task ChangeView()
+        public async Task ChangeView()//DESCARGAR
         {
             await ShowMessage();
             loading = true;
