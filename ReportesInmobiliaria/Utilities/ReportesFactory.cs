@@ -298,7 +298,9 @@ namespace ReportesObra.Utilities
             if (_title.Contains("os"))
             {
                 // Put header in header frame
-                paragraph = headerFrame.AddParagraph("Reporte Detallado Por Departamento");//Titulo
+                paragraph = headerFrame.AddParagraph("Reporte Detallado");//Titulo
+                paragraph.AddLineBreak();
+                paragraph.AddText("Por Departamento Pendientes");
                 paragraph.AddLineBreak();
                 paragraph.AddText(_title);
                 paragraph.Format.Font.Name = "DejaVu Serif";
@@ -308,7 +310,9 @@ namespace ReportesObra.Utilities
             }
             else
             {
-                paragraph = headerFrame.AddParagraph("Reporte Detallado Por Actividad");//Titulo
+                paragraph = headerFrame.AddParagraph("Reporte Detallado ");//Titulo
+                paragraph.AddLineBreak();
+                paragraph.AddText("Por Actividad Pendientes");
                 paragraph.AddLineBreak();
                 paragraph.AddText(_title);
                 paragraph.Format.Font.Name = "DejaVu Serif";
@@ -1174,7 +1178,9 @@ namespace ReportesObra.Utilities
             {
                 Row row = table.AddRow();
                 row.Format.Font.Size = (Unit)fontSize;
-                row.VerticalAlignment = VerticalAlignment.Center;
+                row.HeightRule = RowHeightRule.Exactly;
+                row.Height = 30;
+                row.VerticalAlignment = VerticalAlignment.Top;
 
                 if (item != null)
                     foreach (var (prop, index) in item.GetType().GetProperties().Select((v, i) => (v, i)))
@@ -1210,12 +1216,12 @@ namespace ReportesObra.Utilities
                             var xseries = clone_chart.XValues.AddXSeries();
                             xseries.Add("     ");
                             row.Cells[2].Add(clone_chart);
-                            row.Cells[2].Row.TopPadding = "0.25cm";
+                            row.Cells[2].Row.TopPadding = "0.35cm";// "0.25cm"
                         }
                         if (type == typeof(string))
                         {
                             row.Cells[index].AddParagraph(prop.GetValue(item, null)?.ToString());
-                            row.Cells[index].Row.VerticalAlignment = VerticalAlignment.Center;
+                            //row.Cells[index].VerticalAlignment = VerticalAlignment.Top;
                             row.Cells[index].Borders.Visible = false;
                             if (contador == 0)
                             {
