@@ -166,7 +166,7 @@ namespace ReportesObra.Services
                 list.Add(new AparmentProgress()
                 {
                     ApartmentNumber = apartments.FirstOrDefault(x => x.IdApartment == aparment.Key).ApartmentNumber,
-                    ApartmentProgress = 100.00 / total * current
+                    ApartmentProgress = Math.Truncate(100.00 / total * current)
                 });
             }
             return list;
@@ -201,7 +201,7 @@ namespace ReportesObra.Services
                 list.Add(new AparmentProgress()
                 {
                     ApartmentNumber = apartments.FirstOrDefault(x => x.IdApartment == aparment.Key).ApartmentNumber,
-                    ApartmentProgress = 100.00 / total * current
+                    ApartmentProgress = Math.Truncate(100.00 / total * current)
                 });
             }
             return list;
@@ -250,7 +250,7 @@ namespace ReportesObra.Services
                 list.Add(new ActivityProgress()
                 {
                     ActivityName = activities.FirstOrDefault(x => x.IdActivity == activity.Key).ActivityName,
-                    Progress = 100.00 / total * current
+                    Progress = Math.Truncate( 100.00 / total * current)
                 });
             }
             //list = list.OrderBy(x => x.ActivityName).ToList();
@@ -340,7 +340,7 @@ namespace ReportesObra.Services
                     {
                         Activity_ = activity.ActivityName,
                         ApartmentNumber = apartment.ApartmentNumber,
-                        ApartmentProgress = 100.00 / total * current
+                        ApartmentProgress = Math.Truncate( 100.00 / total * current )
                     });
                 }
 
@@ -405,7 +405,7 @@ namespace ReportesObra.Services
                     {
                         ApartmentNumber = aparment.ApartmentNumber,
                         Activity_ = activity.ActivityName,
-                        ApartmentProgress = 100.00 / total * current
+                        ApartmentProgress = Math.Truncate(100.00 / total * current)
                     });
                 }
 
