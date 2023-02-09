@@ -71,7 +71,7 @@ namespace ReportesObra.Services
                     output.Position = 0;
 
                     var blob = _dbContext.Blobs.FirstOrDefault(x => x.Uri == imageData.BlobUri);
-                    var blobContainerClient = _blobServiceClient.GetBlobContainerClient("inventoryblobs");
+                    var blobContainerClient = _blobServiceClient.GetBlobContainerClient("imagescob");
                     var blobClient = blobContainerClient.GetBlobClient(blob.BlobName);
                     var response = blobClient.Upload(
                     output,
