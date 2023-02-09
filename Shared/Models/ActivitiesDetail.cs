@@ -10,6 +10,7 @@ namespace SharedLibrary.Models
     {
         public int IdBuilding { get; set; }
         public List<int> Apartments { get; set; }
+        public List<int>? Areas { get; set; }
         public List<int>? Activities { get; set; }
         public List<int>? Elements { get; set; }
         public List<int>? SubElements { get; set; }

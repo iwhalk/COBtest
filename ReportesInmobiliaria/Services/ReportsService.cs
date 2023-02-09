@@ -25,6 +25,7 @@ namespace ReportesObra.Services
         private readonly ReportesFactory _reportesFactory;
         List<ProgressReport> progressReportsComplete;
         List<ProgressLog> listProgressLog;
+        List<Area> listAreas;
         List<Element> listElements;
         List<SharedLibrary.Models.Activity> listActivities;
         List<SubElement> listSubElements;
@@ -38,13 +39,14 @@ namespace ReportesObra.Services
             _reportesFactory = reportesFactory;
             progressReportsComplete = _dbContext.ProgressReports.ToList();
             listProgressLog = _dbContext.ProgressLogs.ToList();
+            listAreas = _dbContext.Areas.ToList();
             listElements = _dbContext.Elements.ToList();
             listActivities = _dbContext.Activities.ToList();
             listSubElements = _dbContext.SubElements.ToList();
             listApartments = _dbContext.Apartments.ToList();
         }
 
-        public async Task<byte[]> GetReporteDetalles(int idBuilding, List<int>? idApartments, List<int>? idActivities, List<int>? idElements, List<int>? idSubElements)
+        public async Task<byte[]> GetReporteDetalles(int idBuilding, List<int>? idApartments, List<int>? idAreas, List<int>? idActivities, List<int>? idElements, List<int>? idSubElements)
         {
             List<ProgressReport> listReport = new List<ProgressReport>();
             string title = "(Todos)";
@@ -54,6 +56,8 @@ namespace ReportesObra.Services
                 listReport = FiltradoIdApartments(listReport, idApartments);
                 title = "(Seleccionados)";
             }
+            if (idAreas != null && idAreas.Count() != 0)
+                listReport = FiltradoIdAreas(listReport, idAreas);
             if (idElements != null && idElements.Count() != 0)
                 listReport = FiltradoIdElements(listReport, idElements);
             if (idSubElements != null && idSubElements.Count() != 0)
@@ -111,6 +115,7 @@ namespace ReportesObra.Services
                 {
                     numeroApartamento = getApartmentNumber(subElement.IdApartment),
                     actividad = getActividadByElement(subElement.IdElement),
+                    area = getArea(subElement.IdArea),
                     elemento = getElemento(subElement.IdElement),
                     subElemento = getSubElemento(subElement.IdSubElement),
                     estatus = getStausName(subElement.IdProgressReport),
@@ -445,6 +450,14 @@ namespace ReportesObra.Services
             return nombreActividad == null ? null : nombreActividad.ActivityName;
         }
 
+        private string? getArea(int idArea)
+        {
+            var nameArea = listAreas.FirstOrDefault(x => x.IdArea == idArea);
+            if(nameArea == null)
+                return null;
+            return nameArea.AreaName;
+        }
+
         public string? getElemento(int? idElement)
         {
             var nameElement = listElements.FirstOrDefault(x => x.IdElement == idElement);
@@ -525,6 +538,19 @@ namespace ReportesObra.Services
                 apartmentsFiltred.AddRange(subListApartments.ToList());
             }
             return apartmentsFiltred;
+        }
+
+        private List<ProgressReport> FiltradoIdAreas(List<ProgressReport> ListAllAreas, List<int> idAreas)
+        {
+            List<ProgressReport> areasFiltred = new List<ProgressReport>();
+            foreach (var idArea in idAreas)
+            {
+                var subListArea = ListAllAreas.Where(x => x.IdArea == idArea);
+                if (subListArea == null)
+                    continue;
+                areasFiltred.AddRange(subListArea.ToList());
+            }
+            return areasFiltred;
         }
 
         private List<DetalladoActividades> FiltradoIdActivities(List<DetalladoActividades> ListAllActivities, List<int> idActivities)

@@ -367,9 +367,11 @@ namespace ReportesObra.Utilities
                 tableAreas.Rows.LeftIndent = 0;
                 tableAreas.Rows.Alignment = RowAlignment.Center;
                 // Before you can add a row, you must define the columns
-                Column column = tableAreas.AddColumn("4.0cm");
+                Column column = tableAreas.AddColumn("3.5cm");
                 column.Format.Alignment = ParagraphAlignment.Center;
-                column = tableAreas.AddColumn("4.6cm");
+                column = tableAreas.AddColumn("3.0cm");
+                column.Format.Alignment = ParagraphAlignment.Center;
+                column = tableAreas.AddColumn("4.0cm");
                 column.Format.Alignment = ParagraphAlignment.Center;
                 column = tableAreas.AddColumn("3.8cm");
                 column.Format.Alignment = ParagraphAlignment.Center;
@@ -388,13 +390,14 @@ namespace ReportesObra.Utilities
                 row.Borders.Visible = false;
                 //row.Shading.Color = TableColor;
                 row.Cells[0].AddParagraph("Actividad");
-                row.Cells[1].AddParagraph("Elemento");
-                row.Cells[2].AddParagraph("Sub-Elemento");
-                row.Cells[3].AddParagraph("Estatus");
-                row.Cells[4].AddParagraph("Total");
-                row.Cells[5].AddParagraph("Avance");
+                row.Cells[1].AddParagraph("Área");
+                row.Cells[2].AddParagraph("Elemento");
+                row.Cells[3].AddParagraph("Sub-Elemento");
+                row.Cells[4].AddParagraph("Estatus");
+                row.Cells[5].AddParagraph("Total");
+                row.Cells[6].AddParagraph("Avance");
 
-                if(_title.Contains("os"))
+                if (_title.Contains("os"))
                     i = FillGenericContent(reporteDetalles.detalladoActividades, tableAreas, i, apartmentTitle) - 1;
                 else
                     i = FillGenericContentCombination(reporteDetalles.detalladoActividades, tableAreas, i, apartmentTitle) - 1;
@@ -1445,6 +1448,7 @@ namespace ReportesObra.Utilities
                     row.Cells[3].Shading.Color = newColorGray;
                     row.Cells[4].Shading.Color = newColorGray;
                     row.Cells[5].Shading.Color = newColorGray;
+                    row.Cells[6].Shading.Color = newColorGray;
                 }
             }
             return value.Count;
@@ -1588,6 +1592,7 @@ namespace ReportesObra.Utilities
                     row.Cells[3].Shading.Color = newColorGray;
                     row.Cells[4].Shading.Color = newColorGray;
                     row.Cells[5].Shading.Color = newColorGray;
+                    row.Cells[6].Shading.Color = newColorGray;
                 }
             }
             return value.Count;

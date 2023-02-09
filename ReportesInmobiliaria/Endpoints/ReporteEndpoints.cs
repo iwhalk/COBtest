@@ -13,7 +13,7 @@ namespace ReportesObra.Endpoints
             {
                 try
                 {
-                    var newModule = await _reportesService.GetReporteDetalles(detallesActividad.IdBuilding, detallesActividad.Apartments, detallesActividad.Activities, detallesActividad.Elements, detallesActividad.SubElements);
+                    var newModule = await _reportesService.GetReporteDetalles(detallesActividad.IdBuilding, detallesActividad.Apartments, detallesActividad.Areas, detallesActividad.Activities, detallesActividad.Elements, detallesActividad.SubElements);
                     if (newModule == null) return Results.NotFound();
                     return Results.File(newModule, "application/pdf");
                 }
