@@ -24,7 +24,7 @@ using ReportesObra.Utilities;
 using ReportesObra.Endpoints;
 
 var builder = WebApplication.CreateBuilder(args);
-var connectionString = "Server=soft2245cob.database.windows.net;Database=prosisdb_4;User=PROSIS_DEVELOPER;Password=PR0515_D3ev3l0p3r;MultipleActiveResultSets=true";
+var connectionString = "Server=soft2245.database.windows.net;Database=prosisdb_4;User=PROSIS_DEVELOPER;Password=PR0515_D3ev3l0p3r;MultipleActiveResultSets=true";
 var secretKey = builder.Configuration.GetValue<string>("SecretKey");
 var key = Encoding.ASCII.GetBytes(secretKey);
 
@@ -89,6 +89,7 @@ builder.Services.AddScoped<IBlobService, BlobService>();
 builder.Services.AddScoped<IElementsService, ElementsService>();
 builder.Services.AddScoped<ISubElementsService, SubElementsService>();
 builder.Services.AddScoped<IReportesService, ReportsService>();
+builder.Services.AddScoped<IImageService, ImageService>();
 
 builder.Services.AddScoped<ReportesFactory>();
 
@@ -128,6 +129,7 @@ app.MapProgressLogsEndpoints();
 app.MapProgressReportsEndpoints();
 app.MapBlobsEndpoints();
 app.MapReporteEndpoints();
+app.MapImageEndpoints();
 
 #region Inmobiliaria
 
