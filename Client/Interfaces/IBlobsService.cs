@@ -10,5 +10,6 @@ namespace Obra.Client.Interfaces
         Task<List<Blob>> GetBlobsAsync(int? id);
         Task<Blob> PostBlobAsync(Blob blob);
         Task<Blob> PostBlobAsync(BlobFile blobFile);
+        Task<bool> PostImageAsync(ImageData imageData);
     }
 }

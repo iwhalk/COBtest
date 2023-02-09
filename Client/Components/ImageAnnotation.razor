@@ -1,0 +1,21 @@
+﻿<label for="" class="text-start text-xl text-blue-900 font-semibold mb-2">Editar</label>
+
+<div @ref="container" class="flex-column" style="position: relative;">
+    <Canvas @ref="_context2" id="layer1" width="600px" height="450px"
+            style="position: absolute; left: 0; top: 0; z-index: 0;"></Canvas>
+    <Canvas @ref="_context"
+            @onmousemove="MouseMoveCanvasAsync"
+            @onmouseup="MouseUpCanvas"
+            @onmousedown="MouseDownCanvas"
+            @ontouchstart="MouseDownCanvas"
+            @ontouchmove="MouseMoveCanvasAsync"
+            @ontouchend="MouseUpCanvas" id="layer2" width="600px" height="450px"
+            style="position: absolute; left: 0; top: 0; z-index: 1;"></Canvas>
+
+</div>
+
+<div style="padding-top: 450px">
+    <button @onclick="ClickedDelete" class="mt-2 w-48 border rounded-lg text-white text-xl shadow-xl" style="background-color: #2B286F;">Cerrar</button>
+    <button @onclick="ClearAsync" class="mt-2 w-48 border rounded-lg text-white text-xl shadow-xl" style="background-color: #2B286F;">Limpiar</button>
+    <button @onclick="ClickedSave" class="mt-2 w-48 border rounded-lg text-white text-xl shadow-xl" style="background-color: #2B286F;">Guardar</button>
+</div>

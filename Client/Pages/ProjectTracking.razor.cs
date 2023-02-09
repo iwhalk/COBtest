@@ -1,5 +1,6 @@
 ﻿using Blazored.Toast;
 using Blazored.Toast.Services;
+using Excubo.Blazor.Canvas;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
 using Obra.Client.Components;
@@ -9,7 +10,9 @@ using Obra.Client.Services;
 using SharedLibrary.Models;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Reflection.Metadata;
 using Activity = SharedLibrary.Models.Activity;
+using Blob = SharedLibrary.Models.Blob;
 
 namespace Obra.Client.Pages
 {
@@ -24,6 +27,7 @@ namespace Obra.Client.Pages
         private readonly IProgressReportService _progressReportService;
         private readonly IProgressLogsService _progressLogsService;
         private readonly IToastService _toastService;
+        private readonly IBlobsService _blobsService;
         private readonly AuthenticationStateProvider _getAuthenticationStateAsync;
         private readonly NavigationManager _navigate;
 
@@ -37,7 +41,8 @@ namespace Obra.Client.Pages
                                IProgressLogsService progressLogsService,
                                AuthenticationStateProvider getAuthenticationStateAsync,
                                NavigationManager navigate,
-                               IToastService toastService)
+                               IToastService toastService,
+                               IBlobsService blobsService)
         {
             _buildingsService = buildingsService;
             _apartmentsService = apartmentsService;
@@ -50,6 +55,7 @@ namespace Obra.Client.Pages
             _getAuthenticationStateAsync = getAuthenticationStateAsync;
             _navigate = navigate;
             _toastService = toastService;
+            _blobsService = blobsService;
         }
 
         public List<Apartment> ApartmentsList { get; private set; }
@@ -67,8 +73,12 @@ namespace Obra.Client.Pages
         public ProgressLog CurrentProgressLog { get; private set; }
         public List<ProgressLog> NewProgressLogs { get; private set; }
         public bool Loading { get; private set; }
+        public int IdBlob { get; private set; }
+        public bool ShowModalPicture { get; private set; } = false;
 
         private FormBlob FormBlob;
+        private ImageAnnotation ImageAnnotationComponent;
+
         private int SelectedApartment;
         private int SelectedArea;
         private int SelectedActivity;
@@ -328,6 +338,29 @@ namespace Obra.Client.Pages
             }
             FormBlob.CurrentBlobFileEditContext.Validate();
             //StateHasChanged();
+        }
+        public void OnClickImage(int value)
+        {
+            IdBlob = value;
+            ShowModalPicture = ShowModalPicture ? false : true;
+        }
+        public async Task OnAnnotatedImageSave()        
+        {
+            //ShowBlobs = false;
+            var signature = await ImageAnnotationComponent._context.ToDataURLAsync();
+            var blob = await _blobsService.GetBlobsAsync(IdBlob);
+            await _blobsService.PostImageAsync(new() { BlobUri = blob.FirstOrDefault()?.Uri, StringBase64 = signature });
+            foreach (var item in CurrentProgressLog.IdBlobs)
+            {
+                item.Uri += $"?q={Guid.NewGuid().ToString().Remove(10):N}";
+            }
+            //FormBlobComponent.renderBlobsList = renderBlob;
+            //ShowBlobs = true;
+            ShowModalPicture = false;
+        }
+        public void OnAnnotatedImageDelete()
+        {
+            ShowModalPicture = false;
         }
         public async void SaveButtonClicked()
         {

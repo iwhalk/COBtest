@@ -24,7 +24,7 @@ else
             <div class="grid grid-cols-3 gap-1 w-full">
                 @foreach (var blob in CurrentBlobs)
                 {
-                <span  @onclick="@(() => CurrentBlobs.Remove(blob))"><img class="w-100 h-100 " src="@blob.Uri" /></span>
+                <span  @onclick="@(() => OnClicked(blob.IdBlob))"><img id="@blob.IdBlob" class="w-100 h-100 " src="@blob.Uri" /></span>
                 }
             </div>
             }
