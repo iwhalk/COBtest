@@ -77,6 +77,7 @@ namespace ReportesObra.Utilities
         private string _apartmentNumber;
         private string _title = "";
         private bool _firstActivity = true;
+        private int contadorIndexTitulo = 0;
         /// <summary>
         /// Initializes a new instance of the class BillFrom and opens the specified XML document.
         /// </summary>
@@ -405,6 +406,7 @@ namespace ReportesObra.Utilities
         void CrearReporteAvance(ReporteAvance? reporteAvance)
         {
             section.PageSetup.Orientation = Orientation.Portrait;
+            section.PageSetup.TopMargin = "4.9cm";
 
             headerFrame = section.AddTextFrame();
             headerFrame.Width = "22.5cm";
@@ -504,36 +506,45 @@ namespace ReportesObra.Utilities
             paragraph.AddText(DateTime.Now.ToString("dd/MM/yyyy"));
             //paragraph.AddText(reporteActaEntrega.header.ElementAt(0).FechaHora.ToString("dd/MM/yyyy hh:mm tt"));
             // Add the data separation field
-            paragraph = section.AddParagraph();
-            paragraph.Format.SpaceBefore = "2.0cm";//"2.0cm"
-            paragraph.Format.Font.Size = 8;
-            paragraph.Style = "Reference";
-            paragraph.AddFormattedText("", TextFormat.Bold);
+            //paragraph = section.AddParagraph();
+            //paragraph.Format.SpaceBefore = "2.0cm";//"2.0cm"
+            //paragraph.Format.Font.Size = 8;
+            //paragraph.Style = "Reference";
+            //paragraph.AddFormattedText("", TextFormat.Bold);
 
             Table table = section.AddTable();
             table.Rows.Alignment = RowAlignment.Center;
 
-            Column columna = table.AddColumn("3cm");
+            Column columna = table.AddColumn("3.5cm");
             columna.Format.Alignment = ParagraphAlignment.Center;
-            columna = table.AddColumn("14cm");
-            columna.Format.Alignment = ParagraphAlignment.Center;
+            //columna = table.AddColumn("14cm");
+            columna = table.AddColumn("0.3cm");
+            columna = table.AddColumn("0.8cm");
+            for (int i = 0; i < 10; i++)
+            {
+                columna = table.AddColumn("1.25cm");
+                columna.Format.Alignment = ParagraphAlignment.Left;
+            }
+            columna = table.AddColumn("0.8cm");
+            columna = table.AddColumn("0.3cm");
 
             Row rowo = table.AddRow();
             rowo.HeadingFormat = true;
             rowo.Format.Alignment = ParagraphAlignment.Center;
-            rowo.Format.Font.Bold = true;
-            rowo.Format.Font.Size = 10;
+            rowo.Format.Font.Size = 13;
             rowo.Borders.Visible = false;
-            rowo.BottomPadding = "0.5cm";
+            rowo.BottomPadding = "0.2cm";
             rowo.Cells[0].AddParagraph("Departamento");
-            rowo.Cells[1].AddParagraph("Avance General");
-          
+            //rowo.Cells[1].AddParagraph("Avance General");
+
             FillChartContent(reporteAvance.Apartments, table);
+            //FillChartContent2(reporteAvance.Apartments, table);
         }
 
         void CrearReporteAvanceDeActividadPorDepartamento(List<ReporteActividadPorDepartamento> reporteActividadPorDepartamento)
         {
             section.PageSetup.Orientation = Orientation.Portrait;
+            section.PageSetup.TopMargin = "4.9cm";//"4.9cm"
 
             headerFrame = section.AddTextFrame();
             headerFrame.Width = "22.5cm";
@@ -639,33 +650,43 @@ namespace ReportesObra.Utilities
             paragraph.AddText(DateTime.Now.ToString("dd/MM/yyyy"));
             //paragraph.AddText(reporteActaEntrega.header.ElementAt(0).FechaHora.ToString("dd/MM/yyyy hh:mm tt"));
             // Add the data separation field
-            paragraph = section.AddParagraph();
+
+            /*paragraph = section.AddParagraph();
             paragraph.Format.SpaceBefore = "2.0cm";//"2.0cm"
             paragraph.Format.Font.Size = 8;
             paragraph.Style = "Reference";
-            paragraph.AddFormattedText("", TextFormat.Bold);
+            paragraph.AddFormattedText("", TextFormat.Bold);*/
 
             Table table = section.AddTable();
             table.Rows.Alignment = RowAlignment.Center;
             //table.Rows.Height = "3cm";
 
-            Column columna = table.AddColumn("3cm");
+            Column columna = table.AddColumn("2.5cm");
             columna.Format.Alignment = ParagraphAlignment.Center;
-            columna = table.AddColumn("3cm");
+            columna = table.AddColumn("3.0cm");
             columna.Format.Alignment = ParagraphAlignment.Center;
-            columna = table.AddColumn("11cm");
-            columna.Format.Alignment = ParagraphAlignment.Center;
+            //columna = table.AddColumn("11cm");
+            columna = table.AddColumn("0.3cm");
+            columna = table.AddColumn("0.5cm");
+            columna = table.AddColumn("11.0cm");
+            //for (int i = 0; i < 10; i++)
+            //{
+            //    columna = table.AddColumn("1.1cm");
+            //    columna.Format.Alignment = ParagraphAlignment.Left;
+            //}
+            columna = table.AddColumn("0.5cm");
+            columna = table.AddColumn("0.3cm");
 
             Row rowo = table.AddRow();
             rowo.HeadingFormat = true;
             rowo.Format.Alignment = ParagraphAlignment.Center;
-            rowo.Format.Font.Bold = true;
+            //rowo.Format.Font.Bold = true;
             rowo.Format.Font.Size = 10;
             rowo.Borders.Visible = false;
-            rowo.BottomPadding = "0.5cm";
+            rowo.BottomPadding = "0.2cm";
             rowo.Cells[0].AddParagraph("Actividad");
             rowo.Cells[1].AddParagraph("Departamento");
-            rowo.Cells[2].AddParagraph("Avance General");
+            rowo.Cells[4].AddParagraph("Avance General");
 
             foreach(var actividad in reporteActividadPorDepartamento)
             {
@@ -676,6 +697,7 @@ namespace ReportesObra.Utilities
         void CrearReporteAvanceDeDepartamentoPorActividad(List<ReporteDepartamentoPorActividad> reporteDepartamentoPorActividad)
         {
             section.PageSetup.Orientation = Orientation.Portrait;
+            section.PageSetup.TopMargin = "4.9cm";
 
             headerFrame = section.AddTextFrame();
             headerFrame.Width = "22.5cm";
@@ -781,36 +803,39 @@ namespace ReportesObra.Utilities
             paragraph.AddText(DateTime.Now.ToString("dd/MM/yyyy"));
             //paragraph.AddText(reporteActaEntrega.header.ElementAt(0).FechaHora.ToString("dd/MM/yyyy hh:mm tt"));
             // Add the data separation field
-            paragraph = section.AddParagraph();
-            paragraph.Format.SpaceBefore = "2.0cm";//"2.0cm"
-            paragraph.Format.Font.Size = 8;
-            paragraph.Style = "Reference";
-            paragraph.AddFormattedText("", TextFormat.Bold);
+            //paragraph = section.AddParagraph();
+            //paragraph.Format.SpaceBefore = "2.0cm";//"2.0cm"
+            //paragraph.Format.Font.Size = 8;
+            //paragraph.Style = "Reference";
+            //paragraph.AddFormattedText("", TextFormat.Bold);
 
             Table table = section.AddTable();
             table.Rows.Alignment = RowAlignment.Center;
 
-            Column columna = table.AddColumn("3cm");
+            Column columna = table.AddColumn("2.8cm");
             columna.Format.Alignment = ParagraphAlignment.Center;
             columna = table.AddColumn("3cm");
             columna.Format.Alignment = ParagraphAlignment.Center;
-            columna = table.AddColumn("11cm");
-            columna.Format.Alignment = ParagraphAlignment.Center;
+            columna = table.AddColumn("0.3cm");
+            columna = table.AddColumn("0.5cm");
+            columna = table.AddColumn("11.0cm");
+            columna = table.AddColumn("0.5cm");
+            columna = table.AddColumn("0.3cm");
 
             Row rowo = table.AddRow();
             rowo.HeadingFormat = true;
             rowo.Format.Alignment = ParagraphAlignment.Center;
-            rowo.Format.Font.Bold = true;
+            //rowo.Format.Font.Bold = true;
             rowo.Format.Font.Size = 10;
             rowo.Borders.Visible = false;
-            rowo.BottomPadding = "0.5cm";
+            rowo.BottomPadding = "0.2cm";
             rowo.Cells[0].AddParagraph("Departamento");
             rowo.Cells[1].AddParagraph("Actividad");
-            rowo.Cells[2].AddParagraph("Avance General");
+            rowo.Cells[4].AddParagraph("Avance General");
 
             foreach (var departamento in reporteDepartamentoPorActividad)
             {
-                FillChartContentThreeColumns(departamento.Activitiess, table, departamento.Aparment);
+                FillChartContentThreeColumns(departamento.Activitiess, table, departamento.Aparment, 35);
             }
         }
 
@@ -993,10 +1018,10 @@ namespace ReportesObra.Utilities
             footer.Format.Alignment = ParagraphAlignment.Center;
         }
 
-        void FillChartContent<T>(List<T> value, Table table, int fontSize = 12)
+        void FillChartContent<T>(List<T> value, Table table, int fontSize = 11)
         {
             var chart = new MigraDocCore.DocumentObjectModel.Shapes.Charts.Chart(MigraDocCore.DocumentObjectModel.Shapes.Charts.ChartType.Bar2D);
-            chart.Width = "15cm";
+            chart.Width = "13.5cm";
             chart.Height = "1cm";
 
 
@@ -1014,15 +1039,22 @@ namespace ReportesObra.Utilities
             chart.PlotArea.LineFormat.Visible = false;
             chart.PlotArea.FillFormat.Color = newColorRed;
 
+            int contador = 0;
+
             foreach (var item in value)
             {
                 Row row = table.AddRow();
                 row.Format.Font.Size = (Unit)fontSize;
-                row.VerticalAlignment = VerticalAlignment.Center;
+                row.HeightRule = RowHeightRule.Exactly;
+                row.Height = 30;
+                row.VerticalAlignment = VerticalAlignment.Top;
 
                 if (item != null)
                     foreach (var (prop, index) in item.GetType().GetProperties().Select((v, i) => (v, i)))
                     {
+                        row.Borders.Visible = true;
+                        row.Borders.Color = newColorGray;
+                        row.Borders.Width = 1;
                         int fixIndex;
                         if (index== 0)
                             continue;
@@ -1037,7 +1069,7 @@ namespace ReportesObra.Utilities
                                 series.Add(1);
                             else
                                 series.Add((Double)prop.GetValue(item, null) / 100.0000);
-                            series.DataLabel.Format = "#0.00%";
+                            series.DataLabel.Format = "#0%";//"#0.00%"
                             var asdasda = (Double)prop.GetValue(item, null);
                             if ((Double)prop.GetValue(item, null) < 90 && (Double)prop.GetValue(item, null) > 0)
                                 series.DataLabel.Position = MigraDocCore.DocumentObjectModel.Shapes.Charts.DataLabelPosition.OutsideEnd;
@@ -1050,27 +1082,46 @@ namespace ReportesObra.Utilities
                             elements[0].LineFormat.Color = newColorGreen;
                             elements[0].LineFormat.Width= 3;
                             var xseries = clone_chart.XValues.AddXSeries();
-                            xseries.Add("");
+                            xseries.Add("        ");
                             row.Cells[fixIndex].Add(clone_chart);
-                            row.Cells[fixIndex].Row.TopPadding = "0.5cm";
+                            row.Cells[fixIndex].Row.TopPadding = "0.35cm";
                         }
                         if (type == typeof(string))
                         {                            
                             row.Cells[fixIndex].AddParagraph(prop.GetValue(item, null)?.ToString());
-                            row.Cells[fixIndex].Row.VerticalAlignment = VerticalAlignment.Top;
+                            row.Cells[fixIndex].Borders.Visible = false;
+                            if (contador == 0)
+                            {
+                                row.Borders.Top.Color = newColorGray;
+                                row.Borders.Top.Visible = true;
+                                row.Borders.Top.Width = 1;
+                            }
+                            contador++;
                         }
                         if (type == typeof(bool))
                         {
                             row.Cells[fixIndex].AddParagraph((bool?)prop.GetValue(item, null) ?? false ? "SI" : "NO");
                         }
+
+                        if (contador % 2 != 0)
+                        {
+                            row.Cells[1].Shading.Color = newColorGray;
+                            row.Cells[14].Shading.Color = newColorGray;
+                        }
+
+                        for (int i = 3; i <= 11; i++)
+                        {
+                            row.Cells[i].Borders.Right.Visible = false;
+                            row.Cells[i].Borders.Left.Visible = false;
+                        }
                     }
             }
         }
 
-        void FillChartContentThreeColumns<T>(List<T> value, Table table, string fisrtColumnName, int fontSize = 12)
+        void FillChartContentThreeColumns<T>(List<T> value, Table table, string firstColumnName, int rowHeight = 30, int fontSize = 11)
         {
             var chart = new MigraDocCore.DocumentObjectModel.Shapes.Charts.Chart(MigraDocCore.DocumentObjectModel.Shapes.Charts.ChartType.Bar2D);
-            chart.Width = "11cm";
+            chart.Width = "11.4cm";
             chart.Height = "1cm";
 
             chart.XAxis.MajorTickMark = MigraDocCore.DocumentObjectModel.Shapes.Charts.TickMarkType.Outside;
@@ -1085,26 +1136,36 @@ namespace ReportesObra.Utilities
             chart.PlotArea.LineFormat.Color = newColorRed;
             chart.PlotArea.LineFormat.Width = 2;
             chart.PlotArea.LineFormat.Visible = false;
-            chart.PlotArea.FillFormat.Color = newColorRed;         
+            chart.PlotArea.FillFormat.Color = newColorRed;
+            int contador = 0;
 
-            Row row = table.AddRow();
+            /*Row row = table.AddRow();
             row.Format.Font.Size = (Unit)fontSize;
             row.VerticalAlignment = VerticalAlignment.Center;
 
             row.Cells[0].AddParagraph(fisrtColumnName);
-            row.Borders.Top.Color = newColorGray;
-            row.Borders.Top.Visible = true;
-            row.Borders.Top.Width = 1;
+            //row.Borders.Top.Color = newColorGray;
+            //row.Borders.Top.Visible = true;
+            //row.Borders.Top.Width = 1;
             //row.Borders.Distance = "5cm";
-        
-            row.Cells[0].Row.VerticalAlignment = VerticalAlignment.Top;
+
+            row.Cells[0].Row.VerticalAlignment = VerticalAlignment.Top;*/
 
             foreach (var item in value)
             {
+                Row row = table.AddRow();
+                row.Format.Font.Size = (Unit)fontSize;
+                row.HeightRule = RowHeightRule.Exactly;
+                row.Height = rowHeight;//30
+                row.VerticalAlignment = VerticalAlignment.Top;
+
                 var isLenght2Spaces = false;
                 if (item != null)
                     foreach (var (prop, index) in item.GetType().GetProperties().Select((v, i) => (v, i)))
                     {
+                        row.Borders.Visible = true;
+                        row.Borders.Color = newColorGray;
+                        row.Borders.Width = 1;
                         if (prop.GetValue(item, null)?.ToString().Length > 15 && index == 1)
                             isLenght2Spaces = true;
                         var type = Nullable.GetUnderlyingType(prop.PropertyType) ?? prop.PropertyType;
@@ -1118,7 +1179,7 @@ namespace ReportesObra.Utilities
                                 series.Add(1);
                             else
                                 series.Add((Double)prop.GetValue(item, null) / 100.0000);
-                            series.DataLabel.Format = "#0.00%";
+                            series.DataLabel.Format = "#0%";//"#0.00%"
                             var asdasda = (Double)prop.GetValue(item, null);
                             if ((Double)prop.GetValue(item, null) < 90 && (Double)prop.GetValue(item, null) > 0)
                                 series.DataLabel.Position = MigraDocCore.DocumentObjectModel.Shapes.Charts.DataLabelPosition.OutsideEnd;
@@ -1131,25 +1192,48 @@ namespace ReportesObra.Utilities
                             elements[0].LineFormat.Color = newColorGreen;
                             elements[0].LineFormat.Width = 3;                            
                             var xseries = clone_chart.XValues.AddXSeries();
-                            xseries.Add("");
-                            row.Cells[index].Add(clone_chart);
+                            xseries.Add("   ");
+                            row.Cells[3].Add(clone_chart);
                             if (isLenght2Spaces)
-                                row.Cells[index].AddParagraph("\n");
-                            row.Cells[index].Row.TopPadding = "0.5cm";
+                                row.Cells[3].AddParagraph("\n");
+                            row.Cells[3].Row.TopPadding = "0.35cm";//"0.5cm"
                             //row.Cells[index].Row.Height = "25cm";
                         }
                         if (type == typeof(string))
                         {
                             row.Cells[index].AddParagraph(prop.GetValue(item, null)?.ToString() + "\n\n");
-                            row.Cells[index].Row.VerticalAlignment = VerticalAlignment.Top;
+                            //row.Cells[index].Row.VerticalAlignment = VerticalAlignment.Top;
+                            contador++;
                             //row.Cells[index].Row.BottomPadding = "cm";
                         }
                         if (type == typeof(bool))
                         {
                             row.Cells[index].AddParagraph((bool?)prop.GetValue(item, null) ?? false ? "SI" : "NO");
                         }
+                        if (contador % 2 != 0)
+                        {
+                            row.Cells[2].Shading.Color = newColorGray;
+                            row.Cells[6].Shading.Color = newColorGray;
+                        }
+                        row.Cells[0].Borders.Top.Visible = false;
+                        row.Cells[0].Borders.Bottom.Visible = false;
+                        //for (int i = 4; i <= 4; i++)
+                        //{
+                        //    row.Cells[i].Borders.Right.Visible = false;
+                        //    row.Cells[i].Borders.Left.Visible = false;
+                        //}
                     }
             }
+            Row lastRow = table.Rows[contadorIndexTitulo + contador];
+            lastRow.Cells[0].Borders.Bottom.Visible = true;
+
+            Row rowData = table.Rows[contadorIndexTitulo + 1];
+            rowData.Cells[0].AddParagraph(firstColumnName);
+            rowData.Cells[0].Borders.Top.Visible = true;
+            //rowData.Cells[0].MergeDown = contador - 1;
+            rowData.Cells[0].VerticalAlignment = VerticalAlignment.Center;
+            contadorIndexTitulo += contador;
+            //indexCombination += countCombination;
         }
 
         void FillChartContent2<T>(List<T> value, Table table, int fontSize = 11)
@@ -1200,8 +1284,8 @@ namespace ReportesObra.Utilities
                             else
                                 series.Add((Double)prop.GetValue(item, null) / 100.0000);
 
-                            series.DataLabel.Format = "#0.00%";
-                            
+                            series.DataLabel.Format = "#0%";//"#0.00%"
+
                             if ((Double)prop.GetValue(item, null) < 10 && (Double)prop.GetValue(item, null) > 0)
                                 series.DataLabel.Position = MigraDocCore.DocumentObjectModel.Shapes.Charts.DataLabelPosition.OutsideEnd;
                             else
