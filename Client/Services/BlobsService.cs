@@ -47,6 +47,10 @@ namespace Obra.Client.Services
             return new();
 
         }
+        //public async Task<bool> PostImageAsync(ImageData imageData)
+        //{
+        //    return await _repository.PostAsync<bool>("api/Image", imageData);
+        //}
         private static MultipartFormDataContent SerializeMultipartFormDataContent(BlobFile blobFile)
         {
             MultipartFormDataContent content = new();

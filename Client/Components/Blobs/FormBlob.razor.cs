@@ -22,6 +22,8 @@ namespace Obra.Client.Components.Blobs
         public int MaxAllowedSize { get; set; } = 2097152;
         [Parameter]
         public EventCallback<Blob> AddedBlob { get; set; }
+        [Parameter]
+        public EventCallback<int> OnImageClick { get; set; }
 
         [Parameter] public bool IsDisabled { get; set; }
         [Parameter] public string ColorSpan { get; set; }
@@ -123,6 +125,11 @@ namespace Obra.Client.Components.Blobs
             MyFluentDialog!.Hide();
 
         }
+        private async Task OnClicked(int IdBlob)
+        {
+            await OnImageClick.InvokeAsync(IdBlob);
+        }
+
         private bool FileValidation(IBrowserFile file)
         {
             var extension = Path.GetExtension(file.Name);

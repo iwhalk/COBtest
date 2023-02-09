@@ -155,11 +155,11 @@
                                         @*<input type="file" class="h-20 w-48 self-center rounded px-2 text-center bg-white"> ShowFormBlob || (*@
                                         @if (ShowFormBlob && (!string.IsNullOrEmpty(piecesCondition) && piecesCondition != "0"))
                                         {
-                                            <FormBlob @ref="FormBlob" InputBlobs="@CurrentProgressLog.IdBlobs" AddedBlob="HandleInputFile" ColorSpan="color:black" Cursor="pointer" IsDisabled=false></FormBlob>
+                                            <FormBlob @ref="FormBlob" InputBlobs="@CurrentProgressLog.IdBlobs" AddedBlob="HandleInputFile" ColorSpan="color:black" Cursor="pointer" IsDisabled=false OnImageClick="OnClickImage"></FormBlob>
                                         }
                                         else
                                         {
-                                            <FormBlob @ref="FormBlob" InputBlobs="@CurrentProgressLog.IdBlobs" AddedBlob="HandleInputFile" ColorSpan="color:gray" Cursor="not-allowed" IsDisabled=true></FormBlob>
+                                            <FormBlob @ref="FormBlob" InputBlobs="@CurrentProgressLog.IdBlobs" AddedBlob="HandleInputFile" ColorSpan="color:gray" Cursor="not-allowed" IsDisabled=true OnImageClick="OnClickImage"></FormBlob>
                                         }
                                     </span>
 
@@ -178,6 +178,21 @@
             <button @onclick="SaveButtonClicked" class="mx-auto bg-[#B9352E] hover:bg-red-500 w-32 p-2 rounded-2xl text-lg text-white font-medium leading-6 border border-stone-400 hover:border-white">Guardar</button>
         </div>
     </div>
+    @if (ShowModalPicture)
+    {
+        <div class="relative z-10" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+            <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"></div>
+            <div class="fixed inset-0 z-10 overflow-y-auto">
+                <div class="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
+                    <div class="mx-auto bg-white h-[600px] md:max-w-2xl sm:max-w-sm mt-20 rounded-lg border border-grey-300 drop-shadow-lg border-2">
+                        <div class="mr-20">
+                            <ImageAnnotation @ref="ImageAnnotationComponent" IdBlob="IdBlob" Save="OnAnnotatedImageSave" Delete="OnAnnotatedImageDelete"></ImageAnnotation>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
     @if (Loading)
     {
         <div class="loading">
