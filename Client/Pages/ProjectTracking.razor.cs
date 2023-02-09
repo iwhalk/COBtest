@@ -349,7 +349,7 @@ namespace Obra.Client.Pages
             //ShowBlobs = false;
             var signature = await ImageAnnotationComponent._context.ToDataURLAsync();
             var blob = await _blobsService.GetBlobsAsync(IdBlob);
-            //await _blobsService.PostImageAsync(new() { BlobUri = blob.FirstOrDefault()?.Uri, StringBase64 = signature });
+            await _blobsService.PostImageAsync(new() { BlobUri = blob.FirstOrDefault()?.Uri, StringBase64 = signature });
             foreach (var item in CurrentProgressLog.IdBlobs)
             {
                 item.Uri += $"?q={Guid.NewGuid().ToString().Remove(10):N}";
