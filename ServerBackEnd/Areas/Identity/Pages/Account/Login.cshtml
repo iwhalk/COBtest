@@ -19,18 +19,16 @@
     border-radius: 50%;
     background: #E3F2F6;">
 </header>
-<body class="overflow-hidden">                          
-    <div class="position-relative top-0 d-block d-sm-block d-md-none" style="background-image: url('~/img/imagenInmuebles.jpg'); width: 100%; height: 100%;"></div>
-    
-    <div id="Global" class="position-relative my-10">
-        <div id="RecuadrosDesktop" class="d-flex justify-content-center">
+<body class="overflow-hidden">                              
+    <div id="Global" class="d-flex flex-column justify-content-center align-items-center min-vh-100">
+        <div id="RecuadrosDesktop" class="d-flex justify-content-center scaleLogin">
 
-            <div id="Imagen" class="position-relative shadow-sm -ms-25 d-none d-md-block">
+            <div id="Imagen" class="position-relative shadow-sm -ms-25 d-none d-md-block" style="left:18rem;">
                 <img src="~/img/imagenInmuebles.jpg" class="rounded-3" style="width: 40.55em;">
-                <label style="position: absolute; bottom: 50%; top: 30%; left: 27%; color:white; font-size: 4.5rem; font-weight: 500;">Sistema COB</label>
+                <label style="position: absolute; bottom: 50%; top: 30%; left: 30%; color:white; font-size: 4.5rem; font-weight: 500;">Sistema COB</label>
                 <label style="position: absolute; bottom: 50%; top: 43%; left: 50%; color:white; font-size: 2rem; font-style: italic;">Cierre de Obra Blanca</label>
             </div>            
-            <div id="FormularioDesktop" class="bg-white border rounded-3 shadow-lg my-6 position-absolute start-20 d-none d-md-block">
+            <div id="FormularioDesktop" class="bg-white border rounded-3 shadow-lg my-6 position-relative d-none d-md-block" style="left:-48rem;">
                 <form id="account" method="post">
                     <div class="d-flex flex-column p-5 px-6">
                         <span class="my-3 mb-5 text-center fs-1 fw-bolder">Login</span>
@@ -55,7 +53,7 @@
                                 <input asp-for="Input.Password" class="border-start border-1 my-2 mx-3 ps-3" style="width: 15em; border: 0;" placeholder="Contraseña" autocomplete="current-password" aria-required="true"/>
                             }
                             else{
-                                @*<input asp-for="Input.Password" class="border-start border-1 my-2 mx-3 ps-3" style="width: 15em; border: 0;" placeholder="Contraseña" autocomplete="current-password" aria-required="true" type="text" />*@
+                                @*324234<input asp-for="Input.Password" class="border-start border-1 my-2 mx-3 ps-3" style="width: 15em; border: 0;" placeholder="Contraseña" autocomplete="current-password" aria-required="true" type="text" />*@
                                 <h1>sdlkfjsdklfjsdklfj</h1>
                             }
                             <button onclick="@Model.ChangeShowPassword()" prevent class="border border-white bg-transparent">
@@ -121,20 +119,28 @@
         
     </div>
 
-    <footer class="position-absolute -bottom-20 -end-10  d-none d-md-block" 
-        style="width: 400px;
+    <footer class="position-absolute -bottom-20 -end-10 d-none d-md-block"
+            style="width: 400px;
         height: 400px;
         -moz-border-radius: 50%;
         -webkit-border-radius: 50%;
         border-radius: 50%;
         background: #2B286F;">
-    </footer>    
-   </div>        
+        <label class="d-none d-xxl-block" style="position: fixed; bottom: 0; right: 0; font-size: 2.5rem; margin-right:1rem; color:white; font-style: italic;">V. 1.0</label>
+    </footer>
 </body>
 
-<img src="~/img/AZUL.png" class="d-none d-md-block" style="position: fixed; top:0; height: 10rem;">
+<img src="~/img/AZUL.png" class="d-none d-md-block" style="position: fixed; top:0; left:0rem; height: 10rem;">
 <label class="d-none d-md-block" style="position: fixed; bottom: 0; right: 0; font-size: 2.5rem; margin-right:1rem; color:white; font-style: italic;">V. 1.0</label>
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />        
 }
+
+
+
+    <style media="only screen and (min-width: 768px) and (max-width: 1023px)">
+    .scaleLogin {
+        transform: scale(.73);
+    }
+    </style>

@@ -81,7 +81,7 @@ namespace Obra.Client.Pages
         private async void FullActivity()
         {
             _isLoadingProcess = true;
-            if (_idsAparmentSelect.Count() == _context.Activity.Count())
+            if (_idsAparmentSelect.Count() == _context.Apartment.Count())
             {
                 _isFullAparment = false;
                 _idsAparmentSelect.Clear();
@@ -93,18 +93,18 @@ namespace Obra.Client.Pages
                 if (infoProgress != null)
                 {
 
-                    foreach (var activity in _context.Activity)
+                    foreach (var apartment in _context.Apartment)
                     {
-                        if (infoProgress.Any(x => x.Activity_ == activity.ActivityName))
+                        if (infoProgress.Any(x => x.ApartmentNumber == apartment.ApartmentNumber))
                         {
                             List<InfoActivityIn> listAparmentPorcentage = new List<InfoActivityIn>();
-                            foreach (var item in infoProgress.Where(x => x.Activity_ == activity.ActivityName))
+                            foreach (var item in infoProgress.Where(x => x.ApartmentNumber == apartment.ApartmentNumber))
                             {
                                 var porcentageProgress = Math.Round(item.ApartmentProgress, 2);
                                 var porcentage = new Tuple<double, double>(porcentageProgress, 100 - porcentageProgress);
                                 listAparmentPorcentage.Add(new InfoActivityIn { activityNumber = item.Activity_, aparmentNumber = item.ApartmentNumber, porcentage = porcentage });
                             }
-                            _idsAparmentSelect.Add(activity.IdActivity, listAparmentPorcentage);
+                            _idsAparmentSelect.Add(apartment.IdApartment, listAparmentPorcentage);
                         }
                         else
                         {
@@ -117,7 +117,7 @@ namespace Obra.Client.Pages
                                     porcentage = new Tuple<double, double>(0.0, 100.0)
                                 });
                             }
-                            _idsAparmentSelect.Add(activity.IdActivity, listAparmentPorcentage);
+                            _idsAparmentSelect.Add(apartment.IdApartment, listAparmentPorcentage);
                         }
                     }
                 }

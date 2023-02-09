@@ -10,25 +10,25 @@
 {
     @if (loading == false)
     {
-        <div class="h-screen pt-20 pb-12 fixed inset-0 flex flex-col justify-center items-center scaleTab2 scaleTabHD2 scaleTabFullHD2">
+        <div class="h-screen pt-24 pb-12 fixed inset-0 flex flex-col justify-center items-center">
 
-            <div class="flex justify-center w-screen rounded-2xl my-2 px-72" style="height: 45rem">
+            <div class="flex justify-center w-screen rounded-2xl my-2 px-72 h-5/6">
                 <div class="mx-1">
-                    <div class="w-84">
-                        <h1 class="rounded-xl text-xl text-white font-medium leading-6 bg-[#162D4E] text-center py-2">Departamento</h1>
+                    <div class="w-[6rem] sm:w-[10.5rem] md:w-[12rem] lg:w-[16rem]  xl:w-[20rem]">
+                        <h1 class="rounded-xl text-xs md:text-base xl:text-xl text-white font-medium leading-6 bg-[#162D4E] text-center py-2">Departamento</h1>
                     </div>
-                    <div class="flex justify-center rounded-br-2xl-2xl overflow-y-scroll overflow-x-hidden" style="height: 43rem; direction: rtl;">
+                    <div class="flex justify-center rounded-br-2xl-2xl overflow-y-scroll overflow-x-hidden h-5/6" style="direction: rtl;">
                         <div>
-                            <div class="grid grid-col-1 gap-1 p-1 w-80">
+                            <div class="grid grid-col-1 gap-1 p-1 w-[5rem] sm:w-[9.5rem] md:w-[11rem] lg:w-[15rem]  xl:w-[19rem]">
                                 <button @onclick="() => AllApartments()" class="@(allApartments ? "bg-[#9CA2A8]" : "bg-[#55595E]")">
-                                    <h1 class="text-md text-white font-medium leading-6 text-center p-1">TODOS</h1>
+                                    <h1 class="text-xs md:text-base text-white font-medium leading-6 text-center p-1">TODOS</h1>
                                 </button>
                                 @if (apartments != null)
                                 {
                                     @foreach (var apartment in apartments)
                                     {
                                         <button @onclick="() => AddIdSelect(apartment.IdApartment, 1)" class="@(_idsAparmentSelect.Contains(apartment.IdApartment) ? "bg-[#9CA2A8]" : "bg-[#55595E]")">
-                                            <h1 class="text-md text-white font-medium leading-6 text-center p-1">@apartment.ApartmentNumber</h1>
+                                            <h1 class="text-xs md:text-base text-white font-medium leading-6 text-center p-1">@apartment.ApartmentNumber</h1>
                                         </button>
                                     }
                                 }
@@ -38,17 +38,17 @@
                 </div>
                 <div class="mx-1">
                     <div>
-                        <h1 class="rounded-xl text-xl text-white font-medium leading-6 bg-[#162D4E] text-center py-2">Actividad</h1>
+                        <h1 class="rounded-xl text-xs md:text-base xl:text-xl text-white font-medium leading-6 bg-[#162D4E] text-center py-2">Actividad</h1>
                     </div>
-                    <div class="flex justify-center rounded-br-2xl-2xl" style="height: 43rem; direction: ltr;">
+                    <div class="flex justify-center rounded-br-2xl-2xl overflow-y-scroll xl:overflow-y-hidden overflow-x-hidden h-4/6" style="direction: ltr;">
                         <div>
-                            <div class="grid grid-col-1 gap-1 p-1 w-80">
+                            <div class="grid grid-col-1 gap-1 p-1 w-[5rem] sm:w-[9.5rem] md:w-[11rem] lg:w-[15rem]  xl:w-[19rem]">
                                 @if (activities != null)
                                 {
                                     @foreach (var activity in activities)
                                     {
                                         <button @onclick="() => AddIdSelect(activity.IdActivity, 2)" class="@(_idsActivitiesSelect.Contains(activity.IdActivity) ? "bg-[#9CA2A8]" : "bg-[#55595E]")">
-                                            <h1 class="text-md text-white font-medium leading-6 text-center p-1">@activity.ActivityName</h1>
+                                            <h1 class="text-xs md:text-base text-white font-medium leading-6 text-center p-1">@activity.ActivityName</h1>
                                         </button>
                                     }
                                 }
@@ -60,17 +60,17 @@
                 {
                     <div class="mx-1">
                         <div>
-                            <h1 class="rounded-xl text-xl text-white font-medium leading-6 bg-[#162D4E] text-center py-2">Elemento</h1>
+                            <h1 class="rounded-xl text-xs md:text-base xl:text-xl text-white font-medium leading-6 bg-[#162D4E] text-center py-2">Elemento</h1>
                         </div>
-                        <div class="flex justify-center rounded-br-2xl-2xl" style="height: 43rem; direction: ltr;">
+                        <div class="flex justify-center rounded-br-2xl-2xl overflow-y-scroll md:overflow-y-hidden overflow-x-hidden h-4/6" style="direction: ltr;">
                             <div>
-                                <div class="grid grid-col-1 gap-1 p-1 w-80">
+                                <div class="grid grid-col-1 gap-1 p-1 w-[5rem] sm:w-[9.5rem] md:w-[11rem] lg:w-[15rem]  xl:w-[19rem]">
                                     @if (elements != null)
                                     {
                                         @foreach (var element in elements)
                                         {
                                             <button @onclick="() => AddIdSelect(element.IdElement, 3)" class="@(_idsElementsSelect.Contains(element.IdElement) ? "bg-[#9CA2A8]" : "bg-[#55595E]")">
-                                                <h1 class="text-md text-white font-medium leading-6 text-center p-1">@element.ElementName</h1>
+                                                <h1 class="text-xs md:text-base md:text-base text-white font-medium leading-6 text-center p-1">@element.ElementName</h1>
                                             </button>
                                         }
                                     }
@@ -85,18 +85,18 @@
                     {
                         <div class="mx-1">
                             <div>
-                                <h1 class="rounded-xl text-xl text-white font-medium leading-6 bg-[#162D4E] text-center py-2">Sub-Elemento</h1>
+                                <h1 class="rounded-xl text-xs md:text-base xl:text-xl text-white font-medium leading-6 bg-[#162D4E] text-center py-2">Sub-Elemento</h1>
                             </div>
-                            <div class="flex justify-center rounded-br-2xl-2xl" style="height: 43rem; direction: ltr;">
+                            <div class="flex justify-center rounded-br-2xl-2xl overflow-y-scroll lg:overflow-y-hidden overflow-x-hidden h-4/6" style="direction: ltr;">
                                 <div>
-                                    <div class="grid grid-col-1 gap-1 p-1 w-80">
+                                    <div class="grid grid-col-1 gap-1 p-1 w-[5rem] sm:w-[9.5rem] md:w-[11rem] lg:w-[15rem]  xl:w-[19rem]">
                                         <button @onclick="() => AllSubElements()" class="@(allSubElements ? "bg-[#9CA2A8]" : "bg-[#55595E]")">
                                             <h1 class="text-md text-white font-medium leading-6 text-center p-1">TODOS</h1>
                                         </button>
                                         @foreach (var subElement in subElements)
                                         {
                                             <button @onclick="() => AddIdSelect(subElement.IdSubElement, 4)" class="@(_idsSubElementsSelect.Contains(subElement.IdSubElement) ? "bg-[#9CA2A8]" : "bg-[#55595E]")">
-                                                <h1 class="text-md text-white font-medium leading-6 text-center p-1">@subElement.SubElementName</h1>
+                                                <h1 class="text-xs md:text-base text-white font-medium leading-6 text-center p-1">@subElement.SubElementName</h1>
                                             </button>
                                         }
                                     </div>
@@ -106,8 +106,8 @@
                     }
                 }
             </div>
-            <div class="w-full flex justify-end py-3">
-                <button @onclick="() => ShowReportAndHideApartment()" class="mx-auto bg-[#B9352E] hover:bg-red-500 p-2 rounded-2xl text-lg text-white font-medium leading-6 border border-stone-400 hover:border-white">Generar Reporte</button>
+            <div class="w-full flex justify-end pb-3">
+                <button @onclick="() => ShowReportAndHideApartment()" class="mx-auto bg-[#B9352E] hover:bg-red-500 p-2 rounded-2xl text-base md:text-lg text-white font-medium leading-6 border border-stone-400 hover:border-white">Generar Reporte</button>
                 @if (alert == true)
                 {
                     <div class="bg-red-100 border border-red-400 text-red-700 pl-4 pr-12 py-2 rounded fixed inset-x-90 bottom-20 w-[32]" role="alert">
@@ -121,7 +121,7 @@
             </div>
         </div>
 
-        <a class="fixed inset-x-5 top-24 w-12" href="/ProjectDetails">
+        <a class="fixed z-10 inset-x-1 top-20 w-12" href="/ProjectDetails">
             <svg xmlns="http://www.w3.org/2000/svg" width="46" height="46" fill="#55595E" class="bi bi-arrow-left" viewBox="0 0 16 16">
                 <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z" />
             </svg>
@@ -147,7 +147,7 @@ else if (buttonReport == true)
             {
                 <div class="my-4 h-[32rem] w-screen">
                     <div class="pt-10 flex justify-center">
-                        <label class="text-4xl text-white leading-6 text-center bg-[#162D4E] rounded-lg py-3 px-24">Reporte Avance @apartment.ApartmentNumber</label>
+                        <label class="text-sm md:text-base lg:text-xl 2xl:text-4xl text-white leading-6 text-center bg-[#162D4E] rounded-lg py-3 px-24">Reporte Avance @apartment.ApartmentNumber</label>
                     </div>
                     @if (subElementsNulls == false)
                     {
@@ -155,12 +155,12 @@ else if (buttonReport == true)
                         {
                             <div class="flex w-full mt-10 px-16">
                                 <div class="flex justify-center w-3/6">
-                                    <label class="w-64 h-12 text-4xl text-white leading-6 text-center bg-[#162D4E] rounded-lg py-2 m-2">Actividad</label>
-                                    <label class="w-64 h-12 text-4xl text-white leading-6 text-center bg-[#162D4E] rounded-lg py-2 m-2">Elemento</label>
-                                    <label class="w-64 h-12 text-4xl text-white leading-6 text-center bg-[#162D4E] rounded-lg py-2 m-2">Sub-Elemento</label>
+                                    <label class="w-64 h-12 2xl:h-16 text-sm md:text-base lg:text-xl 2xl:text-4xl text-white leading-6 text-center bg-[#162D4E] rounded-lg py-2 m-2">Actividad</label>
+                                    <label class="w-64 h-12 2xl:h-16 text-sm md:text-base lg:text-xl 2xl:text-4xl text-white leading-6 text-center bg-[#162D4E] rounded-lg py-2 m-2">Elemento</label>
+                                    <label class="w-64 h-12 2xl:h-16 text-sm md:text-base lg:text-xl 2xl:text-4xl text-white leading-6 text-center bg-[#162D4E] rounded-lg py-2 m-2">Sub-Elemento</label>
                                 </div>
                                 <div class="flex justify-center w-3/6">
-                                    <label class="w-full text-4xl text-white leading-6 text-center bg-[#162D4E] rounded-lg py-3 my-2">Avance</label>
+                                    <label class="w-full text-sm md:text-base lg:text-xl 2xl:text-4xl text-white leading-6 text-center bg-[#162D4E] rounded-lg py-3 my-2">Avance</label>
                                     <div class="self-center">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="#254260" class="bi bi-camera-fill ml-2 invisible" viewBox="0 0 16 16">
                                             <path d="M10.5 8.5a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z" />
@@ -176,15 +176,15 @@ else if (buttonReport == true)
                                     {
                                         <div class="flex w-full mt-2 px-16">
                                             <div class="flex justify-center w-3/6">
-                                                <label class="w-64 h-8 text-2xl text-white leading-6 text-center bg-[#254260] py-1 m-2">@activity.ActivityName</label>
-                                                <label class="w-64 h-8 text-2xl text-white leading-6 text-center bg-[#254260] py-1 m-2">@element.ElementName</label>
-                                                <label class="w-64 h-8 text-2xl text-white leading-6 text-center bg-[#254260] py-1 m-2">@subElementsSelect.FirstOrDefault(x => x.IdSubElement == item.IdSubElement).SubElementName</label>
+                                                <label class="w-32 md:w-44 lg:w-52 xl:w-64 h-10 text-xs md:text:base lg:text-xl xl:text-2xl text-white leading-6 text-center bg-[#254260] p-1 m-2">@activity.ActivityName</label>
+                                                <label class="w-32 md:w-44 lg:w-52 xl:w-64 h-10 text-xs md:text:base lg:text-xl xl:text-2xl text-white leading-6 text-center bg-[#254260] p-1 m-2">@element.ElementName</label>
+                                                <label class="w-32 md:w-44 lg:w-52 xl:w-64 h-10 text-xs md:text:base lg:text-xl xl:text-2xl text-white leading-6 text-center bg-[#254260] p-1 m-2">@subElementsSelect.FirstOrDefault(x => x.IdSubElement == item.IdSubElement).SubElementName</label>
                                             </div>
                                             <div class="flex w-3/6">
                                                 @if (progressLogs.FirstOrDefault(x => x.IdProgressReport == item.IdProgressReport)?.IdProgressLog != null)
                                                 {
-                                                    <div class="flex justify-end text-white w-[@greenPercentage[$"{item.IdProgressReport}"]%] bg-[#115D28] h-8 mt-2">@progressLogs.FirstOrDefault(x => x.IdProgressReport == item.IdProgressReport).Pieces</div>
-                                                    <div class="flex justify-end text-white w-[@redPercentage[$"{item.IdProgressReport}"]%] bg-[#CB3030] h-8 mt-2">@item.TotalPieces</div>
+                                                    <div class="flex justify-end text-white w-[@greenPercentage[$"{item.IdProgressReport}"]%] bg-[#115D28] h-10 mt-2">@progressLogs.FirstOrDefault(x => x.IdProgressReport == item.IdProgressReport).Pieces</div>
+                                                    <div class="flex justify-end text-white w-[@redPercentage[$"{item.IdProgressReport}"]%] bg-[#CB3030] h-10 mt-2">@item.TotalPieces</div>
                                                     <div class="self-center">
                                                         <button @onclick="() => CamareButton(item.IdProgressReport)">
                                                             <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="#254260" class="bi bi-camera-fill ml-2" viewBox="0 0 16 16">
@@ -196,8 +196,8 @@ else if (buttonReport == true)
                                                 }
                                                 else
                                                 {
-                                                    <div class="flex justify-end text-white w-[@greenPercentage[$"{item.IdProgressReport}"]%] bg-[#115D28] h-8 mt-2">0</div>
-                                                    <div class="flex justify-end text-white w-[@redPercentage[$"{item.IdProgressReport}"]%] bg-[#CB3030] h-8 mt-2">@item.TotalPieces</div>
+                                                    <div class="flex justify-end text-white w-[@greenPercentage[$"{item.IdProgressReport}"]%] bg-[#115D28] h-10 mt-2"></div>
+                                                    <div class="flex justify-end text-white w-[@redPercentage[$"{item.IdProgressReport}"]%] bg-[#CB3030] h-10 mt-2">@item.TotalPieces</div>
                                                     <div class="self-center">
                                                         <button @onclick="() => NotificationImages()">
                                                             <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="#254260" class="bi bi-camera-fill ml-2" viewBox="0 0 16 16">
@@ -220,8 +220,8 @@ else if (buttonReport == true)
                         {
                             <div class="flex w-full mt-10 px-16">
                                 <div class="flex justify-center w-3/6">
-                                    <label class="w-64 h-12 text-4xl text-white leading-6 text-center bg-[#162D4E] py-2 m-2">Actividad</label>
-                                    <label class="w-64 h-12 text-4xl text-white leading-6 text-center bg-[#162D4E] py-2 m-2">Elemento</label>
+                                    <label class="w-64 h-12 2xl:h-16 text-sm md:text-base lg:text-xl 2xl:text-4xl text-white leading-6 text-center bg-[#162D4E] py-2 m-2">Actividad</label>
+                                    <label class="w-64 h-12 2xl:h-16 text-sm md:text-base lg:text-xl 2xl:text-4xl text-white leading-6 text-center bg-[#162D4E] py-2 m-2">Elemento</label>
                                 </div>
                                 <div class="flex justify-center w-3/6">
                                     <label class="w-full text-4xl text-white leading-6 text-center bg-[#162D4E] rounded-lg py-3 my-2">Avance</label>
@@ -240,14 +240,14 @@ else if (buttonReport == true)
                                     {
                                         <div class="flex w-full mt-2 px-16">
                                             <div class="flex justify-center w-3/6">
-                                                <label class="w-64 h-8 text-2xl text-white leading-6 text-center bg-[#254260] rounded-lg py-1 m-2">@activity.ActivityName</label>
-                                                <label class="w-64 h-8 text-2xl text-white leading-6 text-center bg-[#254260] rounded-lg py-1 m-2">@element.ElementName</label>
+                                                <label class="w-32 md:w-44 lg:w-52 xl:w-64 h-10 text-xs md:text:base lg:text-xl xl:text-2xl text-white leading-6 text-center bg-[#254260] rounded-lg py-1 m-2">@activity.ActivityName</label>
+                                                <label class="w-32 md:w-44 lg:w-52 xl:w-64 h-10 text-xs md:text:base lg:text-xl xl:text-2xl text-white leading-6 text-center bg-[#254260] rounded-lg py-1 m-2">@element.ElementName</label>
                                             </div>
                                             <div class="flex w-3/6">
                                                 @if (progressLogs.FirstOrDefault(x => x.IdProgressReport == item.IdProgressReport)?.IdProgressLog != null)
                                                 {
-                                                    <div class="flex justify-end text-white w-[@greenPercentage[$"{item.IdProgressReport}"]%] bg-[#115D28] h-8 mt-2">@progressLogs.FirstOrDefault(x => x.IdProgressReport == item.IdProgressReport).Pieces</div>
-                                                    <div class="flex justify-end text-white w-[@redPercentage[$"{item.IdProgressReport}"]%] bg-[#CB3030] h-8 mt-2">@item.TotalPieces</div>
+                                                    <div class="flex justify-end text-white w-[@greenPercentage[$"{item.IdProgressReport}"]%] bg-[#115D28] h-10 mt-2">@progressLogs.FirstOrDefault(x => x.IdProgressReport == item.IdProgressReport).Pieces</div>
+                                                    <div class="flex justify-end text-white w-[@redPercentage[$"{item.IdProgressReport}"]%] bg-[#CB3030] h-10 mt-2">@item.TotalPieces</div>
                                                     <div class="self-center">
                                                         <button @onclick="() => CamareButton(item.IdProgressReport)">
                                                             <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="#254260" class="bi bi-camera-fill ml-2" viewBox="0 0 16 16">
@@ -259,8 +259,8 @@ else if (buttonReport == true)
                                                 }
                                                 else
                                                 {
-                                                    <div class="flex justify-end text-white w-[@greenPercentage[$"{item.IdProgressReport}"]%] bg-[#115D28] h-8 mt-2">0</div>
-                                                    <div class="flex justify-end text-white w-[@redPercentage[$"{item.IdProgressReport}"]%] bg-[#CB3030] h-8 mt-2">@item.TotalPieces</div>
+                                                    <div class="flex justify-end text-white w-[@greenPercentage[$"{item.IdProgressReport}"]%] bg-[#115D28] h-10 mt-2"></div>
+                                                    <div class="flex justify-end text-white w-[@redPercentage[$"{item.IdProgressReport}"]%] bg-[#CB3030] h-10 mt-2">@item.TotalPieces</div>
                                                     <div class="self-center">
                                                         <button @onclick="() => NotificationImages()">
                                                             <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="#254260" class="bi bi-camera-fill ml-2" viewBox="0 0 16 16">
@@ -324,12 +324,12 @@ else if (buttonReport == true)
             }
         </div>
         <div class="w-full flex justify-end py-3">
-            <div @onclick="() => ChangeView()" class="w-full flex py-3 fixed inset-x-0 bottom-12">
-                <button class="mx-auto bg-[#B9352E] hover:bg-red-500 w-40 p-2 rounded-2xl text-lg text-white font-medium leading-6 border hover:border-white">Descargar</button>
+            <div class="w-full flex py-3 fixed inset-x-0 bottom-12">
+                <button @onclick="() => ChangeView()" class="mx-auto bg-[#B9352E] hover:bg-red-500 w-40 p-2 rounded-2xl text-lg text-white font-medium leading-6 border hover:border-white">Descargar</button>
             </div>
         </div>
 
-        <button @onclick="() => GoBack()" class="fixed inset-x-5 top-24 w-12">
+        <button @onclick="() => GoBack()" class="fixed z-10 inset-x-1 top-20 w-12">
 
             <svg xmlns="http://www.w3.org/2000/svg" width="46" height="46" fill="#55595E" class="bi bi-arrow-left" viewBox="0 0 16 16">
 
@@ -364,4 +364,4 @@ else
 <Navbar></Navbar>
 <Footer></Footer>
 
-<label class="mx-64 fixed top-0 left-0 right-0 text-2xl text-white leading-6 text-center py-2 mt-3">Detalles Por Departamento</label>
+<label class="hidden lg:block mx-64 fixed top-0 left-0 right-0 text-base md:text-xl lg:text-2xl xl:text-4xl text-white leading-6 text-center py-2 mt-3">Detalles Por Departamento</label>
