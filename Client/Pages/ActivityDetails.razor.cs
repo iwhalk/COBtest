@@ -5,10 +5,6 @@ using Obra.Client.Components;
 using Obra.Client.Interfaces;
 using Obra.Client.Stores;
 using SharedLibrary.Models;
-using System.Diagnostics;
-using System.Runtime.CompilerServices;
-using System.Xml.Linq;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace Obra.Client.Pages
 {
@@ -26,7 +22,7 @@ namespace Obra.Client.Pages
         private readonly IToastService _toastService;
         private List<Apartment> apartments { get; set; }
         private List<SharedLibrary.Models.Activity> activities { get; set; }
-        private List<Element> elements { get; set; }
+        private List<Element> elements { get; set; } = new List<Element>();
         private List<SubElement> subElements { get; set; }
 
         private List<int> _idsAparmentSelect { get; set; } = new();
@@ -76,7 +72,7 @@ namespace Obra.Client.Pages
             _progressLogsService = progressLogsService;
             _reportesService = reportesService;
             _JS = jS;
-            _toastService = toastService;   
+            _toastService = toastService;
         }
 
         protected async override Task OnInitializedAsync()
@@ -104,100 +100,115 @@ namespace Obra.Client.Pages
             }
             else if (filter == 2) //Actividad
             {
-                if (_idsActivitiesSelect.Count() < 1)
+                if (!_idsActivitiesSelect.Contains(id))
                 {
-                    if (!_idsActivitiesSelect.Contains(id))
-                    {
-                        _idsActivitiesSelect.Add(id);
-                        activityIdAux = id;
-                        showElements = true;
-                        elements = await _elementsService.GetElementsAsync(id);
+                    _idsActivitiesSelect.Add(id);
+                    showElements = true;
 
-                        await ShowMessage();
-                    }
-                    else
-                    {
-                        _idsActivitiesSelect.Remove(id);
+                    List<Element> auxElements = await _elementsService.GetElementsAsync(id);
 
-                        await ShowMessage();
-
-                        if (elements != null)
-                        {
-                            elements.Clear();
-                            _idsElementsSelect.Clear();
-
-                            if (subElements != null)
-                            {
-                                subElements.Clear();
-                                _idsSubElementsSelect.Clear();
-                                allSubElements = false;
-                            }
-                            if (apartments != null)
-                            {
-                                _idsAparmentSelect.Clear();
-                                department = false;
-                                allApartments = false;
-                            }
-                        }
-                    }
-                }
-                else if (activityIdAux != id)
-                {
-                    _idsActivitiesSelect.Remove(activityIdAux);
+                    elements.AddRange(auxElements);
 
                     await ShowMessage();
-
-                    if (elements != null)
-                    {
-                        await ShowElements();
-                        elements.Clear();
-                        _idsElementsSelect.Clear();
-
-                        if (subElements != null)
-                        {
-                            subElements.Clear();
-                            _idsSubElementsSelect.Clear();
-                            allSubElements = false;
-                        }
-                        if (apartments != null)
-                        {
-                            _idsAparmentSelect.Clear();
-                            department = false;
-                            allApartments = false;
-                        }
-                    }
-
-                    _idsActivitiesSelect.Add(id);
-                    activityIdAux = id;
-                    showElements = true;
-                    elements = await _elementsService.GetElementsAsync(id);
                 }
                 else
                 {
-                    _idsActivitiesSelect.Remove(id);
-
-                    await ShowMessage();
-
-                    if (elements != null)
-                    {
-                        await ShowElements();
-                        elements.Clear();
-                        _idsElementsSelect.Clear();
-
-                        if (subElements != null)
-                        {
-                            subElements.Clear();
-                            _idsSubElementsSelect.Clear();
-                            allSubElements = false;
-                        }
-                        if (apartments != null)
-                        {
-                            _idsAparmentSelect.Clear();
-                            department = false;
-                            allApartments = false;
-                        }
-                    }
+                    _idsAparmentSelect.Remove(id);
                 }
+                //if (_idsActivitiesSelect.Count() < 1)
+                //{
+                //    if (!_idsActivitiesSelect.Contains(id))
+                //    {
+                //        _idsActivitiesSelect.Add(id);
+                //        activityIdAux = id;
+                //        showElements = true;
+                //        elements = await _elementsService.GetElementsAsync(id);
+
+                //        await ShowMessage();
+                //    }
+                //    else
+                //    {
+                //        _idsActivitiesSelect.Remove(id);
+
+                //        await ShowMessage();
+
+                //        if (elements != null)
+                //        {
+                //            elements.Clear();
+                //            _idsElementsSelect.Clear();
+
+                //            if (subElements != null)
+                //            {
+                //                subElements.Clear();
+                //                _idsSubElementsSelect.Clear();
+                //                allSubElements = false;
+                //            }
+                //            if (apartments != null)
+                //            {
+                //                _idsAparmentSelect.Clear();
+                //                department = false;
+                //                allApartments = false;
+                //            }
+                //        }
+                //    }
+                //}
+                //else if (activityIdAux != id)
+                //{
+                //    _idsActivitiesSelect.Remove(activityIdAux);
+
+                //    await ShowMessage();
+
+                //    if (elements != null)
+                //    {
+                //        await ShowElements();
+                //        elements.Clear();
+                //        _idsElementsSelect.Clear();
+
+                //        if (subElements != null)
+                //        {
+                //            subElements.Clear();
+                //            _idsSubElementsSelect.Clear();
+                //            allSubElements = false;
+                //        }
+                //        if (apartments != null)
+                //        {
+                //            _idsAparmentSelect.Clear();
+                //            department = false;
+                //            allApartments = false;
+                //        }
+                //    }
+
+                //    _idsActivitiesSelect.Add(id);
+                //    activityIdAux = id;
+                //    showElements = true;
+                //    elements = await _elementsService.GetElementsAsync(id);
+                //}
+                //else
+                //{
+                //    _idsActivitiesSelect.Remove(id);
+
+                //    await ShowMessage();
+
+                //    if (elements != null)
+                //    {
+                //        await ShowElements();
+                //        elements.Clear();
+                //        _idsElementsSelect.Clear();
+
+                //        if (subElements != null)
+                //        {
+                //            subElements.Clear();
+                //            _idsSubElementsSelect.Clear();
+                //            allSubElements = false;
+                //        }
+                //        if (apartments != null)
+                //        {
+                //            _idsAparmentSelect.Clear();
+                //            department = false;
+                //            allApartments = false;
+                //        }
+                //    }
+                //}
             }
             else if (filter == 3) //Elemento
             {
