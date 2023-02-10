@@ -336,7 +336,8 @@ namespace ReportesObra.Utilities
             paragraph = dataValuesFrameRight.AddParagraph();
             paragraph.AddText(DateTime.Now.ToString("dd/MM/yyyy"));
             paragraph.Format.Font.Size = 9;
-            reporteDetalles.detalladoActividades = reporteDetalles.detalladoActividades.OrderBy(x => x.numeroApartamento).ToList();
+            //reporteDetalles.detalladoActividades = reporteDetalles.detalladoActividades.OrderBy(x => x.area).ToList();
+            reporteDetalles.detalladoActividades = reporteDetalles.detalladoActividades.OrderBy(x => x.numeroApartamento).ToList();            
 
             for (int i = 0; i < reporteDetalles.detalladoActividades.Count(); i++)
             {
@@ -390,6 +391,10 @@ namespace ReportesObra.Utilities
                 row.Borders.Visible = false;
                 //row.Shading.Color = TableColor;
                 row.Cells[0].AddParagraph("Actividad");
+                //if (_title.Contains("os"))
+                //    row.Cells[0].AddParagraph("Actividad");
+                //else
+                //    row.Cells[0].AddParagraph("Departamento");
                 row.Cells[1].AddParagraph("Área");
                 row.Cells[2].AddParagraph("Elemento");
                 row.Cells[3].AddParagraph("Sub-Elemento");

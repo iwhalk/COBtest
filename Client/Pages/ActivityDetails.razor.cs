@@ -17,6 +17,7 @@ namespace Obra.Client.Pages
         private readonly ApplicationContext _context;
         private readonly IApartmentsService _apartmentsService;
         private readonly IActivitiesService _activitiesService;
+        private readonly IAreasService _areasService;
         private readonly IElementsService _elementsService;
         private readonly ISubElementsService _subElementsService;
         private readonly IProgressReportService _progressReportService;
@@ -26,6 +27,7 @@ namespace Obra.Client.Pages
         private readonly IToastService _toastService;
         private List<Apartment> apartments { get; set; }
         private List<SharedLibrary.Models.Activity> activities { get; set; }
+        private List<Area> Areas { get; set; }
         private List<Element> elements { get; set; }
         private List<SubElement> subElements { get; set; }
 
@@ -65,24 +67,26 @@ namespace Obra.Client.Pages
         Dictionary<string, string> greenPercentage { get; set; } = new();
         Dictionary<string, string> redPercentage { get; set; } = new();
 
-        public ActivityDetails(ApplicationContext context, IApartmentsService apartmentsService, IActivitiesService activitiesService, IElementsService elementsService, ISubElementsService subElementsService, IProgressReportService progressReportService, IProgressLogsService progressLogsService, IReportsService reportesService, IJSRuntime jS, IToastService toastService)
+        public ActivityDetails(ApplicationContext context, IApartmentsService apartmentsService, IActivitiesService activitiesService, IAreasService areasService, IElementsService elementsService, ISubElementsService subElementsService, IProgressReportService progressReportService, IProgressLogsService progressLogsService, IReportsService reportesService, IJSRuntime jS, IToastService toastService)
         {
             _context = context;
             _apartmentsService = apartmentsService;
             _activitiesService = activitiesService;
+            _areasService = areasService;
             _elementsService = elementsService;
             _subElementsService = subElementsService;
             _progressReportService = progressReportService;
             _progressLogsService = progressLogsService;
             _reportesService = reportesService;
             _JS = jS;
-            _toastService = toastService;   
+            _toastService = toastService;
         }
 
         protected async override Task OnInitializedAsync()
         {
             apartments = await _apartmentsService.GetApartmentsAsync();
             activities = await _activitiesService.GetActivitiesAsync();
+            Areas = await _areasService.GetAreasAsync();
         }
 
         public async Task AddIdSelect(int id, int filter)
