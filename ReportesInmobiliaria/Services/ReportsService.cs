@@ -62,7 +62,7 @@ namespace ReportesObra.Services
                 listReport = FiltradoIdElements(listReport, idElements);
             if (idSubElements != null && idSubElements.Count() != 0)
                 listReport = FiltradoIdSubElements(listReport, idSubElements);
-
+            listReport = listReport.OrderBy(x => x.IdArea).ToList();
             ReporteDetalles reporteDetalles = new()
             {
                 detalladoActividades = GetSubElementsAsync(listReport)
@@ -85,6 +85,7 @@ namespace ReportesObra.Services
                 listReport = FiltradoIdSubElements(listReport, idSubElements);
             if (idApartments != null && idApartments.Count() != 0)
                 listReport = FiltradoIdApartments(listReport, idApartments);
+            listReport = listReport.OrderBy(x => x.IdArea).ToList();
             ReporteDetalles reporteDetalles = new()
             {
                 detalladoActividades = GetSubElementsAsync(listReport)

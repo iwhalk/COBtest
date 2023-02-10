@@ -150,6 +150,7 @@ else if (buttonReport == true)
                     {
                         <div class="flex w-full mt-10 px-16">
                             <div class="flex justify-center w-3/6">
+                                <label class="w-3/6 h-14 2xl:h-16 text-sm md:text-base lg:text-xl 2xl:text-4xl text-white leading-6 text-center bg-[#162D4E] rounded-lg py-2 m-2">Área</label>
                                 <label class="w-3/6 h-14 2xl:h-16 text-sm md:text-base lg:text-xl 2xl:text-4xl text-white leading-6 text-center bg-[#162D4E] rounded-lg py-2 m-2">Elemento</label>
                                 <label class="w-3/6 h-14 2xl:h-16 text-sm md:text-base lg:text-xl 2xl:text-4xl text-white leading-6 text-center bg-[#162D4E] rounded-lg py-2 m-2">Sub-Elemento</label>
                                 <label class="w-3/6 h-14 2xl:h-16 text-sm md:text-base lg:text-xl 2xl:text-4xl text-white leading-6 text-center bg-[#162D4E] rounded-lg py-2 m-2">Departamento</label>
@@ -173,6 +174,7 @@ else if (buttonReport == true)
                                     {
                                         <div class="flex w-full px-16">
                                             <div class="flex justify-center w-3/6">
+                                                <label class="w-80 h-8 text-sm md:text-base lg:text-lg 2xl:text-2xl text-white leading-6 text-center bg-[#254260] rounded-lg py-1 m-2">@Areas.FirstOrDefault(x => x.IdArea == progress.IdArea).AreaName</label>
                                                 <label class="w-80 h-8 text-sm md:text-base lg:text-lg 2xl:text-2xl text-white leading-6 text-center bg-[#254260] rounded-lg py-1 m-2">@element.ElementName</label>
                                                 <label class="w-80 h-8 text-sm md:text-base lg:text-lg 2xl:text-2xl text-white leading-6 text-center bg-[#254260] rounded-lg py-1 m-2">@subElementsSelect.FirstOrDefault(x => x.IdSubElement == progress.IdSubElement).SubElementName</label>
                                                 <label class="w-80 h-8 text-sm md:text-base lg:text-lg 2xl:text-2xl text-white leading-6 text-center bg-[#254260] rounded-lg py-1 m-2">@item.ApartmentNumber</label>
@@ -228,6 +230,7 @@ else if (buttonReport == true)
                     {
                         <div class="flex w-full mt-10 px-16">
                             <div class="flex justify-center w-3/6">
+                                <label class="w-3/6 h-14 2xl:h-16 text-sm md:text-base lg:text-xl 2xl:text-4xl text-white leading-6 text-center bg-[#162D4E] rounded-lg py-2 m-2">Área</label>
                                 <label class="w-3/6 h-14 2xl:h-16 text-sm md:text-base lg:text-xl 2xl:text-4xl text-white leading-6 text-center bg-[#162D4E] rounded-lg py-2 m-2">Elemento</label>
                                 <label class="w-3/6 h-14 2xl:h-16 text-sm md:text-base lg:text-xl 2xl:text-4xl text-white leading-6 text-center bg-[#162D4E] rounded-lg py-2 m-2">Departamento</label>
                             </div>
@@ -250,6 +253,7 @@ else if (buttonReport == true)
                                     {
                                         <div class="flex w-full px-16">
                                             <div class="flex justify-center w-3/6">
+                                                <label class="w-3/6 h-8 text-sm md:text-base lg:text-lg 2xl:text-2xl text-white leading-6 text-center bg-[#254260] rounded-lg py-1 m-2">@Areas.FirstOrDefault(x => x.IdArea == progress.IdArea).AreaName</label>
                                                 <label class="w-3/6 h-8 text-sm md:text-base lg:text-lg 2xl:text-2xl text-white leading-6 text-center bg-[#254260] rounded-lg py-1 m-2">@element.ElementName</label>
                                                 <label class="w-3/6 h-8 text-sm md:text-base lg:text-lg 2xl:text-2xl text-white leading-6 text-center bg-[#254260] rounded-lg py-1 m-2">@item.ApartmentNumber</label>
                                             </div>
