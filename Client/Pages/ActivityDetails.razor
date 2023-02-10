@@ -139,7 +139,7 @@ else if (buttonReport == true)
     @if (loading == false)
     {
         @*Segunda Vista*@
-        <div class="pt-20 pb-12 h-screen fixed inset-0 flex flex-col justify-center items-center self-start overflow-y-scroll overflow-x-hidden">
+        <div class="pt-20 pb-12 h-5/6 fixed inset-0 flex flex-col justify-center items-center self-start overflow-y-scroll overflow-x-hidden">
             @if (subElementsNulls == false)
             {
                 <div class="my-4 w-screen">
@@ -151,7 +151,7 @@ else if (buttonReport == true)
                         <div class="flex w-full mt-10 px-16">
                             <div class="flex justify-center w-3/6">
                                 <label class="w-3/6 h-14 2xl:h-16 text-sm md:text-base lg:text-xl 2xl:text-4xl text-white leading-6 text-center bg-[#162D4E] rounded-lg py-2 m-2">Elemento</label>
-                                <label class="w-3/6 h-14 2xl:h-16 text-sm md:text-base lg:text-xl 2xl:text-4xl text-white leading-6 text-center bg-[#162D4E] rounded-lg py-2 m-2">Sub-Elemento</label>
+                                <label class="w-3/6 h-14 2xl:h-16 text-sm lg:text-xl 2xl:text-4xl text-white leading-6 text-center bg-[#162D4E] rounded-lg py-2 m-2">Sub-Elemento</label>
                                 <label class="w-3/6 h-14 2xl:h-16 text-sm md:text-base lg:text-xl 2xl:text-4xl text-white leading-6 text-center bg-[#162D4E] rounded-lg py-2 m-2">Departamento</label>
                             </div>
                             <div class="flex justify-center w-3/6">
@@ -164,7 +164,7 @@ else if (buttonReport == true)
                                 </div>
                             </div>
                         </div>
-                        <div class="overflow-y-scroll h-[20rem]">
+                        <div class="overflow-y-scroll h-[19rem] lg:h-[10rem] xl:h-[20rem]">
                             @foreach (var item in apartmentsSelect)
                             {
                                 @foreach (var progress in progressReports)

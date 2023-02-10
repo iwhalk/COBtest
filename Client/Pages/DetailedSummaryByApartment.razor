@@ -142,7 +142,7 @@ else if (buttonReport == true)
 {
     @if (loading == false)
     {
-        <div class="h-[53rem] pt-20 pb-12 fixed inset-0 flex flex-col items-center self-start overflow-y-scroll overflow-x-hidden">
+        <div class="h-5/6 pt-20 pb-12 fixed inset-0 flex flex-col items-center self-start overflow-y-scroll overflow-x-hidden">
             @foreach (var apartment in apartmentsSelect)
             {
                 <div class="my-4 h-[32rem] w-screen">
@@ -157,7 +157,7 @@ else if (buttonReport == true)
                                 <div class="flex justify-center w-3/6">
                                     <label class="w-64 h-12 2xl:h-16 text-sm md:text-base lg:text-xl 2xl:text-4xl text-white leading-6 text-center bg-[#162D4E] rounded-lg py-2 m-2">Actividad</label>
                                     <label class="w-64 h-12 2xl:h-16 text-sm md:text-base lg:text-xl 2xl:text-4xl text-white leading-6 text-center bg-[#162D4E] rounded-lg py-2 m-2">Elemento</label>
-                                    <label class="w-64 h-12 2xl:h-16 text-sm md:text-base lg:text-xl 2xl:text-4xl text-white leading-6 text-center bg-[#162D4E] rounded-lg py-2 m-2">Sub-Elemento</label>
+                                    <label class="w-64 h-12 2xl:h-16 text-sm lg:text-xl 2xl:text-4xl text-white leading-6 text-center bg-[#162D4E] rounded-lg py-2 m-2">Sub-Elemento</label>
                                 </div>
                                 <div class="flex justify-center w-3/6">
                                     <label class="w-full text-sm md:text-base lg:text-xl 2xl:text-4xl text-white leading-6 text-center bg-[#162D4E] rounded-lg py-3 my-2">Avance</label>
@@ -322,12 +322,13 @@ else if (buttonReport == true)
                     </span>
                 </div>
             }
-        </div>
-        <div class="w-full flex justify-end py-3">
-            <div class="w-full flex py-3 fixed inset-x-0 bottom-12">
-                <button @onclick="() => ChangeView()" class="mx-auto bg-[#B9352E] hover:bg-red-500 w-40 p-2 rounded-2xl text-lg text-white font-medium leading-6 border hover:border-white">Descargar</button>
+            <div class="w-full flex justify-end py-3">
+                <div class="w-full flex py-3 fixed inset-x-0 bottom-12">
+                    <button @onclick="() => ChangeView()" class="mx-auto bg-[#B9352E] hover:bg-red-500 w-40 p-2 rounded-2xl text-lg text-white font-medium leading-6 border hover:border-white">Descargar</button>
+                </div>
             </div>
         </div>
+        
 
         <button @onclick="() => GoBack()" class="fixed z-10 inset-x-1 top-20 w-12">
 
