@@ -2,6 +2,6 @@
 {
     public class ReporteDetalles
     {
-        public List<DetalladoActividades> detalladoActividades { get; set; }
+        public List<DetalladoDepartamentos> detalladoDepartamentos { get; set; }
     }
 }
