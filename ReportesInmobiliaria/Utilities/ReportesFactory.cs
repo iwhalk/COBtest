@@ -111,6 +111,9 @@ namespace ReportesObra.Utilities
                 case nameof(ReporteDetalles):
                     CrearReporteDetalle(reporte as ReporteDetalles);
                     break;
+                case nameof(ReporteDetallesActividad):
+                    CrearReporteDetalleActividades(reporte as ReporteDetallesActividad);
+                    break;
                 case nameof(ReporteAvance):
                     CrearReporteAvance(reporte as ReporteAvance);
                     break;
@@ -158,6 +161,9 @@ namespace ReportesObra.Utilities
             {
                 case nameof(ReporteDetalles):
                     CrearReporteDetalle(reporte as ReporteDetalles);
+                    break;
+                case nameof(ReporteDetallesActividad):
+                    CrearReporteDetalleActividades(reporte as ReporteDetallesActividad);
                     break;
                 case nameof(ReporteAvance):
                     CrearReporteAvance(reporte as ReporteAvance);
@@ -212,7 +218,7 @@ namespace ReportesObra.Utilities
             style.ParagraphFormat.TabStops.AddTabStop("16cm", TabAlignment.Right);
         }
 
-        void CrearReporteDetalle(ReporteDetalles? reporteDetalles)
+        private void CrearEncabezadoGenerico(int option)
         {
             section.PageSetup.Orientation = Orientation.Portrait;
             //Margen para evitar que las tablas largas se encimen con el encabezado
@@ -296,7 +302,7 @@ namespace ReportesObra.Utilities
             logoGeneric.Left = "14.0cm";
             logoGeneric.WrapFormat.Style = WrapStyle.Through;
             Paragraph paragraph;
-            if (_title.Contains("os"))
+            if (option == 1)
             {
                 // Put header in header frame
                 paragraph = headerFrame.AddParagraph("Reporte Detallado");//Titulo
@@ -309,7 +315,7 @@ namespace ReportesObra.Utilities
                 paragraph.Format.Font.Bold = true;
                 paragraph.Format.Alignment = ParagraphAlignment.Center;
             }
-            else
+            else if(option == 2)
             {
                 paragraph = headerFrame.AddParagraph("Reporte Detallado ");//Titulo
                 paragraph.AddLineBreak();
@@ -319,7 +325,7 @@ namespace ReportesObra.Utilities
                 paragraph.Format.Font.Name = "DejaVu Serif";
                 paragraph.Format.Font.Size = 12;
                 paragraph.Format.Font.Bold = true;
-                paragraph.Format.Alignment = ParagraphAlignment.Center; 
+                paragraph.Format.Alignment = ParagraphAlignment.Center;
 
                 //paragraph = section.AddParagraph();
                 //paragraph.AddLineBreak();
@@ -336,26 +342,43 @@ namespace ReportesObra.Utilities
             paragraph = dataValuesFrameRight.AddParagraph();
             paragraph.AddText(DateTime.Now.ToString("dd/MM/yyyy"));
             paragraph.Format.Font.Size = 9;
-            //reporteDetalles.detalladoActividades = reporteDetalles.detalladoActividades.OrderBy(x => x.area).ToList();
-            reporteDetalles.detalladoActividades = reporteDetalles.detalladoActividades.OrderBy(x => x.numeroApartamento).ToList();            
+        }
 
-            for (int i = 0; i < reporteDetalles.detalladoActividades.Count(); i++)
+        void CrearReporteDetalle(ReporteDetalles? reporteDetalles)
+        {
+            CrearEncabezadoGenerico(1);
+            Paragraph paragraph;
+
+            reporteDetalles.detalladoDepartamentos = reporteDetalles.detalladoDepartamentos.OrderBy(x => x.numeroApartamento).ToList();            
+
+            for (int i = 0; i < reporteDetalles.detalladoDepartamentos.Count(); i++)
             {
-                string apartmentTitle = reporteDetalles.detalladoActividades.ElementAt(i).numeroApartamento;
+                string apartmentTitle = reporteDetalles.detalladoDepartamentos.ElementAt(i).numeroApartamento; ;
                 // Create the item table
                 paragraph = section.AddParagraph();
                 paragraph.AddLineBreak();
                 paragraph.Format.SpaceBefore = "-1.0cm";
                 paragraph.AddText("Departamento " + apartmentTitle);
+                //if (_title.Contains("os"))
+                //{
+                //    paragraph.AddText("Departamento " + apartmentTitle);
+                //}
+                //else
+                //{
+                //    string activityTitle = reporteDetalles.detalladoActividades.ElementAt(i).actividad;
+                //    paragraph.AddText(activityTitle);
+                //}
                 paragraph.Format.Font.Name = "DejaVu Serif";
                 paragraph.Format.Font.Size = 12;
-                if (_title.Contains("os"))
-                {
-                    paragraph.Format.Font.Bold = true;
-                    paragraph.Format.Alignment = ParagraphAlignment.Center;
-                }
-                else
-                    paragraph.Format.Alignment = ParagraphAlignment.Left;
+                paragraph.Format.Font.Bold = true;
+                paragraph.Format.Alignment = ParagraphAlignment.Center;
+                //if (_title.Contains("os"))
+                //{
+                //    paragraph.Format.Font.Bold = true;
+                //    paragraph.Format.Alignment = ParagraphAlignment.Center;
+                //}
+                //else
+                //    paragraph.Format.Alignment = ParagraphAlignment.Left;
 
                 paragraph = section.AddParagraph();
                 paragraph.AddLineBreak();
@@ -389,8 +412,8 @@ namespace ReportesObra.Utilities
                 //row.Format.Font.Bold = true;
                 row.Format.Font.Size = 12;
                 row.Borders.Visible = false;
-                //row.Shading.Color = TableColor;
                 row.Cells[0].AddParagraph("Actividad");
+                //row.Shading.Color = TableColor;
                 //if (_title.Contains("os"))
                 //    row.Cells[0].AddParagraph("Actividad");
                 //else
@@ -402,11 +425,78 @@ namespace ReportesObra.Utilities
                 row.Cells[5].AddParagraph("Total");
                 row.Cells[6].AddParagraph("Avance");
 
-                if (_title.Contains("os"))
-                    i = FillGenericContent(reporteDetalles.detalladoActividades, tableAreas, i, apartmentTitle) - 1;
-                else
-                    i = FillGenericContentCombination(reporteDetalles.detalladoActividades, tableAreas, i, apartmentTitle) - 1;
-                if (i < reporteDetalles.detalladoActividades.Count() - 1)
+                i = FillGenericContent(reporteDetalles.detalladoDepartamentos, tableAreas, i, apartmentTitle) - 1;
+                //if (_title.Contains("os"))
+                //    i = FillGenericContent(reporteDetalles.detalladoActividades, tableAreas, i, apartmentTitle) - 1;
+                //else
+                //    i = FillGenericContentCombination(reporteDetalles.detalladoActividades, tableAreas, i, apartmentTitle) - 1;
+                if (i < reporteDetalles.detalladoDepartamentos.Count() - 1)
+                    document.LastSection.AddPageBreak();
+            }
+        }
+
+        void CrearReporteDetalleActividades(ReporteDetallesActividad? reporteDetallesActividad)
+        {
+            CrearEncabezadoGenerico(2);
+            Paragraph paragraph;
+
+            reporteDetallesActividad.detalladoActividades = reporteDetallesActividad.detalladoActividades.OrderBy(x => x.numeroApartamento).ToList();
+
+            for (int i = 0; i < reporteDetallesActividad.detalladoActividades.Count(); i++)
+            {
+                string activityTitle = reporteDetallesActividad.detalladoActividades.ElementAt(i).actividad;
+                // Create the item table
+                paragraph = section.AddParagraph();
+                paragraph.AddLineBreak();
+                paragraph.Format.SpaceBefore = "-1.0cm";
+                paragraph.AddText(activityTitle);
+                paragraph.Format.Font.Name = "DejaVu Serif";
+                paragraph.Format.Font.Size = 12;
+                paragraph.Format.Font.Bold = true;
+                paragraph.Format.Alignment = ParagraphAlignment.Center;
+                paragraph = section.AddParagraph();
+                paragraph.AddLineBreak();
+                paragraph.Format.SpaceAfter = "0.5cm";
+
+                tableAreas = section.AddTable();
+                tableAreas.Style = "Table";
+                tableAreas.Borders.Color = Colors.Gray;
+                tableAreas.Borders.Width = 0.3;
+                tableAreas.Rows.LeftIndent = 0;
+                tableAreas.Rows.Alignment = RowAlignment.Center;
+                Column column;
+                column = tableAreas.AddColumn("3.0cm");
+                column.Format.Alignment = ParagraphAlignment.Center;
+                column = tableAreas.AddColumn("4.0cm");
+                column.Format.Alignment = ParagraphAlignment.Center;
+                column = tableAreas.AddColumn("3.8cm");
+                column.Format.Alignment = ParagraphAlignment.Center;
+                column = tableAreas.AddColumn("3.5cm");
+                column.Format.Alignment = ParagraphAlignment.Center;
+                column = tableAreas.AddColumn("2.0cm");
+                column.Format.Alignment = ParagraphAlignment.Center;
+                column = tableAreas.AddColumn("1.5cm");
+                column.Format.Alignment = ParagraphAlignment.Center;
+                column = tableAreas.AddColumn("1.5cm");
+                column.Format.Alignment = ParagraphAlignment.Center;
+                // Create the header of the table
+                Row row = tableAreas.AddRow();
+                row.HeadingFormat = true;
+                row.Format.Alignment = ParagraphAlignment.Center;
+                //row.Format.Font.Bold = true;
+                row.Format.Font.Size = 12;
+                row.Borders.Visible = false;
+                row.Cells[0].AddParagraph("Área");
+                row.Cells[1].AddParagraph("Elemento");
+                row.Cells[2].AddParagraph("Sub-Elemento");
+                row.Cells[3].AddParagraph("Departamento");
+                row.Cells[4].AddParagraph("Estatus");
+                row.Cells[5].AddParagraph("Total");
+                row.Cells[6].AddParagraph("Avance");
+
+                //i = FillGenericContent(reporteDetallesActividad.detalladoActividades, tableAreas, i, activityTitle) - 1;
+                i = FillGenericContentActivities(reporteDetallesActividad.detalladoActividades, tableAreas, i, activityTitle) - 1;
+                if (i < reporteDetallesActividad.detalladoActividades.Count() - 1)
                     document.LastSection.AddPageBreak();
             }
         }
@@ -1459,14 +1549,13 @@ namespace ReportesObra.Utilities
             return value.Count;
         }
 
-        int FillGenericContentCombination<T>(List<T> value, Table table, int tableIndex, string title, int fontSize = 8)
+        int FillGenericContentActivities<T>(List<T> value, Table table, int tableIndex, string title, int fontSize = 8)
         {
             Table _table = table;
             //foreach (var item in value)
-            string currentName = "";
+            string currentApartment = "";
             string beforeName = "";
             Row lastRow = null;
-            int countCombination = 0;
             int indexCombination = 0;
             var newColorGray = MigraDocCore.DocumentObjectModel.Color.Parse("0xffE5E8E8");
             for (int i = tableIndex; i < value.Count; i++)
@@ -1482,7 +1571,118 @@ namespace ReportesObra.Utilities
                         var type = Nullable.GetUnderlyingType(prop.PropertyType) ?? prop.PropertyType;
                         if (index == 0)
                         {
-                            string currentApartmentName = prop.GetValue(item, null)?.ToString();
+                            string currentActivityName = prop.GetValue(item, null)?.ToString();
+                            //Si empiezan los datos de otra actividad: elimina la fila extra, agrega el borde inferior a la última celda y regresa
+                            if (currentActivityName != title)
+                            {
+                                table.Rows.RemoveObjectAt(table.Rows.Count - 1);
+                                if (lastRow != null)
+                                    lastRow.Cells[0].Borders.Bottom.Width = 1.5;
+                                return i;
+                            }
+                        }
+                        else
+                        {
+                            //if (index == 4)
+                            //{
+                            //    currentApartment = prop.GetValue(item, null)?.ToString();
+                            //}
+                            //else
+                            //{
+                            if (type == typeof(DateTime))
+                            {
+                                row.Cells[index - 1].AddParagraph(((DateTime?)prop.GetValue(item, null))?.ToString("dd/MM/yyyy hh:mm:ss tt") ?? "");
+                            }
+                            if (type == typeof(string))
+                            {
+                                row.Cells[index - 1].AddParagraph(prop.GetValue(item, null)?.ToString());
+                            }
+                            if (type == typeof(bool))
+                            {
+                                row.Cells[index - 1].AddParagraph((bool?)prop.GetValue(item, null) ?? false ? "SI" : "NO");
+                            }
+                            if (type == typeof(int))
+                            {
+                                row.Cells[index - 1].AddParagraph(prop.GetValue(item, null)?.ToString());
+                            }
+                            if (type == typeof(long))
+                            {
+                                row.Cells[index - 1].AddParagraph(prop.GetValue(item, null)?.ToString());
+                            }
+                            //}
+
+                            row.Cells[0].Borders.Color = Colors.Black;
+                            row.Cells[0].Borders.Visible = false;
+                            row.Cells[0].Borders.Left.Width = 1.5;
+                            if (i == 0)
+                            {
+                                row.Cells[0].Borders.Color = Colors.Gray;
+                                row.Cells[0].Borders.Top.Width = 0.3;
+                            }
+
+                            //if (!currentName.Equals(beforeName))
+                            //{
+                            //    if (i == 0)
+                            //    {
+                            //        row.Cells[0].Borders.Color = Colors.Gray;
+                            //        row.Cells[0].Borders.Top.Width = 0.3;
+                            //    }
+                            //    else
+                            //    {
+                            //        row.Cells[0].Borders.Top.Width = 1.5;
+                            //    }
+                            //}
+
+                            //beforeName = currentName;
+                        }
+                    }
+                lastRow = row;
+                if (i == value.Count - 1)
+                {
+                    row.Cells[0].Borders.Bottom.Width = 1.5;
+                }
+
+                if (i % 2 == 0)
+                {
+                    row.Cells[0].Shading.Color = newColorGray;
+                    row.Cells[1].Shading.Color = newColorGray;
+                    row.Cells[2].Shading.Color = newColorGray;
+                    row.Cells[3].Shading.Color = newColorGray;
+                    row.Cells[4].Shading.Color = newColorGray;
+                    row.Cells[5].Shading.Color = newColorGray;
+                    row.Cells[6].Shading.Color = newColorGray;
+                }
+            }
+            return value.Count;
+        }
+
+        int FillGenericContentCombination<T>(List<T> value, Table table, int tableIndex, string title, int fontSize = 8)
+        {
+            Table _table = table;
+            //foreach (var item in value)
+            string currentName = "";
+            string beforeName = "";
+            Row lastRow = null;
+            int countCombination = 0;
+            int indexCombination = 0;
+            var newColorGray = MigraDocCore.DocumentObjectModel.Color.Parse("0xffE5E8E8");
+
+            string currentApartmentName = "";
+
+            for (int i = tableIndex; i < value.Count; i++)
+            {
+                var item = value.ElementAt(i);
+                Row row = _table.AddRow();
+                row.Format.Font.Size = (Unit)fontSize;
+                row.Format.Font.Bold = false;
+                row.VerticalAlignment = VerticalAlignment.Center;
+                if (item != null)
+                    foreach (var (prop, index) in item.GetType().GetProperties().Select((v, i) => (v, i)))
+                    {
+                        var type = Nullable.GetUnderlyingType(prop.PropertyType) ?? prop.PropertyType;
+                        if (index == 0)
+                        {
+                            currentApartmentName = prop.GetValue(item, null)?.ToString();
                             //Si empiezan los datos de otro departamento, elimina la fila extra, agrega el borde inferior a la última celda y regresa
                             if (currentApartmentName != title)
                             {
@@ -1495,7 +1695,8 @@ namespace ReportesObra.Utilities
                                     rowData = _table.Rows[indexCombination + 1];
                                 else
                                     rowData = _table.Rows[indexCombination];
-                                rowData.Cells[0].AddParagraph(beforeName);
+                                //rowData.Cells[0].AddParagraph(beforeName);
+                                rowData.Cells[0].AddParagraph(title);//1
                                 if (countCombination < 45)
                                     rowData.Cells[0].MergeDown = countCombination - 1;
                                 rowData.Cells[0].VerticalAlignment = VerticalAlignment.Center;
@@ -1549,10 +1750,11 @@ namespace ReportesObra.Utilities
                                     //Coloca el nombre de la actividad y combina las celdas de su respectivo conjunto
                                     Row rowData;
                                     row.Cells[0].Borders.Top.Width = 1.5;
-                                    if (!_firstActivity)
+                                    /*if (!_firstActivity)
                                     {
                                         rowData = _table.Rows[indexCombination];
-                                        rowData.Cells[0].AddParagraph(beforeName);
+                                        //rowData.Cells[0].AddParagraph(beforeName);
+                                        rowData.Cells[0].AddParagraph(currentApartmentName);
                                         if (countCombination < 45)
                                             rowData.Cells[0].MergeDown = countCombination - 1;
                                     }
@@ -1561,13 +1763,14 @@ namespace ReportesObra.Utilities
                                     {
                                         rowData = _table.Rows[indexCombination + 1];
                                         _firstActivity = false;
-                                        rowData.Cells[0].AddParagraph(beforeName);
+                                        //rowData.Cells[0].AddParagraph(beforeName);
+                                        rowData.Cells[0].AddParagraph(currentApartmentName);//2
                                         if (countCombination < 45)
                                             rowData.Cells[0].MergeDown = countCombination - 2;
                                     }
                                     rowData.Cells[0].VerticalAlignment = VerticalAlignment.Center;
                                     indexCombination += countCombination;
-                                    countCombination = 0;
+                                    countCombination = 0;*/
                                 }
                             }
 
@@ -1584,8 +1787,9 @@ namespace ReportesObra.Utilities
                         rowData = _table.Rows[indexCombination + 1];
                     else
                         rowData = _table.Rows[indexCombination];
-                    rowData.Cells[0].AddParagraph(beforeName);
-                    if(countCombination < 45)
+                    //rowData.Cells[0].AddParagraph(beforeName);
+                    rowData.Cells[0].AddParagraph(currentApartmentName);//3
+                    if (countCombination < 45)
                         rowData.Cells[0].MergeDown = countCombination - 1;
                     rowData.Cells[0].VerticalAlignment = VerticalAlignment.Center;
                 }

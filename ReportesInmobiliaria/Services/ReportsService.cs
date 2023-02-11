@@ -65,11 +65,11 @@ namespace ReportesObra.Services
             listReport = listReport.OrderBy(x => x.IdArea).ToList();
             ReporteDetalles reporteDetalles = new()
             {
-                detalladoActividades = GetSubElementsAsync(listReport)
+                detalladoDepartamentos = GetSubElementsAsync(listReport)
             };
             if(idActivities != null && idActivities.Count() != 0)
-                reporteDetalles.detalladoActividades = FiltradoIdActivities(reporteDetalles.detalladoActividades, idActivities);
-            if (reporteDetalles.detalladoActividades.Count == 0)
+                reporteDetalles.detalladoDepartamentos = FiltradoIdActivities(reporteDetalles.detalladoDepartamentos, idActivities);
+            if (reporteDetalles.detalladoDepartamentos.Count == 0)
                 return null;                
             return _reportesFactory.CrearPdf(reporteDetalles, title);
         }
@@ -86,9 +86,9 @@ namespace ReportesObra.Services
             if (idApartments != null && idApartments.Count() != 0)
                 listReport = FiltradoIdApartments(listReport, idApartments);
             listReport = listReport.OrderBy(x => x.IdArea).ToList();
-            ReporteDetalles reporteDetalles = new()
+            ReporteDetallesActividad reporteDetalles = new()
             {
-                detalladoActividades = GetSubElementsAsync(listReport)
+                detalladoActividades = GetSubElementsActividadesAsync(listReport)
             };
             if (idActivities != null && idActivities.Count() != 0){
                 reporteDetalles.detalladoActividades = FiltradoIdActivities(reporteDetalles.detalladoActividades, idActivities);
@@ -100,10 +100,10 @@ namespace ReportesObra.Services
             return _reportesFactory.CrearPdf(reporteDetalles, title);
         }
 
-        public List<DetalladoActividades> GetSubElementsAsync(List<ProgressReport> progressList)
+        public List<DetalladoDepartamentos> GetSubElementsAsync(List<ProgressReport> progressList)
         {
             int contador = 0;
-            var list = new List<DetalladoActividades>();                       
+            var list = new List<DetalladoDepartamentos>();                       
             foreach (var subElement in progressList)
             {
                 if (getStausName(subElement.IdProgressReport) == "Terminado")
@@ -112,7 +112,7 @@ namespace ReportesObra.Services
                     continue;
                 }
                     
-                list.Add(new DetalladoActividades()
+                list.Add(new DetalladoDepartamentos()
                 {
                     numeroApartamento = getApartmentNumber(subElement.IdApartment),
                     actividad = getActividadByElement(subElement.IdElement),
@@ -126,6 +126,34 @@ namespace ReportesObra.Services
             }
             return list;
         }
+
+        public List<DetalladoActividades> GetSubElementsActividadesAsync(List<ProgressReport> progressList)
+        {
+            int contador = 0;
+            var list = new List<DetalladoActividades>();
+            foreach (var subElement in progressList)
+            {
+                if (getStausName(subElement.IdProgressReport) == "Terminado")
+                {
+                    contador++;
+                    continue;
+                }
+
+                list.Add(new DetalladoActividades()
+                {                    
+                    actividad = getActividadByElement(subElement.IdElement),
+                    area = getArea(subElement.IdArea),
+                    elemento = getElemento(subElement.IdElement),
+                    subElemento = getSubElemento(subElement.IdSubElement),
+                    numeroApartamento = getApartmentNumber(subElement.IdApartment),
+                    estatus = getStausName(subElement.IdProgressReport),
+                    total = subElement.TotalPieces,
+                    avance = getProgress(subElement.IdProgressReport),
+                });
+            }
+            return list;
+        }
+
         public async Task<byte[]> GetReporteAvance(List<AparmentProgress> aparmentProgress)
         {
             ReporteAvance reporteAvance = new()
@@ -552,6 +580,28 @@ namespace ReportesObra.Services
                 areasFiltred.AddRange(subListArea.ToList());
             }
             return areasFiltred;
+        }
+
+        private List<DetalladoDepartamentos> FiltradoIdActivities(List<DetalladoDepartamentos> ListAllActivities, List<int> idActivities)
+        {
+            List<string> activityNames = new List<string>();
+            List<DetalladoDepartamentos> activitiesFiltred = new List<DetalladoDepartamentos>();
+            foreach (var idActivity in idActivities)
+            {
+                string activityName = getActividad(idActivity);
+                if (activityName == null)
+                    continue;
+                activityNames.Add(activityName);
+            }
+
+            foreach (var activityName in activityNames)
+            {
+                var subListActivities = ListAllActivities.Where(x => x.actividad == activityName);
+                if (subListActivities == null)
+                    continue;
+                activitiesFiltred.AddRange(subListActivities.ToList());
+            }
+            return activitiesFiltred;
         }
 
         private List<DetalladoActividades> FiltradoIdActivities(List<DetalladoActividades> ListAllActivities, List<int> idActivities)
