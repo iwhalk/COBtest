@@ -8,58 +8,57 @@
     if (loading == false)
     {
         <div class="h-screen pt-20 pb-12 fixed inset-0 flex flex-col justify-center items-center">
-            <div class="flex justify-center w-screen rounded-2xl my-2 px-72 h-5/6">
-                <div class="mx-1">
-                    <div>
-                        <h1 class="rounded-xl text-xs md:text-base xl:text-xl text-white font-medium leading-6 bg-[#162D4E] text-center py-2">Actividad</h1>
+            <div class="flex justify-center w-screen rounded-2xl my-2 px-72 h-5/6 flow-root">
+                <div class="flex justify-center justify-content-around" style="direction: ltr;">
+                    <div class="flex justify-content-around mr-4">
+                        <div class="grid grid-col-1 gap-1 p-1 w-[19rem]">
+                            <h1 class="rounded-xl text-xs md:text-base xl:text-xl text-white font-medium leading-6 bg-[#162D4E] text-center py-2">Actividad</h1>
+                        </div>
+                        @if (elements.Count() != 0)
+                        {
+                            <div class="p-1 w-[19rem]">
+                                <h1 class="rounded-xl text-xs md:text-base xl:text-xl text-white font-medium leading-6 bg-[#162D4E] text-center py-2">Elemento</h1>
+                            </div>
+                        }
                     </div>
-                    <div class="flex justify-center rounded-br-2xl-2xl overflow-y-scroll xl:overflow-y-hidden overflow-x-hidden h-4/6" style="direction: ltr;">
-                        <div>
-                            <div class="grid grid-col-1 gap-1 p-1 w-[5rem] sm:w-[9.5rem] md:w-[11rem] lg:w-[15rem]  xl:w-[19rem]">
+                </div>
+                <div class="mx-1 flex justify-content-center h-5/6 overflow-y-scroll">
+                    <div class="flex justify-center rounded-br-2xl-2xl" style="direction: ltr;">
+                        <div class="flex justify-center">
+                            <div class="p-1 flex justify-items-center flow-root">
                                 @if (activities != null)
                                 {
                                     @foreach (var activity in activities)
                                     {
-                                        <button @onclick="() => AddIdSelect(activity.IdActivity, 2)" class="@(_idsActivitiesSelect.Contains(activity.IdActivity) ? "bg-[#9CA2A8]" : "bg-[#55595E]") @(_idsActivitiesSelect.Contains(activity.IdActivity) ? "h-24" : "h-12")">
-                                            <h1 class="text-xs md:text-base text-white font-medium leading-6 text-center p-1">@activity.ActivityName</h1>
-                                        </button>
+                                        <div class="flex justify-items-stretch">
+                                            <button @onclick="() => AddIdSelect(activity.IdActivity, 2)" class="@(_idsActivitiesSelect.Contains(activity.IdActivity) ? "bg-[#9CA2A8]" : "bg-[#55595E]") @(_idsActivitiesSelect.Contains(activity.IdActivity) ? "h-48" : "h-12") w-[19rem] border border-blue-700">
+                                                <h1 class="text-xs md:text-base text-white font-medium leading-6 text-center p-1">@activity.ActivityName</h1>
+                                            </button>
+
+                                            @if (_idsActivitiesSelect.Contains(activity.IdActivity) == true)
+                                            {
+                                                @if (elements.Count() != 0)
+                                                {
+                                                    <div class="flex-column flow-root overflow-y-scroll h-48">
+                                                        @foreach (var element in elements)
+                                                        {
+                                                            @if (element.IdActivity == activity.IdActivity)
+                                                            {
+                                                                <button @onclick="() => AddIdSelect(element.IdElement, 3)" class="@(_idsElementsSelect.Contains(element.IdElement) ? "bg-[#9CA2A8]" : "bg-[#55595E]") h-24 w-[17.4rem] border border-blue-700 grid">
+                                                                    <h1 class="text-xs md:text-base md:text-base text-white font-medium leading-6 text-center p-1">@element.ElementName</h1>
+                                                                </button>
+                                                            }
+                                                        }
+                                                    </div>
+                                                }
+                                            }
+                                        </div>
                                     }
                                 }
                             </div>
                         </div>
                     </div>
                 </div>
-                @if (showElements == true)
-                {
-                    <div class="mx-1">
-                        <div>
-                            <h1 class="rounded-xl text-xs md:text-base xl:text-xl text-white font-medium leading-6 bg-[#162D4E] text-center py-2">Elemento</h1>
-                        </div>
-                        <div class="flex justify-center rounded-br-2xl-2xl overflow-y-scroll md:overflow-y-hidden overflow-x-hidden h-4/6" style="direction: ltr;">
-                            <div>
-                                <div class="grid grid-col-1 gap-1 p-1 w-[5rem] sm:w-[9.5rem] md:w-[11rem] lg:w-[15rem]  xl:w-[19rem]">
-                                    @if (elements != null)
-                                    {
-                                        @foreach (var id in _idsActivitiesSelect)
-                                        {
-                                            <div class="flex h-24 w-[19rem] overflow-y-scroll flow-root">
-                                                @foreach (var element in elements)
-                                                {
-                                                    @if (element.IdActivity == id)
-                                                    {
-                                                        <button @onclick="() => AddIdSelect(element.IdElement, 3)" class="@(_idsElementsSelect.Contains(element.IdElement) ? "bg-[#9CA2A8]" : "bg-[#55595E]") h-11 w-[17.9rem] border border-blue-700">
-                                                            <h1 class="text-xs md:text-base md:text-base text-white font-medium leading-6 text-center p-1">@element.ElementName</h1>
-                                                        </button>
-                                                    }
-                                                }
-                                            </div>
-                                        }
-                                    }
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                }
                 @if (showSubElements == true)
                 {
                     @if (subElements != null && subElements.Count() > 0)
