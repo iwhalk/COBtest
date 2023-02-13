@@ -181,6 +181,7 @@ namespace ReportesObra.Utilities
             };
 
             pdfRenderer.RenderDocument();
+            CreateWatermarkImage(pdfRenderer);
 
             using MemoryStream ms = new();
             pdfRenderer.Save(ms, false);
@@ -223,6 +224,7 @@ namespace ReportesObra.Utilities
             section.PageSetup.Orientation = Orientation.Portrait;
             //Margen para evitar que las tablas largas se encimen con el encabezado
             section.PageSetup.TopMargin = "5cm";
+            section.PageSetup.BottomMargin = "2.5cm";
 
             headerFrame = section.Headers.Primary.AddTextFrame();
             headerFrame.Width = "20.0cm";
@@ -301,6 +303,18 @@ namespace ReportesObra.Utilities
             logoGeneric.Top = "1.7cm";
             logoGeneric.Left = "14.0cm";
             logoGeneric.WrapFormat.Style = WrapStyle.Through;
+
+            //Marca de Agua
+            //var COBRender = section.Headers.Primary.AddImage(ImageSource.FromFile(Path.Combine(Environment.CurrentDirectory, "Img", "COBRender.jpeg")));
+            //COBRender.Width = "15.0cm";
+            //COBRender.LockAspectRatio = true;
+            ////COBRender.FillFormat =
+            //COBRender.RelativeHorizontal = RelativeHorizontal.Margin;
+            //COBRender.RelativeVertical = RelativeVertical.Page;
+            //COBRender.Top = "8.0cm";
+            //COBRender.Left = "2.0cm";
+            //COBRender.WrapFormat.Style = WrapStyle.Through;
+
             Paragraph paragraph;
             if (option == 1)
             {
@@ -1883,6 +1897,24 @@ namespace ReportesObra.Utilities
                     }
             }
             return value.Count;
+        }
+
+        public void CreateWatermarkImage(PdfDocumentRenderer renderer)
+        {
+            //Se toma la imagen que se usará como marca de agua y se calcula la posición central donde irá,
+            //en los ejes X Y se toma en cuenta el ancho y largo que tendrá posteriormente. Render, relación 1.5 ancho-alto
+            var COBRender = XImage.FromFile(Path.Combine(Environment.CurrentDirectory, "Img", "COBRenderOp30.jpeg"));
+            var firstPage = renderer.PdfDocument.Pages[0];
+            double x = (firstPage.Width - 400) / 2;
+            double y = (firstPage.Height - 266) / 2;
+            //Se agrega la marca de agua en cada una de las páginas del documento
+            int pages = renderer.DocumentRenderer.FormattedDocument.PageCount;
+            for (int i = 0; i < pages; i++)
+            {
+                var page = renderer.PdfDocument.Pages[i];
+                XGraphics gfx = XGraphics.FromPdfPage(page, XGraphicsPdfPageOptions.Prepend);
+                gfx.DrawImage(COBRender, x, y, 400, 266);
+            }
         }
     }
 }
