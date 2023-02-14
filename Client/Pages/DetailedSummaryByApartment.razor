@@ -154,14 +154,14 @@ else if (buttonReport == true)
                         @if (greenPercentage != null && redPercentage != null)
                         {
                             <div class="flex w-full mt-10 px-16">
-                                <div class="flex justify-center w-3/6">
-                                    <label class="w-64 h-12 2xl:h-16 text-sm md:text-base lg:text-xl 2xl:text-4xl text-white leading-6 text-center bg-[#162D4E] rounded-lg py-2 m-2">Actividad</label>
-                                    <label class="w-64 h-12 2xl:h-16 text-sm md:text-base lg:text-xl 2xl:text-4xl text-white leading-6 text-center bg-[#162D4E] rounded-lg py-2 m-2">Área</label>
-                                    <label class="w-64 h-12 2xl:h-16 text-sm md:text-base lg:text-xl 2xl:text-4xl text-white leading-6 text-center bg-[#162D4E] rounded-lg py-2 m-2">Elemento</label>
-                                    <label class="w-64 h-12 2xl:h-16 text-sm lg:text-xl 2xl:text-4xl text-white leading-6 text-center bg-[#162D4E] rounded-lg py-2 m-2">Sub-Elemento</label>
+                                <div class="flex flex-row justify-center items-center w-3/6 pr-2">
+                                    <label class="w-3/6 h-14 2xl:h-16 text-xs md:text-sm lg:text-lg 2xl:text-2xl text-white leading-6 text-center bg-[#162D4E] rounded-lg py-2 m-2 flex justify-center items-center">Actividad</label>
+                                    <label class="w-3/6 h-14 2xl:h-16 text-xs md:text-sm lg:text-lg 2xl:text-2xl text-white leading-6 text-center bg-[#162D4E] rounded-lg py-2 m-2 flex justify-center items-center">Área</label>
+                                    <label class="w-3/6 h-14 2xl:h-16 text-xs md:text-sm lg:text-lg 2xl:text-2xl text-white leading-6 text-center bg-[#162D4E] rounded-lg py-2 m-2 flex justify-center items-center">Elemento</label>
+                                    <label class="w-3/6 h-14 2xl:h-16 text-xs md:text-sm lg:text-lg 2xl:text-2xl text-white leading-6 text-center bg-[#162D4E] rounded-lg py-2 m-2 flex justify-center items-center">Sub-Elemento</label>
                                 </div>
-                                <div class="flex justify-center w-3/6">
-                                    <label class="w-full text-sm md:text-base lg:text-xl 2xl:text-4xl text-white leading-6 text-center bg-[#162D4E] rounded-lg py-3 my-2">Avance</label>
+                                <div class="flex flex-row justify-center items-center w-3/6">
+                                    <label class="w-full h-14 2xl:h-16 text-xs md:text-sm lg:text-lg 2xl:text-2xl text-white leading-6 text-center bg-[#162D4E] rounded-lg py-2 my-2 flex justify-center items-center">Avance</label>
                                     <div class="self-center">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="#254260" class="bi bi-camera-fill ml-2 invisible" viewBox="0 0 16 16">
                                             <path d="M10.5 8.5a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z" />
@@ -177,16 +177,16 @@ else if (buttonReport == true)
                                     {
                                         <div class="flex w-full mt-2 px-16">
                                             <div class="flex justify-center w-3/6">
-                                                <label class="w-32 md:w-44 lg:w-52 xl:w-64 h-10 text-xs md:text:base lg:text-xl xl:text-2xl text-white leading-6 text-center bg-[#254260] p-1 m-2">@activity.ActivityName</label>
-                                                <label class="w-32 md:w-44 lg:w-52 xl:w-64 h-10 text-xs md:text:base lg:text-xl xl:text-2xl text-white leading-6 text-center bg-[#254260] p-1 m-2">@Areas.FirstOrDefault(x => x.IdArea == item.IdArea).AreaName</label>
-                                                <label class="w-32 md:w-44 lg:w-52 xl:w-64 h-10 text-xs md:text:base lg:text-xl xl:text-2xl text-white leading-6 text-center bg-[#254260] p-1 m-2">@element.ElementName</label>
-                                                <label class="w-32 md:w-44 lg:w-52 xl:w-64 h-10 text-xs md:text:base lg:text-xl xl:text-2xl text-white leading-6 text-center bg-[#254260] p-1 m-2">@subElementsSelect.FirstOrDefault(x => x.IdSubElement == item.IdSubElement).SubElementName</label>
+                                                <label class="w-32 md:w-44 lg:w-52 xl:w-64 h-8 text-sm md:text-base lg:text-lg 2xl:text-xl text-white leading-6 text-center bg-[#254260] rounded-lg py-1 m-2">@activity.ActivityName</label>
+                                                <label class="w-32 md:w-44 lg:w-52 xl:w-64 h-8 text-sm md:text-base lg:text-lg 2xl:text-xl text-white leading-6 text-center bg-[#254260] rounded-lg py-1 m-2">@Areas.FirstOrDefault(x => x.IdArea == item.IdArea).AreaName</label>
+                                                <label class="w-32 md:w-44 lg:w-52 xl:w-64 h-8 text-sm md:text-base lg:text-lg 2xl:text-xl text-white leading-6 text-center bg-[#254260] rounded-lg py-1 m-2">@element.ElementName</label>
+                                                <label class="w-32 md:w-44 lg:w-52 xl:w-64 h-8 text-sm md:text-base lg:text-lg 2xl:text-xl text-white leading-6 text-center bg-[#254260] rounded-lg py-1 m-2">@subElementsSelect.FirstOrDefault(x => x.IdSubElement == item.IdSubElement).SubElementName</label>
                                             </div>
                                             <div class="flex flex-row justify-center items-center w-3/6">
                                                 @if (progressLogs.FirstOrDefault(x => x.IdProgressReport == item.IdProgressReport)?.IdProgressLog != null)
                                                 {
-                                                    <div class="flex justify-end text-white w-[@greenPercentage[$"{item.IdProgressReport}"]%] bg-[#115D28] h-6">@progressLogs.FirstOrDefault(x => x.IdProgressReport == item.IdProgressReport).Pieces</div>
-                                                    <div class="flex justify-end text-white w-[@redPercentage[$"{item.IdProgressReport}"]%] bg-[#CB3030] h-6">@item.TotalPieces</div>
+                                                    <div class="flex justify-end text-white w-[@greenPercentage[$"{item.IdProgressReport}"]%] bg-[#115D28] h-5">@progressLogs.FirstOrDefault(x => x.IdProgressReport == item.IdProgressReport).Pieces</div>
+                                                    <div class="flex justify-end text-white w-[@redPercentage[$"{item.IdProgressReport}"]%] bg-[#CB3030] h-5">@item.TotalPieces</div>
                                                     <div class="self-center">
                                                         <button @onclick="() => CamareButton(item.IdProgressReport)">
                                                             <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="#254260" class="bi bi-camera-fill ml-2" viewBox="0 0 16 16">
