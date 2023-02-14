@@ -22,6 +22,9 @@ namespace Obra.Client.Pages
         private Dictionary<int, List<InfoAparmentIn>> _idsActivitySelect { get; set; } = new();
         public bool _isLoadingProcess { get; set; }
         private bool _isFullAparment { get; set; }
+        private bool _showPreviewFile { get; set; }
+        private byte[] _bytesPreviewFile { get; set; }
+        private const string PDF_FILE_NAME = "AvanceDepartamentoPorActividad.pdf";
         public ProgressOfApartmentsByActivity(ApplicationContext context, NavigationManager navigationManager, IActivitiesService activityService, IApartmentsService apartmentService, IProgressLogsService progressLogsService, IReportsService reportService, IJSRuntime jS)
         {
             _context = context;
@@ -38,6 +41,7 @@ namespace Obra.Client.Pages
             _context.Apartment = await _apartmentService.GetApartmentsAsync();
         }
         private void BackPage() => _navigationManager.NavigateTo("/ProjectOverview");
+        private void ChangeOpenModalPreview() => _showPreviewFile = _showPreviewFile ? false : true;
         private async void AddIdActivitySelect(int idActivity)
         {
 
@@ -126,6 +130,38 @@ namespace Obra.Client.Pages
             _isLoadingProcess = false;
             StateHasChanged();
         }
+        private async void PreviewFileReport()
+        {
+            _isLoadingProcess = true;
+            var listAparmentProgress = new List<AparmentProgress>();
+
+            foreach (var item in _idsActivitySelect)
+            {
+                foreach(var aparment in item.Value)
+                {
+                    listAparmentProgress.Add(new AparmentProgress
+                    {
+                        Activity_ = _context.Activity.Find(x => x.IdActivity == item.Key).ActivityName,
+                        ApartmentNumber = aparment.aparmentNumber,
+                        ApartmentProgress = aparment.porcentage.Item1
+                    });
+                }
+            }
+            var bytes = await _reportService.PostProgressOfAparmentByActivityPDFAsync(listAparmentProgress);
+            
+            if (bytes is not null)
+            {
+                _bytesPreviewFile = bytes;
+                _isLoadingProcess = false;
+                _showPreviewFile = true;
+                StateHasChanged();
+            }
+            else
+            {
+                _isLoadingProcess = false;   
+                StateHasChanged();
+            }
+        }
         private async void GeneratePDfPorgressaprment()
         {
             _isLoadingProcess = true;
@@ -148,7 +184,7 @@ namespace Obra.Client.Pages
             if (bytesForPDF != null)
             {
 
-                var fileName = "AvanceDepartamentoPorActividad.pdf";
+                var fileName = PDF_FILE_NAME;
                 var fileStream = new MemoryStream(bytesForPDF);
                 using var streamRef = new DotNetStreamReference(stream: fileStream);
                 await _JS.InvokeVoidAsync("downloadFileFromStream", fileName, streamRef);

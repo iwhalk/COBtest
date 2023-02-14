@@ -48,6 +48,23 @@
             URL.revokeObjectURL(url);
         }
     </script>
+    <script>
+        function CreateObjectURL(content, filename, contentType) {
+            const file = new File([content], filename, { type: contentType });
+            const exportUrl = URL.createObjectURL(file);
+            return exportUrl;
+        };
+        function RevokeObjectURL(exportUrl) {
+            URL.revokeObjectURL(exportUrl);
+        };
+    </script>
+    <script>
+        window.loadImage = (ref, id, url) => {
+            const img = document.getElementById(id);
+            img.onload = () => ref.invokeMethodAsync('UpdateCanvasAsync');
+            img.src = url;
+        }
+    </script>
 </body>
 
 </html>

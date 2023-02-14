@@ -22,6 +22,9 @@ namespace Obra.Client.Pages
         //Variable locales        
         public bool _isLoadingProcess { get; set; }
         private bool _isFullAparment { get; set; }
+        private bool _showPreviewFile { get; set; }
+        private byte[] _bytesPreviewFile { get; set; }
+        private const string PDF_FILE_NAME = "AvanceActividadPorDepartamento.pdf";
         public ProgressOfActivitiesByApartment(ApplicationContext context, NavigationManager navigationManager, IActivitiesService activityService, IApartmentsService apartmentService, IProgressLogsService progressLogsService, IReportsService reportService, IJSRuntime jS)
         {
             _context = context;
@@ -39,6 +42,7 @@ namespace Obra.Client.Pages
             await _reportService.GetProgressOfActivityByAparmentDataViewAsync(null);
         }
         private void BackPage() => _navigationManager.NavigateTo("/ProjectOverview");
+        private void ChangeOpenModalPreview() => _showPreviewFile = _showPreviewFile ? false : true;
         private async void AddIdAparmentSelect(int idAparment)
         {
             _isLoadingProcess = true;
@@ -125,10 +129,43 @@ namespace Obra.Client.Pages
             _isLoadingProcess = false;
             StateHasChanged();
         }
+        private async void PreviewFileReport()
+        {
+            _isLoadingProcess = true;
+            var listAparmentProgress = new List<ActivityProgressByAparment>();
+            foreach (var item in _idsAparmentSelect)
+            {
+                foreach (var activity in item.Value)
+                {
+                    listAparmentProgress.Add(new ActivityProgressByAparment
+                    {
+                        //Activity_ = _context.Activity.Find(x => x.ActivityName == item.).ActivityName,
+                        Activity_ = activity.activityNumber,
+                        ApartmentNumber = activity.aparmentNumber,
+                        ApartmentProgress = activity.porcentage.Item1
+                        
+                    });
+                }
+            }
+
+            var bytes = await _reportService.PostProgressOfActivityByParmentPDFAsync(listAparmentProgress);
+            
+            if (bytes is not null)
+            {
+                _bytesPreviewFile = bytes;
+                _isLoadingProcess = false;
+                _showPreviewFile = true;
+                StateHasChanged();
+            }
+            else
+            {
+                _isLoadingProcess = false;   
+                StateHasChanged();
+            }
+        }
         private async void GeneratePDfPorgressaprment()
         {
             var listAparmentProgress = new List<ActivityProgressByAparment>();
-
             foreach (var item in _idsAparmentSelect)
             {
                 foreach (var activity in item.Value)
@@ -149,7 +186,7 @@ namespace Obra.Client.Pages
             if (bytesForPDF != null)
             {
 
-                var fileName = "AvanceActividadPorDepartamento.pdf";
+                var fileName = PDF_FILE_NAME;
                 var fileStream = new MemoryStream(bytesForPDF);
                 using var streamRef = new DotNetStreamReference(stream: fileStream);
                 await _JS.InvokeVoidAsync("downloadFileFromStream", fileName, streamRef);
