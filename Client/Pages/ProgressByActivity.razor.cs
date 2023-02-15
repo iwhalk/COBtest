@@ -114,8 +114,7 @@ namespace Obra.Client.Pages
                 _bytesPreviewFile = bytes;
                 _isLoadingProcess = false;
                 _showPreviewFile = true;
-                StateHasChanged();
-                //_js.Invoke<string>("CreateObjectURL", bytes, PDF_FILE_NAME , "application/pdf");
+                StateHasChanged();                
             }
             else
             {
