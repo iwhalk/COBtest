@@ -67,6 +67,11 @@ namespace Obra.Client.Pages
         Dictionary<string, string> greenPercentage { get; set; } = new();
         Dictionary<string, string> redPercentage { get; set; } = new();
 
+        
+        private bool _showPreviewFile { get; set; }
+        private byte[] _bytesPreviewFile { get; set; }
+        private const string PDF_FILE_NAME = "DetallePorActividad.pdf"; 
+        private void ChangeOpenModalPreview() => _showPreviewFile = _showPreviewFile ? false : true;
         public ActivityDetails(ApplicationContext context, IApartmentsService apartmentsService, IActivitiesService activitiesService, IAreasService areasService, IElementsService elementsService, ISubElementsService subElementsService, IProgressReportService progressReportService, IProgressLogsService progressLogsService, IReportsService reportesService, IJSRuntime jS, IToastService toastService)
         {
             _context = context;
@@ -437,10 +442,14 @@ namespace Obra.Client.Pages
 
             if (pdf != null)
             {
-                var fileName = "DetallePorActividad.pdf";
-                var fileStream = new MemoryStream(pdf);
-                using var streamRef = new DotNetStreamReference(stream: fileStream);
-                await _JS.InvokeVoidAsync("downloadFileFromStream", fileName, streamRef);
+                _bytesPreviewFile = pdf;
+                loading = false;
+                _showPreviewFile = true;
+                StateHasChanged();
+                // var fileName = "DetallePorActividad.pdf";
+                // var fileStream = new MemoryStream(pdf);
+                // using var streamRef = new DotNetStreamReference(stream: fileStream);
+                // await _JS.InvokeVoidAsync("downloadFileFromStream", fileName, streamRef);
             }
             else
             {
@@ -695,6 +704,17 @@ namespace Obra.Client.Pages
             }
         }
 
+        public bool isContentPhoto(int id)
+        {
+            var aux = progressLogs.FirstOrDefault(x => x.IdProgressLog == id);
+            if (aux is null) return false;
+            if (aux.Observation != null && aux.IdBlobs.Count > 0)
+            {
+                return true;
+            }
+
+            return false;
+        }
         public async Task CameraButton(int id)
         {
             await ShowMessage();

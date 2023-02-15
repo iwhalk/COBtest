@@ -64,6 +64,11 @@ namespace Obra.Client.Pages
 
         private bool isFirstView { get; set; } = true;
         private bool showModal { get; set; } = false;
+        
+        private bool _showPreviewFile { get; set; }
+        private byte[] _bytesPreviewFile { get; set; }
+        private const string PDF_FILE_NAME = "DetallePorDepartemento.pdf"; 
+        private void ChangeOpenModalPreview() => _showPreviewFile = _showPreviewFile ? false : true;
 
         public DetailedSummaryByApartment(ApplicationContext context, IApartmentsService apartmentsService, IActivitiesService activitiesService, IAreasService areasService, IElementsService elementsService, ISubElementsService subElementsService, IProgressReportService progressReportService, IProgressLogsService progressLogsService, IReportsService reportesService, IJSRuntime jS, IToastService toastService)
         {
@@ -413,10 +418,14 @@ namespace Obra.Client.Pages
 
             if (pdf != null)
             {
-                var fileName = "DetallePorDepartemento.pdf";
-                var fileStream = new MemoryStream(pdf);
-                using var streamRef = new DotNetStreamReference(stream: fileStream);
-                await _JS.InvokeVoidAsync("downloadFileFromStream", fileName, streamRef);
+                _bytesPreviewFile = pdf;
+                loading = false;
+                _showPreviewFile = true;
+                StateHasChanged();
+                // var fileName = "DetallePorDepartemento.pdf";
+                // var fileStream = new MemoryStream(pdf);
+                // using var streamRef = new DotNetStreamReference(stream: fileStream);
+                // await _JS.InvokeVoidAsync("downloadFileFromStream", fileName, streamRef);
             }
             else
             {
@@ -663,6 +672,22 @@ namespace Obra.Client.Pages
                     redPercentage.Add($"{item.IdProgressReport}", 100.ToString());
                 }
             }
+        }
+
+        public bool isContentPhoto(int idProgreesReport)
+        {
+            int id = progressLogs.FirstOrDefault(x => x.IdProgressReport == idProgreesReport).IdProgressLog;
+
+            if (id != null)
+            {
+                var aux = progressLogs.FirstOrDefault(x => x.IdProgressLog == id);
+                if (aux is null) return false;
+                if (aux.Observation != null && aux.IdBlobs.Count > 0)
+                {
+                    return true;
+                }
+            }
+            return false;
         }
 
         public async Task CamareButton(int idProgreesReport)

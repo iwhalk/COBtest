@@ -188,12 +188,24 @@ else if (buttonReport == true)
                                                     <div class="flex justify-end text-white w-[@greenPercentage[$"{item.IdProgressReport}"]%] bg-[#115D28] h-5">@progressLogs.FirstOrDefault(x => x.IdProgressReport == item.IdProgressReport).Pieces</div>
                                                     <div class="flex justify-end text-white w-[@redPercentage[$"{item.IdProgressReport}"]%] bg-[#CB3030] h-5">@item.TotalPieces</div>
                                                     <div class="self-center">
-                                                        <button @onclick="() => CamareButton(item.IdProgressReport)">
-                                                            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="#254260" class="bi bi-camera-fill ml-2" viewBox="0 0 16 16">
-                                                                <path d="M10.5 8.5a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z" />
-                                                                <path d="M2 4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2h-1.172a2 2 0 0 1-1.414-.586l-.828-.828A2 2 0 0 0 9.172 2H6.828a2 2 0 0 0-1.414.586l-.828.828A2 2 0 0 1 3.172 4H2zm.5 2a.5.5 0 1 1 0-1 .5.5 0 0 1 0 1zm9 2.5a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0z" />
-                                                            </svg>
-                                                        </button>
+                                                        @if (isContentPhoto(item.IdProgressReport))
+                                                        {
+                                                            <button @onclick="() => CamareButton(item.IdProgressReport)">
+                                                                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32"  fill="#254260" class="bi bi-camera-fill ml-2" viewBox="0 0 16 16">
+                                                                    <path d="M10.5 8.5a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z"/>
+                                                                    <path d="M2 4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2h-1.172a2 2 0 0 1-1.414-.586l-.828-.828A2 2 0 0 0 9.172 2H6.828a2 2 0 0 0-1.414.586l-.828.828A2 2 0 0 1 3.172 4H2zm.5 2a.5.5 0 1 1 0-1 .5.5 0 0 1 0 1zm9 2.5a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0z"/>
+                                                                </svg>
+                                                            </button>
+                                                        }
+                                                        else
+                                                        {
+                                                            <button @onclick="() => CamareButton(item.IdProgressReport)" disabled="true">
+                                                                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" class="bi bi-camera-fill ml-2 fill-gray-400" viewBox="0 0 16 16">
+                                                                    <path d="M10.5 8.5a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z"/>
+                                                                    <path d="M2 4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2h-1.172a2 2 0 0 1-1.414-.586l-.828-.828A2 2 0 0 0 9.172 2H6.828a2 2 0 0 0-1.414.586l-.828.828A2 2 0 0 1 3.172 4H2zm.5 2a.5.5 0 1 1 0-1 .5.5 0 0 1 0 1zm9 2.5a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0z"/>
+                                                                </svg>
+                                                            </button>
+                                                        }
                                                     </div>
                                                 }
                                                 else
@@ -201,10 +213,10 @@ else if (buttonReport == true)
                                                     <div class="flex justify-end text-white w-[@greenPercentage[$"{item.IdProgressReport}"]%] bg-[#115D28] h-6"></div>
                                                     <div class="flex justify-end text-white w-[@redPercentage[$"{item.IdProgressReport}"]%] bg-[#CB3030] h-6">@item.TotalPieces</div>
                                                     <div class="self-center">
-                                                        <button @onclick="() => NotificationImages()">
-                                                            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="#254260" class="bi bi-camera-fill ml-2" viewBox="0 0 16 16">
-                                                                <path d="M10.5 8.5a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z" />
-                                                                <path d="M2 4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2h-1.172a2 2 0 0 1-1.414-.586l-.828-.828A2 2 0 0 0 9.172 2H6.828a2 2 0 0 0-1.414.586l-.828.828A2 2 0 0 1 3.172 4H2zm.5 2a.5.5 0 1 1 0-1 .5.5 0 0 1 0 1zm9 2.5a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0z" />
+                                                        <button @onclick="() => NotificationImages()" disabled="true">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" class="bi bi-camera-fill ml-2 fill-gray-400" viewBox="0 0 16 16">
+                                                                <path d="M10.5 8.5a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z"/>
+                                                                <path d="M2 4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2h-1.172a2 2 0 0 1-1.414-.586l-.828-.828A2 2 0 0 0 9.172 2H6.828a2 2 0 0 0-1.414.586l-.828.828A2 2 0 0 1 3.172 4H2zm.5 2a.5.5 0 1 1 0-1 .5.5 0 0 1 0 1zm9 2.5a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0z"/>
                                                             </svg>
                                                         </button>
                                                     </div>
@@ -253,12 +265,24 @@ else if (buttonReport == true)
                                                     <div class="flex justify-end text-white w-[@greenPercentage[$"{item.IdProgressReport}"]%] bg-[#115D28] h-6">@progressLogs.FirstOrDefault(x => x.IdProgressReport == item.IdProgressReport).Pieces</div>
                                                     <div class="flex justify-end text-white w-[@redPercentage[$"{item.IdProgressReport}"]%] bg-[#CB3030] h-6">@item.TotalPieces</div>
                                                     <div class="self-center">
-                                                        <button @onclick="() => CamareButton(item.IdProgressReport)">
-                                                            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="#254260" class="bi bi-camera-fill ml-2" viewBox="0 0 16 16">
-                                                                <path d="M10.5 8.5a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z" />
-                                                                <path d="M2 4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2h-1.172a2 2 0 0 1-1.414-.586l-.828-.828A2 2 0 0 0 9.172 2H6.828a2 2 0 0 0-1.414.586l-.828.828A2 2 0 0 1 3.172 4H2zm.5 2a.5.5 0 1 1 0-1 .5.5 0 0 1 0 1zm9 2.5a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0z" />
-                                                            </svg>
-                                                        </button>
+                                                         @if (isContentPhoto(item.IdProgressReport))
+                                                         {
+                                                             <button @onclick="() => CamareButton(item.IdProgressReport)">
+                                                                 <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="#254260" class="bi bi-camera-fill ml-2" viewBox="0 0 16 16">
+                                                                     <path d="M10.5 8.5a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z"/>
+                                                                     <path d="M2 4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2h-1.172a2 2 0 0 1-1.414-.586l-.828-.828A2 2 0 0 0 9.172 2H6.828a2 2 0 0 0-1.414.586l-.828.828A2 2 0 0 1 3.172 4H2zm.5 2a.5.5 0 1 1 0-1 .5.5 0 0 1 0 1zm9 2.5a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0z"/>
+                                                                 </svg>
+                                                             </button>
+                                                         }
+                                                         else
+                                                         {
+                                                             <button @onclick="() => NotificationImages()" disabled="">
+                                                                 <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" class="bi bi-camera-fill ml-2 fill-gray-600" viewBox="0 0 16 16">
+                                                                     <path d="M10.5 8.5a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z" />
+                                                                     <path d="M2 4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2h-1.172a2 2 0 0 1-1.414-.586l-.828-.828A2 2 0 0 0 9.172 2H6.828a2 2 0 0 0-1.414.586l-.828.828A2 2 0 0 1 3.172 4H2zm.5 2a.5.5 0 1 1 0-1 .5.5 0 0 1 0 1zm9 2.5a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0z" />
+                                                                 </svg>
+                                                             </button>
+                                                         }
                                                     </div>
                                                 }
                                                 else
@@ -266,8 +290,8 @@ else if (buttonReport == true)
                                                     <div class="flex justify-end text-white w-[@greenPercentage[$"{item.IdProgressReport}"]%] bg-[#115D28] h-6"></div>
                                                     <div class="flex justify-end text-white w-[@redPercentage[$"{item.IdProgressReport}"]%] bg-[#CB3030] h-6">@item.TotalPieces</div>
                                                     <div class="self-center">
-                                                        <button @onclick="() => NotificationImages()">
-                                                            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="#254260" class="bi bi-camera-fill ml-2" viewBox="0 0 16 16">
+                                                        <button @onclick="() => NotificationImages()" disabled="">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" class="bi bi-camera-fill ml-2 fill-gray-600" viewBox="0 0 16 16">
                                                                 <path d="M10.5 8.5a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z" />
                                                                 <path d="M2 4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2h-1.172a2 2 0 0 1-1.414-.586l-.828-.828A2 2 0 0 0 9.172 2H6.828a2 2 0 0 0-1.414.586l-.828.828A2 2 0 0 1 3.172 4H2zm.5 2a.5.5 0 1 1 0-1 .5.5 0 0 1 0 1zm9 2.5a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0z" />
                                                             </svg>
@@ -325,6 +349,10 @@ else if (buttonReport == true)
                         <svg class="fill-current h-6 w-6 text-yellow-500" role="button" @onclick="() => ShowMessage()" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><title>Close</title><path d="M14.348 14.849a1.2 1.2 0 0 1-1.697 0L10 11.819l-2.651 3.029a1.2 1.2 0 1 1-1.697-1.697l2.758-3.15-2.759-3.152a1.2 1.2 0 1 1 1.697-1.697L10 8.183l2.651-3.031a1.2 1.2 0 1 1 1.697 1.697l-2.758 3.152 2.758 3.15a1.2 1.2 0 0 1 0 1.698z" /></svg>
                     </span>
                 </div>
+            }
+            @if (_showPreviewFile)
+            {
+                <PreviewFile CloseModalLessor="@ChangeOpenModalPreview" Content="@_bytesPreviewFile" PdfName="@PDF_FILE_NAME" ShowModal="@_showPreviewFile"></PreviewFile>
             }
             <div class="w-full flex justify-end py-3">
                 <div class="w-full flex py-3 fixed inset-x-0 bottom-12">
