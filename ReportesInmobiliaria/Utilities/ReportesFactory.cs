@@ -138,6 +138,8 @@ namespace ReportesObra.Utilities
             pdfRenderer.RenderDocument();
 
             using MemoryStream ms = new();
+            CreateWatermarkImage(pdfRenderer);
+
             pdfRenderer.Save(ms, false);
 
             return ms.ToArray();
