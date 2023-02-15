@@ -28,19 +28,6 @@ public partial class PreviewFile : ComponentBase
             BlobUrl = _js.Invoke<string>("CreateObjectURL", Content, PdfName , "application/pdf");
         }
     }
-    
-    // public override async Task SetParametersAsync(ParameterView parameters)
-    // {
-    //     if (parameters.TryGetValue<byte[]>(nameof(Content), out var value))
-    //     {
-    //         if (value is not null)
-    //         {
-    //             StateHasChanged();
-    //         }
-    //     }
-    //     await base.SetParametersAsync(parameters);
-    // }
-
     public void Dispose()
     {
         _js.Invoke<string>("RevokeObjectURL", BlobUrl);

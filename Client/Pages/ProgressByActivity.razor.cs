@@ -21,8 +21,9 @@ namespace Obra.Client.Pages
         private bool _showPreviewFile { get; set; }
         private byte[] _bytesPreviewFile { get; set; }
         private const string PDF_FILE_NAME = "AvancePorActividad.pdf"; 
+        private readonly IJSInProcessRuntime _js;
 
-        public ProgressByActivity(ApplicationContext context, NavigationManager navigationManager, IActivitiesService activityService, IProgressLogsService progressLogsService, IReportsService _reportService, IJSRuntime jS)
+        public ProgressByActivity(ApplicationContext context, NavigationManager navigationManager, IActivitiesService activityService, IProgressLogsService progressLogsService, IReportsService _reportService, IJSRuntime jS, IJSInProcessRuntime js)
         {
             _context = context;
             _activityService = activityService;
@@ -30,6 +31,7 @@ namespace Obra.Client.Pages
             _progressLogsService = progressLogsService;
             this._reportService = _reportService;            
             _JS = jS;
+            _js = js;
         }
         protected async override Task OnInitializedAsync()
         {
@@ -113,6 +115,7 @@ namespace Obra.Client.Pages
                 _isLoadingProcess = false;
                 _showPreviewFile = true;
                 StateHasChanged();
+                //_js.Invoke<string>("CreateObjectURL", bytes, PDF_FILE_NAME , "application/pdf");
             }
             else
             {
