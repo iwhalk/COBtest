@@ -139,12 +139,12 @@ else if (buttonReport == true)
     @if (loading == false)
     {
         @*Segunda Vista*@
-        <div class="pt-20 pb-12 h-5/6 fixed inset-0 flex flex-col justify-center items-center self-start overflow-y-scroll overflow-x-hidden">
+        <div class="pt-20 pb-12 fixed inset-0 flex flex-col items-center self-start overflow-y-scroll overflow-x-hidden">
             @if (subElementsNulls == false)
             {
                 <div class="my-4 w-screen">
                     <div class="pt-10 flex justify-center">
-                        <label class="text-sm md:text-base lg:text-xl 2xl:text-4xl text-white leading-6 text-center bg-[#162D4E] rounded-lg py-2 px-24">Reporte Avance De @activity.ActivityName</label>
+                        <label class="text-sm md:text-base lg:text-xl 2xl:text-4xl text-white leading-6 text-center bg-[#162D4E] rounded-lg py-3 px-24">Reporte Avance De @activity.ActivityName</label>
                     </div>
                     @if (greenPercentage != null && redPercentage != null)
                     {
@@ -165,14 +165,14 @@ else if (buttonReport == true)
                                 </div>
                             </div>
                         </div>
-                        <div class="overflow-y-scroll h-[19rem] lg:h-[10rem] xl:h-[20rem]">
+                        <div class="overflow-y-scroll h-[19rem] lg:h-[10rem] xl:h-[15rem] 2xl:h-[20rem]">
                             @foreach (var item in apartmentsSelect)
                             {
                                 @foreach (var progress in progressReports)
                                 {
                                     @if (progress.IdApartment == item.IdApartment)
                                     {
-                                        <div class="flex w-full px-16">
+                                        <div class="flex w-full mt-2 px-16">
                                             <div class="flex justify-center w-3/6">
                                                 @if (@Areas.FirstOrDefault(x => x.IdArea == progress.IdArea).AreaName == "Recamara Principal" || @Areas.FirstOrDefault(x => x.IdArea == progress.IdArea).AreaName == "Cuarto de Lavado")
                                                 {
@@ -237,11 +237,6 @@ else if (buttonReport == true)
                         </div>
                     }
                 </div>
-                <div class="w-full flex justify-end py-2">
-                    <div class="w-full flex inset-x-0 bottom-12">
-                        <button @onclick="() => ChangeView()" class="mx-auto bg-[#B9352E] hover:bg-red-500 w-40 p-2 rounded-2xl text-base md:text-lg text-white font-medium leading-6 border hover:border-white">Descargar</button>
-                    </div>
-                </div>
             }
             else
             {
@@ -267,14 +262,14 @@ else if (buttonReport == true)
                                 </div>
                             </div>
                         </div>
-                        <div class="overflow-y-scroll h-[20rem]">
+                        <div class="overflow-y-scroll h-[19rem] lg:h-[10rem] xl:h-[15rem] 2xl:h-[20rem]">
                             @foreach (var item in apartmentsSelect)
                             {
                                 @foreach (var progress in progressReports)
                                 {
                                     @if (progress.IdApartment == item.IdApartment)
                                     {
-                                        <div class="flex w-full px-16">
+                                        <div class="flex w-full mt-2 px-16">
                                             <div class="flex justify-center w-3/6">
                                                 @if (@Areas.FirstOrDefault(x => x.IdArea == progress.IdArea).AreaName == "Recamara Principal" || @Areas.FirstOrDefault(x => x.IdArea == progress.IdArea).AreaName == "Cuarto de Lavado")
                                                 {
@@ -330,11 +325,6 @@ else if (buttonReport == true)
                         </div>
                     }
                 </div>
-                <div class="w-full flex justify-end py-2">
-                    <div class="w-full flex inset-x-0 bottom-12">
-                        <button @onclick="() => ChangeView()" class="mx-auto bg-[#B9352E] hover:bg-red-500 w-40 p-2 rounded-2xl text-lg text-white font-medium leading-6 border hover:border-white">Descargar</button>
-                    </div>
-                </div>
             }
             @if (showModal == true)
             {
@@ -380,6 +370,11 @@ else if (buttonReport == true)
                     </span>
                 </div>
             }
+            <div class="w-full flex justify-end py-3">
+                <div class="w-full flex py-3 fixed inset-x-0 bottom-12">
+                        <button @onclick="() => ChangeView()" class="mx-auto bg-[#B9352E] hover:bg-red-500 w-40 p-2 rounded-2xl text-lg text-white font-medium leading-6 border hover:border-white">Descargar</button>
+                    </div>
+                </div>
         </div>
         <button @onclick="() => GoBack()" class="fixed z-10 inset-x-1 top-20 w-12">
 
