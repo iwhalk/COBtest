@@ -13,7 +13,7 @@
                     <div>
                         <h1 class="rounded-xl text-xs md:text-base xl:text-xl text-white font-medium leading-6 bg-[#162D4E] text-center py-2">Actividad</h1>
                     </div>
-                    <div class="flex justify-center rounded-br-2xl-2xl overflow-y-scroll xl:overflow-y-hidden overflow-x-hidden h-4/6" style="direction: ltr;">
+                    <div class="flex justify-center rounded-br-2xl-2xl overflow-y-scroll 2xl:overflow-y-hidden overflow-x-hidden h-4/6" style="direction: ltr;">
                         <div>
                             <div class="grid grid-col-1 gap-1 p-1 w-[5rem] sm:w-[9.5rem] md:w-[11rem] lg:w-[15rem]  xl:w-[19rem]">
                                 @if (activities != null)
@@ -174,9 +174,32 @@ else if (buttonReport == true)
                                     {
                                         <div class="flex w-full px-16">
                                             <div class="flex justify-center w-3/6">
-                                                <label class="w-80 h-8 text-sm md:text-base lg:text-lg 2xl:text-xl text-white leading-6 text-center bg-[#254260] rounded-lg py-1 m-2">@Areas.FirstOrDefault(x => x.IdArea == progress.IdArea).AreaName</label>
-                                                <label class="w-80 h-8 text-sm md:text-base lg:text-lg 2xl:text-xl text-white leading-6 text-center bg-[#254260] rounded-lg py-1 m-2">@element.ElementName</label>
-                                                <label class="w-80 h-8 text-sm md:text-base lg:text-lg 2xl:text-xl text-white leading-6 text-center bg-[#254260] rounded-lg py-1 m-2">@subElementsSelect.FirstOrDefault(x => x.IdSubElement == progress.IdSubElement).SubElementName</label>
+                                                @if (@Areas.FirstOrDefault(x => x.IdArea == progress.IdArea).AreaName == "Recamara Principal" || @Areas.FirstOrDefault(x => x.IdArea == progress.IdArea).AreaName == "Cuarto de Lavado")
+                                                {
+                                                    <label class="w-80 h-8 text-xs xl:text-sm 2xl:text-lg text-white leading-6 text-center bg-[#254260] rounded-lg py-1 m-2">@Areas.FirstOrDefault(x => x.IdArea == progress.IdArea).AreaName</label>
+                                                }
+                                                else
+                                                {
+                                                    <label class="w-80 h-8 text-sm md:text-base lg:text-lg 2xl:text-xl text-white leading-6 text-center bg-[#254260] rounded-lg py-1 m-2">@Areas.FirstOrDefault(x => x.IdArea == progress.IdArea).AreaName</label>
+                                                }
+
+                                                @if (@element.ElementName == "Cielo Raso (Falso Techo)" || @element.ElementName == "Llave Mezcladora")
+                                                {
+                                                    <label class="w-80 h-8 text-xs xl:text-sm 2xl:text-lg text-white leading-6 text-center bg-[#254260] rounded-lg py-1 m-2">@element.ElementName</label>
+                                                }
+                                                else
+                                                {
+                                                    <label class="w-80 h-8 text-sm md:text-base lg:text-lg 2xl:text-xl text-white leading-6 text-center bg-[#254260] rounded-lg py-1 m-2">@element.ElementName</label>
+                                                }
+
+                                                @if (@subElementsSelect.FirstOrDefault(x => x.IdSubElement == progress.IdSubElement).SubElementName == "Mortero de Nivelación" || @subElementsSelect.FirstOrDefault(x => x.IdSubElement == progress.IdSubElement).SubElementName == "Riel - Corredera")
+                                                {
+                                                    <label class="w-80 h-8 text-xs 2xl:text-base text-white leading-6 text-center bg-[#254260] rounded-lg py-1 m-2">@subElementsSelect.FirstOrDefault(x => x.IdSubElement == progress.IdSubElement).SubElementName</label>
+                                                }
+                                                else
+                                                {
+                                                    <label class="w-80 h-8 text-sm md:text-base lg:text-lg 2xl:text-xl text-white leading-6 text-center bg-[#254260] rounded-lg py-1 m-2">@subElementsSelect.FirstOrDefault(x => x.IdSubElement == progress.IdSubElement).SubElementName</label>
+                                                }
                                                 <label class="w-80 h-8 text-sm md:text-base lg:text-lg 2xl:text-xl text-white leading-6 text-center bg-[#254260] rounded-lg py-1 m-2">@item.ApartmentNumber</label>
                                             </div>
                                             <div class="flex flex-row justify-center items-center w-3/6">
@@ -253,9 +276,24 @@ else if (buttonReport == true)
                                     {
                                         <div class="flex w-full px-16">
                                             <div class="flex justify-center w-3/6">
-                                                <label class="w-3/6 h-8 text-sm md:text-base lg:text-lg 2xl:text-xl text-white leading-6 text-center bg-[#254260] rounded-lg py-1 m-2">@Areas.FirstOrDefault(x => x.IdArea == progress.IdArea).AreaName</label>
-                                                <label class="w-3/6 h-8 text-sm md:text-base lg:text-lg 2xl:text-xl text-white leading-6 text-center bg-[#254260] rounded-lg py-1 m-2">@element.ElementName</label>
-                                                <label class="w-3/6 h-8 text-sm md:text-base lg:text-lg 2xl:text-xl text-white leading-6 text-center bg-[#254260] rounded-lg py-1 m-2">@item.ApartmentNumber</label>
+                                                @if (@Areas.FirstOrDefault(x => x.IdArea == progress.IdArea).AreaName == "Recamara Principal" || @Areas.FirstOrDefault(x => x.IdArea == progress.IdArea).AreaName == "Cuarto de Lavado")
+                                                {
+                                                    <label class="w-80 h-8 text-xs xl:text-sm 2xl:text-lg text-white leading-6 text-center bg-[#254260] rounded-lg py-1 m-2">@Areas.FirstOrDefault(x => x.IdArea == progress.IdArea).AreaName</label>
+                                                }
+                                                else
+                                                {
+                                                    <label class="w-80 h-8 text-sm md:text-base lg:text-lg 2xl:text-xl text-white leading-6 text-center bg-[#254260] rounded-lg py-1 m-2">@Areas.FirstOrDefault(x => x.IdArea == progress.IdArea).AreaName</label>
+                                                }
+
+                                                @if (@element.ElementName == "Cielo Raso (Falso Techo)" || @element.ElementName == "Llave Mezcladora")
+                                                {
+                                                    <label class="w-80 h-8 text-xs xl:text-sm 2xl:text-lg text-white leading-6 text-center bg-[#254260] rounded-lg py-1 m-2">@element.ElementName</label>
+                                                }
+                                                else
+                                                {
+                                                    <label class="w-80 h-8 text-sm md:text-base lg:text-lg 2xl:text-xl text-white leading-6 text-center bg-[#254260] rounded-lg py-1 m-2">@element.ElementName</label>
+                                                }
+                                                <label class="w-80 h-8 text-sm md:text-base lg:text-lg 2xl:text-xl text-white leading-6 text-center bg-[#254260] rounded-lg py-1 m-2">@item.ApartmentNumber</label>
                                             </div>
                                             <div class="flex flex-row justify-center items-center w-3/6">
                                                 @if (progressLogs.FirstOrDefault(x => x.IdProgressReport == progress.IdProgressReport)?.IdProgressLog != null)
