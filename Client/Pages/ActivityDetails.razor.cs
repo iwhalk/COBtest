@@ -20,10 +20,10 @@ namespace Obra.Client.Pages
         private readonly IReportsService _reportesService;
         private readonly IJSRuntime _JS;
         private readonly IToastService _toastService;
-        private List<Apartment> apartments { get; set; }
+        private List<Apartment> apartments { get; set; } = new List<Apartment>();
         private List<SharedLibrary.Models.Activity> activities { get; set; }
         private List<Element> elements { get; set; } = new List<Element>();
-        private List<SubElement> subElements { get; set; }
+        private List<SubElement> subElements { get; set; } = new List<SubElement>();
 
         private List<int> _idsAparmentSelect { get; set; } = new();
         private List<int> _idsActivitiesSelect { get; set; } = new();

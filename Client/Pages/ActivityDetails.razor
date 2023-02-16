@@ -20,78 +20,80 @@
                                 <h1 class="rounded-xl text-xs md:text-base xl:text-xl text-white font-medium leading-6 bg-[#162D4E] text-center py-2">Elemento</h1>
                             </div>
                         }
+                        @if (subElements.Count() != 0)
+                        {
+                            <div class="p-1 w-[19rem]">
+                                <h1 class="rounded-xl text-xs md:text-base xl:text-xl text-white font-medium leading-6 bg-[#162D4E] text-center py-2">SubElemento</h1>
+                            </div>
+                        }
+                        @if (department == true)
+                        {
+                            <div class="p-1 w-[19rem]">
+                                <h1 class="rounded-xl text-xs md:text-base xl:text-xl text-white font-medium leading-6 bg-[#162D4E] text-center py-2">Departamento</h1>
+                            </div>
+                        }
                     </div>
                 </div>
-                <div class="mx-1 flex justify-content-center h-5/6 overflow-y-scroll">
-                    <div class="flex justify-center rounded-br-2xl-2xl" style="direction: ltr;">
-                        <div class="flex justify-center">
-                            <div class="p-1 flex justify-items-center flow-root">
-                                @if (activities != null)
-                                {
-                                    @foreach (var activity in activities)
+                <div class="mx-1 flex justify-content-center h-5/6">
+                    <div class="overflow-y-scroll">
+                        <div class="flex justify-center rounded-br-2xl-2xl" style="direction: ltr;">
+                            <div class="flex justify-center">
+                                <div class="p-1 flex justify-items-center flow-root">
+                                    @if (activities != null)
                                     {
-                                        <div class="flex justify-items-stretch">
-                                            <button @onclick="() => AddIdSelect(activity.IdActivity, 2)" class="@(_idsActivitiesSelect.Contains(activity.IdActivity) ? "bg-[#9CA2A8]" : "bg-[#55595E]") @(_idsActivitiesSelect.Contains(activity.IdActivity) ? "h-48" : "h-12") w-[19rem] border border-blue-700">
-                                                <h1 class="text-xs md:text-base text-white font-medium leading-6 text-center p-1">@activity.ActivityName</h1>
-                                            </button>
-
-                                            @if (_idsActivitiesSelect.Contains(activity.IdActivity) == true)
-                                            {
-                                                @if (elements.Count() != 0)
-                                                {
-                                                    <div class="flex-column flow-root overflow-y-scroll h-48">
-                                                        @foreach (var element in elements)
-                                                        {
-                                                            @if (element.IdActivity == activity.IdActivity)
-                                                            {
-                                                                <button @onclick="() => AddIdSelect(element.IdElement, 3)" class="@(_idsElementsSelect.Contains(element.IdElement) ? "bg-[#9CA2A8]" : "bg-[#55595E]") h-24 w-[17.4rem] border border-blue-700 grid">
-                                                                    <h1 class="text-xs md:text-base md:text-base text-white font-medium leading-6 text-center p-1">@element.ElementName</h1>
-                                                                </button>
-                                                            }
-                                                        }
-                                                    </div>
-                                                }
-                                            }
-                                        </div>
-                                    }
-                                }
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                @if (showSubElements == true)
-                {
-                    @if (subElements != null && subElements.Count() > 0)
-                    {
-                        <div class="mx-1">
-                            <div>
-                                <h1 class="rounded-xl text-xs md:text-base xl:text-xl text-white font-medium leading-6 bg-[#162D4E] text-center py-2">Sub-Elemento</h1>
-                            </div>
-                            <div class="flex justify-center rounded-br-2xl-2xl overflow-y-scroll lg:overflow-y-hidden overflow-x-hidden h-4/6" style="direction: ltr;">
-                                <div>
-                                    <div class="grid grid-col-1 gap-1 p-1 w-[5rem] sm:w-[9.5rem] md:w-[11rem] lg:w-[15rem]  xl:w-[19rem]">
-                                        <button @onclick="() => AllSubElements()" class="@(allSubElements ? "bg-[#9CA2A8]" : "bg-[#55595E]")">
-                                            <h1 class="text-xs md:text-base md:text-base text-white font-medium leading-6 text-center p-1">TODOS</h1>
-                                        </button>
-                                        @foreach (var subElement in subElements)
+                                        @foreach (var activity in activities)
                                         {
-                                            <button @onclick="() => AddIdSelect(subElement.IdSubElement, 4)" class="@(_idsSubElementsSelect.Contains(subElement.IdSubElement) ? "bg-[#9CA2A8]" : "bg-[#55595E]")">
-                                                <h1 class="text-xs md:text-base md:text-base text-white font-medium leading-6 text-center p-1">@subElement.SubElementName</h1>
-                                            </button>
+                                            <div class="flex justify-items-stretch">
+                                                <button @onclick="() => AddIdSelect(activity.IdActivity, 2)" class="@(_idsActivitiesSelect.Contains(activity.IdActivity) ? "bg-[#9CA2A8]" : "bg-[#55595E]") @(_idsActivitiesSelect.Contains(activity.IdActivity) ? "h-48" : "h-12") w-[19rem] border border-blue-700">
+                                                    <h1 class="text-xs md:text-base text-white font-medium leading-6 text-center p-1">@activity.ActivityName</h1>
+                                                </button>
+
+                                                @if (_idsActivitiesSelect.Contains(activity.IdActivity) == true)
+                                                {
+                                                    @if (elements.Count() != 0)
+                                                    {
+                                                        <div class="flex-column flow-root overflow-y-scroll h-48">
+                                                            @foreach (var element in elements)
+                                                            {
+                                                                @if (element.IdActivity == activity.IdActivity)
+                                                                {
+                                                                    <div class="flex justify-items-stretch">
+                                                                        <button @onclick="() => AddIdSelect(element.IdElement, 3)" class="@(_idsElementsSelect.Contains(element.IdElement) ? "bg-[#9CA2A8]" : "bg-[#55595E]") h-24 w-[17.4rem] border border-blue-700 grid">
+                                                                            <h1 class="text-xs md:text-base md:text-base text-white font-medium leading-6 text-center p-1">@element.ElementName</h1>
+                                                                        </button>
+
+                                                                        @if (_idsElementsSelect.Contains(element.IdElement) == true)
+                                                                        {
+                                                                            @if (subElements.Count() != 0)
+                                                                            {
+                                                                                <div class="flex-column flow-root overflow-y-scroll h-24">
+                                                                                    @foreach (var subElement in subElements)
+                                                                                    {
+                                                                                        <div class="flex justify-items-stretch">
+                                                                                            <button @onclick="() => AddIdSelect(subElement.IdSubElement, 4)" class="@(_idsSubElementsSelect.Contains(subElement.IdSubElement) ? "bg-[#9CA2A8]" : "bg-[#55595E]") h-12 w-[17.4rem] border border-blue-700 grid">
+                                                                                                <h1 class="text-xs md:text-base md:text-base text-white font-medium leading-6 text-center p-1">@subElement.SubElementName</h1>
+                                                                                            </button>
+                                                                                        </div>
+                                                                                    }
+                                                                                </div>
+                                                                            }
+                                                                        }
+                                                                    </div>
+                                                                }
+                                                            }
+                                                        </div>
+                                                    }
+                                                }
+                                            </div>
                                         }
-                                    </div>
+                                    }
                                 </div>
                             </div>
                         </div>
-                    }
-                }
-                @if (department == true)
-                {
-                    <div class="mx-1">
-                        <div>
-                            <h1 class="rounded-xl text-xs md:text-base xl:text-xl text-white font-medium leading-6 bg-[#162D4E] text-center py-2">Departamento</h1>
-                        </div>
-                        <div class="flex justify-center rounded-br-2xl-2xl overflow-y-scroll overflow-x-hidden h-5/6" style="direction: ltr;">
+                    </div>
+                    @if (department == true)
+                    {
+                        <div class="overflow-y-scroll" style="direction: ltr;">
                             <div>
                                 <div class="grid grid-col-1 gap-1 p-1 w-[5rem] sm:w-[9.5rem] md:w-[11rem] lg:w-[15rem]  xl:w-[19rem]">
                                     <button @onclick="() => AllApartments()" class="@(allApartments ? "bg-[#9CA2A8]" : "bg-[#55595E]")">
@@ -106,8 +108,8 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
-                }
+                    }
+                </div>
             </div>
             <div class="w-full flex justify-end py-3">
                 <button @onclick="() => ShowReportAndHideApartment()" class="mx-auto bg-[#B9352E] hover:bg-red-500 p-2 rounded-2xl text-lg text-white font-medium leading-6 border border-stone-400 hover:border-white">Generar Reporte</button>
