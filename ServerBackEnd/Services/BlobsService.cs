@@ -36,6 +36,11 @@ namespace ApiGateway.Services
             return await GetAsync<List<Blob>>(path: "Blobs", parameters: parameters);
         }
 
+        public async Task<ApiResponse<bool>> DeleteBlobAsync(int idBlob)
+        {
+            return await DeleteAsync<bool>(idBlob, path: "Blob");
+        }
+
         public async Task<ApiResponse<Blob>> PostBlobAsync(Blob blob, IFormFile file)
         {
             var content = SerializeMultipartFormDataContent(new() { FileStream = file.OpenReadStream(), Blob = blob });

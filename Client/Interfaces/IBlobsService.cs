@@ -6,6 +6,7 @@ namespace Obra.Client.Interfaces
 {
     public interface IBlobsService
     {
+        Task<bool> DeleteBlobAsync(int idBlob);
         Task<Blob> GetBlobAsync(int? id);
         Task<List<Blob>> GetBlobsAsync(int? id);
         Task<Blob> PostBlobAsync(Blob blob);
