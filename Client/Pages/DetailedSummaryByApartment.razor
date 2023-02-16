@@ -142,7 +142,7 @@ else if (buttonReport == true)
 {
     @if (loading == false)
     {
-        <div class="h-5/6 pt-20 pb-12 fixed inset-0 flex flex-col items-center self-start overflow-y-scroll overflow-x-hidden">
+        <div class="h-5/6 pt-20 pb-12 fixed inset-0 flex flex-col items-center self-start overflow-y-hidden overflow-x-hidden">
             @foreach (var apartment in apartmentsSelect)
             {
                 <div class="my-4 h-[32rem] w-screen">
@@ -170,7 +170,7 @@ else if (buttonReport == true)
                                     </div>
                                 </div>
                             </div>
-                            <div class="overflow-y-scroll h-[20rem]">
+                            <div class="overflow-y-scroll h-[17rem] lg:h-[10rem] xl:h-[15rem] 2xl:h-[20rem]">
                                 @foreach (var item in progressReports)
                                 {
                                     @if (item.IdApartment == apartment.IdApartment)
@@ -179,42 +179,42 @@ else if (buttonReport == true)
                                             <div class="flex justify-center w-3/6">
                                                 @if (@activity.ActivityName == "Instalación Eléctrica" || @activity.ActivityName == "Instalación Hidráulica" || @activity.ActivityName == "Instalación Sanitaria" || @activity.ActivityName == "Instalación Voz y Datos")
                                                 {
-                                                    <label class="w-80 h-8 text-xs 2xl:text-base text-white leading-6 text-center bg-[#254260] rounded-lg py-1 m-2">@activity.ActivityName</label>
+                                                    <label class="w-80 h-[3.5rem] lg:h-8 text-xs 2xl:text-base text-white leading-6 text-center bg-[#254260] rounded-lg py-1 m-2">@activity.ActivityName</label>
                                                 }
                                                 else
                                                 {
-                                                    <label class="w-80 h-8 text-sm md:text-base lg:text-lg 2xl:text-xl text-white leading-6 text-center bg-[#254260] rounded-lg py-1 m-2">@activity.ActivityName</label>
+                                                    <label class="w-80 h-[3.5rem] lg:h-8 text-sm md:text-base lg:text-lg 2xl:text-xl text-white leading-6 text-center bg-[#254260] rounded-lg py-1 m-2">@activity.ActivityName</label>
                                                 }
                                                 @if (@Areas.FirstOrDefault(x => x.IdArea == item.IdArea).AreaName == "Recamara Principal" || @Areas.FirstOrDefault(x => x.IdArea == item.IdArea).AreaName == "Cuarto de Lavado")
                                                 {
-                                                    <label class="w-80 h-8 text-xs 2xl:text-base text-white leading-6 text-center bg-[#254260] rounded-lg py-1 m-2">@Areas.FirstOrDefault(x => x.IdArea == item.IdArea).AreaName</label>
+                                                    <label class="w-80 h-[3.5rem] lg:h-8 text-xs 2xl:text-base text-white leading-6 text-center bg-[#254260] rounded-lg py-1 m-2">@Areas.FirstOrDefault(x => x.IdArea == item.IdArea).AreaName</label>
                                                 }
                                                 else
                                                 {
-                                                    <label class="w-80 h-8 text-sm md:text-base lg:text-lg 2xl:text-xl text-white leading-6 text-center bg-[#254260] rounded-lg py-1 m-2">@Areas.FirstOrDefault(x => x.IdArea == item.IdArea).AreaName</label>
+                                                    <label class="w-80 h-[3.5rem] lg:h-8 text-sm md:text-base lg:text-lg 2xl:text-xl text-white leading-6 text-center bg-[#254260] rounded-lg py-1 m-2">@Areas.FirstOrDefault(x => x.IdArea == item.IdArea).AreaName</label>
                                                 }
                                                 @if (@element.ElementName == "Cielo Raso (Falso Techo)" || @element.ElementName == "Llave Mezcladora")
                                                 {
-                                                    <label class="w-80 h-8 text-xs 2xl:text-base text-white leading-6 text-center bg-[#254260] rounded-lg py-1 m-2">@element.ElementName</label>
+                                                    <label class="w-80 h-[3.5rem] lg:h-8 text-xs 2xl:text-base text-white leading-6 text-center bg-[#254260] rounded-lg py-1 m-2">@element.ElementName</label>
                                                 }
                                                 else
                                                 {
-                                                    <label class="w-80 h-8 text-sm md:text-base lg:text-lg 2xl:text-xl text-white leading-6 text-center bg-[#254260] rounded-lg py-1 m-2">@element.ElementName</label>
+                                                    <label class="w-80 h-[3.5rem] lg:h-8 text-sm md:text-base lg:text-lg 2xl:text-xl text-white leading-6 text-center bg-[#254260] rounded-lg py-1 m-2">@element.ElementName</label>
                                                 }
                                                 @if (@subElementsSelect.FirstOrDefault(x => x.IdSubElement == item.IdSubElement).SubElementName == "Mortero de Nivelación" || @subElementsSelect.FirstOrDefault(x => x.IdSubElement == item.IdSubElement).SubElementName == "Riel - Corredera")
                                                 {
-                                                    <label class="w-80 h-8 text-xs 2xl:text-base text-white leading-6 text-center bg-[#254260] rounded-lg py-1 m-2">@subElementsSelect.FirstOrDefault(x => x.IdSubElement == item.IdSubElement).SubElementName</label>
+                                                    <label class="w-80 h-[3.5rem] lg:h-8 text-xs 2xl:text-base text-white leading-6 text-center bg-[#254260] rounded-lg py-1 m-2">@subElementsSelect.FirstOrDefault(x => x.IdSubElement == item.IdSubElement).SubElementName</label>
                                                 }
                                                 else
                                                 {
-                                                    <label class="w-80 h-8 text-sm md:text-base lg:text-lg 2xl:text-xl text-white leading-6 text-center bg-[#254260] rounded-lg py-1 m-2">@subElementsSelect.FirstOrDefault(x => x.IdSubElement == item.IdSubElement).SubElementName</label>
+                                                    <label class="w-80 h-[3.5rem] lg:h-8 text-sm md:text-base lg:text-lg 2xl:text-xl text-white leading-6 text-center bg-[#254260] rounded-lg py-1 m-2">@subElementsSelect.FirstOrDefault(x => x.IdSubElement == item.IdSubElement).SubElementName</label>
                                                 }
                                             </div>
                                             <div class="flex flex-row justify-center items-center w-3/6">
                                                 @if (progressLogs.FirstOrDefault(x => x.IdProgressReport == item.IdProgressReport)?.IdProgressLog != null)
                                                 {
-                                                    <div class="flex justify-end text-white w-[@greenPercentage[$"{item.IdProgressReport}"]%] bg-[#115D28] h-5">@progressLogs.FirstOrDefault(x => x.IdProgressReport == item.IdProgressReport).Pieces</div>
-                                                    <div class="flex justify-end text-white w-[@redPercentage[$"{item.IdProgressReport}"]%] bg-[#CB3030] h-5">@item.TotalPieces</div>
+                                                    <div class="flex justify-end text-white w-[@greenPercentage[$"{item.IdProgressReport}"]%] bg-[#115D28] h-8 lg:h-6">@progressLogs.FirstOrDefault(x => x.IdProgressReport == item.IdProgressReport).Pieces</div>
+                                                    <div class="flex justify-end text-white w-[@redPercentage[$"{item.IdProgressReport}"]%] bg-[#CB3030] h-8 lg:h-6">@item.TotalPieces</div>
                                                     <div class="self-center">
                                                         <button @onclick="() => CamareButton(item.IdProgressReport)">
                                                             <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="#254260" class="bi bi-camera-fill ml-2" viewBox="0 0 16 16">
@@ -226,8 +226,8 @@ else if (buttonReport == true)
                                                 }
                                                 else
                                                 {
-                                                    <div class="flex justify-end text-white w-[@greenPercentage[$"{item.IdProgressReport}"]%] bg-[#115D28] h-6"></div>
-                                                    <div class="flex justify-end text-white w-[@redPercentage[$"{item.IdProgressReport}"]%] bg-[#CB3030] h-6">@item.TotalPieces</div>
+                                                    <div class="flex justify-end text-white w-[@greenPercentage[$"{item.IdProgressReport}"]%] bg-[#115D28] h-8 lg:h-6"></div>
+                                                    <div class="flex justify-end text-white w-[@redPercentage[$"{item.IdProgressReport}"]%] bg-[#CB3030] h-8 lg:h-6">@item.TotalPieces</div>
                                                     <div class="self-center">
                                                         <button @onclick="() => NotificationImages()">
                                                             <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="#254260" class="bi bi-camera-fill ml-2" viewBox="0 0 16 16">
@@ -264,7 +264,7 @@ else if (buttonReport == true)
                                     </div>
                                 </div>
                             </div>
-                            <div class="overflow-y-scroll h-[20rem]">
+                            <div class="overflow-y-scroll h-[17rem] lg:h-[10rem] xl:h-[15rem] 2xl:h-[20rem]">
                                 @foreach (var item in progressReports)
                                 {
                                     @if (item.IdApartment == apartment.IdApartment)
@@ -273,34 +273,34 @@ else if (buttonReport == true)
                                             <div class="flex justify-center w-3/6">
                                                 @if (@activity.ActivityName == "Instalación Eléctrica" || @activity.ActivityName == "Instalación Hidráulica" || @activity.ActivityName == "Instalación Sanitaria" || @activity.ActivityName == "Instalación Voz y Datos")
                                                 {
-                                                    <label class="w-80 h-8 text-xs 2xl:text-base text-white leading-6 text-center bg-[#254260] rounded-lg py-1 m-2">@activity.ActivityName</label>
+                                                    <label class="w-80 h-[3.5rem] lg:h-8 text-xs 2xl:text-base text-white leading-6 text-center bg-[#254260] rounded-lg py-1 m-2">@activity.ActivityName</label>
                                                 }
                                                 else
                                                 {
-                                                    <label class="w-80 h-8 text-sm md:text-base lg:text-lg 2xl:text-xl text-white leading-6 text-center bg-[#254260] rounded-lg py-1 m-2">@activity.ActivityName</label>
+                                                    <label class="w-80 h-[3.5rem] lg:h-8 text-sm md:text-base lg:text-lg 2xl:text-xl text-white leading-6 text-center bg-[#254260] rounded-lg py-1 m-2">@activity.ActivityName</label>
                                                 }
                                                 @if (@Areas.FirstOrDefault(x => x.IdArea == item.IdArea).AreaName == "Recamara Principal" || @Areas.FirstOrDefault(x => x.IdArea == item.IdArea).AreaName == "Cuarto de Lavado")
                                                 {
-                                                    <label class="w-80 h-8 text-xs 2xl:text-base text-white leading-6 text-center bg-[#254260] rounded-lg py-1 m-2">@Areas.FirstOrDefault(x => x.IdArea == item.IdArea).AreaName</label>
+                                                    <label class="w-80 h-[3.5rem] lg:h-8 text-xs 2xl:text-base text-white leading-6 text-center bg-[#254260] rounded-lg py-1 m-2">@Areas.FirstOrDefault(x => x.IdArea == item.IdArea).AreaName</label>
                                                 }
                                                 else
                                                 {
-                                                    <label class="w-80 h-8 text-sm md:text-base lg:text-lg 2xl:text-xl text-white leading-6 text-center bg-[#254260] rounded-lg py-1 m-2">@Areas.FirstOrDefault(x => x.IdArea == item.IdArea).AreaName</label>
+                                                    <label class="w-80 h-[3.5rem] lg:h-8 text-sm md:text-base lg:text-lg 2xl:text-xl text-white leading-6 text-center bg-[#254260] rounded-lg py-1 m-2">@Areas.FirstOrDefault(x => x.IdArea == item.IdArea).AreaName</label>
                                                 }
                                                 @if (@element.ElementName == "Cielo Raso (Falso Techo)" || @element.ElementName == "Llave Mezcladora")
                                                 {
-                                                    <label class="w-80 h-8 text-xs 2xl:text-base text-white leading-6 text-center bg-[#254260] rounded-lg py-1 m-2">@element.ElementName</label>
+                                                    <label class="w-80 h-[3.5rem] lg:h-8 text-xs 2xl:text-base text-white leading-6 text-center bg-[#254260] rounded-lg py-1 m-2">@element.ElementName</label>
                                                 }
                                                 else
                                                 {
-                                                    <label class="w-80 h-8 text-sm md:text-base lg:text-lg 2xl:text-xl text-white leading-6 text-center bg-[#254260] rounded-lg py-1 m-2">@element.ElementName</label>
+                                                    <label class="w-80 h-[3.5rem] lg:h-8 text-sm md:text-base lg:text-lg 2xl:text-xl text-white leading-6 text-center bg-[#254260] rounded-lg py-1 m-2">@element.ElementName</label>
                                                 }
                                             </div>
                                             <div class="flex flex-row justify-center items-center w-3/6">
                                                 @if (progressLogs.FirstOrDefault(x => x.IdProgressReport == item.IdProgressReport)?.IdProgressLog != null)
                                                 {
-                                                    <div class="flex justify-end text-white w-[@greenPercentage[$"{item.IdProgressReport}"]%] bg-[#115D28] h-6">@progressLogs.FirstOrDefault(x => x.IdProgressReport == item.IdProgressReport).Pieces</div>
-                                                    <div class="flex justify-end text-white w-[@redPercentage[$"{item.IdProgressReport}"]%] bg-[#CB3030] h-6">@item.TotalPieces</div>
+                                                    <div class="flex justify-end text-white w-[@greenPercentage[$"{item.IdProgressReport}"]%] bg-[#115D28] h-8 lg:h-6">@progressLogs.FirstOrDefault(x => x.IdProgressReport == item.IdProgressReport).Pieces</div>
+                                                    <div class="flex justify-end text-white w-[@redPercentage[$"{item.IdProgressReport}"]%] bg-[#CB3030] h-8 lg:h-6">@item.TotalPieces</div>
                                                     <div class="self-center">
                                                         <button @onclick="() => CamareButton(item.IdProgressReport)">
                                                             <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="#254260" class="bi bi-camera-fill ml-2" viewBox="0 0 16 16">
@@ -312,8 +312,8 @@ else if (buttonReport == true)
                                                 }
                                                 else
                                                 {
-                                                    <div class="flex justify-end text-white w-[@greenPercentage[$"{item.IdProgressReport}"]%] bg-[#115D28] h-6"></div>
-                                                    <div class="flex justify-end text-white w-[@redPercentage[$"{item.IdProgressReport}"]%] bg-[#CB3030] h-6">@item.TotalPieces</div>
+                                                    <div class="flex justify-end text-white w-[@greenPercentage[$"{item.IdProgressReport}"]%] bg-[#115D28] h-8 lg:h-6"></div>
+                                                    <div class="flex justify-end text-white w-[@redPercentage[$"{item.IdProgressReport}"]%] bg-[#CB3030] h-8 lg:h-6">@item.TotalPieces</div>
                                                     <div class="self-center">
                                                         <button @onclick="() => NotificationImages()">
                                                             <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="#254260" class="bi bi-camera-fill ml-2" viewBox="0 0 16 16">
