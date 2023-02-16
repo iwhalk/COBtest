@@ -113,194 +113,30 @@ namespace Obra.Client.Pages
                 }
                 else
                 {
-                    _idsAparmentSelect.Remove(id);
+                    _idsActivitiesSelect.Remove(id);
                 }
-                //if (_idsActivitiesSelect.Count() < 1)
-                //{
-                //    if (!_idsActivitiesSelect.Contains(id))
-                //    {
-                //        _idsActivitiesSelect.Add(id);
-                //        activityIdAux = id;
-                //        showElements = true;
-                //        elements = await _elementsService.GetElementsAsync(id);
-
-                //        await ShowMessage();
-                //    }
-                //    else
-                //    {
-                //        _idsActivitiesSelect.Remove(id);
-
-                //        await ShowMessage();
-
-                //        if (elements != null)
-                //        {
-                //            elements.Clear();
-                //            _idsElementsSelect.Clear();
-
-                //            if (subElements != null)
-                //            {
-                //                subElements.Clear();
-                //                _idsSubElementsSelect.Clear();
-                //                allSubElements = false;
-                //            }
-                //            if (apartments != null)
-                //            {
-                //                _idsAparmentSelect.Clear();
-                //                department = false;
-                //                allApartments = false;
-                //            }
-                //        }
-                //    }
-                //}
-                //else if (activityIdAux != id)
-                //{
-                //    _idsActivitiesSelect.Remove(activityIdAux);
-
-                //    await ShowMessage();
-
-                //    if (elements != null)
-                //    {
-                //        await ShowElements();
-                //        elements.Clear();
-                //        _idsElementsSelect.Clear();
-
-                //        if (subElements != null)
-                //        {
-                //            subElements.Clear();
-                //            _idsSubElementsSelect.Clear();
-                //            allSubElements = false;
-                //        }
-                //        if (apartments != null)
-                //        {
-                //            _idsAparmentSelect.Clear();
-                //            department = false;
-                //            allApartments = false;
-                //        }
-                //    }
-
-                //    _idsActivitiesSelect.Add(id);
-                //    activityIdAux = id;
-                //    showElements = true;
-                //    elements = await _elementsService.GetElementsAsync(id);
-                //}
-                //else
-                //{
-                //    _idsActivitiesSelect.Remove(id);
-
-                //    await ShowMessage();
-
-                //    if (elements != null)
-                //    {
-                //        await ShowElements();
-                //        elements.Clear();
-                //        _idsElementsSelect.Clear();
-
-                //        if (subElements != null)
-                //        {
-                //            subElements.Clear();
-                //            _idsSubElementsSelect.Clear();
-                //            allSubElements = false;
-                //        }
-                //        if (apartments != null)
-                //        {
-                //            _idsAparmentSelect.Clear();
-                //            department = false;
-                //            allApartments = false;
-                //        }
-                //    }
-                //}
             }
             else if (filter == 3) //Elemento
             {
-                if (_idsActivitiesSelect.Count() != 0)
+                if (!_idsElementsSelect.Contains(id))
                 {
-                    if (_idsElementsSelect.Count() < 1)
+                    _idsElementsSelect.Add(id);
+                    showSubElements = true;
+
+                    List<SubElement> auxSubElement = await _subElementsService.GetSubElementsAsync(id);
+
+                    subElements.AddRange(auxSubElement);
+
+                    if (subElements == null || subElements.Count() < 1)
                     {
-                        if (!_idsElementsSelect.Contains(id))
-                        {
-                            _idsElementsSelect.Add(id);
-                            elementIdAux = id;
-                            showSubElements = true;
-                            subElements = await _subElementsService.GetSubElementsAsync(id);
-
-                            if (subElements == null || subElements.Count() < 1)
-                            {
-                                department = true;
-                            }
-
-                            await ShowMessage();
-                        }
-                        else
-                        {
-                            _idsElementsSelect.Remove(id);
-
-                            await ShowMessage();
-
-                            if (subElements != null)
-                            {
-                                subElements.Clear();
-                                _idsSubElementsSelect.Clear();
-                                allSubElements = false;
-                            }
-                            if (apartments != null)
-                            {
-                                _idsAparmentSelect.Clear();
-                                department = false;
-                                allApartments = false;
-                            }
-                        }
+                        department = true;
                     }
-                    else if (elementIdAux != id)
-                    {
-                        await ShowMessage();
-                        _idsElementsSelect.Remove(elementIdAux);
 
-                        if (subElements != null)
-                        {
-                            subElements.Clear();
-                            _idsSubElementsSelect.Clear();
-                            allSubElements = false;
-                        }
-                        if (apartments != null)
-                        {
-                            _idsAparmentSelect.Clear();
-                            department = false;
-                            allApartments = false;
-                        }
-
-                        _idsElementsSelect.Add(id);
-                        elementIdAux = id;
-                        showSubElements = true;
-                        subElements = await _subElementsService.GetSubElementsAsync(id);
-
-                        if (subElements == null || subElements.Count() < 1)
-                        {
-                            department = true;
-                        }
-                    }
-                    else
-                    {
-                        await ShowMessage();
-                        _idsElementsSelect.Remove(id);
-
-                        if (subElements != null)
-                        {
-                            subElements.Clear();
-                            _idsSubElementsSelect.Clear();
-                            allSubElements = false;
-                        }
-                        if (apartments != null)
-                        {
-                            _idsAparmentSelect.Clear();
-                            department = false;
-                            allApartments = false;
-                        }
-                    }
+                    await ShowMessage();
                 }
                 else
                 {
-                    messageError = "Es necesario elegir una Actividad antes de un Elemento";
-                    alert = true;
+                    _idsElementsSelect.Remove(id);
                 }
             }
             else if (filter == 4) //SubElemento
@@ -428,8 +264,8 @@ namespace Obra.Client.Pages
             {
                 reporte.IdBuilding = 1;
                 reporte.Apartments = _idsAparmentSelect;
-                reporte.Activities.Add(activity.IdActivity);
-                reporte.Elements.Add(element.IdElement);
+                reporte.Activities = _idsActivitiesSelect;
+                reporte.Elements = _idsElementsSelect;
                 reporte.SubElements = _idsSubElementsSelect;
             }
             else
@@ -479,47 +315,23 @@ namespace Obra.Client.Pages
                     }
                 }
 
-                if (_idsElementsSelect != null && _idsElementsSelect.Count() > 0 && _idsSubElementsSelect.Count() >= 1)
+                activity = activities.FirstOrDefault(x => x.IdActivity == _idsActivitiesSelect.FirstOrDefault());
+                element = elements.FirstOrDefault(x => x.IdElement == _idsElementsSelect.FirstOrDefault());
+
+                foreach (var item in _idsSubElementsSelect)
                 {
-                    activity = activities.FirstOrDefault(x => x.IdActivity == _idsActivitiesSelect.FirstOrDefault());
-                    element = elements.FirstOrDefault(x => x.IdElement == _idsElementsSelect.FirstOrDefault());
+                    subElement = subElements.FirstOrDefault(x => x.IdSubElement == item);
 
-
-                    foreach (var item in _idsSubElementsSelect)
-                    {
-                        subElement = subElements.FirstOrDefault(x => x.IdSubElement == item);
-
-                        subElementsSelect.Add(new SubElement() { IdSubElement = subElement.IdSubElement, SubElementName = subElement.SubElementName, IdElement = subElement.IdElement, Type = subElement.Type });
-                    }
-
-                    await AdvancementProgressSubElements();
-
-                    if (alert == false)
-                    {
-                        await DivisionOfColors();
-
-                        apartmentDetails = false;
-                    }
+                    subElementsSelect.Add(new SubElement() { IdSubElement = subElement.IdSubElement, SubElementName = subElement.SubElementName, IdElement = subElement.IdElement, Type = subElement.Type });
                 }
-                else if (_idsElementsSelect != null && _idsElementsSelect.Count() > 0 && _idsSubElementsSelect.Count() < 1)
+
+                await AdvancementProgressSubElements();
+
+                if (alert == false)
                 {
-                    activity = activities.FirstOrDefault(x => x.IdActivity == _idsActivitiesSelect.FirstOrDefault());
-                    element = elements.FirstOrDefault(x => x.IdElement == _idsElementsSelect.FirstOrDefault());
+                    await DivisionOfColors();
 
-                    await AdvancementProgress();
-
-                    if (alert == false)
-                    {
-                        await DivisionOfColors();
-
-                        apartmentDetails = false;
-                        subElementsNulls = true;
-                    }
-                }
-                else
-                {
-                    messageError = "Para generar el reporte es necesario elegir un Elemento antes";
-                    alert = true;
+                    apartmentDetails = false;
                 }
             }
             else if (_idsAparmentSelect.Count() >= 1)

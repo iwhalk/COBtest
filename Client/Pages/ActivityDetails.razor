@@ -69,11 +69,15 @@
                                                                                 <div class="flex-column flow-root overflow-y-scroll h-24">
                                                                                     @foreach (var subElement in subElements)
                                                                                     {
-                                                                                        <div class="flex justify-items-stretch">
-                                                                                            <button @onclick="() => AddIdSelect(subElement.IdSubElement, 4)" class="@(_idsSubElementsSelect.Contains(subElement.IdSubElement) ? "bg-[#9CA2A8]" : "bg-[#55595E]") h-12 w-[17.4rem] border border-blue-700 grid">
-                                                                                                <h1 class="text-xs md:text-base md:text-base text-white font-medium leading-6 text-center p-1">@subElement.SubElementName</h1>
-                                                                                            </button>
-                                                                                        </div>
+                                                                                        @if (subElement.IdElement == element.IdElement)
+                                                                                        {
+                                                                                            <div class="flex justify-items-stretch">
+
+                                                                                                <button @onclick="() => AddIdSelect(subElement.IdSubElement, 4)" class="@(_idsSubElementsSelect.Contains(subElement.IdSubElement) ? "bg-[#9CA2A8]" : "bg-[#55595E]") h-12 w-[17.4rem] border border-blue-700 grid">
+                                                                                                    <h1 class="text-xs md:text-base md:text-base text-white font-medium leading-6 text-center p-1">@subElement.SubElementName</h1>
+                                                                                                </button>
+                                                                                            </div>
+                                                                                        }
                                                                                     }
                                                                                 </div>
                                                                             }
