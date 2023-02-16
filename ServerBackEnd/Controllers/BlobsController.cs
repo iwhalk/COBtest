@@ -77,6 +77,19 @@ namespace ApiGateway.Controllers
             return BadRequest(result);
         }
 
+        [HttpDelete("{idBlob}")]
+        public async Task<ActionResult> Delete(int idBlob)
+        {
+            var result = await _blobsService.DeleteBlobAsync(idBlob);
+
+            if (result.Succeeded)
+            {
+                return Ok(result);
+            }
+
+            return BadRequest(result);
+        }
+
         [HttpPost]
         public async Task<ActionResult> PostBlob(IFormFile file)
         {

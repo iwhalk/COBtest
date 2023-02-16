@@ -9,5 +9,6 @@ namespace ApiGateway.Interfaces
         Task<ApiResponse<Blob>> GetBlobAsync(int id);
         Task<ApiResponse<List<Blob>>> GetBlobsAsync(int? id);
         Task<ApiResponse<Blob>> PostBlobAsync(Blob blob, IFormFile file);
+        Task<ApiResponse<bool>> DeleteBlobAsync(int idBlob);
     }
 }

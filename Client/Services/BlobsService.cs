@@ -29,7 +29,11 @@ namespace Obra.Client.Services
             }
 
             return await _repository.GetAsync<List<Blob>>(path: "api/Blobs", parameters: parameters);
-        }  
+        }
+        public async Task<bool> DeleteBlobAsync(int idBlob)
+        {
+            return await _repository.DeleteAsync<bool>(idBlob, path: "api/Blobs");
+        }
         public async Task<Blob> PostBlobAsync(Blob blob)
         {
             return await _repository.PostAsync(blob, path: "api/Blobs");
