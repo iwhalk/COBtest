@@ -142,7 +142,7 @@ else if (buttonReport == true)
 {
     @if (loading == false)
     {
-        <div class="h-5/6 pt-20 pb-12 fixed inset-0 flex flex-col items-center self-start overflow-y-hidden overflow-x-hidden">
+        <div class="h-5/6 pt-20 pb-12 fixed inset-0 flex flex-col items-center self-start overflow-y-scroll overflow-x-hidden">
             @foreach (var apartment in apartmentsSelect)
             {
                 <div class="my-4 h-[32rem] w-screen">
@@ -153,12 +153,12 @@ else if (buttonReport == true)
                     {
                         @if (greenPercentage != null && redPercentage != null)
                         {
-                            <div class="flex w-full mt-10 px-16">
-                                <div class="flex flex-row justify-center items-center w-3/6 pr-2">
-                                    <label class="w-3/6 h-14 2xl:h-16 text-xs md:text-sm lg:text-lg 2xl:text-2xl text-white leading-6 text-center bg-[#162D4E] rounded-lg py-2 m-2 flex justify-center items-center">Actividad</label>
-                                    <label class="w-3/6 h-14 2xl:h-16 text-xs md:text-sm lg:text-lg 2xl:text-2xl text-white leading-6 text-center bg-[#162D4E] rounded-lg py-2 m-2 flex justify-center items-center">Área</label>
-                                    <label class="w-3/6 h-14 2xl:h-16 text-xs md:text-sm lg:text-lg 2xl:text-2xl text-white leading-6 text-center bg-[#162D4E] rounded-lg py-2 m-2 flex justify-center items-center">Elemento</label>
-                                    <label class="w-3/6 h-14 2xl:h-16 text-xs md:text-sm lg:text-lg 2xl:text-2xl text-white leading-6 text-center bg-[#162D4E] rounded-lg py-2 m-2 flex justify-center items-center">Sub-Elemento</label>
+                            <div class="flex justify-center w-full mt-10 px-16">
+                                <div class="flex flex-row justify-center items-center xl:w-3/6 pr-2">
+                                    <label class="w-[6rem] xl:w-3/6 h-14 2xl:h-16 text-xs md:text-sm lg:text-lg 2xl:text-2xl text-white leading-6 text-center bg-[#162D4E] rounded-lg py-2 m-2 flex justify-center items-center">Actividad</label>
+                                    <label class="w-[6rem] xl:w-3/6 h-14 2xl:h-16 text-xs md:text-sm lg:text-lg 2xl:text-2xl text-white leading-6 text-center bg-[#162D4E] rounded-lg py-2 m-2 flex justify-center items-center">Área</label>
+                                    <label class="w-[6rem] xl:w-3/6 h-14 2xl:h-16 text-xs md:text-sm lg:text-lg 2xl:text-2xl text-white leading-6 text-center bg-[#162D4E] rounded-lg py-2 m-2 flex justify-center items-center">Elemento</label>
+                                    <label class="w-[6rem] xl:w-3/6 h-14 2xl:h-16 text-xs md:text-sm lg:text-lg 2xl:text-2xl text-white leading-6 text-center bg-[#162D4E] rounded-lg py-2 m-2 flex justify-center items-center">Sub-Elemento</label>
                                 </div>
                                 <div class="flex flex-row justify-center items-center w-3/6">
                                     <label class="w-full h-14 2xl:h-16 text-xs md:text-sm lg:text-lg 2xl:text-2xl text-white leading-6 text-center bg-[#162D4E] rounded-lg py-2 my-2 flex justify-center items-center">Avance</label>
@@ -175,39 +175,39 @@ else if (buttonReport == true)
                                 {
                                     @if (item.IdApartment == apartment.IdApartment)
                                     {
-                                        <div class="flex w-full mt-2 px-16">
-                                            <div class="flex justify-center w-3/6">
+                                        <div class="flex justify-center w-full mt-2 px-16">
+                                            <div class="flex flex-row justify-center items-center xl:w-3/6">
                                                 @if (@activity.ActivityName == "Instalación Eléctrica" || @activity.ActivityName == "Instalación Hidráulica" || @activity.ActivityName == "Instalación Sanitaria" || @activity.ActivityName == "Instalación Voz y Datos")
                                                 {
-                                                    <label class="w-80 h-[3.5rem] lg:h-8 text-xs 2xl:text-base text-white leading-6 text-center bg-[#254260] rounded-lg py-1 m-2">@activity.ActivityName</label>
+                                                    <label class="w-[6rem] xl:w-80 h-[3.5rem] xl:h-8 text-xs 2xl:text-base text-white leading-6 text-center bg-[#254260] rounded-lg py-1 m-2 flex justify-center items-center">@activity.ActivityName</label>
                                                 }
                                                 else
                                                 {
-                                                    <label class="w-80 h-[3.5rem] lg:h-8 text-sm md:text-base lg:text-lg 2xl:text-xl text-white leading-6 text-center bg-[#254260] rounded-lg py-1 m-2">@activity.ActivityName</label>
+                                                    <label class="w-[6rem] xl:w-80 h-[3.5rem] xl:h-8 text-sm md:text-base lg:text-lg 2xl:text-xl text-white leading-6 text-center bg-[#254260] rounded-lg py-1 m-2 flex justify-center items-center">@activity.ActivityName</label>
                                                 }
                                                 @if (@Areas.FirstOrDefault(x => x.IdArea == item.IdArea).AreaName == "Recamara Principal" || @Areas.FirstOrDefault(x => x.IdArea == item.IdArea).AreaName == "Cuarto de Lavado")
                                                 {
-                                                    <label class="w-80 h-[3.5rem] lg:h-8 text-xs 2xl:text-base text-white leading-6 text-center bg-[#254260] rounded-lg py-1 m-2">@Areas.FirstOrDefault(x => x.IdArea == item.IdArea).AreaName</label>
+                                                    <label class="w-[6rem] xl:w-80 h-[3.5rem] xl:h-8 text-xs 2xl:text-base text-white leading-6 text-center bg-[#254260] rounded-lg py-1 m-2 flex justify-center items-center">@Areas.FirstOrDefault(x => x.IdArea == item.IdArea).AreaName</label>
                                                 }
                                                 else
                                                 {
-                                                    <label class="w-80 h-[3.5rem] lg:h-8 text-sm md:text-base lg:text-lg 2xl:text-xl text-white leading-6 text-center bg-[#254260] rounded-lg py-1 m-2">@Areas.FirstOrDefault(x => x.IdArea == item.IdArea).AreaName</label>
+                                                    <label class="w-[6rem] xl:w-80 h-[3.5rem] xl:h-8 text-sm md:text-base lg:text-lg 2xl:text-xl text-white leading-6 text-center bg-[#254260] rounded-lg py-1 m-2 flex justify-center items-center">@Areas.FirstOrDefault(x => x.IdArea == item.IdArea).AreaName</label>
                                                 }
                                                 @if (@element.ElementName == "Cielo Raso (Falso Techo)" || @element.ElementName == "Llave Mezcladora")
                                                 {
-                                                    <label class="w-80 h-[3.5rem] lg:h-8 text-xs 2xl:text-base text-white leading-6 text-center bg-[#254260] rounded-lg py-1 m-2">@element.ElementName</label>
+                                                    <label class="w-[6rem] xl:w-80 h-[3.5rem] xl:h-8 text-xs 2xl:text-base text-white leading-6 text-center bg-[#254260] rounded-lg py-1 m-2 flex justify-center items-center">@element.ElementName</label>
                                                 }
                                                 else
                                                 {
-                                                    <label class="w-80 h-[3.5rem] lg:h-8 text-sm md:text-base lg:text-lg 2xl:text-xl text-white leading-6 text-center bg-[#254260] rounded-lg py-1 m-2">@element.ElementName</label>
+                                                    <label class="w-[6rem] xl:w-80 h-[3.5rem] xl:h-8 text-sm md:text-base lg:text-lg 2xl:text-xl text-white leading-6 text-center bg-[#254260] rounded-lg py-1 m-2 flex justify-center items-center">@element.ElementName</label>
                                                 }
                                                 @if (@subElementsSelect.FirstOrDefault(x => x.IdSubElement == item.IdSubElement).SubElementName == "Mortero de Nivelación" || @subElementsSelect.FirstOrDefault(x => x.IdSubElement == item.IdSubElement).SubElementName == "Riel - Corredera")
                                                 {
-                                                    <label class="w-80 h-[3.5rem] lg:h-8 text-xs 2xl:text-base text-white leading-6 text-center bg-[#254260] rounded-lg py-1 m-2">@subElementsSelect.FirstOrDefault(x => x.IdSubElement == item.IdSubElement).SubElementName</label>
+                                                    <label class="w-[6rem] xl:w-80 h-[3.5rem] xl:h-8 text-xs 2xl:text-base text-white leading-6 text-center bg-[#254260] rounded-lg py-1 m-2 flex justify-center items-center">@subElementsSelect.FirstOrDefault(x => x.IdSubElement == item.IdSubElement).SubElementName</label>
                                                 }
                                                 else
                                                 {
-                                                    <label class="w-80 h-[3.5rem] lg:h-8 text-sm md:text-base lg:text-lg 2xl:text-xl text-white leading-6 text-center bg-[#254260] rounded-lg py-1 m-2">@subElementsSelect.FirstOrDefault(x => x.IdSubElement == item.IdSubElement).SubElementName</label>
+                                                    <label class="w-[6rem] xl:w-80 h-[3.5rem] xl:h-8 text-sm md:text-base lg:text-lg 2xl:text-xl text-white leading-6 text-center bg-[#254260] rounded-lg py-1 m-2 flex justify-center items-center">@subElementsSelect.FirstOrDefault(x => x.IdSubElement == item.IdSubElement).SubElementName</label>
                                                 }
                                             </div>
                                             <div class="flex flex-row justify-center items-center w-3/6">
@@ -282,30 +282,30 @@ else if (buttonReport == true)
                                     @if (item.IdApartment == apartment.IdApartment)
                                     {
                                         <div class="flex w-full mt-2 px-16">
-                                            <div class="flex justify-center w-3/6">
+                                            <div class="flex flex-row justify-center items-center w-3/6">
                                                 @if (@activity.ActivityName == "Instalación Eléctrica" || @activity.ActivityName == "Instalación Hidráulica" || @activity.ActivityName == "Instalación Sanitaria" || @activity.ActivityName == "Instalación Voz y Datos")
                                                 {
-                                                    <label class="w-80 h-[3.5rem] lg:h-8 text-xs 2xl:text-base text-white leading-6 text-center bg-[#254260] rounded-lg py-1 m-2">@activity.ActivityName</label>
+                                                    <label class="w-80 h-[3.5rem] lg:h-8 text-xs 2xl:text-base text-white leading-6 text-center bg-[#254260] rounded-lg py-1 m-2 flex justify-center items-center">@activity.ActivityName</label>
                                                 }
                                                 else
                                                 {
-                                                    <label class="w-80 h-[3.5rem] lg:h-8 text-sm md:text-base lg:text-lg 2xl:text-xl text-white leading-6 text-center bg-[#254260] rounded-lg py-1 m-2">@activity.ActivityName</label>
+                                                    <label class="w-80 h-[3.5rem] lg:h-8 text-sm md:text-base lg:text-lg 2xl:text-xl text-white leading-6 text-center bg-[#254260] rounded-lg py-1 m-2 flex justify-center items-center">@activity.ActivityName</label>
                                                 }
                                                 @if (@Areas.FirstOrDefault(x => x.IdArea == item.IdArea).AreaName == "Recamara Principal" || @Areas.FirstOrDefault(x => x.IdArea == item.IdArea).AreaName == "Cuarto de Lavado")
                                                 {
-                                                    <label class="w-80 h-[3.5rem] lg:h-8 text-xs 2xl:text-base text-white leading-6 text-center bg-[#254260] rounded-lg py-1 m-2">@Areas.FirstOrDefault(x => x.IdArea == item.IdArea).AreaName</label>
+                                                    <label class="w-80 h-[3.5rem] lg:h-8 text-xs 2xl:text-base text-white leading-6 text-center bg-[#254260] rounded-lg py-1 m-2 flex justify-center items-center">@Areas.FirstOrDefault(x => x.IdArea == item.IdArea).AreaName</label>
                                                 }
                                                 else
                                                 {
-                                                    <label class="w-80 h-[3.5rem] lg:h-8 text-sm md:text-base lg:text-lg 2xl:text-xl text-white leading-6 text-center bg-[#254260] rounded-lg py-1 m-2">@Areas.FirstOrDefault(x => x.IdArea == item.IdArea).AreaName</label>
+                                                    <label class="w-80 h-[3.5rem] lg:h-8 text-sm md:text-base lg:text-lg 2xl:text-xl text-white leading-6 text-center bg-[#254260] rounded-lg py-1 m-2 flex justify-center items-center">@Areas.FirstOrDefault(x => x.IdArea == item.IdArea).AreaName</label>
                                                 }
                                                 @if (@element.ElementName == "Cielo Raso (Falso Techo)" || @element.ElementName == "Llave Mezcladora")
                                                 {
-                                                    <label class="w-80 h-[3.5rem] lg:h-8 text-xs 2xl:text-base text-white leading-6 text-center bg-[#254260] rounded-lg py-1 m-2">@element.ElementName</label>
+                                                    <label class="w-80 h-[3.5rem] lg:h-8 text-xs 2xl:text-base text-white leading-6 text-center bg-[#254260] rounded-lg py-1 m-2 flex justify-center items-center">@element.ElementName</label>
                                                 }
                                                 else
                                                 {
-                                                    <label class="w-80 h-[3.5rem] lg:h-8 text-sm md:text-base lg:text-lg 2xl:text-xl text-white leading-6 text-center bg-[#254260] rounded-lg py-1 m-2">@element.ElementName</label>
+                                                    <label class="w-80 h-[3.5rem] lg:h-8 text-sm md:text-base lg:text-lg 2xl:text-xl text-white leading-6 text-center bg-[#254260] rounded-lg py-1 m-2 flex justify-center items-center">@element.ElementName</label>
                                                 }
                                             </div>
                                             <div class="flex flex-row justify-center items-center w-3/6">
