@@ -152,226 +152,169 @@ else if (buttonReport == true)
     @if (loading == false)
     {
         @*Segunda Vista*@
-        <div class="pt-20 pb-12 h-screen fixed inset-0 flex flex-col justify-center items-center self-start overflow-y-scroll overflow-x-hidden">
+        <div class="pt-20 pb-12 h-5/6 fixed inset-0 flex flex-col justify-center items-center self-start overflow-y-scroll overflow-x-hidden">
             @if (subElementsNulls == false)
             {
-                <div class="my-4 w-screen">
-                    <div class="pt-10 flex justify-center">
-                        <label class="text-sm md:text-base lg:text-xl 2xl:text-4xl text-white leading-6 text-center bg-[#162D4E] rounded-lg py-2 px-24">Reporte Avance De @activity.ActivityName</label>
-                    </div>
-                    @if (greenPercentage != null && redPercentage != null)
-                    {
-                        <div class="flex w-full mt-10 px-16">
-                            <div class="flex justify-center w-3/6">
-                                <label class="w-3/6 h-14 2xl:h-16 text-sm md:text-base lg:text-xl 2xl:text-4xl text-white leading-6 text-center bg-[#162D4E] rounded-lg py-2 m-2">Elemento</label>
-                                <label class="w-3/6 h-14 2xl:h-16 text-sm md:text-base lg:text-xl 2xl:text-4xl text-white leading-6 text-center bg-[#162D4E] rounded-lg py-2 m-2">Sub-Elemento</label>
-                                <label class="w-3/6 h-14 2xl:h-16 text-sm md:text-base lg:text-xl 2xl:text-4xl text-white leading-6 text-center bg-[#162D4E] rounded-lg py-2 m-2">Departamento</label>
-                            </div>
-                            <div class="flex justify-center w-3/6">
-                                <label class="w-full text-sm md:text-base lg:text-xl 2xl:text-4xl text-white leading-6 text-center bg-[#162D4E] rounded-lg py-2 my-2">Avance</label>
-                                <div class="self-center">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="#254260" class="bi bi-camera-fill ml-2 invisible" viewBox="0 0 16 16">
-                                        <path d="M10.5 8.5a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z" />
-                                        <path d="M2 4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2h-1.172a2 2 0 0 1-1.414-.586l-.828-.828A2 2 0 0 0 9.172 2H6.828a2 2 0 0 0-1.414.586l-.828.828A2 2 0 0 1 3.172 4H2zm.5 2a.5.5 0 1 1 0-1 .5.5 0 0 1 0 1zm9 2.5a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0z" />
-                                    </svg>
+                @foreach (var activity in activitiesSelect)
+                {
+                    <div class="my-4 w-screen">
+                        <div class="pt-10 flex justify-center">
+                            <label class="text-sm md:text-base lg:text-xl 2xl:text-4xl text-white leading-6 text-center bg-[#162D4E] rounded-lg py-2 px-24">Reporte Avance De @activity.ActivityName</label>
+                        </div>
+                        @if (greenPercentage != null && redPercentage != null)
+                        {
+                            <div class="flex w-full mt-10 px-16">
+                                <div class="flex flex-row justify-center items-center w-3/6 pr-2">
+                                    <label class="w-3/6 h-14 2xl:h-16 text-xs md:text-sm lg:text-lg 2xl:text-2xl text-white leading-6 text-center bg-[#162D4E] rounded-lg py-2 m-2 flex justify-center items-center">Área</label>
+                                    <label class="w-3/6 h-14 2xl:h-16 text-xs md:text-sm lg:text-lg 2xl:text-2xl text-white leading-6 text-center bg-[#162D4E] rounded-lg py-2 m-2 flex justify-center items-center">Elemento</label>
+                                    <label class="w-3/6 h-14 2xl:h-16 text-xs md:text-sm lg:text-lg 2xl:text-2xl text-white leading-6 text-center bg-[#162D4E] rounded-lg py-2 m-2 flex justify-center items-center">Sub-Elemento</label>
+                                    <label class="w-3/6 h-14 2xl:h-16 text-xs md:text-sm lg:text-lg 2xl:text-2xl text-white leading-6 text-center bg-[#162D4E] rounded-lg py-2 m-2 flex justify-center items-center">Departamento</label>
+                                </div>
+                                <div class="flex flex-row justify-center items-center w-3/6">
+                                    <label class="w-full h-14 2xl:h-16 text-xs md:text-sm lg:text-lg 2xl:text-2xl text-white leading-6 text-center bg-[#162D4E] rounded-lg py-2 my-2 flex justify-center items-center">Avance</label>
+                                    <div class="self-center">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="#254260" class="bi bi-camera-fill ml-2 invisible" viewBox="0 0 16 16">
+                                            <path d="M10.5 8.5a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z" />
+                                            <path d="M2 4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2h-1.172a2 2 0 0 1-1.414-.586l-.828-.828A2 2 0 0 0 9.172 2H6.828a2 2 0 0 0-1.414.586l-.828.828A2 2 0 0 1 3.172 4H2zm.5 2a.5.5 0 1 1 0-1 .5.5 0 0 1 0 1zm9 2.5a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0z" />
+                                        </svg>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="overflow-y-scroll h-[20rem]">
-                            @foreach (var item in apartmentsSelect)
-                            {
-                                @foreach (var progress in progressReports)
+                            <div class="overflow-y-scroll h-[19rem] lg:h-[10rem] xl:h-[20rem]">
+                                @foreach (var item in apartmentsSelect)
                                 {
-                                    @if (progress.IdApartment == item.IdApartment)
+                                    @foreach (var progress in progressReports)
                                     {
-                                        <div class="flex w-full px-16">
-                                            <div class="flex justify-center w-3/6">
-                                                <label class="w-80 h-8 text-sm md:text-base lg:text-lg 2xl:text-2xl text-white leading-6 text-center bg-[#254260] rounded-lg py-1 m-2">@element.ElementName</label>
-                                                <label class="w-80 h-8 text-sm md:text-base lg:text-lg 2xl:text-2xl text-white leading-6 text-center bg-[#254260] rounded-lg py-1 m-2">@subElementsSelect.FirstOrDefault(x => x.IdSubElement == progress.IdSubElement).SubElementName</label>
-                                                <label class="w-80 h-8 text-sm md:text-base lg:text-lg 2xl:text-2xl text-white leading-6 text-center bg-[#254260] rounded-lg py-1 m-2">@item.ApartmentNumber</label>
-                                            </div>
-                                            <div class="flex flex-row justify-center items-center w-3/6">
-                                                @if (progressLogs.FirstOrDefault(x => x.IdProgressReport == progress.IdProgressReport)?.IdProgressLog != null)
-                                                {
-                                                    <div class="flex justify-end text-white w-[@greenPercentage[$"{progress.IdProgressReport}"]%] bg-[#115D28] h-5">@progressLogs.FirstOrDefault(x => x.IdProgressReport == progress.IdProgressReport).Pieces</div>
-                                                    <div class="flex justify-end text-white w-[@redPercentage[$"{progress.IdProgressReport}"]%] bg-[#CB3030] h-5">@progress.TotalPieces</div>
-                                                    <div class="self-center">
-                                                        <button @onclick="() => CameraButton(progressLogs.FirstOrDefault(x => x.IdProgressReport == progress.IdProgressReport).IdProgressLog)">
-                                                            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="#254260" class="bi bi-camera-fill ml-2" viewBox="0 0 16 16">
-                                                                <path d="M10.5 8.5a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z" />
-                                                                <path d="M2 4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2h-1.172a2 2 0 0 1-1.414-.586l-.828-.828A2 2 0 0 0 9.172 2H6.828a2 2 0 0 0-1.414.586l-.828.828A2 2 0 0 1 3.172 4H2zm.5 2a.5.5 0 1 1 0-1 .5.5 0 0 1 0 1zm9 2.5a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0z" />
-                                                            </svg>
-                                                        </button>
+                                        @if (elementsSelect.FirstOrDefault(x => x.IdElement == progress.IdElement).IdActivity == activity.IdActivity)
+                                        {
+                                            @if (progress.IdApartment == item.IdApartment)
+                                            {
+                                                <div class="flex w-full px-16">
+                                                    <div class="flex justify-center w-3/6">
+                                                        <label class="w-80 h-8 text-sm md:text-base lg:text-lg 2xl:text-xl text-white leading-6 text-center bg-[#254260] rounded-lg py-1 m-2">@Areas.FirstOrDefault(x => x.IdArea == progress.IdArea).AreaName</label>
+                                                        <label class="w-80 h-8 text-sm md:text-base lg:text-lg 2xl:text-xl text-white leading-6 text-center bg-[#254260] rounded-lg py-1 m-2">@elementsSelect.FirstOrDefault(x => x.IdElement == progress.IdElement).ElementName</label>
+                                                        <label class="w-80 h-8 text-sm md:text-base lg:text-lg 2xl:text-xl text-white leading-6 text-center bg-[#254260] rounded-lg py-1 m-2">@subElementsSelect.FirstOrDefault(x => x.IdSubElement == progress.IdSubElement).SubElementName</label>
+                                                        <label class="w-80 h-8 text-sm md:text-base lg:text-lg 2xl:text-xl text-white leading-6 text-center bg-[#254260] rounded-lg py-1 m-2">@item.ApartmentNumber</label>
                                                     </div>
-                                                }
-                                                else
-                                                {
-                                                    <div class="flex justify-end text-white w-[@greenPercentage[$"{progress.IdProgressReport}"]%] bg-[#115D28] h-5"></div>
-                                                    <div class="flex justify-end text-white w-[@redPercentage[$"{progress.IdProgressReport}"]%] bg-[#CB3030] h-5">@progress.TotalPieces</div>
-                                                    <div class="self-center">
-                                                        <button @onclick="() => NotificationImages()">
-                                                            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="#254260" class="bi bi-camera-fill ml-2" viewBox="0 0 16 16">
-                                                                <path d="M10.5 8.5a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z" />
-                                                                <path d="M2 4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2h-1.172a2 2 0 0 1-1.414-.586l-.828-.828A2 2 0 0 0 9.172 2H6.828a2 2 0 0 0-1.414.586l-.828.828A2 2 0 0 1 3.172 4H2zm.5 2a.5.5 0 1 1 0-1 .5.5 0 0 1 0 1zm9 2.5a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0z" />
-                                                            </svg>
-                                                        </button>
+                                                    <div class="flex flex-row justify-center items-center w-3/6">
+                                                        @if (progressLogs.FirstOrDefault(x => x.IdProgressReport == progress.IdProgressReport)?.IdProgressLog != null)
+                                                        {
+                                                            <div class="flex justify-end text-white w-[@greenPercentage[$"{progress.IdProgressReport}"]%] bg-[#115D28] h-5">@progressLogs.FirstOrDefault(x => x.IdProgressReport == progress.IdProgressReport).Pieces</div>
+                                                            <div class="flex justify-end text-white w-[@redPercentage[$"{progress.IdProgressReport}"]%] bg-[#CB3030] h-5">@progress.TotalPieces</div>
+                                                            <div class="self-center">
+                                                                @if (isContentPhoto(progressLogs.FirstOrDefault(x => x.IdProgressReport == progress.IdProgressReport).IdProgressLog))
+                                                                {
+                                                                    <button @onclick="() => CameraButton(progressLogs.FirstOrDefault(x => x.IdProgressReport == progress.IdProgressReport).IdProgressLog)">
+                                                                        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="#254260" class="bi bi-camera-fill ml-2" viewBox="0 0 16 16">
+                                                                            <path d="M10.5 8.5a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z" />
+                                                                            <path d="M2 4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2h-1.172a2 2 0 0 1-1.414-.586l-.828-.828A2 2 0 0 0 9.172 2H6.828a2 2 0 0 0-1.414.586l-.828.828A2 2 0 0 1 3.172 4H2zm.5 2a.5.5 0 1 1 0-1 .5.5 0 0 1 0 1zm9 2.5a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0z" />
+                                                                        </svg>
+                                                                    </button>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <button @onclick="() => CameraButton(progressLogs.FirstOrDefault(x => x.IdProgressReport == progress.IdProgressReport).IdProgressLog)" disabled="true">
+                                                                        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" class="bi bi-camera-fill ml-2 fill-gray-400" viewBox="0 0 16 16">
+                                                                            <path d="M10.5 8.5a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z" />
+                                                                            <path d="M2 4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2h-1.172a2 2 0 0 1-1.414-.586l-.828-.828A2 2 0 0 0 9.172 2H6.828a2 2 0 0 0-1.414.586l-.828.828A2 2 0 0 1 3.172 4H2zm.5 2a.5.5 0 1 1 0-1 .5.5 0 0 1 0 1zm9 2.5a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0z" />
+                                                                        </svg>
+                                                                    </button>
+                                                                }
+                                                            </div>
+                                                        }
+                                                        else
+                                                        {
+                                                            <div class="flex justify-end text-white w-[@greenPercentage[$"{progress.IdProgressReport}"]%] bg-[#115D28] h-5"></div>
+                                                            <div class="flex justify-end text-white w-[@redPercentage[$"{progress.IdProgressReport}"]%] bg-[#CB3030] h-5">@progress.TotalPieces</div>
+                                                            <div class="self-center">
+                                                                <button @onclick="() => NotificationImages()" disabled="true">
+                                                                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="#254260" class="bi bi-camera-fill ml-2 fill-gray-400" viewBox="0 0 16 16">
+                                                                        <path d="M10.5 8.5a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z" />
+                                                                        <path d="M2 4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2h-1.172a2 2 0 0 1-1.414-.586l-.828-.828A2 2 0 0 0 9.172 2H6.828a2 2 0 0 0-1.414.586l-.828.828A2 2 0 0 1 3.172 4H2zm.5 2a.5.5 0 1 1 0-1 .5.5 0 0 1 0 1zm9 2.5a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0z" />
+                                                                    </svg>
+                                                                </button>
+                                                            </div>
+                                                        }
                                                     </div>
-                                                }
-                                            </div>
-                                        </div>
+                                                </div>
+                                            }
+                                        }
                                     }
                                 }
-                            }
-                        </div>
-                    }
-                </div>
+                            </div>
+                        }
+                    </div>
+                }
                 <div class="w-full flex justify-end py-2">
                     <div class="w-full flex inset-x-0 bottom-12">
                         <button @onclick="() => ChangeView()" class="mx-auto bg-[#B9352E] hover:bg-red-500 w-40 p-2 rounded-2xl text-base md:text-lg text-white font-medium leading-6 border hover:border-white">Descargar</button>
                     </div>
                 </div>
             }
-            else
-            {
-                <div class="my-4 w-screen">
-                    <div class="pt-10 flex justify-center">
-                        <label class="text-sm md:text-base lg:text-xl 2xl:text-4xl text-white leading-6 text-center bg-[#162D4E] rounded-lg py-2 px-24">Reporte Avance De @activity.ActivityName</label>
-                    </div>
-                    @if (greenPercentage != null && redPercentage != null)
-                    {
-                        <div class="flex w-full mt-10 px-16">
-                            <div class="flex justify-center w-3/6">
-                                <label class="w-3/6 h-14 2xl:h-16 text-sm md:text-base lg:text-xl 2xl:text-4xl text-white leading-6 text-center bg-[#162D4E] rounded-lg py-2 m-2">Elemento</label>
-                                <label class="w-3/6 h-14 2xl:h-16 text-sm md:text-base lg:text-xl 2xl:text-4xl text-white leading-6 text-center bg-[#162D4E] rounded-lg py-2 m-2">Departamento</label>
-                            </div>
-                            <div class="flex justify-center w-3/6">
-                                <label class="w-full text-sm md:text-base lg:text-xl 2xl:text-4xl text-white leading-6 text-center bg-[#162D4E] rounded-lg py-2 my-2">Avance</label>
-                                <div class="self-center">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="#254260" class="bi bi-camera-fill ml-2 invisible" viewBox="0 0 16 16">
-                                        <path d="M10.5 8.5a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z" />
-                                        <path d="M2 4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2h-1.172a2 2 0 0 1-1.414-.586l-.828-.828A2 2 0 0 0 9.172 2H6.828a2 2 0 0 0-1.414.586l-.828.828A2 2 0 0 1 3.172 4H2zm.5 2a.5.5 0 1 1 0-1 .5.5 0 0 1 0 1zm9 2.5a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0z" />
-                                    </svg>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="overflow-y-scroll h-[20rem]">
-                            @foreach (var item in apartmentsSelect)
-                            {
-                                @foreach (var progress in progressReports)
-                                {
-                                    @if (progress.IdApartment == item.IdApartment)
-                                    {
-                                        <div class="flex w-full px-16">
-                                            <div class="flex justify-center w-3/6">
-                                                <label class="w-3/6 h-8 text-sm md:text-base lg:text-lg 2xl:text-2xl text-white leading-6 text-center bg-[#254260] rounded-lg py-1 m-2">@element.ElementName</label>
-                                                <label class="w-3/6 h-8 text-sm md:text-base lg:text-lg 2xl:text-2xl text-white leading-6 text-center bg-[#254260] rounded-lg py-1 m-2">@item.ApartmentNumber</label>
-                                            </div>
-                                            <div class="flex flex-row justify-center items-center w-3/6">
-                                                @if (progressLogs.FirstOrDefault(x => x.IdProgressReport == progress.IdProgressReport)?.IdProgressLog != null)
-                                                {
-                                                    <div class="flex justify-end text-white w-[@greenPercentage[$"{progress.IdProgressReport}"]%] bg-[#115D28] h-5">@progressLogs.FirstOrDefault(x => x.IdProgressReport == progress.IdProgressReport).Pieces</div>
-                                                    <div class="flex justify-end text-white w-[@redPercentage[$"{progress.IdProgressReport}"]%] bg-[#CB3030] h-5">@progress.TotalPieces</div>
-                                                    <div class="self-center">
-                                                        <button @onclick="() => CameraButton(progressLogs.FirstOrDefault(x => x.IdProgressReport == progress.IdProgressReport).IdProgressLog)">
-                                                            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="#254260" class="bi bi-camera-fill ml-2" viewBox="0 0 16 16">
-                                                                <path d="M10.5 8.5a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z" />
-                                                                <path d="M2 4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2h-1.172a2 2 0 0 1-1.414-.586l-.828-.828A2 2 0 0 0 9.172 2H6.828a2 2 0 0 0-1.414.586l-.828.828A2 2 0 0 1 3.172 4H2zm.5 2a.5.5 0 1 1 0-1 .5.5 0 0 1 0 1zm9 2.5a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0z" />
-                                                            </svg>
-                                                        </button>
-                                                    </div>
-                                                }
-                                                else
-                                                {
-                                                    <div class="flex justify-end text-white w-[@greenPercentage[$"{progress.IdProgressReport}"]%] bg-[#115D28] h-5"></div>
-                                                    <div class="flex justify-end text-white w-[@redPercentage[$"{progress.IdProgressReport}"]%] bg-[#CB3030] h-5">@progress.TotalPieces</div>
-                                                    <div class="self-center">
-                                                        <button @onclick="() => NotificationImages()">
-                                                            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="#254260" class="bi bi-camera-fill ml-2" viewBox="0 0 16 16">
-                                                                <path d="M10.5 8.5a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z" />
-                                                                <path d="M2 4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2h-1.172a2 2 0 0 1-1.414-.586l-.828-.828A2 2 0 0 0 9.172 2H6.828a2 2 0 0 0-1.414.586l-.828.828A2 2 0 0 1 3.172 4H2zm.5 2a.5.5 0 1 1 0-1 .5.5 0 0 1 0 1zm9 2.5a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0z" />
-                                                            </svg>
-                                                        </button>
-                                                    </div>
-                                                }
-                                            </div>
-                                        </div>
-                                    }
-                                }
-                            }
-                        </div>
-                    }
-                </div>
-                <div class="w-full flex justify-end py-2">
-                    <div class="w-full flex inset-x-0 bottom-12">
-                        <button @onclick="() => ChangeView()" class="mx-auto bg-[#B9352E] hover:bg-red-500 w-40 p-2 rounded-2xl text-lg text-white font-medium leading-6 border hover:border-white">Descargar</button>
-                    </div>
-                </div>
-            }
-            @if (showModal == true)
-            {
-                @*Modal Ocultado*@
-                <div class="bg-zinc-300 h-screen w-screen fixed opacity-50"></div>
-                <div class="w-screen h-screen fixed inset-0 flex flex-col justify-center items-center">
-                    <div class="w-[40rem] h-[35rem] bg-white border border-black rounded-lg flex flex-col justify-center items-center relative">
-                        <div class="absolute top-2 right-2">
-                            <button @onclick="() => ChangeShowModal()">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="#254260 hover:text-sky-400" class="bi bi-x-circle" viewBox="0 0 16 16">
-                                    <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
-                                    <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z" />
-                                </svg>
-                            </button>
-                        </div>
-                        <div class="flex flex-col justify-center items-center relative">
-                            <div class="flex flex-col w-full">
-                                <label class="text-4xl my-4">Observaciones</label>
-                                <input type="text" class="h-32 w-[35rem] border border-black px-2" disabled placeholder="@observations">
-                            </div>
-                            <div class="flex flex-col w-full">
-                                <label class="text-4xl my-4">Fotografias</label>
-                                <div class="flex justify-around">
-                                    @foreach (var item in images)
-                                    {
-                                        <div class="h-32 w-52 border border-black">
-                                            <img class="w-100 h-100" src="@item" />
-                                        </div>
-                                    }
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            }
-            @if (alert == true)
-            {
-                <div class="bg-yellow-100 border border-yellow-400 text-yellow-700 pl-4 pr-12 py-2 rounded fixed right-4 w-[32]" style="top: 5.7rem;" role="alert">
-                    <strong class="font-bold">¡Advertencia!</strong>
-                    <span class="block sm:inline">@messageError</span>
-                    <span class="absolute top-0 bottom-0 right-0 px-4 py-2">
-                        <svg class="fill-current h-6 w-6 text-yellow-500" role="button" @onclick="() => ShowMessage()" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><title>Close</title><path d="M14.348 14.849a1.2 1.2 0 0 1-1.697 0L10 11.819l-2.651 3.029a1.2 1.2 0 1 1-1.697-1.697l2.758-3.15-2.759-3.152a1.2 1.2 0 1 1 1.697-1.697L10 8.183l2.651-3.031a1.2 1.2 0 1 1 1.697 1.697l-2.758 3.152 2.758 3.15a1.2 1.2 0 0 1 0 1.698z" /></svg>
-                    </span>
-                </div>
-            }
         </div>
-        <button @onclick="() => GoBack()" class="fixed z-10 inset-x-1 top-20 w-12">
-
-            <svg xmlns="http://www.w3.org/2000/svg" width="46" height="46" fill="#55595E" class="bi bi-arrow-left" viewBox="0 0 16 16">
-
-                <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z" />
-
-            </svg>
-
-        </button>
-    }
-    else
-    {
-        <div class="flex inset-0 fixed justify-center items-center h-screen fixed bg-black opacity-50 transition-opacity">
-            <div class="flex inset-0 fixed justify-center items-center h-screen">
-                <FluentProgressRing style="width: 102px; height: 102px;">
-                    <ChildContent>100%</ChildContent>
-                </FluentProgressRing>
+        <div class="w-full flex justify-end py-2">
+            <div class="w-full flex inset-x-0 bottom-12">
+                <button @onclick="() => ChangeView()" class="mx-auto bg-[#B9352E] hover:bg-red-500 w-40 p-2 rounded-2xl text-lg text-white font-medium leading-6 border hover:border-white">Descargar</button>
             </div>
         </div>
     }
+    @if (_showPreviewFile)
+    {
+        <PreviewFile CloseModalLessor="@ChangeOpenModalPreview" Content="@_bytesPreviewFile" PdfName="@PDF_FILE_NAME" ShowModal="@_showPreviewFile"></PreviewFile>
+    }
+    @if (showModal == true)
+    {
+        @*Modal Ocultado*@
+        <div class="bg-zinc-300 h-screen w-screen fixed opacity-50"></div>
+        <div class="w-screen h-screen fixed inset-0 flex flex-col justify-center items-center">
+            <div class="w-[40rem] h-[35rem] bg-white border border-black rounded-lg flex flex-col justify-center items-center relative">
+                <div class="absolute top-2 right-2">
+                    <button @onclick="() => ChangeShowModal()">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="#254260 hover:text-sky-400" class="bi bi-x-circle" viewBox="0 0 16 16">
+                            <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
+                            <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z" />
+                        </svg>
+                    </button>
+                </div>
+                <div class="flex flex-col justify-center items-center relative">
+                    <div class="flex flex-col w-full">
+                        <label class="text-4xl my-4">Observaciones</label>
+                        <input type="text" class="h-32 w-[35rem] border border-black px-2" disabled placeholder="@observations">
+                    </div>
+                    <div class="flex flex-col w-full">
+                        <label class="text-4xl my-4">Fotografias</label>
+                        <div class="flex justify-around">
+                            @foreach (var item in images)
+                            {
+                                <div class="h-32 w-52 border border-black">
+                                    <img class="w-100 h-100" src="@item" />
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+    @if (alert == true)
+    {
+        <div class="bg-yellow-100 border border-yellow-400 text-yellow-700 pl-4 pr-12 py-2 rounded fixed right-4 w-[32]" style="top: 5.7rem;" role="alert">
+            <strong class="font-bold">¡Advertencia!</strong>
+            <span class="block sm:inline">@messageError</span>
+            <span class="absolute top-0 bottom-0 right-0 px-4 py-2">
+                <svg class="fill-current h-6 w-6 text-yellow-500" role="button" @onclick="() => ShowMessage()" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><title>Close</title><path d="M14.348 14.849a1.2 1.2 0 0 1-1.697 0L10 11.819l-2.651 3.029a1.2 1.2 0 1 1-1.697-1.697l2.758-3.15-2.759-3.152a1.2 1.2 0 1 1 1.697-1.697L10 8.183l2.651-3.031a1.2 1.2 0 1 1 1.697 1.697l-2.758 3.152 2.758 3.15a1.2 1.2 0 0 1 0 1.698z" /></svg>
+            </span>
+        </div>
+    }
+    <button @onclick="() => GoBack()" class="fixed z-10 inset-x-1 top-20 w-12">
+
+        <svg xmlns="http://www.w3.org/2000/svg" width="46" height="46" fill="#55595E" class="bi bi-arrow-left" viewBox="0 0 16 16">
+
+            <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z" />
+
+        </svg>
+
+    </button>
 }
 else
 {

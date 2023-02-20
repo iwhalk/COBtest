@@ -1,5 +1,6 @@
 ﻿using Blazored.Toast;
 using Blazored.Toast.Services;
+using Microsoft.Fast.Components.FluentUI;
 using Microsoft.JSInterop;
 using Obra.Client.Components;
 using Obra.Client.Interfaces;
@@ -13,6 +14,7 @@ namespace Obra.Client.Pages
         private readonly ApplicationContext _context;
         private readonly IApartmentsService _apartmentsService;
         private readonly IActivitiesService _activitiesService;
+        private readonly IAreasService _areasService;
         private readonly IElementsService _elementsService;
         private readonly ISubElementsService _subElementsService;
         private readonly IProgressReportService _progressReportService;
@@ -21,7 +23,8 @@ namespace Obra.Client.Pages
         private readonly IJSRuntime _JS;
         private readonly IToastService _toastService;
         private List<Apartment> apartments { get; set; } = new List<Apartment>();
-        private List<SharedLibrary.Models.Activity> activities { get; set; }
+        private List<SharedLibrary.Models.Activity> activities { get; set; } = new List<Activity>();
+        private List<Area> Areas { get; set; }
         private List<Element> elements { get; set; } = new List<Element>();
         private List<SubElement> subElements { get; set; } = new List<SubElement>();
 
@@ -32,6 +35,8 @@ namespace Obra.Client.Pages
 
         private List<ProgressReport> progressReports { get; set; } = new();
         private List<ProgressLog> progressLogs { get; set; } = new();
+        private List<Activity> activitiesSelect { get; set; } = new();
+        private List<Element> elementsSelect { get; set; } = new();
         private List<SubElement> subElementsSelect { get; set; } = new();
         private List<Apartment> apartmentsSelect { get; set; } = new();
         private SharedLibrary.Models.Activity activity { get; set; }
@@ -61,11 +66,17 @@ namespace Obra.Client.Pages
         Dictionary<string, string> greenPercentage { get; set; } = new();
         Dictionary<string, string> redPercentage { get; set; } = new();
 
-        public ActivityDetails(ApplicationContext context, IApartmentsService apartmentsService, IActivitiesService activitiesService, IElementsService elementsService, ISubElementsService subElementsService, IProgressReportService progressReportService, IProgressLogsService progressLogsService, IReportsService reportesService, IJSRuntime jS, IToastService toastService)
+
+        private bool _showPreviewFile { get; set; }
+        private byte[] _bytesPreviewFile { get; set; }
+        private const string PDF_FILE_NAME = "DetallePorActividad.pdf";
+        private void ChangeOpenModalPreview() => _showPreviewFile = _showPreviewFile ? false : true;
+        public ActivityDetails(ApplicationContext context, IApartmentsService apartmentsService, IActivitiesService activitiesService, IAreasService areasService, IElementsService elementsService, ISubElementsService subElementsService, IProgressReportService progressReportService, IProgressLogsService progressLogsService, IReportsService reportesService, IJSRuntime jS, IToastService toastService)
         {
             _context = context;
             _apartmentsService = apartmentsService;
             _activitiesService = activitiesService;
+            _areasService = areasService;
             _elementsService = elementsService;
             _subElementsService = subElementsService;
             _progressReportService = progressReportService;
@@ -79,6 +90,7 @@ namespace Obra.Client.Pages
         {
             apartments = await _apartmentsService.GetApartmentsAsync();
             activities = await _activitiesService.GetActivitiesAsync();
+            Areas = await _areasService.GetAreasAsync();
         }
 
         public async Task AddIdSelect(int id, int filter)
@@ -280,10 +292,14 @@ namespace Obra.Client.Pages
 
             if (pdf != null)
             {
-                var fileName = "DetallePorActividad.pdf";
-                var fileStream = new MemoryStream(pdf);
-                using var streamRef = new DotNetStreamReference(stream: fileStream);
-                await _JS.InvokeVoidAsync("downloadFileFromStream", fileName, streamRef);
+                _bytesPreviewFile = pdf;
+                loading = false;
+                _showPreviewFile = true;
+                StateHasChanged();
+                // var fileName = "DetallePorActividad.pdf";
+                // var fileStream = new MemoryStream(pdf);
+                // using var streamRef = new DotNetStreamReference(stream: fileStream);
+                // await _JS.InvokeVoidAsync("downloadFileFromStream", fileName, streamRef);
             }
             else
             {
@@ -298,117 +314,46 @@ namespace Obra.Client.Pages
         {
             buttonReport = true;
             loading = true;
+            Activity activity = new();
+            Element element = new();
             SubElement subElement = new();
 
-            if (allApartments == true && _idsAparmentSelect.Count() < 1)
+            if (allSubElements == true)
             {
-                foreach (var idAparment in apartments)
+                foreach (var idSubElement in subElements)
                 {
-                    _idsAparmentSelect.Add(idAparment.IdApartment);
-                }
-
-                if (allSubElements == true)
-                {
-                    foreach (var idSubElement in subElements)
-                    {
-                        _idsSubElementsSelect.Add(idSubElement.IdSubElement);
-                    }
-                }
-
-                activity = activities.FirstOrDefault(x => x.IdActivity == _idsActivitiesSelect.FirstOrDefault());
-                element = elements.FirstOrDefault(x => x.IdElement == _idsElementsSelect.FirstOrDefault());
-
-                foreach (var item in _idsSubElementsSelect)
-                {
-                    subElement = subElements.FirstOrDefault(x => x.IdSubElement == item);
-
-                    subElementsSelect.Add(new SubElement() { IdSubElement = subElement.IdSubElement, SubElementName = subElement.SubElementName, IdElement = subElement.IdElement, Type = subElement.Type });
-                }
-
-                await AdvancementProgressSubElements();
-
-                if (alert == false)
-                {
-                    await DivisionOfColors();
-
-                    apartmentDetails = false;
+                    _idsSubElementsSelect.Add(idSubElement.IdSubElement);
                 }
             }
-            else if (_idsAparmentSelect.Count() >= 1)
+
+            foreach (var item in _idsActivitiesSelect)
             {
-                if (_idsElementsSelect != null && _idsElementsSelect.Count() > 0 && _idsSubElementsSelect.Count() >= 1)
-                {
-                    activity = activities.FirstOrDefault(x => x.IdActivity == _idsActivitiesSelect.FirstOrDefault());
-                    element = elements.FirstOrDefault(x => x.IdElement == _idsElementsSelect.FirstOrDefault());
+                activity = activities.FirstOrDefault(x => x.IdActivity == item);
 
-                    foreach (var item in _idsSubElementsSelect)
-                    {
-                        subElement = subElements.FirstOrDefault(x => x.IdSubElement == item);
-
-                        subElementsSelect.Add(new SubElement() { IdSubElement = subElement.IdSubElement, SubElementName = subElement.SubElementName, IdElement = subElement.IdElement, Type = subElement.Type });
-                    }
-
-                    await AdvancementProgressSubElements();
-
-                    if (alert == false)
-                    {
-                        await DivisionOfColors();
-                        apartmentDetails = false;
-                    }
-                }
-                else if (allSubElements == true && _idsSubElementsSelect.Count() < 1)
-                {
-                    activity = activities.FirstOrDefault(x => x.IdActivity == _idsActivitiesSelect.FirstOrDefault());
-                    element = elements.FirstOrDefault(x => x.IdElement == _idsElementsSelect.FirstOrDefault());
-
-                    if (allSubElements == true)
-                    {
-                        foreach (var idSubElement in subElements)
-                        {
-                            _idsSubElementsSelect.Add(idSubElement.IdSubElement);
-                        }
-                    }
-
-                    foreach (var item in _idsSubElementsSelect)
-                    {
-                        subElement = subElements.FirstOrDefault(x => x.IdSubElement == item);
-
-                        subElementsSelect.Add(new SubElement() { IdSubElement = subElement.IdSubElement, SubElementName = subElement.SubElementName, IdElement = subElement.IdElement, Type = subElement.Type });
-                    }
-
-                    await AdvancementProgressSubElements();
-
-                    if (alert == false)
-                    {
-                        await DivisionOfColors();
-                        apartmentDetails = false;
-                    }
-                }
-                else if (_idsElementsSelect != null && _idsElementsSelect.Count() > 0 && _idsSubElementsSelect.Count() < 1)
-                {
-                    activity = activities.FirstOrDefault(x => x.IdActivity == _idsActivitiesSelect.FirstOrDefault());
-                    element = elements.FirstOrDefault(x => x.IdElement == _idsElementsSelect.FirstOrDefault());
-
-                    await AdvancementProgress();
-
-                    if (alert == false)
-                    {
-                        await DivisionOfColors();
-
-                        apartmentDetails = false;
-                        subElementsNulls = true;
-                    }
-                }
-                else
-                {
-                    messageError = "Para generar el reporte es necesario elegir un Elemento antes";
-                    alert = true;
-                }
+                activitiesSelect.Add(new Activity() { IdActivity = activity.IdActivity, ActivityName = activity.ActivityName, Elements = activity.Elements, IdAreas = activity.IdAreas });
             }
-            else
+
+            foreach (var item in _idsElementsSelect)
             {
-                messageError = "Para generar el reporte es necesario elegir uno o mas Departamentos antes";
-                alert = true;
+                element = elements.FirstOrDefault(x => x.IdElement == item);
+
+                elementsSelect.Add(new Element() { IdElement = element.IdElement, ElementName = element.ElementName, IdActivity = element.IdActivity });
+            }
+
+            foreach (var item in _idsSubElementsSelect)
+            {
+                subElement = subElements.FirstOrDefault(x => x.IdSubElement == item);
+
+                subElementsSelect.Add(new SubElement() { IdSubElement = subElement.IdSubElement, SubElementName = subElement.SubElementName, IdElement = subElement.IdElement, Type = subElement.Type });
+            }
+
+            await AdvancementProgressSubElements();
+
+            if (alert == false)
+            {
+                await DivisionOfColors();
+
+                apartmentDetails = false;
             }
 
             loading = false;
@@ -416,7 +361,6 @@ namespace Obra.Client.Pages
 
         public async Task AdvancementProgressSubElements()
         {
-            //Lo nuevo super rapido alv
             List<ProgressReport> progresses = new();
             ProgressReport auxR = new();
             Apartment apartment = new();
@@ -426,14 +370,25 @@ namespace Obra.Client.Pages
             {
                 progresses = await _progressReportService.GetProgressReportsAsync(idBuilding: 1, idApartment: apart, includeProgressLogs: true);
 
-                foreach (var act in activity.IdAreas)
+                foreach (var activity in activitiesSelect)
                 {
-                    foreach (var sub in _idsSubElementsSelect)
+                    foreach (var area in Areas)
                     {
-                        auxR = progresses.OrderByDescending(x => x.DateCreated).FirstOrDefault(x => x.IdArea == act.IdArea && x.IdElement == _idsElementsSelect.FirstOrDefault() && x.IdSubElement == sub);
+                        var aux = activity.IdAreas.FirstOrDefault(x => x.IdArea == area.IdArea).IdArea;
 
-                        if (auxR != null)
-                            progressReports.Add(auxR);
+                        if (aux != null)
+                        {
+                            foreach (var element in elementsSelect)
+                            {
+                                if (element.IdActivity == activity.IdActivity)
+                                {
+                                    var molina = progresses.Where(x => subElementsSelect.Any(y => x.IdSubElement.Equals(y.IdSubElement)));
+                                    auxR = progresses.OrderByDescending(x => x.DateCreated).FirstOrDefault(x => x.IdArea == aux && x.IdElement == element.IdElement);
+                                    if (auxR != null)
+                                        progressReports.Add(auxR);
+                                }
+                            }
+                        }
                     }
                 }
 
@@ -465,12 +420,15 @@ namespace Obra.Client.Pages
             {
                 progresses = await _progressReportService.GetProgressReportsAsync(idBuilding: 1, idApartment: apart, includeProgressLogs: true);
 
-                foreach (var act in activity.IdAreas)
+                foreach (var activity in _idsActivitiesSelect)
                 {
-                    auxR = progresses.OrderByDescending(x => x.DateCreated).FirstOrDefault(x => x.IdArea == act.IdArea && x.IdElement == _idsElementsSelect.FirstOrDefault());
+                    foreach (var element in _idsElementsSelect)
+                    {
+                        auxR = progresses.OrderByDescending(x => x.DateCreated).FirstOrDefault(x => x.IdElement == _idsElementsSelect.FirstOrDefault());
 
-                    if (auxR != null)
-                        progressReports.Add(auxR);
+                        if (auxR != null)
+                            progressReports.Add(auxR);
+                    }
                 }
 
                 apartment = apartments.FirstOrDefault(x => x.IdApartment == apart);
@@ -491,29 +449,47 @@ namespace Obra.Client.Pages
 
         public async Task DivisionOfColors()
         {
-            foreach (var item in progressReports)
+            try
             {
-                if (progressLogs.FirstOrDefault(x => x.IdProgressReport == item.IdProgressReport)?.IdProgressLog != null)
+                foreach (var item in progressReports)
                 {
-                    int auxGreen = Convert.ToInt16(progressLogs.FirstOrDefault(x => x.IdProgressReport == item.IdProgressReport).Pieces) * 100;
+                    if (progressLogs.FirstOrDefault(x => x.IdProgressReport == item.IdProgressReport)?.IdProgressLog != null)
+                    {
+                        int auxGreen = Convert.ToInt16(progressLogs.FirstOrDefault(x => x.IdProgressReport == item.IdProgressReport).Pieces) * 100;
 
-                    double auxResult = auxGreen / Convert.ToInt16(item.TotalPieces);
+                        double auxResult = auxGreen / Convert.ToInt16(item.TotalPieces);
 
-                    greenPercentage.Add($"{item.IdProgressReport}", auxResult.ToString("0.##"));
+                        greenPercentage.Add($"{item.IdProgressReport}", auxResult.ToString("0.##"));
 
-                    decimal auxRed = Convert.ToInt32(auxResult.ToString("0.##"));
+                        decimal auxRed = Convert.ToInt32(auxResult.ToString("0.##"));
 
-                    redPercentage.Add($"{item.IdProgressReport}", (100 - auxRed).ToString());
+                        redPercentage.Add($"{item.IdProgressReport}", (100 - auxRed).ToString());
+                    }
+                    else
+                    {
+                        greenPercentage.Add($"{item.IdProgressReport}", 0.ToString());
+
+                        redPercentage.Add($"{item.IdProgressReport}", 100.ToString());
+                    }
                 }
-                else
-                {
-                    greenPercentage.Add($"{item.IdProgressReport}", 0.ToString());
-
-                    redPercentage.Add($"{item.IdProgressReport}", 100.ToString());
-                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
             }
         }
 
+        public bool isContentPhoto(int id)
+        {
+            var aux = progressLogs.FirstOrDefault(x => x.IdProgressLog == id);
+            if (aux is null) return false;
+            if (aux.Observation != null && aux.IdBlobs.Count > 0)
+            {
+                return true;
+            }
+
+            return false;
+        }
         public async Task CameraButton(int id)
         {
             await ShowMessage();

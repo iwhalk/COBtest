@@ -18,7 +18,12 @@ namespace Obra.Client.Pages
         private Dictionary<int, Tuple<double, double>> _idsActivitySelect { get; set; } = new();
         public bool _isLoadingProcess { get; set; }
         private bool _isFullActivity { get; set; }
-        public ProgressByActivity(ApplicationContext context, NavigationManager navigationManager, IActivitiesService activityService, IProgressLogsService progressLogsService, IReportsService _reportService, IJSRuntime jS)
+        private bool _showPreviewFile { get; set; }
+        private byte[] _bytesPreviewFile { get; set; }
+        private const string PDF_FILE_NAME = "AvancePorActividad.pdf"; 
+        private readonly IJSInProcessRuntime _js;
+
+        public ProgressByActivity(ApplicationContext context, NavigationManager navigationManager, IActivitiesService activityService, IProgressLogsService progressLogsService, IReportsService _reportService, IJSRuntime jS, IJSInProcessRuntime js)
         {
             _context = context;
             _activityService = activityService;
@@ -26,11 +31,14 @@ namespace Obra.Client.Pages
             _progressLogsService = progressLogsService;
             this._reportService = _reportService;            
             _JS = jS;
+            _js = js;
         }
         protected async override Task OnInitializedAsync()
         {
             _context.Activity = await _activityService.GetActivitiesAsync();
         }
+
+        private void ChangeOpenModalPreview() => _showPreviewFile = _showPreviewFile ? false : true;
         private void BackPage() => _navigationManager.NavigateTo("/ProjectOverview");
         private async void AddIdActivitySelect(int idActivity)
         {
@@ -90,6 +98,30 @@ namespace Obra.Client.Pages
             _isLoadingProcess = false;
             StateHasChanged();
         }
+
+        private async void PreviewFileReport()
+        {
+            _isLoadingProcess = true;
+            var listActivityProgress = _idsActivitySelect.Select(x => new ActivityProgress
+            {
+                ActivityName = _context.Activity.Find(o => o.IdActivity == x.Key).ActivityName,
+                Progress = x.Value.Item1 * 1.0
+
+            }).ToList();
+            var bytes = await _reportService.PostProgressByActivityPDFAsync(listActivityProgress);
+            if (bytes is not null)
+            {
+                _bytesPreviewFile = bytes;
+                _isLoadingProcess = false;
+                _showPreviewFile = true;
+                StateHasChanged();                
+            }
+            else
+            {
+                _isLoadingProcess = false;   
+                StateHasChanged();
+            }
+        }
         private async void GeneratePDfPorgressaprment()
         {
             _isLoadingProcess = true;
@@ -104,12 +136,10 @@ namespace Obra.Client.Pages
 
             if (bytesForPDF != null)
             {
-
-                var fileName = "AvancePorActividad.pdf";
+                var fileName = PDF_FILE_NAME;
                 var fileStream = new MemoryStream(bytesForPDF);
                 using var streamRef = new DotNetStreamReference(stream: fileStream);
                 await _JS.InvokeVoidAsync("downloadFileFromStream", fileName, streamRef);
-
             }
             _isLoadingProcess = false;
             StateHasChanged();

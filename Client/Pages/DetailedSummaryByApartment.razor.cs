@@ -15,6 +15,7 @@ namespace Obra.Client.Pages
         private readonly ApplicationContext _context;
         private readonly IApartmentsService _apartmentsService;
         private readonly IActivitiesService _activitiesService;
+        private readonly IAreasService _areasService;
         private readonly IElementsService _elementsService;
         private readonly ISubElementsService _subElementsService;
         private readonly IProgressReportService _progressReportService;
@@ -24,6 +25,7 @@ namespace Obra.Client.Pages
         private readonly IToastService _toastService;
         private List<Apartment> apartments { get; set; }
         private List<SharedLibrary.Models.Activity> activities { get; set; }
+        private List<Area> Areas { get; set; }
         private List<Element> elements { get; set; }
         private List<SubElement> subElements { get; set; }
         private List<ProgressReport> progressReports { get; set; } = new();
@@ -62,12 +64,18 @@ namespace Obra.Client.Pages
 
         private bool isFirstView { get; set; } = true;
         private bool showModal { get; set; } = false;
+        
+        private bool _showPreviewFile { get; set; }
+        private byte[] _bytesPreviewFile { get; set; }
+        private const string PDF_FILE_NAME = "DetallePorDepartemento.pdf"; 
+        private void ChangeOpenModalPreview() => _showPreviewFile = _showPreviewFile ? false : true;
 
-        public DetailedSummaryByApartment(ApplicationContext context, IApartmentsService apartmentsService, IActivitiesService activitiesService, IElementsService elementsService, ISubElementsService subElementsService, IProgressReportService progressReportService, IProgressLogsService progressLogsService, IReportsService reportesService, IJSRuntime jS, IToastService toastService)
+        public DetailedSummaryByApartment(ApplicationContext context, IApartmentsService apartmentsService, IActivitiesService activitiesService, IAreasService areasService, IElementsService elementsService, ISubElementsService subElementsService, IProgressReportService progressReportService, IProgressLogsService progressLogsService, IReportsService reportesService, IJSRuntime jS, IToastService toastService)
         {
             _context = context;
             _apartmentsService = apartmentsService;
             _activitiesService = activitiesService;
+            _areasService = areasService;
             _elementsService = elementsService;
             _subElementsService = subElementsService;
             _progressReportService = progressReportService;
@@ -81,6 +89,7 @@ namespace Obra.Client.Pages
         {
             apartments = await _apartmentsService.GetApartmentsAsync();
             activities = await _activitiesService.GetActivitiesAsync();
+            Areas = await _areasService.GetAreasAsync();
         }
 
         public async Task AddIdSelect(int id, int filter)
@@ -409,10 +418,14 @@ namespace Obra.Client.Pages
 
             if (pdf != null)
             {
-                var fileName = "DetallePorDepartemento.pdf";
-                var fileStream = new MemoryStream(pdf);
-                using var streamRef = new DotNetStreamReference(stream: fileStream);
-                await _JS.InvokeVoidAsync("downloadFileFromStream", fileName, streamRef);
+                _bytesPreviewFile = pdf;
+                loading = false;
+                _showPreviewFile = true;
+                StateHasChanged();
+                // var fileName = "DetallePorDepartemento.pdf";
+                // var fileStream = new MemoryStream(pdf);
+                // using var streamRef = new DotNetStreamReference(stream: fileStream);
+                // await _JS.InvokeVoidAsync("downloadFileFromStream", fileName, streamRef);
             }
             else
             {
@@ -659,6 +672,22 @@ namespace Obra.Client.Pages
                     redPercentage.Add($"{item.IdProgressReport}", 100.ToString());
                 }
             }
+        }
+
+        public bool isContentPhoto(int idProgreesReport)
+        {
+            int id = progressLogs.FirstOrDefault(x => x.IdProgressReport == idProgreesReport).IdProgressLog;
+
+            if (id != null)
+            {
+                var aux = progressLogs.FirstOrDefault(x => x.IdProgressLog == id);
+                if (aux is null) return false;
+                if (aux.Observation != null && aux.IdBlobs.Count > 0)
+                {
+                    return true;
+                }
+            }
+            return false;
         }
 
         public async Task CamareButton(int idProgreesReport)
