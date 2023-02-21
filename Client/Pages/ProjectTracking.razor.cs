@@ -358,9 +358,12 @@ namespace Obra.Client.Pages
             //ShowBlobs = true;
             ShowModalPicture = false;
         }
-        public void OnAnnotatedImageDelete()
+        public async Task OnAnnotatedImageDeleteAsync()
         {
             ShowModalPicture = false;
+            var res = await _blobsService.DeleteBlobAsync(IdBlob);
+            //if(res)
+                CurrentProgressLog.IdBlobs.Remove(CurrentProgressLog.IdBlobs.FirstOrDefault(x => x.IdBlob == IdBlob));
         }
         public async void SaveButtonClicked()
         {

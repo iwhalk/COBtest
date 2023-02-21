@@ -138,7 +138,7 @@ namespace ReportesObra.Utilities
             pdfRenderer.RenderDocument();
 
             using MemoryStream ms = new();
-            CreateWatermarkImage(pdfRenderer);
+            //CreateWatermarkImage(pdfRenderer);
 
             pdfRenderer.Save(ms, false);
 
@@ -183,7 +183,7 @@ namespace ReportesObra.Utilities
             };
 
             pdfRenderer.RenderDocument();
-            CreateWatermarkImage(pdfRenderer);
+            //CreateWatermarkImage(pdfRenderer);
 
             using MemoryStream ms = new();
             pdfRenderer.Save(ms, false);

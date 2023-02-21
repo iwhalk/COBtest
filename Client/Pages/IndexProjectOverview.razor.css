@@ -14,8 +14,7 @@
     height: 120px;
 }
 
-@media screen and (min-width: 1081px) {
-    .margin {
-        margin: 2.5rem;
-    }
+
+.margin {
+    margin: 2.5rem;
 }
