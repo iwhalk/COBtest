@@ -34,14 +34,12 @@ namespace Obra.Client.Pages
         private List<int> _idsElementsSelect { get; set; } = new();
         private List<int> _idsSubElementsSelect { get; set; } = new();
 
-        private List<ProgressReport> progressReports { get; set; } = new();
-        private List<ProgressLog> progressLogs { get; set; } = new();
         private List<Activity> activitiesSelect { get; set; } = new();
         private List<Element> elementsSelect { get; set; } = new();
         private List<SubElement> subElementsSelect { get; set; } = new();
         private List<Apartment> apartmentsSelect { get; set; } = new();
-        private SharedLibrary.Models.Activity activity { get; set; }
-        private Element element { get; set; }
+
+        private List<DetalladoActividades> detalladoActividades { get; set; } = new();
 
         private string messageError = "";
         private int activityIdAux = 0;
@@ -63,9 +61,6 @@ namespace Obra.Client.Pages
 
         private string observations { get; set; } = "";
         private List<string> images { get; set; } = new();
-
-        Dictionary<string, string> greenPercentage { get; set; } = new();
-        Dictionary<string, string> redPercentage { get; set; } = new();
 
 
         private bool _showPreviewFile { get; set; }
@@ -335,6 +330,7 @@ namespace Obra.Client.Pages
         public async Task GoBack()
         {
             await ShowMessage();
+
             if (apartments != null)
             {
                 _idsAparmentSelect.Clear();
@@ -355,49 +351,25 @@ namespace Obra.Client.Pages
             buttonReport = false;
             apartmentDetails = true;
 
-            progressLogs.Clear();
-            progressReports.Clear();
             subElementsSelect.Clear();
             apartmentsSelect.Clear();
-
-            activity = null;
-            element = null;
+            activitiesSelect.Clear();
+            elementsSelect.Clear();
 
             subElementsNulls = false;
             allApartments = false;
             allSubElements = false;
 
-            greenPercentage.Clear();
-            redPercentage.Clear();
+            detalladoActividades.Clear();
         }
 
-        public async Task ChangeView()//DESCARGAR
+        public async Task ChangeView()
         {
             await ShowMessage();
             loading = true;
             buttonReport = false;
 
-            ActivitiesDetail reporte = new();
-            reporte.Activities = new();
-            reporte.Elements = new();
-
-            if (subElementsSelect != null)
-            {
-                reporte.IdBuilding = 1;
-                reporte.Apartments = _idsAparmentSelect;
-                reporte.Activities = _idsActivitiesSelect;
-                reporte.Elements = _idsElementsSelect;
-                reporte.SubElements = _idsSubElementsSelect;
-            }
-            else
-            {
-                reporte.IdBuilding = 1;
-                reporte.Apartments = _idsAparmentSelect;
-                reporte.Activities.Add(activity.IdActivity);
-                reporte.Elements.Add(element.IdElement);
-            }
-
-            var pdf = await _reportesService.PostReporteDetallesPorActividadAsync(reporte);
+            var pdf = await _reportesService.PostReporteDetallesPorActividadesAsync(detalladoActividades, null);
 
             if (pdf != null)
             {
@@ -405,10 +377,6 @@ namespace Obra.Client.Pages
                 loading = false;
                 _showPreviewFile = true;
                 StateHasChanged();
-                // var fileName = "DetallePorActividad.pdf";
-                // var fileStream = new MemoryStream(pdf);
-                // using var streamRef = new DotNetStreamReference(stream: fileStream);
-                // await _JS.InvokeVoidAsync("downloadFileFromStream", fileName, streamRef);
             }
             else
             {
@@ -422,10 +390,40 @@ namespace Obra.Client.Pages
         public async Task ShowReportAndHideApartment()
         {
             buttonReport = true;
+            apartmentDetails = false;
             loading = true;
-            Activity activity = new();
-            Element element = new();
-            SubElement subElement = new();
+
+            if (allSubElements == true)
+            {
+                foreach (var idSubElement in subElements)
+                {
+                    _idsSubElementsSelect.Add(idSubElement.IdSubElement);
+                }
+            }
+
+            foreach (var item in _idsActivitiesSelect)
+            {
+                activitiesSelect.Add(activities.FirstOrDefault(x => x.IdActivity.Equals(item)));
+            }
+
+            foreach (var item in _idsElementsSelect)
+            {
+                elementsSelect.Add(elements.FirstOrDefault(x => x.IdElement.Equals(item)));
+            }
+
+            foreach (var item in _idsSubElementsSelect)
+            {
+                subElementsSelect.Add(subElements.FirstOrDefault(x => x.IdSubElement.Equals(item)));
+            }
+
+            ActivitiesDetail data = new();
+            data.IdBuilding = 1;
+            data.Apartments = _idsAparmentSelect;
+            data.Activities = _idsActivitiesSelect;
+            data.Elements = _idsElementsSelect;
+            data.SubElements = _idsSubElementsSelect;
+
+            detalladoActividades = await _reportesService.PostDataDetallesActividades(data);
 
             loading = false;
         }
@@ -551,43 +549,42 @@ namespace Obra.Client.Pages
 
         public bool isContentPhoto(int id)
         {
-            var aux = progressLogs.FirstOrDefault(x => x.IdProgressLog == id);
-            if (aux is null) return false;
-            if (aux.Observation != null && aux.IdBlobs.Count > 0)
-            {
-                return true;
-            }
+            //var aux = progressLogs.FirstOrDefault(x => x.IdProgressLog == id);
+            //if (aux is null) return false;
+            //if (aux.Observation != null && aux.IdBlobs.Count > 0)
+            //{
+            //    return true;
+            //}
 
             return false;
         }
-
         public async Task CameraButton(int id)
         {
             await ShowMessage();
 
-            ProgressLog aux = progressLogs.FirstOrDefault(x => x.IdProgressLog == id);
+            //ProgressLog aux = progressLogs.FirstOrDefault(x => x.IdProgressLog == id);
 
-            if (aux.Observation != null)
-            {
-                observations = aux.Observation;
-            }
+            //if (aux.Observation != null)
+            //{
+            //    observations = aux.Observation;
+            //}
 
-            if (aux.IdBlobs != null)
-            {
-                foreach (var item in aux.IdBlobs)
-                {
-                    images.Add(item.Uri);
-                }
-            }
+            //if (aux.IdBlobs != null)
+            //{
+            //    foreach (var item in aux.IdBlobs)
+            //    {
+            //        images.Add(item.Uri);
+            //    }
+            //}
 
-            if (observations != null && observations != "" || images.Count() > 0)
-            {
-                showModal = true;
-            }
-            else
-            {
-                _toastService.ShowToast<ToastImages>(new ToastInstanceSettings(5, false));
-            }
+            //if (observations != null && observations != "" || images.Count() > 0)
+            //{
+            //    showModal = true;
+            //}
+            //else
+            //{
+            //    _toastService.ShowToast<ToastImages>(new ToastInstanceSettings(5, false));
+            //}
         }
 
         public async Task NotificationImages()
