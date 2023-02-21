@@ -15,14 +15,24 @@ namespace ApiGateway.Services
         {
 
         }
-        public async Task<ApiResponse<byte[]>> PostReporteDetallesAsync(ActivitiesDetail reporteDetalle)
+
+        public async Task<ApiResponse<List<DetalladoDepartamentos>>> PostDataDetallesPorDepartamentosAsync(ActivitiesDetail reporteDetalle)
         {
-            return await PostAsync<byte[]>(reporteDetalle, path: "ReporteDetalles");
+            return await PostAsync<List<DetalladoDepartamentos>>(reporteDetalle, path: "DataDetallesDepartamento");
         }
-        public async Task<ApiResponse<byte[]>> PostReporteDetallesPorActividadesAsync(ActivitiesDetail reporteDetalle)
+        public async Task<ApiResponse<byte[]>> PostReporteDetallesPorDepartamentosAsync(List<DetalladoDepartamentos> detalladoDepartamentos, int? opcion)
         {
-            return await PostAsync<byte[]>(reporteDetalle, path: "ReporteDetalladoPorActividad");
+            return await PostAsync<byte[]>(detalladoDepartamentos, path: "ReporteDetalladoPorDepartamento");
         }
+        public async Task<ApiResponse<List<DetalladoActividades>>> PostDataDetallesPorActividadesAsync(ActivitiesDetail reporteDetalle)
+        {
+            return await PostAsync<List<DetalladoActividades>>(reporteDetalle, path: "DataDetallesActividad");
+        }
+        public async Task<ApiResponse<byte[]>> PostReporteDetallesPorActividadesAsync(List<DetalladoActividades> detalladoActividades, int? opcion)
+        {
+            return await PostAsync<byte[]>(detalladoActividades, path: "ReporteDetalladoPorActividad");
+        }
+
         //Reports
         public async Task<ApiResponse<List<AparmentProgress>>?> GetProgressByAparmentViewAsync(int? id)
         {

@@ -365,7 +365,7 @@ namespace ReportesObra.Utilities
             CrearEncabezadoGenerico(1);
             Paragraph paragraph;
 
-            reporteDetalles.detalladoDepartamentos = reporteDetalles.detalladoDepartamentos.OrderBy(x => x.numeroApartamento).ToList();            
+            //reporteDetalles.detalladoDepartamentos = reporteDetalles.detalladoDepartamentos.OrderBy(x => x.numeroApartamento).ToList();            
 
             for (int i = 0; i < reporteDetalles.detalladoDepartamentos.Count(); i++)
             {
@@ -456,7 +456,7 @@ namespace ReportesObra.Utilities
             CrearEncabezadoGenerico(2);
             Paragraph paragraph;
 
-            reporteDetallesActividad.detalladoActividades = reporteDetallesActividad.detalladoActividades.OrderBy(x => x.numeroApartamento).ToList();
+            //reporteDetallesActividad.detalladoActividades = reporteDetallesActividad.detalladoActividades.OrderBy(x => x.numeroApartamento).ToList();
 
             for (int i = 0; i < reporteDetallesActividad.detalladoActividades.Count(); i++)
             {
