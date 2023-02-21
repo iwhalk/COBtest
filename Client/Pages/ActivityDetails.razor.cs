@@ -6,6 +6,7 @@ using Obra.Client.Components;
 using Obra.Client.Interfaces;
 using Obra.Client.Stores;
 using SharedLibrary.Models;
+using System.Security.Cryptography.X509Certificates;
 
 namespace Obra.Client.Pages
 {
@@ -126,6 +127,78 @@ namespace Obra.Client.Pages
                 else
                 {
                     _idsActivitiesSelect.Remove(id);
+
+                    List<int> auxIdsElements = new();
+                    List<int> auxIdsSubElements = new();
+
+                    if (_idsElementsSelect.Count() > 0)
+                    {
+                        foreach (var item in _idsElementsSelect)
+                        {
+                            var auxId = elements.FirstOrDefault(x => x.IdActivity.Equals(id) && x.IdElement.Equals(item))?.IdElement;
+
+                            if (auxId != null)
+                            {
+                                int auxNotNull = (int)auxId;
+                                auxIdsElements.Add(auxNotNull);
+                            }
+                        }
+
+                        foreach (var item in auxIdsElements)
+                        {
+                            _idsElementsSelect.Remove(item);
+                        }
+                    }
+
+                    List<Element> auxDeleteElements = new();
+
+                    auxDeleteElements = elements.Where(x => x.IdActivity.Equals(id)).ToList();
+
+                    foreach (var item in auxDeleteElements)
+                    {
+                        elements.Remove(item);
+                    }
+
+                    if (_idsSubElementsSelect.Count() > 0)
+                    {
+                        foreach (var aux in auxIdsElements)
+                        {
+                            foreach (var item in _idsSubElementsSelect)
+                            {
+                                var auxId = subElements.FirstOrDefault(x => x.IdElement.Equals(aux) && x.IdSubElement.Equals(item))?.IdSubElement;
+
+                                if (auxId != null)
+                                {
+                                    int auxNotNull = (int)auxId;
+                                    auxIdsSubElements.Add(auxNotNull);
+                                }
+                            }
+                        }
+
+                        foreach (var item in auxIdsSubElements)
+                        {
+                            _idsSubElementsSelect.Remove(item);
+                        }
+                    }
+
+                    List<SubElement> auxDeleteSubElements = new();
+
+                    foreach (var item in auxIdsElements)
+                    {
+                        auxDeleteSubElements.AddRange(subElements.Where(x => x.IdElement.Equals(item)).ToList());
+                    }
+
+                    foreach (var item in auxDeleteSubElements)
+                    {
+                        subElements.Remove(item);
+                    }
+
+                    if (_idsActivitiesSelect.Count() == 0)
+                    {
+                        _idsAparmentSelect.Clear();
+                        department = false;
+                        allApartments = false;
+                    }
                 }
             }
             else if (filter == 3) //Elemento
@@ -149,6 +222,42 @@ namespace Obra.Client.Pages
                 else
                 {
                     _idsElementsSelect.Remove(id);
+                    List<int> auxIdsSubElements = new();
+
+                    if (_idsSubElementsSelect.Count() > 0)
+                    {
+                        foreach (var item in _idsSubElementsSelect)
+                        {
+                            var auxId = subElements.FirstOrDefault(x => x.IdElement.Equals(id) && x.IdSubElement.Equals(item))?.IdSubElement;
+
+                            if (auxId != null)
+                            {
+                                int auxNotNull = (int)auxId;
+                                auxIdsSubElements.Add(auxNotNull);
+                            }
+                        }
+
+                        foreach (var item in auxIdsSubElements)
+                        {
+                            _idsSubElementsSelect.Remove(item);
+                        }
+                    }
+
+                    List<SubElement> auxDeleteSubElements = new();
+
+                    auxDeleteSubElements = subElements.Where(x => x.IdElement.Equals(id)).ToList();
+
+                    foreach (var item in auxDeleteSubElements)
+                    {
+                        subElements.Remove(item);
+                    }
+
+                    if (_idsSubElementsSelect.Count() == 0)
+                    {
+                        _idsAparmentSelect.Clear();
+                        department = false;
+                        allApartments = false;
+                    }
                 }
             }
             else if (filter == 4) //SubElemento
@@ -318,166 +427,127 @@ namespace Obra.Client.Pages
             Element element = new();
             SubElement subElement = new();
 
-            if (allSubElements == true)
-            {
-                foreach (var idSubElement in subElements)
-                {
-                    _idsSubElementsSelect.Add(idSubElement.IdSubElement);
-                }
-            }
-
-            foreach (var item in _idsActivitiesSelect)
-            {
-                activity = activities.FirstOrDefault(x => x.IdActivity == item);
-
-                activitiesSelect.Add(new Activity() { IdActivity = activity.IdActivity, ActivityName = activity.ActivityName, Elements = activity.Elements, IdAreas = activity.IdAreas });
-            }
-
-            foreach (var item in _idsElementsSelect)
-            {
-                element = elements.FirstOrDefault(x => x.IdElement == item);
-
-                elementsSelect.Add(new Element() { IdElement = element.IdElement, ElementName = element.ElementName, IdActivity = element.IdActivity });
-            }
-
-            foreach (var item in _idsSubElementsSelect)
-            {
-                subElement = subElements.FirstOrDefault(x => x.IdSubElement == item);
-
-                subElementsSelect.Add(new SubElement() { IdSubElement = subElement.IdSubElement, SubElementName = subElement.SubElementName, IdElement = subElement.IdElement, Type = subElement.Type });
-            }
-
-            await AdvancementProgressSubElements();
-
-            if (alert == false)
-            {
-                await DivisionOfColors();
-
-                apartmentDetails = false;
-            }
-
             loading = false;
         }
 
-        public async Task AdvancementProgressSubElements()
-        {
-            List<ProgressReport> progresses = new();
-            ProgressReport auxR = new();
-            Apartment apartment = new();
-            ProgressLog auxL = new();
+        //public async Task AdvancementProgressSubElements()
+        //{
+        //    List<ProgressReport> progresses = new();
+        //    ProgressReport auxR = new();
+        //    Apartment apartment = new();
+        //    ProgressLog auxL = new();
 
-            foreach (var apart in _idsAparmentSelect)
-            {
-                progresses = await _progressReportService.GetProgressReportsAsync(idBuilding: 1, idApartment: apart, includeProgressLogs: true);
+        //    foreach (var apart in _idsAparmentSelect)
+        //    {
+        //        progresses = await _progressReportService.GetProgressReportsAsync(idBuilding: 1, idApartment: apart, includeProgressLogs: true);
 
-                foreach (var activity in activitiesSelect)
-                {
-                    foreach (var area in Areas)
-                    {
-                        var aux = activity.IdAreas.FirstOrDefault(x => x.IdArea == area.IdArea).IdArea;
+        //        foreach (var activity in activitiesSelect)
+        //        {
+        //            foreach (var area in Areas)
+        //            {
+        //                var aux = activity.IdAreas.FirstOrDefault(x => x.IdArea == area.IdArea).IdArea;
 
-                        if (aux != null)
-                        {
-                            foreach (var element in elementsSelect)
-                            {
-                                if (element.IdActivity == activity.IdActivity)
-                                {
-                                    var molina = progresses.Where(x => subElementsSelect.Any(y => x.IdSubElement.Equals(y.IdSubElement)));
-                                    auxR = progresses.OrderByDescending(x => x.DateCreated).FirstOrDefault(x => x.IdArea == aux && x.IdElement == element.IdElement);
-                                    if (auxR != null)
-                                        progressReports.Add(auxR);
-                                }
-                            }
-                        }
-                    }
-                }
+        //                if (aux != null)
+        //                {
+        //                    foreach (var element in elementsSelect)
+        //                    {
+        //                        if (element.IdActivity == activity.IdActivity)
+        //                        {
+        //                            auxR = progresses.OrderByDescending(x => x.DateCreated).FirstOrDefault(x => x.IdArea == aux && x.IdElement == element.IdElement);
+        //                            if (auxR != null)
+        //                                progressReports.Add(auxR);
+        //                        }
+        //                    }
+        //                }
+        //            }
+        //        }
 
-                apartment = apartments.FirstOrDefault(x => x.IdApartment == apart);
+        //        apartment = apartments.FirstOrDefault(x => x.IdApartment == apart);
 
-                apartmentsSelect.Add(new Apartment() { IdApartment = apartment.IdApartment, ApartmentNumber = apartment.ApartmentNumber });
-            }
+        //        apartmentsSelect.Add(new Apartment() { IdApartment = apartment.IdApartment, ApartmentNumber = apartment.ApartmentNumber });
+        //    }
 
-            foreach (var item in progressReports)
-            {
-                if (item.ProgressLogs != null && item.ProgressLogs.Count() > 0)
-                {
-                    auxL = item.ProgressLogs.OrderByDescending(x => x.DateCreated).FirstOrDefault();
+        //    foreach (var item in progressReports)
+        //    {
+        //        if (item.ProgressLogs != null && item.ProgressLogs.Count() > 0)
+        //        {
+        //            auxL = item.ProgressLogs.OrderByDescending(x => x.DateCreated).FirstOrDefault();
 
-                    progressLogs.Add(new ProgressLog() { IdProgressLog = auxL.IdProgressLog, IdProgressReport = auxL.IdProgressReport, DateCreated = auxL.DateCreated, IdStatus = auxL.IdStatus, Pieces = auxL.Pieces, Observation = auxL.Observation, IdSupervisor = auxL.IdSupervisor, IdBlobs = auxL.IdBlobs });
-                }
-            }
-        }
+        //            progressLogs.Add(new ProgressLog() { IdProgressLog = auxL.IdProgressLog, IdProgressReport = auxL.IdProgressReport, DateCreated = auxL.DateCreated, IdStatus = auxL.IdStatus, Pieces = auxL.Pieces, Observation = auxL.Observation, IdSupervisor = auxL.IdSupervisor, IdBlobs = auxL.IdBlobs });
+        //        }
+        //    }
+        //}
 
-        public async Task AdvancementProgress()
-        {
-            //Lo nuevo super rapido alv
-            List<ProgressReport> progresses = new();
-            ProgressReport auxR = new();
-            Apartment apartment = new();
-            ProgressLog auxL = new();
+        //public async Task AdvancementProgress()
+        //{
+        //    //Lo nuevo super rapido alv
+        //    List<ProgressReport> progresses = new();
+        //    ProgressReport auxR = new();
+        //    Apartment apartment = new();
+        //    ProgressLog auxL = new();
 
-            foreach (var apart in _idsAparmentSelect)
-            {
-                progresses = await _progressReportService.GetProgressReportsAsync(idBuilding: 1, idApartment: apart, includeProgressLogs: true);
+        //    foreach (var apart in _idsAparmentSelect)
+        //    {
+        //        progresses = await _progressReportService.GetProgressReportsAsync(idBuilding: 1, idApartment: apart, includeProgressLogs: true);
 
-                foreach (var activity in _idsActivitiesSelect)
-                {
-                    foreach (var element in _idsElementsSelect)
-                    {
-                        auxR = progresses.OrderByDescending(x => x.DateCreated).FirstOrDefault(x => x.IdElement == _idsElementsSelect.FirstOrDefault());
+        //        foreach (var activity in _idsActivitiesSelect)
+        //        {
+        //            foreach (var element in _idsElementsSelect)
+        //            {
+        //                auxR = progresses.OrderByDescending(x => x.DateCreated).FirstOrDefault(x => x.IdElement == _idsElementsSelect.FirstOrDefault());
 
-                        if (auxR != null)
-                            progressReports.Add(auxR);
-                    }
-                }
+        //                if (auxR != null)
+        //                    progressReports.Add(auxR);
+        //            }
+        //        }
 
-                apartment = apartments.FirstOrDefault(x => x.IdApartment == apart);
+        //        apartment = apartments.FirstOrDefault(x => x.IdApartment == apart);
 
-                apartmentsSelect.Add(new Apartment() { IdApartment = apartment.IdApartment, ApartmentNumber = apartment.ApartmentNumber });
-            }
+        //        apartmentsSelect.Add(new Apartment() { IdApartment = apartment.IdApartment, ApartmentNumber = apartment.ApartmentNumber });
+        //    }
 
-            foreach (var item in progressReports)
-            {
-                if (item.ProgressLogs != null && item.ProgressLogs.Count() > 0)
-                {
-                    auxL = item.ProgressLogs.OrderByDescending(x => x.DateCreated).FirstOrDefault();
+        //    foreach (var item in progressReports)
+        //    {
+        //        if (item.ProgressLogs != null && item.ProgressLogs.Count() > 0)
+        //        {
+        //            auxL = item.ProgressLogs.OrderByDescending(x => x.DateCreated).FirstOrDefault();
 
-                    progressLogs.Add(new ProgressLog() { IdProgressLog = auxL.IdProgressLog, IdProgressReport = auxL.IdProgressReport, DateCreated = auxL.DateCreated, IdStatus = auxL.IdStatus, Pieces = auxL.Pieces, Observation = auxL.Observation, IdSupervisor = auxL.IdSupervisor, IdBlobs = auxL.IdBlobs });
-                }
-            }
-        }
+        //            progressLogs.Add(new ProgressLog() { IdProgressLog = auxL.IdProgressLog, IdProgressReport = auxL.IdProgressReport, DateCreated = auxL.DateCreated, IdStatus = auxL.IdStatus, Pieces = auxL.Pieces, Observation = auxL.Observation, IdSupervisor = auxL.IdSupervisor, IdBlobs = auxL.IdBlobs });
+        //        }
+        //    }
+        //}
 
-        public async Task DivisionOfColors()
-        {
-            try
-            {
-                foreach (var item in progressReports)
-                {
-                    if (progressLogs.FirstOrDefault(x => x.IdProgressReport == item.IdProgressReport)?.IdProgressLog != null)
-                    {
-                        int auxGreen = Convert.ToInt16(progressLogs.FirstOrDefault(x => x.IdProgressReport == item.IdProgressReport).Pieces) * 100;
+        //public async Task DivisionOfColors()
+        //{
+        //    try
+        //    {
+        //        foreach (var item in progressReports)
+        //        {
+        //            if (progressLogs.FirstOrDefault(x => x.IdProgressReport == item.IdProgressReport)?.IdProgressLog != null)
+        //            {
+        //                int auxGreen = Convert.ToInt16(progressLogs.FirstOrDefault(x => x.IdProgressReport == item.IdProgressReport).Pieces) * 100;
 
-                        double auxResult = auxGreen / Convert.ToInt16(item.TotalPieces);
+        //                double auxResult = auxGreen / Convert.ToInt16(item.TotalPieces);
 
-                        greenPercentage.Add($"{item.IdProgressReport}", auxResult.ToString("0.##"));
+        //                greenPercentage.Add($"{item.IdProgressReport}", auxResult.ToString("0.##"));
 
-                        decimal auxRed = Convert.ToInt32(auxResult.ToString("0.##"));
+        //                decimal auxRed = Convert.ToInt32(auxResult.ToString("0.##"));
 
-                        redPercentage.Add($"{item.IdProgressReport}", (100 - auxRed).ToString());
-                    }
-                    else
-                    {
-                        greenPercentage.Add($"{item.IdProgressReport}", 0.ToString());
+        //                redPercentage.Add($"{item.IdProgressReport}", (100 - auxRed).ToString());
+        //            }
+        //            else
+        //            {
+        //                greenPercentage.Add($"{item.IdProgressReport}", 0.ToString());
 
-                        redPercentage.Add($"{item.IdProgressReport}", 100.ToString());
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.ToString());
-            }
-        }
+        //                redPercentage.Add($"{item.IdProgressReport}", 100.ToString());
+        //            }
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Console.WriteLine(ex.ToString());
+        //    }
+        //}
 
         public bool isContentPhoto(int id)
         {
@@ -490,6 +560,7 @@ namespace Obra.Client.Pages
 
             return false;
         }
+
         public async Task CameraButton(int id)
         {
             await ShowMessage();

@@ -3,7 +3,7 @@
 
 <div class="pt-28 pb-12 min-h-screen bg-[url('/assets/img/imgFondo.png')] z-0 opacity-25 imgfondo fixed inset-0 bg-gray-500 bg-opacity-25 transition-opacity"></div>
 
-@if (apartments != null && activities != null && apartmentDetails == true)
+@if (apartments.Count() > 0 && activities.Count() > 0 && apartmentDetails == true)
 {
     if (loading == false)
     {
@@ -153,116 +153,111 @@ else if (buttonReport == true)
     {
         @*Segunda Vista*@
         <div class="pt-20 pb-12 fixed inset-0 flex flex-col items-center self-start overflow-y-scroll overflow-x-hidden">
-            @if (subElementsNulls == false)
-            {
-                <div class="my-4 w-screen">
-                    <div class="pt-10 flex justify-center">
-                        <label class="text-sm md:text-base lg:text-xl 2xl:text-4xl text-white leading-6 text-center bg-[#162D4E] rounded-lg py-3 px-24">Reporte Avance De @activity.ActivityName</label>
-                    </div>
-                    @if (greenPercentage != null && redPercentage != null)
-                    {
-                        <div class="flex justify-center w-full mt-10 px-16">
-                            <div class="flex flex-row justify-center items-center xl:w-3/6 pr-2">
-                                <label class="w-[6rem] xl:w-3/6 h-14 2xl:h-16 text-xs md:text-sm xl:text-base 2xl:text-2xl text-white leading-6 text-center bg-[#162D4E] rounded-lg py-2 m-2 flex justify-center items-center">Área</label>
-                                <label class="w-[6rem] xl:w-3/6 h-14 2xl:h-16 text-xs md:text-sm xl:text-base 2xl:text-2xl text-white leading-6 text-center bg-[#162D4E] rounded-lg py-2 m-2 flex justify-center items-center">Elemento</label>
-                                <label class="w-[6rem] xl:w-3/6 h-14 2xl:h-16 text-xs md:text-sm xl:text-base 2xl:text-2xl text-white leading-6 text-center bg-[#162D4E] rounded-lg py-2 m-2 flex justify-center items-center">Sub-Elemento</label>
-                                <label class="w-[6rem] xl:w-3/6 h-14 2xl:h-16 text-xs md:text-sm xl:text-base 2xl:text-2xl text-white leading-6 text-center bg-[#162D4E] rounded-lg py-2 m-2 flex justify-center items-center">Departamento</label>
-                            </div>
-                            <div class="flex flex-row justify-center items-center w-3/6">
-                                <label class="w-full h-14 2xl:h-16 text-xs md:text-sm lg:text-lg 2xl:text-2xl text-white leading-6 text-center bg-[#162D4E] rounded-lg py-2 my-2 flex justify-center items-center">Avance</label>
-                                <div class="self-center">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="#254260" class="bi bi-camera-fill ml-2 invisible" viewBox="0 0 16 16">
-                                        <path d="M10.5 8.5a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z" />
-                                        <path d="M2 4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2h-1.172a2 2 0 0 1-1.414-.586l-.828-.828A2 2 0 0 0 9.172 2H6.828a2 2 0 0 0-1.414.586l-.828.828A2 2 0 0 1 3.172 4H2zm.5 2a.5.5 0 1 1 0-1 .5.5 0 0 1 0 1zm9 2.5a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0z" />
-                                    </svg>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="overflow-y-scroll h-[17rem] lg:h-[10rem] xl:h-[15rem] 2xl:h-[20rem]">
-                            @foreach (var item in apartmentsSelect)
-                            {
-                                @foreach (var progress in progressReports)
-                                {
-                                    @if (progress.IdApartment == item.IdApartment)
-                                    {
-                                        <div class="flex justify-center w-full mt-2 px-16">
-                                            <div class="flex flex-row justify-center items-center xl:w-3/6">
-                                                @if (@Areas.FirstOrDefault(x => x.IdArea == progress.IdArea).AreaName == "Recamara Principal" || @Areas.FirstOrDefault(x => x.IdArea == progress.IdArea).AreaName == "Cuarto de Lavado")
-                                                {
-                                                    <label class="w-[6rem] xl:w-80 h-[3.5rem] xl:h-8 text-xs xl:text-sm 2xl:text-lg text-white leading-6 text-center bg-[#254260] rounded-lg py-1 m-2 flex justify-center items-center">@Areas.FirstOrDefault(x => x.IdArea == progress.IdArea).AreaName</label>
-                                                }
-                                                else
-                                                {
-                                                    <label class="w-[6rem] xl:w-80 h-[3.5rem] xl:h-8 text-sm md:text-base lg:text-lg 2xl:text-xl text-white leading-6 text-center bg-[#254260] rounded-lg py-1 m-2 flex justify-center items-center">@Areas.FirstOrDefault(x => x.IdArea == progress.IdArea).AreaName</label>
-                                                }
 
-                                                @if (@element.ElementName == "Cielo Raso (Falso Techo)" || @element.ElementName == "Llave Mezcladora")
-                                                {
-                                                    <label class="w-[6rem] xl:w-80 h-[3.5rem] xl:h-8 text-xs xl:text-sm 2xl:text-lg text-white leading-6 text-center bg-[#254260] rounded-lg py-1 m-2 flex justify-center items-center">@element.ElementName</label>
-                                                }
-                                                else
-                                                {
-                                                    <label class="w-[6rem] xl:w-80 h-[3.5rem] xl:h-8 text-sm md:text-base lg:text-lg 2xl:text-xl text-white leading-6 text-center bg-[#254260] rounded-lg py-1 m-2 flex justify-center items-center">@element.ElementName</label>
-                                                }
-
-                                                @if (@subElementsSelect.FirstOrDefault(x => x.IdSubElement == progress.IdSubElement).SubElementName == "Mortero de Nivelación" || @subElementsSelect.FirstOrDefault(x => x.IdSubElement == progress.IdSubElement).SubElementName == "Riel - Corredera")
-                                                {
-                                                    <label class="w-[6rem] xl:w-80 h-[3.5rem] xl:h-8 text-xs 2xl:text-base text-white leading-6 text-center bg-[#254260] rounded-lg py-1 m-2 flex justify-center items-center">@subElementsSelect.FirstOrDefault(x => x.IdSubElement == progress.IdSubElement).SubElementName</label>
-                                                }
-                                                else
-                                                {
-                                                    <label class="w-[6rem] xl:w-80 h-[3.5rem] xl:h-8 text-sm md:text-base lg:text-lg 2xl:text-xl text-white leading-6 text-center bg-[#254260] rounded-lg py-1 m-2 flex justify-center items-center">@subElementsSelect.FirstOrDefault(x => x.IdSubElement == progress.IdSubElement).SubElementName</label>
-                                                }
-                                                <label class="w-[6rem] xl:w-80 h-[3.5rem] xl:h-8 text-sm md:text-base lg:text-lg 2xl:text-xl text-white leading-6 text-center bg-[#254260] rounded-lg py-1 m-2 flex justify-center items-center">@item.ApartmentNumber</label>
-                                            </div>
-                                            <div class="flex flex-row justify-center items-center w-3/6">
-                                                @if (progressLogs.FirstOrDefault(x => x.IdProgressReport == progress.IdProgressReport)?.IdProgressLog != null)
-                                                {
-                                                    <div class="flex justify-end text-white w-[@greenPercentage[$"{progress.IdProgressReport}"]%] bg-[#115D28] h-8 xl:h-5">@progressLogs.FirstOrDefault(x => x.IdProgressReport == progress.IdProgressReport).Pieces</div>
-                                                    <div class="flex justify-end text-white w-[@redPercentage[$"{progress.IdProgressReport}"]%] bg-[#CB3030] h-8 xl:h-5">@progress.TotalPieces</div>
-                                                    <div class="self-center">
-                                                        @if (isContentPhoto(progressLogs.FirstOrDefault(x => x.IdProgressReport == progress.IdProgressReport).IdProgressLog))
-                                                        {
-                                                            <button @onclick="() => CameraButton(progressLogs.FirstOrDefault(x => x.IdProgressReport == progress.IdProgressReport).IdProgressLog)">
-                                                                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="#254260" class="bi bi-camera-fill ml-2" viewBox="0 0 16 16">
-                                                                    <path d="M10.5 8.5a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z"/>
-                                                                    <path d="M2 4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2h-1.172a2 2 0 0 1-1.414-.586l-.828-.828A2 2 0 0 0 9.172 2H6.828a2 2 0 0 0-1.414.586l-.828.828A2 2 0 0 1 3.172 4H2zm.5 2a.5.5 0 1 1 0-1 .5.5 0 0 1 0 1zm9 2.5a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0z"/>
-                                                                </svg>
-                                                            </button>
-                                                        }
-                                                        else
-                                                        {
-                                                            <button @onclick="() => CameraButton(progressLogs.FirstOrDefault(x => x.IdProgressReport == progress.IdProgressReport).IdProgressLog)" disabled="true">
-                                                                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" class="bi bi-camera-fill ml-2 fill-gray-400" viewBox="0 0 16 16">
-                                                                    <path d="M10.5 8.5a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z"/>
-                                                                    <path d="M2 4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2h-1.172a2 2 0 0 1-1.414-.586l-.828-.828A2 2 0 0 0 9.172 2H6.828a2 2 0 0 0-1.414.586l-.828.828A2 2 0 0 1 3.172 4H2zm.5 2a.5.5 0 1 1 0-1 .5.5 0 0 1 0 1zm9 2.5a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0z"/>
-                                                                </svg>
-                                                            </button> 
-                                                        }
-                                                    </div>
-                                                }
-                                                else
-                                                {
-                                                    <div class="flex justify-end text-white w-[@greenPercentage[$"{progress.IdProgressReport}"]%] bg-[#115D28] h-8 xl:h-5"></div>
-                                                    <div class="flex justify-end text-white w-[@redPercentage[$"{progress.IdProgressReport}"]%] bg-[#CB3030] h-8 xl:h-5">@progress.TotalPieces</div>
-                                                    <div class="self-center">
-                                                        <button @onclick="() => NotificationImages()" disabled="true">
-                                                            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="#254260" class="bi bi-camera-fill ml-2 fill-gray-400" viewBox="0 0 16 16">
-                                                                <path d="M10.5 8.5a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z" />
-                                                                <path d="M2 4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2h-1.172a2 2 0 0 1-1.414-.586l-.828-.828A2 2 0 0 0 9.172 2H6.828a2 2 0 0 0-1.414.586l-.828.828A2 2 0 0 1 3.172 4H2zm.5 2a.5.5 0 1 1 0-1 .5.5 0 0 1 0 1zm9 2.5a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0z" />
-                                                            </svg>
-                                                        </button>
-                                                    </div>
-                                                }
-                                            </div>
-                                        </div>
-                                    }
-                                }
-                            }
-                        </div>
-                    }
+            <div class="my-4 w-screen">
+                <div class="pt-10 flex justify-center">
+                    <label class="text-sm md:text-base lg:text-xl 2xl:text-4xl text-white leading-6 text-center bg-[#162D4E] rounded-lg py-3 px-24">Reporte Avance De @activity.ActivityName</label>
                 </div>
-            }
+                <div class="flex justify-center w-full mt-10 px-16">
+                    <div class="flex flex-row justify-center items-center xl:w-3/6 pr-2">
+                        <label class="w-[6rem] xl:w-3/6 h-14 2xl:h-16 text-xs md:text-sm xl:text-base 2xl:text-2xl text-white leading-6 text-center bg-[#162D4E] rounded-lg py-2 m-2 flex justify-center items-center">Área</label>
+                        <label class="w-[6rem] xl:w-3/6 h-14 2xl:h-16 text-xs md:text-sm xl:text-base 2xl:text-2xl text-white leading-6 text-center bg-[#162D4E] rounded-lg py-2 m-2 flex justify-center items-center">Elemento</label>
+                        <label class="w-[6rem] xl:w-3/6 h-14 2xl:h-16 text-xs md:text-sm xl:text-base 2xl:text-2xl text-white leading-6 text-center bg-[#162D4E] rounded-lg py-2 m-2 flex justify-center items-center">Sub-Elemento</label>
+                        <label class="w-[6rem] xl:w-3/6 h-14 2xl:h-16 text-xs md:text-sm xl:text-base 2xl:text-2xl text-white leading-6 text-center bg-[#162D4E] rounded-lg py-2 m-2 flex justify-center items-center">Departamento</label>
+                    </div>
+                    <div class="flex flex-row justify-center items-center w-3/6">
+                        <label class="w-full h-14 2xl:h-16 text-xs md:text-sm lg:text-lg 2xl:text-2xl text-white leading-6 text-center bg-[#162D4E] rounded-lg py-2 my-2 flex justify-center items-center">Avance</label>
+                        <div class="self-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="#254260" class="bi bi-camera-fill ml-2 invisible" viewBox="0 0 16 16">
+                                <path d="M10.5 8.5a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z" />
+                                <path d="M2 4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2h-1.172a2 2 0 0 1-1.414-.586l-.828-.828A2 2 0 0 0 9.172 2H6.828a2 2 0 0 0-1.414.586l-.828.828A2 2 0 0 1 3.172 4H2zm.5 2a.5.5 0 1 1 0-1 .5.5 0 0 1 0 1zm9 2.5a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0z" />
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+                <div class="overflow-y-scroll h-[17rem] lg:h-[10rem] xl:h-[15rem] 2xl:h-[20rem]">
+                    @foreach (var item in apartmentsSelect)
+                    {
+                        @foreach (var progress in progressReports)
+                        {
+                            @if (progress.IdApartment == item.IdApartment)
+                            {
+                                <div class="flex justify-center w-full mt-2 px-16">
+                                    <div class="flex flex-row justify-center items-center xl:w-3/6">
+                                        @if (@Areas.FirstOrDefault(x => x.IdArea == progress.IdArea).AreaName == "Recamara Principal" || @Areas.FirstOrDefault(x => x.IdArea == progress.IdArea).AreaName == "Cuarto de Lavado")
+                                        {
+                                            <label class="w-[6rem] xl:w-80 h-[3.5rem] xl:h-8 text-xs xl:text-sm 2xl:text-lg text-white leading-6 text-center bg-[#254260] rounded-lg py-1 m-2 flex justify-center items-center">@Areas.FirstOrDefault(x => x.IdArea == progress.IdArea).AreaName</label>
+                                        }
+                                        else
+                                        {
+                                            <label class="w-[6rem] xl:w-80 h-[3.5rem] xl:h-8 text-sm md:text-base lg:text-lg 2xl:text-xl text-white leading-6 text-center bg-[#254260] rounded-lg py-1 m-2 flex justify-center items-center">@Areas.FirstOrDefault(x => x.IdArea == progress.IdArea).AreaName</label>
+                                        }
+
+                                        @if (@element.ElementName == "Cielo Raso (Falso Techo)" || @element.ElementName == "Llave Mezcladora")
+                                        {
+                                            <label class="w-[6rem] xl:w-80 h-[3.5rem] xl:h-8 text-xs xl:text-sm 2xl:text-lg text-white leading-6 text-center bg-[#254260] rounded-lg py-1 m-2 flex justify-center items-center">@element.ElementName</label>
+                                        }
+                                        else
+                                        {
+                                            <label class="w-[6rem] xl:w-80 h-[3.5rem] xl:h-8 text-sm md:text-base lg:text-lg 2xl:text-xl text-white leading-6 text-center bg-[#254260] rounded-lg py-1 m-2 flex justify-center items-center">@element.ElementName</label>
+                                        }
+
+                                        @if (@subElementsSelect.FirstOrDefault(x => x.IdSubElement == progress.IdSubElement).SubElementName == "Mortero de Nivelación" || @subElementsSelect.FirstOrDefault(x => x.IdSubElement == progress.IdSubElement).SubElementName == "Riel - Corredera")
+                                        {
+                                            <label class="w-[6rem] xl:w-80 h-[3.5rem] xl:h-8 text-xs 2xl:text-base text-white leading-6 text-center bg-[#254260] rounded-lg py-1 m-2 flex justify-center items-center">@subElementsSelect.FirstOrDefault(x => x.IdSubElement == progress.IdSubElement).SubElementName</label>
+                                        }
+                                        else
+                                        {
+                                            <label class="w-[6rem] xl:w-80 h-[3.5rem] xl:h-8 text-sm md:text-base lg:text-lg 2xl:text-xl text-white leading-6 text-center bg-[#254260] rounded-lg py-1 m-2 flex justify-center items-center">@subElementsSelect.FirstOrDefault(x => x.IdSubElement == progress.IdSubElement).SubElementName</label>
+                                        }
+                                        <label class="w-[6rem] xl:w-80 h-[3.5rem] xl:h-8 text-sm md:text-base lg:text-lg 2xl:text-xl text-white leading-6 text-center bg-[#254260] rounded-lg py-1 m-2 flex justify-center items-center">@item.ApartmentNumber</label>
+                                    </div>
+                                    <div class="flex flex-row justify-center items-center w-3/6">
+                                        @if (progressLogs.FirstOrDefault(x => x.IdProgressReport == progress.IdProgressReport)?.IdProgressLog != null)
+                                        {
+                                            <div class="flex justify-end text-white w-[@greenPercentage[$"{progress.IdProgressReport}"]%] bg-[#115D28] h-8 xl:h-5">@progressLogs.FirstOrDefault(x => x.IdProgressReport == progress.IdProgressReport).Pieces</div>
+                                            <div class="flex justify-end text-white w-[@redPercentage[$"{progress.IdProgressReport}"]%] bg-[#CB3030] h-8 xl:h-5">@progress.TotalPieces</div>
+                                            <div class="self-center">
+                                                @if (isContentPhoto(progressLogs.FirstOrDefault(x => x.IdProgressReport == progress.IdProgressReport).IdProgressLog))
+                                                {
+                                                    <button @onclick="() => CameraButton(progressLogs.FirstOrDefault(x => x.IdProgressReport == progress.IdProgressReport).IdProgressLog)">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="#254260" class="bi bi-camera-fill ml-2" viewBox="0 0 16 16">
+                                                            <path d="M10.5 8.5a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z" />
+                                                            <path d="M2 4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2h-1.172a2 2 0 0 1-1.414-.586l-.828-.828A2 2 0 0 0 9.172 2H6.828a2 2 0 0 0-1.414.586l-.828.828A2 2 0 0 1 3.172 4H2zm.5 2a.5.5 0 1 1 0-1 .5.5 0 0 1 0 1zm9 2.5a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0z" />
+                                                        </svg>
+                                                    </button>
+                                                }
+                                                else
+                                                {
+                                                    <button @onclick="() => CameraButton(progressLogs.FirstOrDefault(x => x.IdProgressReport == progress.IdProgressReport).IdProgressLog)" disabled="true">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" class="bi bi-camera-fill ml-2 fill-gray-400" viewBox="0 0 16 16">
+                                                            <path d="M10.5 8.5a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z" />
+                                                            <path d="M2 4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2h-1.172a2 2 0 0 1-1.414-.586l-.828-.828A2 2 0 0 0 9.172 2H6.828a2 2 0 0 0-1.414.586l-.828.828A2 2 0 0 1 3.172 4H2zm.5 2a.5.5 0 1 1 0-1 .5.5 0 0 1 0 1zm9 2.5a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0z" />
+                                                        </svg>
+                                                    </button>
+                                                }
+                                            </div>
+                                        }
+                                        else
+                                        {
+                                            <div class="flex justify-end text-white w-[@greenPercentage[$"{progress.IdProgressReport}"]%] bg-[#115D28] h-8 xl:h-5"></div>
+                                            <div class="flex justify-end text-white w-[@redPercentage[$"{progress.IdProgressReport}"]%] bg-[#CB3030] h-8 xl:h-5">@progress.TotalPieces</div>
+                                            <div class="self-center">
+                                                <button @onclick="() => NotificationImages()" disabled="true">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="#254260" class="bi bi-camera-fill ml-2 fill-gray-400" viewBox="0 0 16 16">
+                                                        <path d="M10.5 8.5a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z" />
+                                                        <path d="M2 4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2h-1.172a2 2 0 0 1-1.414-.586l-.828-.828A2 2 0 0 0 9.172 2H6.828a2 2 0 0 0-1.414.586l-.828.828A2 2 0 0 1 3.172 4H2zm.5 2a.5.5 0 1 1 0-1 .5.5 0 0 1 0 1zm9 2.5a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0z" />
+                                                    </svg>
+                                                </button>
+                                            </div>
+                                        }
+                                    </div>
+                                </div>
+                            }
+                        }
+                    }
+                </div>                
+            </div>            
         </div>
         <div class="w-full flex justify-end py-2">
             <div class="w-full flex inset-x-0 bottom-12">
@@ -270,10 +265,22 @@ else if (buttonReport == true)
             </div>
         </div>
     }
+    else
+    {
+        <div class="flex inset-0 fixed justify-center items-center h-screen fixed bg-black opacity-50 transition-opacity">
+            <div class="flex inset-0 fixed justify-center items-center h-screen">
+                <FluentProgressRing style="width: 102px; height: 102px;">
+                    <ChildContent>100%</ChildContent>
+                </FluentProgressRing>
+            </div>
+        </div>
+    }
+
     @if (_showPreviewFile)
     {
         <PreviewFile CloseModalLessor="@ChangeOpenModalPreview" Content="@_bytesPreviewFile" PdfName="@PDF_FILE_NAME" ShowModal="@_showPreviewFile"></PreviewFile>
     }
+
     @if (showModal == true)
     {
         @*Modal Ocultado*@
@@ -308,6 +315,7 @@ else if (buttonReport == true)
             </div>
         </div>
     }
+
     @if (alert == true)
     {
         <div class="bg-yellow-100 border border-yellow-400 text-yellow-700 pl-4 pr-12 py-2 rounded fixed right-4 w-[32]" style="top: 5.7rem;" role="alert">
@@ -318,6 +326,7 @@ else if (buttonReport == true)
             </span>
         </div>
     }
+
     <button @onclick="() => GoBack()" class="fixed z-10 inset-x-1 top-20 w-12">
 
         <svg xmlns="http://www.w3.org/2000/svg" width="46" height="46" fill="#55595E" class="bi bi-arrow-left" viewBox="0 0 16 16">
