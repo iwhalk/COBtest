@@ -42,18 +42,15 @@ namespace Obra.Client.Pages
         private List<DetalladoActividades> detalladoActividades { get; set; } = new();
 
         private string messageError = "";
-        private int activityIdAux = 0;
-        private int elementIdAux = 0;
         private bool alert = false;
         public bool activityDetails = true;
         public bool subElement = false;
         public bool department = false;
         private bool allApartments = false;
         private bool allSubElements = false;
-        private bool showElements = false;
-        private bool showSubElements = false;
+        private bool allElements = false;
+        private bool allActivities = false;
         private bool apartmentDetails = true;
-        private bool subElementsNulls = false;
         private bool buttonReport = false;
 
         private bool showModal { get; set; } = false;
@@ -111,7 +108,6 @@ namespace Obra.Client.Pages
                 if (!_idsActivitiesSelect.Contains(id))
                 {
                     _idsActivitiesSelect.Add(id);
-                    showElements = true;
 
                     List<Element> auxElements = await _elementsService.GetElementsAsync(id);
 
@@ -122,6 +118,10 @@ namespace Obra.Client.Pages
                 else
                 {
                     _idsActivitiesSelect.Remove(id);
+
+                    allActivities = false;
+                    allElements = false;
+                    allSubElements = false;
 
                     List<int> auxIdsElements = new();
                     List<int> auxIdsSubElements = new();
@@ -194,6 +194,13 @@ namespace Obra.Client.Pages
                         department = false;
                         allApartments = false;
                     }
+
+                    if (_idsElementsSelect.Count() < 1)
+                    {
+                        _idsAparmentSelect.Clear();
+                        department = false;
+                        allApartments = false;
+                    }
                 }
             }
             else if (filter == 3) //Elemento
@@ -201,7 +208,6 @@ namespace Obra.Client.Pages
                 if (!_idsElementsSelect.Contains(id))
                 {
                     _idsElementsSelect.Add(id);
-                    showSubElements = true;
 
                     List<SubElement> auxSubElement = await _subElementsService.GetSubElementsAsync(id);
 
@@ -217,6 +223,10 @@ namespace Obra.Client.Pages
                 else
                 {
                     _idsElementsSelect.Remove(id);
+
+                    allElements = false;
+                    allSubElements = false;
+
                     List<int> auxIdsSubElements = new();
 
                     if (_idsSubElementsSelect.Count() > 0)
@@ -262,13 +272,14 @@ namespace Obra.Client.Pages
                     _idsSubElementsSelect.Add(id);
 
                     department = true;
-                    allSubElements = false;
 
                     await ShowMessage();
                 }
                 else
                 {
                     _idsSubElementsSelect.Remove(id);
+
+                    allSubElements = false;
 
                     await ShowMessage();
 
@@ -282,20 +293,186 @@ namespace Obra.Client.Pages
             }
         }
 
-        public async Task AllSubElements()
+        public async Task AllActivities()
         {
-            if (_idsSubElementsSelect.Count() < 1 && allSubElements == false)
+            if (_idsActivitiesSelect.Count() < 1 && allActivities == false)
             {
-                allSubElements = true;
-                department = true;
+                allActivities = true;
+
+                if (allActivities == true)
+                {
+                    foreach (var item in activities)
+                    {
+                        _idsActivitiesSelect.Add(item.IdActivity);
+                    }
+                }
+
+                elements = await _elementsService.GetElementsAsync(null);
+            }
+            else if (allActivities == true)
+            {
+                allActivities = false;
+
+                _idsActivitiesSelect.Clear();
+                _idsElementsSelect.Clear();
+                _idsSubElementsSelect.Clear();
+                _idsAparmentSelect.Clear();
+
+                elements.Clear();
+                subElements.Clear();
+
+                allElements = false;
+                allSubElements = false;
+                allApartments = false;
+
+                department = false;
+
+                await ShowMessage();
             }
             else
             {
-                allSubElements = false;
+                allActivities = true;
+
+                _idsActivitiesSelect.Clear();
+                _idsElementsSelect.Clear();
                 _idsSubElementsSelect.Clear();
                 _idsAparmentSelect.Clear();
+
+                elements.Clear();
+                subElements.Clear();
+
+                allElements = false;
+                allSubElements = false;
                 allApartments = false;
+
                 department = false;
+
+                if (allActivities == true)
+                {
+                    foreach (var item in activities)
+                    {
+                        _idsActivitiesSelect.Add(item.IdActivity);
+                    }
+                }
+
+                elements = await _elementsService.GetElementsAsync(null);
+
+                await ShowMessage();
+            }
+        }
+
+        public async Task AllElements()
+        {
+            if (allActivities == true)
+            {
+                if (_idsElementsSelect.Count() < 1 && allElements == false)
+                {
+                    allElements = true;
+
+                    if (allElements == true)
+                    {
+                        foreach (var item in elements)
+                        {
+                            _idsElementsSelect.Add(item.IdElement);
+                        }
+                    }
+
+                    subElements = await _subElementsService.GetSubElementsAsync(null);
+                }
+                else if (allElements == true)
+                {
+                    allElements = false;
+
+                    _idsElementsSelect.Clear();
+                    _idsSubElementsSelect.Clear();
+                    _idsAparmentSelect.Clear();
+
+                    subElements.Clear();
+
+                    allSubElements = false;
+                    allApartments = false;
+
+                    department = false;
+
+                    await ShowMessage();
+                }
+                else
+                {
+                    allElements = true;
+
+                    _idsElementsSelect.Clear();
+                    _idsSubElementsSelect.Clear();
+                    _idsAparmentSelect.Clear();
+
+                    subElements.Clear();
+
+                    allSubElements = false;
+                    allApartments = false;
+
+                    department = false;
+
+                    if (allElements == true)
+                    {
+                        foreach (var item in elements)
+                        {
+                            _idsElementsSelect.Add(item.IdElement);
+                        }
+                    }
+
+                    subElements = await _subElementsService.GetSubElementsAsync(null);
+
+                    await ShowMessage();
+                }
+            }
+        }
+
+        public async Task AllSubElements()
+        {
+            if (allActivities == true && allElements == true)
+            {
+                if (_idsSubElementsSelect.Count() < 1 && allSubElements == false)
+                {
+                    allSubElements = true;
+
+                    if (allSubElements == true)
+                    {
+                        foreach (var idSubElement in subElements)
+                        {
+                            _idsSubElementsSelect.Add(idSubElement.IdSubElement);
+                        }
+                    }
+
+                    department = true;
+                }
+                else if (allSubElements == true)
+                {
+                    allSubElements = false;
+
+                    _idsSubElementsSelect.Clear();
+                }
+                else
+                {
+                    allSubElements = true;
+
+                    _idsSubElementsSelect.Clear();
+
+                    if (_idsElementsSelect.Count == 0)
+                    {
+                        _idsAparmentSelect.Clear();
+                        allApartments = false;
+                        department = false;
+                    }
+
+                    if (allSubElements == true)
+                    {
+                        foreach (var idSubElement in subElements)
+                        {
+                            _idsSubElementsSelect.Add(idSubElement.IdSubElement);
+                        }
+                    }
+
+                    department = true;
+                }
             }
         }
 
@@ -324,8 +501,6 @@ namespace Obra.Client.Pages
         }
 
         public async Task ShowMessage() => alert = false;
-        public async Task ShowElements() => showElements = false;
-        public async Task ShowSubElements() => showSubElements = false;
         public async Task ShowDepartment() => department = true;
 
         public void ChangeShowModal()
@@ -348,11 +523,9 @@ namespace Obra.Client.Pages
 
             _idsActivitiesSelect.Clear();
 
-            await ShowElements();
             elements.Clear();
             _idsElementsSelect.Clear();
 
-            await ShowSubElements();
             subElements.Clear();
             _idsSubElementsSelect.Clear();
 
@@ -364,9 +537,10 @@ namespace Obra.Client.Pages
             activitiesSelect.Clear();
             elementsSelect.Clear();
 
-            subElementsNulls = false;
             allApartments = false;
             allSubElements = false;
+            allElements = false;
+            allActivities = false;
 
             detalladoActividades.Clear();
         }
@@ -401,11 +575,11 @@ namespace Obra.Client.Pages
             apartmentDetails = false;
             loading = true;
 
-            if (allSubElements == true)
+            if (allApartments == true)
             {
-                foreach (var idSubElement in subElements)
+                foreach (var item in apartments)
                 {
-                    _idsSubElementsSelect.Add(idSubElement.IdSubElement);
+                    _idsAparmentSelect.Add(item.IdApartment);
                 }
             }
 
@@ -436,163 +610,33 @@ namespace Obra.Client.Pages
             loading = false;
         }
 
-        //public async Task AdvancementProgressSubElements()
-        //{
-        //    List<ProgressReport> progresses = new();
-        //    ProgressReport auxR = new();
-        //    Apartment apartment = new();
-        //    ProgressLog auxL = new();
-
-        //    foreach (var apart in _idsAparmentSelect)
-        //    {
-        //        progresses = await _progressReportService.GetProgressReportsAsync(idBuilding: 1, idApartment: apart, includeProgressLogs: true);
-
-        //        foreach (var activity in activitiesSelect)
-        //        {
-        //            foreach (var area in Areas)
-        //            {
-        //                var aux = activity.IdAreas.FirstOrDefault(x => x.IdArea == area.IdArea).IdArea;
-
-        //                if (aux != null)
-        //                {
-        //                    foreach (var element in elementsSelect)
-        //                    {
-        //                        if (element.IdActivity == activity.IdActivity)
-        //                        {
-        //                            auxR = progresses.OrderByDescending(x => x.DateCreated).FirstOrDefault(x => x.IdArea == aux && x.IdElement == element.IdElement);
-        //                            if (auxR != null)
-        //                                progressReports.Add(auxR);
-        //                        }
-        //                    }
-        //                }
-        //            }
-        //        }
-
-        //        apartment = apartments.FirstOrDefault(x => x.IdApartment == apart);
-
-        //        apartmentsSelect.Add(new Apartment() { IdApartment = apartment.IdApartment, ApartmentNumber = apartment.ApartmentNumber });
-        //    }
-
-        //    foreach (var item in progressReports)
-        //    {
-        //        if (item.ProgressLogs != null && item.ProgressLogs.Count() > 0)
-        //        {
-        //            auxL = item.ProgressLogs.OrderByDescending(x => x.DateCreated).FirstOrDefault();
-
-        //            progressLogs.Add(new ProgressLog() { IdProgressLog = auxL.IdProgressLog, IdProgressReport = auxL.IdProgressReport, DateCreated = auxL.DateCreated, IdStatus = auxL.IdStatus, Pieces = auxL.Pieces, Observation = auxL.Observation, IdSupervisor = auxL.IdSupervisor, IdBlobs = auxL.IdBlobs });
-        //        }
-        //    }
-        //}
-
-        //public async Task AdvancementProgress()
-        //{
-        //    //Lo nuevo super rapido alv
-        //    List<ProgressReport> progresses = new();
-        //    ProgressReport auxR = new();
-        //    Apartment apartment = new();
-        //    ProgressLog auxL = new();
-
-        //    foreach (var apart in _idsAparmentSelect)
-        //    {
-        //        progresses = await _progressReportService.GetProgressReportsAsync(idBuilding: 1, idApartment: apart, includeProgressLogs: true);
-
-        //        foreach (var activity in _idsActivitiesSelect)
-        //        {
-        //            foreach (var element in _idsElementsSelect)
-        //            {
-        //                auxR = progresses.OrderByDescending(x => x.DateCreated).FirstOrDefault(x => x.IdElement == _idsElementsSelect.FirstOrDefault());
-
-        //                if (auxR != null)
-        //                    progressReports.Add(auxR);
-        //            }
-        //        }
-
-        //        apartment = apartments.FirstOrDefault(x => x.IdApartment == apart);
-
-        //        apartmentsSelect.Add(new Apartment() { IdApartment = apartment.IdApartment, ApartmentNumber = apartment.ApartmentNumber });
-        //    }
-
-        //    foreach (var item in progressReports)
-        //    {
-        //        if (item.ProgressLogs != null && item.ProgressLogs.Count() > 0)
-        //        {
-        //            auxL = item.ProgressLogs.OrderByDescending(x => x.DateCreated).FirstOrDefault();
-
-        //            progressLogs.Add(new ProgressLog() { IdProgressLog = auxL.IdProgressLog, IdProgressReport = auxL.IdProgressReport, DateCreated = auxL.DateCreated, IdStatus = auxL.IdStatus, Pieces = auxL.Pieces, Observation = auxL.Observation, IdSupervisor = auxL.IdSupervisor, IdBlobs = auxL.IdBlobs });
-        //        }
-        //    }
-        //}
-
-        //public async Task DivisionOfColors()
-        //{
-        //    try
-        //    {
-        //        foreach (var item in progressReports)
-        //        {
-        //            if (progressLogs.FirstOrDefault(x => x.IdProgressReport == item.IdProgressReport)?.IdProgressLog != null)
-        //            {
-        //                int auxGreen = Convert.ToInt16(progressLogs.FirstOrDefault(x => x.IdProgressReport == item.IdProgressReport).Pieces) * 100;
-
-        //                double auxResult = auxGreen / Convert.ToInt16(item.TotalPieces);
-
-        //                greenPercentage.Add($"{item.IdProgressReport}", auxResult.ToString("0.##"));
-
-        //                decimal auxRed = Convert.ToInt32(auxResult.ToString("0.##"));
-
-        //                redPercentage.Add($"{item.IdProgressReport}", (100 - auxRed).ToString());
-        //            }
-        //            else
-        //            {
-        //                greenPercentage.Add($"{item.IdProgressReport}", 0.ToString());
-
-        //                redPercentage.Add($"{item.IdProgressReport}", 100.ToString());
-        //            }
-        //        }
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        Console.WriteLine(ex.ToString());
-        //    }
-        //}
-
-        public bool isContentPhoto(int id)
-        {
-            //var aux = progressLogs.FirstOrDefault(x => x.IdProgressLog == id);
-            //if (aux is null) return false;
-            //if (aux.Observation != null && aux.IdBlobs.Count > 0)
-            //{
-            //    return true;
-            //}
-
-            return false;
-        }
-        public async Task CameraButton(int id)
+        public async Task CameraButton(int idProgressLog)
         {
             await ShowMessage();
 
-            //ProgressLog aux = progressLogs.FirstOrDefault(x => x.IdProgressLog == id);
+            ProgressLog aux = await _progressLogsService.GetProgressLogAsync(idProgressLog);
 
-            //if (aux.Observation != null)
-            //{
-            //    observations = aux.Observation;
-            //}
+            if (aux.Observation != null)
+            {
+                observations = aux.Observation;
+            }
 
-            //if (aux.IdBlobs != null)
-            //{
-            //    foreach (var item in aux.IdBlobs)
-            //    {
-            //        images.Add(item.Uri);
-            //    }
-            //}
+            if (aux.IdBlobs != null)
+            {
+                foreach (var item in aux.IdBlobs)
+                {
+                    images.Add(item.Uri);
+                }
+            }
 
-            //if (observations != null && observations != "" || images.Count() > 0)
-            //{
-            //    showModal = true;
-            //}
-            //else
-            //{
-            //    _toastService.ShowToast<ToastImages>(new ToastInstanceSettings(5, false));
-            //}
+            if (observations != null && observations != "" || images.Count() > 0)
+            {
+                showModal = true;
+            }
+            else
+            {
+                _toastService.ShowToast<ToastImages>(new ToastInstanceSettings(5, false));
+            }
         }
 
         public async Task NotificationImages()
