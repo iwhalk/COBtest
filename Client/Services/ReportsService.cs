@@ -1,6 +1,8 @@
-﻿using Obra.Client.Interfaces;
+﻿using Microsoft.Identity.Client;
+using Obra.Client.Interfaces;
 using Obra.Client.Models;
 using Obra.Client.Stores;
+using SharedLibrary;
 using SharedLibrary.Models;
 
 namespace Obra.Client.Services
@@ -13,6 +15,26 @@ namespace Obra.Client.Services
         {
             _repository = repository;
             _context = context;
+        }
+
+        //Nuevos EP's para las vistas de detalles por departamento y detalles por actividad
+        //Detalles por departamento
+        public async Task<List<DetalladoDepartamentos>> PostDataDetallesDepartamentos(ActivitiesDetail reporteDetalle)
+        {
+            return await _repository.PostAsync<List<DetalladoDepartamentos>>(reporteDetalle, path: "api/Reports/DataDetallesDepartamentos");
+        }
+        public async Task<byte[]> PostReporteDetallesPorDepartamento(List<DetalladoDepartamentos> detalladoDepartamentos, int? opcion)
+        {
+            return await _repository.PostAsync<byte[]>(detalladoDepartamentos, path: "api/Reports/ReporteDetallesDepartamentos");
+        }
+        //Destalles por actividad
+        public async Task<List<DetalladoActividades>> PostDataDetallesActividades(ActivitiesDetail reporteDetalle)
+        {
+            return await _repository.PostAsync<List<DetalladoActividades>>(reporteDetalle, path: "api/Reports/DataDetallesActividades");
+        }
+        public async Task<byte[]> PostReporteDetallesPorActividadesAsync(List<DetalladoActividades> detalladoActividades, int? opcion)
+        {
+            return await _repository.PostAsync<byte[]>(detalladoActividades, path: "api/Reports/ReporteDetallesActividades");
         }
 
         public async Task<byte[]> PostReporteDetallesAsync(ActivitiesDetail reporteDetalle)

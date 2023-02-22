@@ -19,10 +19,10 @@ namespace ApiGateway.Controllers
             _reportesService = reportesService;
         }
 
-        [HttpPost("Detalles")]
-        public async Task<ActionResult> PostReporteDetalles(ActivitiesDetail reporteDetalle)
+        [HttpPost("DataDetallesDepartamentos")]
+        public async Task<ActionResult> PostDataDetallesDepartamentos(ActivitiesDetail reporteDetalle)
         {
-            var result = await _reportesService.PostReporteDetallesAsync(reporteDetalle);
+            var result = await _reportesService.PostDataDetallesPorDepartamentosAsync(reporteDetalle);
 
             if (result.Succeeded)
             {
@@ -32,10 +32,36 @@ namespace ApiGateway.Controllers
             return BadRequest(result);
         }
 
-        [HttpPost("DetallesPorActividad")]
-        public async Task<ActionResult> PostReporteDetallesPorActividad(ActivitiesDetail reporteDetalle)
+        [HttpPost("ReporteDetallesDepartamentos")]
+        public async Task<ActionResult> PostReporteDetallesPorDepartamento(List<DetalladoDepartamentos> detalladoDepartamentos)
         {
-            var result = await _reportesService.PostReporteDetallesPorActividadesAsync(reporteDetalle);
+            var result = await _reportesService.PostReporteDetallesPorDepartamentosAsync(detalladoDepartamentos, null);
+
+            if (result.Succeeded)
+            {
+                return Ok(result);
+            }
+
+            return BadRequest(result);
+        }
+
+        [HttpPost("DataDetallesActividades")]
+        public async Task<ActionResult> PostDataDetallesActividades(ActivitiesDetail reporteDetalle)
+        {
+            var result = await _reportesService.PostDataDetallesPorActividadesAsync(reporteDetalle);
+
+            if (result.Succeeded)
+            {
+                return Ok(result);
+            }
+
+            return BadRequest(result);
+        }
+
+        [HttpPost("ReporteDetallesActividades")]
+        public async Task<ActionResult> PostReporteDetallesPorActividad(List<DetalladoActividades> detalladoActividades)
+        {
+            var result = await _reportesService.PostReporteDetallesPorActividadesAsync(detalladoActividades, null);
 
             if (result.Succeeded)
             {
