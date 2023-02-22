@@ -192,6 +192,7 @@ namespace ReportesObra.Services
                     estatus = getStausName(subElement.IdProgressReport),
                     total = subElement.TotalPieces,
                     avance = getProgress(subElement.IdProgressReport),
+                    IdProgressLog = getIdProgressLog(subElement.IdProgressReport)
                 });
             }
             return list;
@@ -219,6 +220,7 @@ namespace ReportesObra.Services
                     estatus = getStausName(subElement.IdProgressReport),
                     total = subElement.TotalPieces,
                     avance = getProgress(subElement.IdProgressReport),
+                    IdProgressLog = getIdProgressLog(subElement.IdProgressReport)
                 });
             }
             return list;
@@ -603,6 +605,14 @@ namespace ReportesObra.Services
             string pieces = result.Pieces;
             bool canConvert = Int32.TryParse(pieces, out i);
             return i;
+        }
+
+        private int? getIdProgressLog(int idProgressReport)
+        {
+            var progressLog = listProgressLog.LastOrDefault(x => x.IdProgressReport == idProgressReport);
+            if (progressLog == null)
+                return null;
+            return progressLog.IdProgressLog;
         }
 
         private string getApartmentNumber(int idApartment)

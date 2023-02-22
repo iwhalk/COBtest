@@ -1489,9 +1489,9 @@ namespace ReportesObra.Utilities
                                 currentName = prop.GetValue(item, null)?.ToString();
                                 //countCombination++;
                             }
-                            //else
-                            //{
-                            if (type == typeof(DateTime))
+                            if(index != 8)
+                            {
+                                if (type == typeof(DateTime))
                                 {
                                     row.Cells[index - 1].AddParagraph(((DateTime?)prop.GetValue(item, null))?.ToString("dd/MM/yyyy hh:mm:ss tt") ?? "");
                                 }
@@ -1511,7 +1511,7 @@ namespace ReportesObra.Utilities
                                 {
                                     row.Cells[index - 1].AddParagraph(prop.GetValue(item, null)?.ToString());
                                 }
-                            //}
+                            }
 
                             row.Cells[0].Borders.Color = Colors.Black;
                             row.Cells[0].Borders.Visible = false;
@@ -1603,29 +1603,29 @@ namespace ReportesObra.Utilities
                             //{
                             //    currentApartment = prop.GetValue(item, null)?.ToString();
                             //}
-                            //else
-                            //{
-                            if (type == typeof(DateTime))
+                            if (index != 8)
                             {
-                                row.Cells[index - 1].AddParagraph(((DateTime?)prop.GetValue(item, null))?.ToString("dd/MM/yyyy hh:mm:ss tt") ?? "");
+                                if (type == typeof(DateTime))
+                                {
+                                    row.Cells[index - 1].AddParagraph(((DateTime?)prop.GetValue(item, null))?.ToString("dd/MM/yyyy hh:mm:ss tt") ?? "");
+                                }
+                                if (type == typeof(string))
+                                {
+                                    row.Cells[index - 1].AddParagraph(prop.GetValue(item, null)?.ToString());
+                                }
+                                if (type == typeof(bool))
+                                {
+                                    row.Cells[index - 1].AddParagraph((bool?)prop.GetValue(item, null) ?? false ? "SI" : "NO");
+                                }
+                                if (type == typeof(int))
+                                {
+                                    row.Cells[index - 1].AddParagraph(prop.GetValue(item, null)?.ToString());
+                                }
+                                if (type == typeof(long))
+                                {
+                                    row.Cells[index - 1].AddParagraph(prop.GetValue(item, null)?.ToString());
+                                }
                             }
-                            if (type == typeof(string))
-                            {
-                                row.Cells[index - 1].AddParagraph(prop.GetValue(item, null)?.ToString());
-                            }
-                            if (type == typeof(bool))
-                            {
-                                row.Cells[index - 1].AddParagraph((bool?)prop.GetValue(item, null) ?? false ? "SI" : "NO");
-                            }
-                            if (type == typeof(int))
-                            {
-                                row.Cells[index - 1].AddParagraph(prop.GetValue(item, null)?.ToString());
-                            }
-                            if (type == typeof(long))
-                            {
-                                row.Cells[index - 1].AddParagraph(prop.GetValue(item, null)?.ToString());
-                            }
-                            //}
 
                             row.Cells[0].Borders.Color = Colors.Black;
                             row.Cells[0].Borders.Visible = false;
