@@ -610,32 +610,36 @@ namespace Obra.Client.Pages
             loading = false;
         }
 
-        public async Task CameraButton(int idProgressLog)
+        public async Task CameraButton(int? idProgressLog)
         {
             await ShowMessage();
 
-            ProgressLog aux = await _progressLogsService.GetProgressLogAsync(idProgressLog);
-
-            if (aux.Observation != null)
+            if (idProgressLog != null)
             {
-                observations = aux.Observation;
-            }
+                int auxId = (int)idProgressLog;
+                ProgressLog aux = await _progressLogsService.GetProgressLogAsync(auxId);
 
-            if (aux.IdBlobs != null)
-            {
-                foreach (var item in aux.IdBlobs)
+                if (aux.Observation != null)
                 {
-                    images.Add(item.Uri);
+                    observations = aux.Observation;
                 }
-            }
 
-            if (observations != null && observations != "" || images.Count() > 0)
-            {
-                showModal = true;
-            }
-            else
-            {
-                _toastService.ShowToast<ToastImages>(new ToastInstanceSettings(5, false));
+                if (aux.IdBlobs != null)
+                {
+                    foreach (var item in aux.IdBlobs)
+                    {
+                        images.Add(item.Uri);
+                    }
+                }
+
+                if (observations != null && observations != "" || images.Count() > 0)
+                {
+                    showModal = true;
+                }
+                else
+                {
+                    _toastService.ShowToast<ToastImages>(new ToastInstanceSettings(5, false));
+                }
             }
         }
 
