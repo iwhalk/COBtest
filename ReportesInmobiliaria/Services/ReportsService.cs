@@ -1,6 +1,7 @@
 ﻿using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
+using NuGet.Packaging;
 using NuGet.Versioning;
 using ReportesObra.Interfaces;
 using ReportesObra.Utilities;
@@ -718,6 +719,8 @@ namespace ReportesObra.Services
                     continue;
                 subElementsFiltred.AddRange(subListSubElements.ToList());
             }
+            var listSubElementsNull = ListAllSubElements.Where(x => x.IdSubElement == null).ToList();
+            subElementsFiltred.AddRange(listSubElementsNull);
             return subElementsFiltred;
         }
     }
