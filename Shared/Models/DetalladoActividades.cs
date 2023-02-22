@@ -10,5 +10,6 @@
         public string estatus { get; set; }
         public string total { get; set; }
         public int avance { get; set; }
+        public int? IdProgressLog { get; set; }
     }
 }
