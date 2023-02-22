@@ -305,9 +305,17 @@ namespace Obra.Client.Pages
             {
                 allApartments = true;
             }
-            else
+            else if (allApartments == true)
             {
                 allApartments = false;
+
+                _idsAparmentSelect.Clear();
+
+                await ShowMessage();
+            }
+            else
+            {
+                allApartments = true;
 
                 _idsAparmentSelect.Clear();
 
