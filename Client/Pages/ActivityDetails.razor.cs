@@ -363,116 +363,110 @@ namespace Obra.Client.Pages
 
         public async Task AllElements()
         {
-            if (allActivities == true)
+            if (_idsElementsSelect.Count() < 1 && allElements == false)
             {
-                if (_idsElementsSelect.Count() < 1 && allElements == false)
-                {
-                    allElements = true;
+                allElements = true;
 
-                    if (allElements == true)
+                if (allElements == true)
+                {
+                    foreach (var item in elements)
                     {
-                        foreach (var item in elements)
-                        {
-                            _idsElementsSelect.Add(item.IdElement);
-                        }
+                        _idsElementsSelect.Add(item.IdElement);
                     }
-
-                    subElements = await _subElementsService.GetSubElementsAsync(null);
                 }
-                else if (allElements == true)
+
+                subElements = await _subElementsService.GetSubElementsAsync(null);
+            }
+            else if (allElements == true)
+            {
+                allElements = false;
+
+                _idsElementsSelect.Clear();
+                _idsSubElementsSelect.Clear();
+                _idsAparmentSelect.Clear();
+
+                subElements.Clear();
+
+                allSubElements = false;
+                allApartments = false;
+
+                department = false;
+
+                await ShowMessage();
+            }
+            else
+            {
+                allElements = true;
+
+                _idsElementsSelect.Clear();
+                _idsSubElementsSelect.Clear();
+                _idsAparmentSelect.Clear();
+
+                subElements.Clear();
+
+                allSubElements = false;
+                allApartments = false;
+
+                department = false;
+
+                if (allElements == true)
                 {
-                    allElements = false;
-
-                    _idsElementsSelect.Clear();
-                    _idsSubElementsSelect.Clear();
-                    _idsAparmentSelect.Clear();
-
-                    subElements.Clear();
-
-                    allSubElements = false;
-                    allApartments = false;
-
-                    department = false;
-
-                    await ShowMessage();
-                }
-                else
-                {
-                    allElements = true;
-
-                    _idsElementsSelect.Clear();
-                    _idsSubElementsSelect.Clear();
-                    _idsAparmentSelect.Clear();
-
-                    subElements.Clear();
-
-                    allSubElements = false;
-                    allApartments = false;
-
-                    department = false;
-
-                    if (allElements == true)
+                    foreach (var item in elements)
                     {
-                        foreach (var item in elements)
-                        {
-                            _idsElementsSelect.Add(item.IdElement);
-                        }
+                        _idsElementsSelect.Add(item.IdElement);
                     }
-
-                    subElements = await _subElementsService.GetSubElementsAsync(null);
-
-                    await ShowMessage();
                 }
+
+                subElements = await _subElementsService.GetSubElementsAsync(null);
+
+                await ShowMessage();
             }
         }
 
         public async Task AllSubElements()
         {
-            if (allActivities == true && allElements == true)
+            if (_idsSubElementsSelect.Count() < 1 && allSubElements == false)
             {
-                if (_idsSubElementsSelect.Count() < 1 && allSubElements == false)
+                allSubElements = true;
+
+                if (allSubElements == true)
                 {
-                    allSubElements = true;
-
-                    if (allSubElements == true)
+                    foreach (var idSubElement in subElements)
                     {
-                        foreach (var idSubElement in subElements)
-                        {
-                            _idsSubElementsSelect.Add(idSubElement.IdSubElement);
-                        }
+                        _idsSubElementsSelect.Add(idSubElement.IdSubElement);
                     }
-
-                    department = true;
                 }
-                else if (allSubElements == true)
+
+                department = true;
+            }
+            else if (allSubElements == true)
+            {
+                allSubElements = false;
+
+                _idsSubElementsSelect.Clear();
+            }
+            else
+            {
+                allSubElements = true;
+
+                _idsSubElementsSelect.Clear();
+
+                if (_idsElementsSelect.Count == 0)
                 {
-                    allSubElements = false;
-
-                    _idsSubElementsSelect.Clear();
+                    _idsAparmentSelect.Clear();
+                    allApartments = false;
+                    department = false;
                 }
-                else
+
+                if (allSubElements == true)
                 {
-                    allSubElements = true;
-
-                    _idsSubElementsSelect.Clear();
-
-                    if (_idsElementsSelect.Count == 0)
+                    foreach (var idSubElement in subElements)
                     {
-                        _idsAparmentSelect.Clear();
-                        allApartments = false;
-                        department = false;
+                        _idsSubElementsSelect.Add(idSubElement.IdSubElement);
                     }
-
-                    if (allSubElements == true)
-                    {
-                        foreach (var idSubElement in subElements)
-                        {
-                            _idsSubElementsSelect.Add(idSubElement.IdSubElement);
-                        }
-                    }
-
-                    department = true;
                 }
+
+                department = true;
             }
         }
 

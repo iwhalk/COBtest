@@ -22,7 +22,7 @@
                         }
                         @if (subElements.Count() != 0)
                         {
-                            <div class="p-1 w-[19rem]">
+                            <div class="p-1 w-[19rem] mr-12">
                                 <h1 class="rounded-xl text-xs md:text-base xl:text-xl text-white font-medium leading-6 bg-[#162D4E] text-center py-2">SubElemento</h1>
                             </div>
                         }
@@ -46,13 +46,13 @@
                                         </button>
                                         @if (elements.Count() != 0)
                                         {
-                                            <button @onclick="() => AllElements()" class="@(allElements ? "bg-[#9CA2A8]" : "bg-[#55595E]") h-12 w-[17.4rem] border border-blue-700">
+                                            <button @onclick="() => AllElements()" class="@(allElements ? "bg-[#9CA2A8]" : "bg-[#55595E]") h-12 w-[19rem] border border-blue-700">
                                                 <h1 class="text-xs md:text-base md:text-base text-white font-medium leading-6 text-center p-1">TODOS</h1>
                                             </button>
                                         }
                                         @if (subElements.Count() != 0)
                                         {
-                                            <button @onclick="() => AllSubElements()" class="@(allSubElements ? "bg-[#9CA2A8]" : "bg-[#55595E]") h-12 w-[17.4rem] border border-blue-700">
+                                            <button @onclick="() => AllSubElements()" class="@(allSubElements ? "bg-[#9CA2A8]" : "bg-[#55595E]") h-12 w-[19rem] border border-blue-700">
                                                 <h1 class="text-xs md:text-base md:text-base text-white font-medium leading-6 text-center p-1">TODOS</h1>
                                             </button>
                                         }
@@ -73,7 +73,7 @@
                                                                 @if (element.IdActivity == activity.IdActivity)
                                                                 {
                                                                     <div class="flex justify-items-stretch">
-                                                                        <button @onclick="() => AddIdSelect(element.IdElement, 3)" class="@(_idsElementsSelect.Contains(element.IdElement) ? "bg-[#9CA2A8]" : "bg-[#55595E]") h-24 w-[17.4rem] border border-blue-700 grid">
+                                                                        <button @onclick="() => AddIdSelect(element.IdElement, 3)" class="@(_idsElementsSelect.Contains(element.IdElement) ? "bg-[#9CA2A8]" : "bg-[#55595E]") h-24 w-[19rem] border border-blue-700 grid">
                                                                             <h1 class="text-xs md:text-base md:text-base text-white font-medium leading-6 text-center p-1">@element.ElementName</h1>
                                                                         </button>
 
@@ -88,7 +88,7 @@
                                                                                         {
                                                                                             <div class="flex justify-items-stretch">
 
-                                                                                                <button @onclick="() => AddIdSelect(subElement.IdSubElement, 4)" class="@(_idsSubElementsSelect.Contains(subElement.IdSubElement) ? "bg-[#9CA2A8]" : "bg-[#55595E]") h-12 w-[17.4rem] border border-blue-700 grid">
+                                                                                                <button @onclick="() => AddIdSelect(subElement.IdSubElement, 4)" class="@(_idsSubElementsSelect.Contains(subElement.IdSubElement) ? "bg-[#9CA2A8]" : "bg-[#55595E]") h-12 w-[19rem] border border-blue-700 grid">
                                                                                                     <h1 class="text-xs md:text-base md:text-base text-white font-medium leading-6 text-center p-1">@subElement.SubElementName</h1>
                                                                                                 </button>
                                                                                             </div>
