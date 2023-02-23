@@ -140,7 +140,9 @@ namespace ReportesObra.Services
                 list = FiltradoIdActivities(list, idActivities);
                 _titleDetails = "(Seleccionadas)";
             }
-            return list.OrderBy(x => x.numeroApartamento).ToList();
+            var orderedByApartment = list.OrderBy(x => x.numeroApartamento);
+            var orderedByActivity = orderedByApartment.OrderBy(x => x.actividad);
+            return orderedByActivity.ToList();
         }
 
         public async Task<byte[]?> GetReporteDetallesActividad(List<DetalladoActividades> detalladoActividades, int? opcion)

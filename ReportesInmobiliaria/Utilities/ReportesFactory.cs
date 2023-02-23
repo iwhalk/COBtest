@@ -369,7 +369,7 @@ namespace ReportesObra.Utilities
 
             for (int i = 0; i < reporteDetalles.detalladoDepartamentos.Count(); i++)
             {
-                string apartmentTitle = reporteDetalles.detalladoDepartamentos.ElementAt(i).numeroApartamento; ;
+                string apartmentTitle = reporteDetalles.detalladoDepartamentos.ElementAt(i).numeroApartamento;
                 // Create the item table
                 paragraph = section.AddParagraph();
                 paragraph.AddLineBreak();
