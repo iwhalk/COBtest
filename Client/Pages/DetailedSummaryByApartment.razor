@@ -1,113 +1,157 @@
 ﻿@page "/DetailedSummaryByApartment"
 <PageTitle>Sistema COB</PageTitle>
 
-@*Pantalla completa*@
+<div class="pt-28 pb-12 min-h-screen bg-[url('/assets/img/imgFondo.png')] z-0 opacity-25 imgfondo fixed inset-0 bg-gray-500 bg-opacity-25 transition-opacity"></div>
 
-
-<div id="Contenedor" class="min-h-screen bg-[url('/assets/img/imgFondo.png')] z-0 opacity-25 imgfondo fixed inset-0 bg-gray-500 bg-opacity-25 transition-opacity"></div>
-
-@if (apartments != null && activities != null && apartmentDetails == true)
+@if (apartments.Count() > 0 && activities.Count() > 0 && apartmentDetails == true)
 {
-    @if (loading == false)
+    if (loading == false)
     {
-        <div class="h-screen pt-24 pb-12 fixed inset-0 flex flex-col justify-center items-center">
-
-            <div class="flex justify-center w-screen rounded-2xl my-2 px-72 h-5/6">
-                <div class="mx-1">
-                    <div class="w-[6rem] sm:w-[10.5rem] md:w-[12rem] lg:w-[16rem]  xl:w-[20rem]">
-                        <h1 class="rounded-xl text-xs md:text-base xl:text-xl text-white font-medium leading-6 bg-[#162D4E] text-center py-2">Departamento</h1>
-                    </div>
-                    <div class="flex justify-center rounded-br-2xl-2xl overflow-y-scroll overflow-x-hidden h-5/6" style="direction: rtl;">
-                        <div>
-                            <div class="grid grid-col-1 gap-1 p-1 w-[5rem] sm:w-[9.5rem] md:w-[11rem] lg:w-[15rem]  xl:w-[19rem]">
-                                <button @onclick="() => AllApartments()" class="@(allApartments ? "bg-[#9CA2A8]" : "bg-[#55595E]")">
-                                    <h1 class="text-xs md:text-base text-white font-medium leading-6 text-center p-1">TODOS</h1>
-                                </button>
-                                @if (apartments != null)
-                                {
-                                    @foreach (var apartment in apartments)
-                                    {
-                                        <button @onclick="() => AddIdSelect(apartment.IdApartment, 1)" class="@(_idsAparmentSelect.Contains(apartment.IdApartment) ? "bg-[#9CA2A8]" : "bg-[#55595E]")">
-                                            <h1 class="text-xs md:text-base text-white font-medium leading-6 text-center p-1">@apartment.ApartmentNumber</h1>
-                                        </button>
-                                    }
-                                }
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="mx-1">
-                    <div>
-                        <h1 class="rounded-xl text-xs md:text-base xl:text-xl text-white font-medium leading-6 bg-[#162D4E] text-center py-2">Actividad</h1>
-                    </div>
-                    <div class="flex justify-center rounded-br-2xl-2xl overflow-y-scroll 2xl:overflow-y-hidden overflow-x-hidden h-4/6" style="direction: ltr;">
-                        <div>
-                            <div class="grid grid-col-1 gap-1 p-1 w-[5rem] sm:w-[9.5rem] md:w-[11rem] lg:w-[15rem]  xl:w-[19rem]">
-                                @if (activities != null)
-                                {
-                                    @foreach (var activity in activities)
-                                    {
-                                        <button @onclick="() => AddIdSelect(activity.IdActivity, 2)" class="@(_idsActivitiesSelect.Contains(activity.IdActivity) ? "bg-[#9CA2A8]" : "bg-[#55595E]")">
-                                            <h1 class="text-xs md:text-base text-white font-medium leading-6 text-center p-1">@activity.ActivityName</h1>
-                                        </button>
-                                    }
-                                }
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                @if (showElements == true)
-                {
-                    <div class="mx-1">
-                        <div>
-                            <h1 class="rounded-xl text-xs md:text-base xl:text-xl text-white font-medium leading-6 bg-[#162D4E] text-center py-2">Elemento</h1>
-                        </div>
-                        <div class="flex justify-center rounded-br-2xl-2xl overflow-y-scroll md:overflow-y-hidden overflow-x-hidden h-4/6" style="direction: ltr;">
-                            <div>
-                                <div class="grid grid-col-1 gap-1 p-1 w-[5rem] sm:w-[9.5rem] md:w-[11rem] lg:w-[15rem]  xl:w-[19rem]">
-                                    @if (elements != null)
-                                    {
-                                        @foreach (var element in elements)
-                                        {
-                                            <button @onclick="() => AddIdSelect(element.IdElement, 3)" class="@(_idsElementsSelect.Contains(element.IdElement) ? "bg-[#9CA2A8]" : "bg-[#55595E]")">
-                                                <h1 class="text-xs md:text-base md:text-base text-white font-medium leading-6 text-center p-1">@element.ElementName</h1>
-                                            </button>
-                                        }
-                                    }
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                }
-                @if (showSubElements == true)
-                {
-                    @if (subElements != null && subElements.Count() > 0)
+        <div class="h-screen pt-20 pb-12 fixed inset-0 flex flex-col justify-center items-center">
+            <div class="flex justify-center w-screen rounded-2xl my-2 px-72 h-5/6 flow-root">
+                <div class="flex justify-center justify-content-around" style="direction: ltr;">
+                    @if (subElements.Count() == 0)
                     {
-                        <div class="mx-1">
-                            <div>
-                                <h1 class="rounded-xl text-xs md:text-base xl:text-xl text-white font-medium leading-6 bg-[#162D4E] text-center py-2">Sub-Elemento</h1>
+                        <div class="flex justify-content-around">
+                            <div class="p-1 w-[19rem] ml-4">
+                                <h1 class="rounded-xl text-xs md:text-base xl:text-xl text-white font-medium leading-6 bg-[#162D4E] text-center py-2">Departamento</h1>
                             </div>
-                            <div class="flex justify-center rounded-br-2xl-2xl overflow-y-scroll lg:overflow-y-hidden overflow-x-hidden h-4/6" style="direction: ltr;">
-                                <div>
-                                    <div class="grid grid-col-1 gap-1 p-1 w-[5rem] sm:w-[9.5rem] md:w-[11rem] lg:w-[15rem]  xl:w-[19rem]">
-                                        <button @onclick="() => AllSubElements()" class="@(allSubElements ? "bg-[#9CA2A8]" : "bg-[#55595E]")">
-                                            <h1 class="text-md text-white font-medium leading-6 text-center p-1">TODOS</h1>
-                                        </button>
-                                        @foreach (var subElement in subElements)
-                                        {
-                                            <button @onclick="() => AddIdSelect(subElement.IdSubElement, 4)" class="@(_idsSubElementsSelect.Contains(subElement.IdSubElement) ? "bg-[#9CA2A8]" : "bg-[#55595E]")">
-                                                <h1 class="text-xs md:text-base text-white font-medium leading-6 text-center p-1">@subElement.SubElementName</h1>
-                                            </button>
-                                        }
-                                    </div>
+                            <div class="p-1 w-[19rem] ml-4">
+                                <h1 class="rounded-xl text-xs md:text-base xl:text-xl text-white font-medium leading-6 bg-[#162D4E] text-center py-2">Actividad</h1>
+                            </div>
+                            @if (elements.Count() != 0)
+                            {
+                                <div class="p-1 w-[19rem]">
+                                    <h1 class="rounded-xl text-xs md:text-base xl:text-xl text-white font-medium leading-6 bg-[#162D4E] text-center py-2">Elemento</h1>
                                 </div>
-                            </div>
+                            }
+                            @if (subElements.Count() != 0)
+                            {
+                                <div class="p-1 w-[19rem]">
+                                    <h1 class="rounded-xl text-xs md:text-base xl:text-xl text-white font-medium leading-6 bg-[#162D4E] text-center py-2">SubElemento</h1>
+                                </div>
+                            }
                         </div>
                     }
-                }
+                    else
+                    {
+                        <div class="flex justify-content-around pr-10">
+                            <div class="p-1 w-[19rem] ml-4">
+                                <h1 class="rounded-xl text-xs md:text-base xl:text-xl text-white font-medium leading-6 bg-[#162D4E] text-center py-2">Departamento</h1>
+                            </div>
+                            <div class="p-1 w-[19rem] ml-5">
+                                <h1 class="rounded-xl text-xs md:text-base xl:text-xl text-white font-medium leading-6 bg-[#162D4E] text-center py-2">Actividad</h1>
+                            </div>
+                            @if (elements.Count() != 0)
+                            {
+                                <div class="p-1 w-[19rem]">
+                                    <h1 class="rounded-xl text-xs md:text-base xl:text-xl text-white font-medium leading-6 bg-[#162D4E] text-center py-2">Elemento</h1>
+                                </div>
+                            }
+                            @if (subElements.Count() != 0)
+                            {
+                                <div class="p-1 w-[19rem]">
+                                    <h1 class="rounded-xl text-xs md:text-base xl:text-xl text-white font-medium leading-6 bg-[#162D4E] text-center py-2">SubElemento</h1>
+                                </div>
+                            }
+                        </div>
+                    }
+                </div>
+                <div class="mx-1 flex justify-content-center h-5/6 pl-9">
+                    <div class="overflow-y-scroll" style="direction: ltr;">
+                        <div>
+                            <div class="grid grid-col-1 p-1 w-[5rem] sm:w-[9.5rem] md:w-[11rem] lg:w-[15rem]  xl:w-[19rem]">
+                                <button @onclick="() => AllApartments()" class="@(allApartments ? "bg-[#9CA2A8]" : "bg-[#55595E]") h-12 border border-blue-700 grid">
+                                    <h1 class="text-xs md:text-base md:text-base text-white font-medium leading-6 text-center p-1">TODOS</h1>
+                                </button>
+                                @foreach (var apartment in apartments)
+                                {
+                                    <button @onclick="() => AddIdSelect(apartment.IdApartment, 1)" class="@(_idsAparmentSelect.Contains(apartment.IdApartment) ? "bg-[#9CA2A8]" : "bg-[#55595E]") h-12 border border-blue-700 grid">
+                                        <h1 class="text-xs md:text-base md:text-base text-white font-medium leading-6 text-center p-1">@apartment.ApartmentNumber</h1>
+                                    </button>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                    <div class="overflow-y-scroll">
+                        <div class="flex justify-center rounded-br-2xl-2xl" style="direction: ltr;">
+                            <div class="flex justify-center">
+                                <div class="p-1 flex justify-items-center flow-root">
+                                    @if (activities != null)
+                                    {
+                                        <button @onclick="() => AllActivities()" class="@(allActivities ? "bg-[#9CA2A8]" : "bg-[#55595E]") h-12 w-[19rem] border border-blue-700">
+                                            <h1 class="text-xs md:text-base md:text-base text-white font-medium leading-6 text-center p-1">TODOS</h1>
+                                        </button>
+                                        @if (elements.Count() != 0)
+                                        {
+                                            <button @onclick="() => AllElements()" class="@(allElements ? "bg-[#9CA2A8]" : "bg-[#55595E]") h-12 w-[19rem] border border-blue-700">
+                                                <h1 class="text-xs md:text-base md:text-base text-white font-medium leading-6 text-center p-1">TODOS</h1>
+                                            </button>
+                                        }
+                                        @if (subElements.Count() != 0)
+                                        {
+                                            <button @onclick="() => AllSubElements()" class="@(allSubElements ? "bg-[#9CA2A8]" : "bg-[#55595E]") h-12 w-[19rem] border border-blue-700">
+                                                <h1 class="text-xs md:text-base md:text-base text-white font-medium leading-6 text-center p-1">TODOS</h1>
+                                            </button>
+                                        }
+                                        @foreach (var activity in activities)
+                                        {
+                                            <div class="flex justify-items-stretch">
+                                                <button @onclick="() => AddIdSelect(activity.IdActivity, 2)" class="@(_idsActivitiesSelect.Contains(activity.IdActivity) ? "bg-[#9CA2A8]" : "bg-[#55595E]") @(_idsActivitiesSelect.Contains(activity.IdActivity) ? "h-48" : "h-12") w-[19rem] border border-blue-700">
+                                                    <h1 class="text-xs md:text-base text-white font-medium leading-6 text-center p-1">@activity.ActivityName</h1>
+                                                </button>
+
+                                                @if (_idsActivitiesSelect.Contains(activity.IdActivity) == true)
+                                                {
+                                                    @if (elements.Count() != 0)
+                                                    {
+                                                        <div class="flex-column flow-root overflow-y-scroll h-48">
+                                                            @foreach (var element in elements)
+                                                            {
+                                                                @if (element.IdActivity == activity.IdActivity)
+                                                                {
+                                                                    <div class="flex justify-items-stretch">
+                                                                        <button @onclick="() => AddIdSelect(element.IdElement, 3)" class="@(_idsElementsSelect.Contains(element.IdElement) ? "bg-[#9CA2A8]" : "bg-[#55595E]") h-24 w-[19rem] border border-blue-700 grid">
+                                                                            <h1 class="text-xs md:text-base md:text-base text-white font-medium leading-6 text-center p-1">@element.ElementName</h1>
+                                                                        </button>
+
+                                                                        @if (_idsElementsSelect.Contains(element.IdElement) == true)
+                                                                        {
+                                                                            @if (subElements.Count() != 0)
+                                                                            {
+                                                                                <div class="flex-column flow-root overflow-y-scroll h-24">
+                                                                                    @foreach (var subElement in subElements)
+                                                                                    {
+                                                                                        @if (subElement.IdElement == element.IdElement)
+                                                                                        {
+                                                                                            <div class="flex justify-items-stretch">
+
+                                                                                                <button @onclick="() => AddIdSelect(subElement.IdSubElement, 4)" class="@(_idsSubElementsSelect.Contains(subElement.IdSubElement) ? "bg-[#9CA2A8]" : "bg-[#55595E]") h-12 w-[19rem] border border-blue-700 grid">
+                                                                                                    <h1 class="text-xs md:text-base md:text-base text-white font-medium leading-6 text-center p-1">@subElement.SubElementName</h1>
+                                                                                                </button>
+                                                                                            </div>
+                                                                                        }
+                                                                                    }
+                                                                                </div>
+                                                                            }
+                                                                        }
+                                                                    </div>
+                                                                }
+                                                            }
+                                                        </div>
+                                                    }
+                                                }
+                                            </div>
+                                        }
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="w-full flex justify-end pb-3">
-                <button @onclick="() => ShowReportAndHideApartment()" class="mx-auto bg-[#B9352E] hover:bg-red-500 p-2 rounded-2xl text-base md:text-lg text-white font-medium leading-6 border border-stone-400 hover:border-white">Generar Reporte</button>
+            <div class="w-full flex justify-end py-3">
+                <button @onclick="() => ShowReportAndHideApartment()" class="mx-auto bg-[#B9352E] hover:bg-red-500 p-2 rounded-2xl text-lg text-white font-medium leading-6 border border-stone-400 hover:border-white">Generar Reporte</button>
                 @if (alert == true)
                 {
                     <div class="bg-red-100 border border-red-400 text-red-700 pl-4 pr-12 py-2 rounded fixed inset-x-90 bottom-20 w-[32]" role="alert">
@@ -142,284 +186,110 @@ else if (buttonReport == true)
 {
     @if (loading == false)
     {
-        <div class="h-5/6 pt-20 pb-12 fixed inset-0 flex flex-col items-center self-start overflow-y-scroll overflow-x-hidden">
-            @foreach (var apartment in apartmentsSelect)
+        <div class="pt-20 pb-12 fixed inset-0 flex flex-col items-center self-start overflow-y-scroll overflow-x-hidden">
+            @foreach (var aparment in apartmentsSelect)
             {
-                <div class="my-4 h-[32rem] w-screen">
+                <div class="my-4 w-screen">
                     <div class="pt-10 flex justify-center">
-                        <label class="text-sm md:text-base lg:text-xl 2xl:text-4xl text-white leading-6 text-center bg-[#162D4E] rounded-lg py-3 px-24">Reporte Avance @apartment.ApartmentNumber</label>
+                        <label class="text-sm md:text-base lg:text-xl 2xl:text-4xl text-white leading-6 text-center bg-[#162D4E] rounded-lg py-3 px-24">Reporte Avance @aparment.ApartmentNumber</label>
                     </div>
-                    @if (subElementsNulls == false)
-                    {
-                        @if (greenPercentage != null && redPercentage != null)
-                        {
-                            <div class="flex justify-center w-full mt-10 px-16">
-                                <div class="flex flex-row justify-center items-center xl:w-3/6 pr-2">
-                                    <label class="w-[6rem] xl:w-3/6 h-14 2xl:h-16 text-xs md:text-sm lg:text-lg 2xl:text-2xl text-white leading-6 text-center bg-[#162D4E] rounded-lg py-2 m-2 flex justify-center items-center">Actividad</label>
-                                    <label class="w-[6rem] xl:w-3/6 h-14 2xl:h-16 text-xs md:text-sm lg:text-lg 2xl:text-2xl text-white leading-6 text-center bg-[#162D4E] rounded-lg py-2 m-2 flex justify-center items-center">Área</label>
-                                    <label class="w-[6rem] xl:w-3/6 h-14 2xl:h-16 text-xs md:text-sm lg:text-lg 2xl:text-2xl text-white leading-6 text-center bg-[#162D4E] rounded-lg py-2 m-2 flex justify-center items-center">Elemento</label>
-                                    <label class="w-[6rem] xl:w-3/6 h-14 2xl:h-16 text-xs md:text-sm lg:text-lg 2xl:text-2xl text-white leading-6 text-center bg-[#162D4E] rounded-lg py-2 m-2 flex justify-center items-center">Sub-Elemento</label>
-                                </div>
-                                <div class="flex flex-row justify-center items-center w-3/6">
-                                    <label class="w-full h-14 2xl:h-16 text-xs md:text-sm lg:text-lg 2xl:text-2xl text-white leading-6 text-center bg-[#162D4E] rounded-lg py-2 my-2 flex justify-center items-center">Avance</label>
-                                    <div class="self-center">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="#254260" class="bi bi-camera-fill ml-2 invisible" viewBox="0 0 16 16">
-                                            <path d="M10.5 8.5a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z" />
-                                            <path d="M2 4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2h-1.172a2 2 0 0 1-1.414-.586l-.828-.828A2 2 0 0 0 9.172 2H6.828a2 2 0 0 0-1.414.586l-.828.828A2 2 0 0 1 3.172 4H2zm.5 2a.5.5 0 1 1 0-1 .5.5 0 0 1 0 1zm9 2.5a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0z" />
-                                        </svg>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="overflow-y-scroll h-[17rem] lg:h-[10rem] xl:h-[15rem] 2xl:h-[20rem]">
-                                @foreach (var item in progressReports)
-                                {
-                                    @if (item.IdApartment == apartment.IdApartment)
-                                    {
-                                        <div class="flex justify-center w-full mt-2 px-16">
-                                            <div class="flex flex-row justify-center items-center xl:w-3/6">
-                                                @if (@activity.ActivityName == "Instalación Eléctrica" || @activity.ActivityName == "Instalación Hidráulica" || @activity.ActivityName == "Instalación Sanitaria" || @activity.ActivityName == "Instalación Voz y Datos")
-                                                {
-                                                    <label class="w-[6rem] xl:w-80 h-[3.5rem] xl:h-8 text-xs 2xl:text-base text-white leading-6 text-center bg-[#254260] rounded-lg py-1 m-2 flex justify-center items-center">@activity.ActivityName</label>
-                                                }
-                                                else
-                                                {
-                                                    <label class="w-[6rem] xl:w-80 h-[3.5rem] xl:h-8 text-sm md:text-base lg:text-lg 2xl:text-xl text-white leading-6 text-center bg-[#254260] rounded-lg py-1 m-2 flex justify-center items-center">@activity.ActivityName</label>
-                                                }
-                                                @if (@Areas.FirstOrDefault(x => x.IdArea == item.IdArea).AreaName == "Recamara Principal" || @Areas.FirstOrDefault(x => x.IdArea == item.IdArea).AreaName == "Cuarto de Lavado")
-                                                {
-                                                    <label class="w-[6rem] xl:w-80 h-[3.5rem] xl:h-8 text-xs 2xl:text-base text-white leading-6 text-center bg-[#254260] rounded-lg py-1 m-2 flex justify-center items-center">@Areas.FirstOrDefault(x => x.IdArea == item.IdArea).AreaName</label>
-                                                }
-                                                else
-                                                {
-                                                    <label class="w-[6rem] xl:w-80 h-[3.5rem] xl:h-8 text-sm md:text-base lg:text-lg 2xl:text-xl text-white leading-6 text-center bg-[#254260] rounded-lg py-1 m-2 flex justify-center items-center">@Areas.FirstOrDefault(x => x.IdArea == item.IdArea).AreaName</label>
-                                                }
-                                                @if (@element.ElementName == "Cielo Raso (Falso Techo)" || @element.ElementName == "Llave Mezcladora")
-                                                {
-                                                    <label class="w-[6rem] xl:w-80 h-[3.5rem] xl:h-8 text-xs 2xl:text-base text-white leading-6 text-center bg-[#254260] rounded-lg py-1 m-2 flex justify-center items-center">@element.ElementName</label>
-                                                }
-                                                else
-                                                {
-                                                    <label class="w-[6rem] xl:w-80 h-[3.5rem] xl:h-8 text-sm md:text-base lg:text-lg 2xl:text-xl text-white leading-6 text-center bg-[#254260] rounded-lg py-1 m-2 flex justify-center items-center">@element.ElementName</label>
-                                                }
-                                                @if (@subElementsSelect.FirstOrDefault(x => x.IdSubElement == item.IdSubElement).SubElementName == "Mortero de Nivelación" || @subElementsSelect.FirstOrDefault(x => x.IdSubElement == item.IdSubElement).SubElementName == "Riel - Corredera")
-                                                {
-                                                    <label class="w-[6rem] xl:w-80 h-[3.5rem] xl:h-8 text-xs 2xl:text-base text-white leading-6 text-center bg-[#254260] rounded-lg py-1 m-2 flex justify-center items-center">@subElementsSelect.FirstOrDefault(x => x.IdSubElement == item.IdSubElement).SubElementName</label>
-                                                }
-                                                else
-                                                {
-                                                    <label class="w-[6rem] xl:w-80 h-[3.5rem] xl:h-8 text-sm md:text-base lg:text-lg 2xl:text-xl text-white leading-6 text-center bg-[#254260] rounded-lg py-1 m-2 flex justify-center items-center">@subElementsSelect.FirstOrDefault(x => x.IdSubElement == item.IdSubElement).SubElementName</label>
-                                                }
-                                            </div>
-                                            <div class="flex flex-row justify-center items-center w-3/6">
-                                                @if (progressLogs.FirstOrDefault(x => x.IdProgressReport == item.IdProgressReport)?.IdProgressLog != null)
-                                                {
-                                                    <div class="flex justify-end text-white w-[@greenPercentage[$"{item.IdProgressReport}"]%] bg-[#115D28] h-8 lg:h-6">@progressLogs.FirstOrDefault(x => x.IdProgressReport == item.IdProgressReport).Pieces</div>
-                                                    <div class="flex justify-end text-white w-[@redPercentage[$"{item.IdProgressReport}"]%] bg-[#CB3030] h-8 lg:h-6">@item.TotalPieces</div>
-                                                    <div class="self-center">
-                                                        @if (isContentPhoto(item.IdProgressReport))
-                                                        {
-                                                            <button @onclick="() => CamareButton(item.IdProgressReport)">
-                                                                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32"  fill="#254260" class="bi bi-camera-fill ml-2" viewBox="0 0 16 16">
-                                                                    <path d="M10.5 8.5a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z"/>
-                                                                    <path d="M2 4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2h-1.172a2 2 0 0 1-1.414-.586l-.828-.828A2 2 0 0 0 9.172 2H6.828a2 2 0 0 0-1.414.586l-.828.828A2 2 0 0 1 3.172 4H2zm.5 2a.5.5 0 1 1 0-1 .5.5 0 0 1 0 1zm9 2.5a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0z"/>
-                                                                </svg>
-                                                            </button>
-                                                        }
-                                                        else
-                                                        {
-                                                            <button @onclick="() => CamareButton(item.IdProgressReport)" disabled="true">
-                                                                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" class="bi bi-camera-fill ml-2 fill-gray-400" viewBox="0 0 16 16">
-                                                                    <path d="M10.5 8.5a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z"/>
-                                                                    <path d="M2 4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2h-1.172a2 2 0 0 1-1.414-.586l-.828-.828A2 2 0 0 0 9.172 2H6.828a2 2 0 0 0-1.414.586l-.828.828A2 2 0 0 1 3.172 4H2zm.5 2a.5.5 0 1 1 0-1 .5.5 0 0 1 0 1zm9 2.5a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0z"/>
-                                                                </svg>
-                                                            </button>
-                                                        }
-                                                    </div>
-                                                }
-                                                else
-                                                {
-                                                    <div class="flex justify-end text-white w-[@greenPercentage[$"{item.IdProgressReport}"]%] bg-[#115D28] h-8 lg:h-6"></div>
-                                                    <div class="flex justify-end text-white w-[@redPercentage[$"{item.IdProgressReport}"]%] bg-[#CB3030] h-8 lg:h-6">@item.TotalPieces</div>
-                                                    <div class="self-center">
-                                                        <button @onclick="() => NotificationImages()" disabled="true">
-                                                            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" class="bi bi-camera-fill ml-2 fill-gray-400" viewBox="0 0 16 16">
-                                                                <path d="M10.5 8.5a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z"/>
-                                                                <path d="M2 4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2h-1.172a2 2 0 0 1-1.414-.586l-.828-.828A2 2 0 0 0 9.172 2H6.828a2 2 0 0 0-1.414.586l-.828.828A2 2 0 0 1 3.172 4H2zm.5 2a.5.5 0 1 1 0-1 .5.5 0 0 1 0 1zm9 2.5a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0z"/>
-                                                            </svg>
-                                                        </button>
-                                                    </div>
-                                                }
-                                            </div>
-                                        </div>
-                                    }
-                                }
-                            </div>
-                        }
-                    }
-                    else
-                    {
-                        @if (greenPercentage != null && redPercentage != null)
-                        {
-                            <div class="flex w-full mt-10 px-16">
-                                <div class="flex flex-row justify-center items-center w-3/6">
-                                    <label class="w-3/6 h-14 2xl:h-16 text-xs md:text-sm lg:text-lg 2xl:text-2xl text-white leading-6 text-center bg-[#162D4E] rounded-lg py-2 m-2 flex justify-center items-center">Actividad</label>
-                                    <label class="w-3/6 h-14 2xl:h-16 text-xs md:text-sm lg:text-lg 2xl:text-2xl text-white leading-6 text-center bg-[#162D4E] rounded-lg py-2 m-2 flex justify-center items-center">Área</label>
-                                    <label class="w-3/6 h-14 2xl:h-16 text-xs md:text-sm lg:text-lg 2xl:text-2xl text-white leading-6 text-center bg-[#162D4E] rounded-lg py-2 m-2 flex justify-center items-center">Elemento</label>
-                                </div>
-                                <div class="flex flex-row justify-center items-center w-3/6">
-                                    <label class="w-full h-14 2xl:h-16 text-xs md:text-sm lg:text-lg 2xl:text-2xl text-white leading-6 text-center bg-[#162D4E] rounded-lg py-2 my-2 flex justify-center items-center">Avance</label>
-                                    <div class="self-center">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="#254260" class="bi bi-camera-fill ml-2 invisible" viewBox="0 0 16 16">
-                                            <path d="M10.5 8.5a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z" />
-                                            <path d="M2 4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2h-1.172a2 2 0 0 1-1.414-.586l-.828-.828A2 2 0 0 0 9.172 2H6.828a2 2 0 0 0-1.414.586l-.828.828A2 2 0 0 1 3.172 4H2zm.5 2a.5.5 0 1 1 0-1 .5.5 0 0 1 0 1zm9 2.5a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0z" />
-                                        </svg>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="overflow-y-scroll h-[17rem] lg:h-[10rem] xl:h-[15rem] 2xl:h-[20rem]">
-                                @foreach (var item in progressReports)
-                                {
-                                    @if (item.IdApartment == apartment.IdApartment)
-                                    {
-                                        <div class="flex w-full mt-2 px-16">
-                                            <div class="flex flex-row justify-center items-center w-3/6">
-                                                @if (@activity.ActivityName == "Instalación Eléctrica" || @activity.ActivityName == "Instalación Hidráulica" || @activity.ActivityName == "Instalación Sanitaria" || @activity.ActivityName == "Instalación Voz y Datos")
-                                                {
-                                                    <label class="w-80 h-[3.5rem] lg:h-8 text-xs 2xl:text-base text-white leading-6 text-center bg-[#254260] rounded-lg py-1 m-2 flex justify-center items-center">@activity.ActivityName</label>
-                                                }
-                                                else
-                                                {
-                                                    <label class="w-80 h-[3.5rem] lg:h-8 text-sm md:text-base lg:text-lg 2xl:text-xl text-white leading-6 text-center bg-[#254260] rounded-lg py-1 m-2 flex justify-center items-center">@activity.ActivityName</label>
-                                                }
-                                                @if (@Areas.FirstOrDefault(x => x.IdArea == item.IdArea).AreaName == "Recamara Principal" || @Areas.FirstOrDefault(x => x.IdArea == item.IdArea).AreaName == "Cuarto de Lavado")
-                                                {
-                                                    <label class="w-80 h-[3.5rem] lg:h-8 text-xs 2xl:text-base text-white leading-6 text-center bg-[#254260] rounded-lg py-1 m-2 flex justify-center items-center">@Areas.FirstOrDefault(x => x.IdArea == item.IdArea).AreaName</label>
-                                                }
-                                                else
-                                                {
-                                                    <label class="w-80 h-[3.5rem] lg:h-8 text-sm md:text-base lg:text-lg 2xl:text-xl text-white leading-6 text-center bg-[#254260] rounded-lg py-1 m-2 flex justify-center items-center">@Areas.FirstOrDefault(x => x.IdArea == item.IdArea).AreaName</label>
-                                                }
-                                                @if (@element.ElementName == "Cielo Raso (Falso Techo)" || @element.ElementName == "Llave Mezcladora")
-                                                {
-                                                    <label class="w-80 h-[3.5rem] lg:h-8 text-xs 2xl:text-base text-white leading-6 text-center bg-[#254260] rounded-lg py-1 m-2 flex justify-center items-center">@element.ElementName</label>
-                                                }
-                                                else
-                                                {
-                                                    <label class="w-80 h-[3.5rem] lg:h-8 text-sm md:text-base lg:text-lg 2xl:text-xl text-white leading-6 text-center bg-[#254260] rounded-lg py-1 m-2 flex justify-center items-center">@element.ElementName</label>
-                                                }
-                                            </div>
-                                            <div class="flex flex-row justify-center items-center w-3/6">
-                                                @if (progressLogs.FirstOrDefault(x => x.IdProgressReport == item.IdProgressReport)?.IdProgressLog != null)
-                                                {
-                                                    <div class="flex justify-end text-white w-[@greenPercentage[$"{item.IdProgressReport}"]%] bg-[#115D28] h-8 lg:h-6">@progressLogs.FirstOrDefault(x => x.IdProgressReport == item.IdProgressReport).Pieces</div>
-                                                    <div class="flex justify-end text-white w-[@redPercentage[$"{item.IdProgressReport}"]%] bg-[#CB3030] h-8 lg:h-6">@item.TotalPieces</div>
-                                                    <div class="self-center">
-                                                         @if (isContentPhoto(item.IdProgressReport))
-                                                         {
-                                                             <button @onclick="() => CamareButton(item.IdProgressReport)">
-                                                                 <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="#254260" class="bi bi-camera-fill ml-2" viewBox="0 0 16 16">
-                                                                     <path d="M10.5 8.5a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z"/>
-                                                                     <path d="M2 4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2h-1.172a2 2 0 0 1-1.414-.586l-.828-.828A2 2 0 0 0 9.172 2H6.828a2 2 0 0 0-1.414.586l-.828.828A2 2 0 0 1 3.172 4H2zm.5 2a.5.5 0 1 1 0-1 .5.5 0 0 1 0 1zm9 2.5a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0z"/>
-                                                                 </svg>
-                                                             </button>
-                                                         }
-                                                         else
-                                                         {
-                                                             <button @onclick="() => NotificationImages()" disabled="">
-                                                                 <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" class="bi bi-camera-fill ml-2 fill-gray-600" viewBox="0 0 16 16">
-                                                                     <path d="M10.5 8.5a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z" />
-                                                                     <path d="M2 4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2h-1.172a2 2 0 0 1-1.414-.586l-.828-.828A2 2 0 0 0 9.172 2H6.828a2 2 0 0 0-1.414.586l-.828.828A2 2 0 0 1 3.172 4H2zm.5 2a.5.5 0 1 1 0-1 .5.5 0 0 1 0 1zm9 2.5a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0z" />
-                                                                 </svg>
-                                                             </button>
-                                                         }
-                                                    </div>
-                                                }
-                                                else
-                                                {
-                                                    <div class="flex justify-end text-white w-[@greenPercentage[$"{item.IdProgressReport}"]%] bg-[#115D28] h-8 lg:h-6"></div>
-                                                    <div class="flex justify-end text-white w-[@redPercentage[$"{item.IdProgressReport}"]%] bg-[#CB3030] h-8 lg:h-6">@item.TotalPieces</div>
-                                                    <div class="self-center">
-                                                        <button @onclick="() => NotificationImages()" disabled="">
-                                                            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" class="bi bi-camera-fill ml-2 fill-gray-600" viewBox="0 0 16 16">
-                                                                <path d="M10.5 8.5a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z" />
-                                                                <path d="M2 4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2h-1.172a2 2 0 0 1-1.414-.586l-.828-.828A2 2 0 0 0 9.172 2H6.828a2 2 0 0 0-1.414.586l-.828.828A2 2 0 0 1 3.172 4H2zm.5 2a.5.5 0 1 1 0-1 .5.5 0 0 1 0 1zm9 2.5a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0z" />
-                                                            </svg>
-                                                        </button>
-                                                    </div>
-                                                }
-                                            </div>
-                                        </div>
-                                    }
-                                }
-                            </div>
-                        }
-                    }
-                </div>
-            }
-            @if (showModal == true)
-            {
-                <div class="bg-zinc-300 h-screen w-screen fixed opacity-50"></div>
-                <div class="w-screen h-screen fixed inset-0 flex flex-col justify-center items-center">
-                    <div class="w-[40rem] h-[35rem] bg-white border border-black rounded-lg flex flex-col justify-center items-center relative">
-                        <div class="absolute top-2 right-2">
-                            <button @onclick="() => ChangeShowModal()">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-x-circle" viewBox="0 0 16 16">
-                                    <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
-                                    <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z" />
+                    <div class="flex justify-center w-full mt-10 px-16">
+                        <div class="flex flex-row justify-center items-center xl:w-3/6 pr-2">
+                            <label class="w-[6rem] xl:w-3/6 h-14 2xl:h-16 text-xs md:text-sm xl:text-base 2xl:text-2xl text-white leading-6 text-center bg-[#162D4E] rounded-lg py-2 m-2 flex justify-center items-center">Actividad</label>
+                            <label class="w-[6rem] xl:w-3/6 h-14 2xl:h-16 text-xs md:text-sm xl:text-base 2xl:text-2xl text-white leading-6 text-center bg-[#162D4E] rounded-lg py-2 m-2 flex justify-center items-center">Área</label>
+                            <label class="w-[6rem] xl:w-3/6 h-14 2xl:h-16 text-xs md:text-sm xl:text-base 2xl:text-2xl text-white leading-6 text-center bg-[#162D4E] rounded-lg py-2 m-2 flex justify-center items-center">Elemento</label>
+                            <label class="w-[6rem] xl:w-3/6 h-14 2xl:h-16 text-xs md:text-sm xl:text-base 2xl:text-2xl text-white leading-6 text-center bg-[#162D4E] rounded-lg py-2 m-2 flex justify-center items-center">Sub-Elemento</label>
+                        </div>
+                        <div class="flex flex-row justify-center items-center w-3/6">
+                            <label class="w-full h-14 2xl:h-16 text-xs md:text-sm lg:text-lg 2xl:text-2xl text-white leading-6 text-center bg-[#162D4E] rounded-lg py-2 my-2 flex justify-center items-center">Avance</label>
+                            <div class="self-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="#254260" class="bi bi-camera-fill ml-2 invisible" viewBox="0 0 16 16">
+                                    <path d="M10.5 8.5a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z" />
+                                    <path d="M2 4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2h-1.172a2 2 0 0 1-1.414-.586l-.828-.828A2 2 0 0 0 9.172 2H6.828a2 2 0 0 0-1.414.586l-.828.828A2 2 0 0 1 3.172 4H2zm.5 2a.5.5 0 1 1 0-1 .5.5 0 0 1 0 1zm9 2.5a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0z" />
                                 </svg>
-                            </button>
-                        </div>
-                        <div class="flex flex-col justify-center items-center relative">
-                            <div class="flex flex-col w-full">
-                                <label class="text-4xl my-4">Observaciones</label>
-                                <input type="text" class="h-32 w-[35rem] border border-black px-2" disabled placeholder="@observations">
-                            </div>
-                            <div class="flex flex-col w-full">
-                                <label class="text-4xl my-4">Fotografias</label>
-                                <div class="flex justify-around">
-                                    @foreach (var item in images)
-                                    {
-                                        <div class="h-32 w-52 border border-black">
-                                            <img class="w-100 h-100" src="@item" />
-                                        </div>
-                                    }
-                                </div>
                             </div>
                         </div>
                     </div>
+                    <div class="overflow-y-scroll h-[17rem] lg:h-[10rem] xl:h-[15rem] 2xl:h-[20rem]">
+                        @foreach (var list in detalladoActividades)
+                        {
+                            @if (list.numeroApartamento.Equals(aparment.ApartmentNumber) == true)
+                            {
+                                <div class="flex justify-center w-full mt-2 px-16">
+                                    <div class="flex flex-row justify-center items-center xl:w-3/6">
+                                        <label class="w-[6rem] xl:w-80 h-[3.5rem] xl:h-8 text-sm md:text-base lg:text-lg 2xl:text-xl text-white leading-6 text-center bg-[#254260] rounded-lg py-1 m-2 flex justify-center items-center">@activities.FirstOrDefault(x => x.ActivityName == list.actividad).ActivityName</label>
+
+                                        @if (@Areas.FirstOrDefault(x => x.AreaName == list.area).AreaName == "Recamara Principal" || @Areas.FirstOrDefault(x => x.AreaName == list.area).AreaName == "Cuarto de Lavado")
+                                        {
+                                            <label class="w-[6rem] xl:w-80 h-[3.5rem] xl:h-8 text-xs xl:text-sm 2xl:text-lg text-white leading-6 text-center bg-[#254260] rounded-lg py-1 m-2 flex justify-center items-center">@Areas.FirstOrDefault(x => x.AreaName == list.area).AreaName</label>
+                                        }
+                                        else
+                                        {
+                                            <label class="w-[6rem] xl:w-80 h-[3.5rem] xl:h-8 text-sm md:text-base lg:text-lg 2xl:text-xl text-white leading-6 text-center bg-[#254260] rounded-lg py-1 m-2 flex justify-center items-center">@Areas.FirstOrDefault(x => x.AreaName == list.area).AreaName</label>
+                                        }
+
+                                        @if (@elementsSelect.FirstOrDefault(x => x.ElementName == list.elemento).ElementName == "Cielo Raso (Falso Techo)" || @elementsSelect.FirstOrDefault(x => x.ElementName == list.elemento).ElementName == "Llave Mezcladora")
+                                        {
+                                            <label class="w-[6rem] xl:w-80 h-[3.5rem] xl:h-8 text-xs xl:text-sm 2xl:text-lg text-white leading-6 text-center bg-[#254260] rounded-lg py-1 m-2 flex justify-center items-center">@elementsSelect.FirstOrDefault(x => x.ElementName == list.elemento).ElementName</label>
+                                        }
+                                        else
+                                        {
+                                            <label class="w-[6rem] xl:w-80 h-[3.5rem] xl:h-8 text-sm md:text-base lg:text-lg 2xl:text-xl text-white leading-6 text-center bg-[#254260] rounded-lg py-1 m-2 flex justify-center items-center">@elementsSelect.FirstOrDefault(x => x.ElementName == list.elemento).ElementName</label>
+                                        }
+
+                                        @if (list.subElemento == "N/A")
+                                        {
+                                            <label class="w-[6rem] xl:w-80 h-[3.5rem] xl:h-8 text-xs 2xl:text-base text-white leading-6 text-center bg-[#254260] rounded-lg py-1 m-2 flex justify-center items-center">N/A</label>
+                                        }
+                                        else if (@subElementsSelect.FirstOrDefault(x => x.SubElementName == list.subElemento).SubElementName == "Mortero de Nivelación" || @subElementsSelect.FirstOrDefault(x => x.SubElementName == list.subElemento).SubElementName == "Riel - Corredera")
+                                        {
+                                            <label class="w-[6rem] xl:w-80 h-[3.5rem] xl:h-8 text-xs 2xl:text-base text-white leading-6 text-center bg-[#254260] rounded-lg py-1 m-2 flex justify-center items-center">@subElementsSelect.FirstOrDefault(x => x.SubElementName == list.subElemento).SubElementName</label>
+                                        }
+                                        else
+                                        {
+                                            <label class="w-[6rem] xl:w-80 h-[3.5rem] xl:h-8 text-sm md:text-base lg:text-lg 2xl:text-xl text-white leading-6 text-center bg-[#254260] rounded-lg py-1 m-2 flex justify-center items-center">@subElementsSelect.FirstOrDefault(x => x.SubElementName == list.subElemento).SubElementName</label>
+                                        }
+                                    </div>
+                                    <div class="flex flex-row justify-center items-center w-3/6">
+                                        @if (list.estatus.Equals("Pendiente") == true)
+                                        {
+                                            <div class="flex justify-end text-white w-[@((list.avance * 100) / Convert.ToInt16(list.total))%] bg-[#115D28] h-8 xl:h-5">@list.avance</div>
+                                            <div class="flex justify-end text-white w-[@(100 - (list.avance * 100) / Convert.ToInt16(list.total))%] bg-[#CB3030] h-8 xl:h-5">@list.total</div>
+                                            <div class="self-center">
+                                                <button @onclick="() => CameraButton(list.IdProgressLog)">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" class="bi bi-camera-fill ml-2 fill-gray-400" viewBox="0 0 16 16">
+                                                        <path d="M10.5 8.5a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z" />
+                                                        <path d="M2 4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2h-1.172a2 2 0 0 1-1.414-.586l-.828-.828A2 2 0 0 0 9.172 2H6.828a2 2 0 0 0-1.414.586l-.828.828A2 2 0 0 1 3.172 4H2zm.5 2a.5.5 0 1 1 0-1 .5.5 0 0 1 0 1zm9 2.5a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0z" />
+                                                    </svg>
+                                                </button>
+                                            </div>
+                                        }
+                                        else
+                                        {
+                                            <div class="flex justify-end text-white w-[100%] bg-[#115D28] h-8 xl:h-5">@list.avance</div>
+                                            <div class="flex justify-end text-white w-[0%] bg-[#CB3030] h-8 xl:h-5">@list.total</div>
+                                            <div class="self-center">
+                                                <button @onclick="() => CameraButton(list.IdProgressLog)">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" class="bi bi-camera-fill ml-2 fill-gray-400" viewBox="0 0 16 16">
+                                                        <path d="M10.5 8.5a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z" />
+                                                        <path d="M2 4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2h-1.172a2 2 0 0 1-1.414-.586l-.828-.828A2 2 0 0 0 9.172 2H6.828a2 2 0 0 0-1.414.586l-.828.828A2 2 0 0 1 3.172 4H2zm.5 2a.5.5 0 1 1 0-1 .5.5 0 0 1 0 1zm9 2.5a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0z" />
+                                                    </svg>
+                                                </button>
+                                            </div>
+                                        }
+                                    </div>
+                                </div>
+                            }
+                        }
+                    </div>
                 </div>
             }
-            @if (alert == true)
-            {
-                <div class="bg-yellow-100 border border-yellow-400 text-yellow-700 pl-4 pr-12 py-2 rounded fixed right-4 w-[32]" style="top: 5.7rem;" role="alert">
-                    <strong class="font-bold">¡Advertencia!</strong>
-                    <span class="block sm:inline">@messageError</span>
-                    <span class="absolute top-0 bottom-0 right-0 px-4 py-2">
-                        <svg class="fill-current h-6 w-6 text-yellow-500" role="button" @onclick="() => ShowMessage()" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><title>Close</title><path d="M14.348 14.849a1.2 1.2 0 0 1-1.697 0L10 11.819l-2.651 3.029a1.2 1.2 0 1 1-1.697-1.697l2.758-3.15-2.759-3.152a1.2 1.2 0 1 1 1.697-1.697L10 8.183l2.651-3.031a1.2 1.2 0 1 1 1.697 1.697l-2.758 3.152 2.758 3.15a1.2 1.2 0 0 1 0 1.698z" /></svg>
-                    </span>
-                </div>
-            }
-            @if (_showPreviewFile)
-            {
-                <PreviewFile CloseModalLessor="@ChangeOpenModalPreview" Content="@_bytesPreviewFile" PdfName="@PDF_FILE_NAME" ShowModal="@_showPreviewFile"></PreviewFile>
-            }
-            <div class="w-full flex justify-end py-3">
-                <div class="w-full flex py-3 fixed inset-x-0 bottom-12">
+            <div class="w-full flex justify-end py-2">
+                <div class="w-full flex inset-x-0 bottom-12">
                     <button @onclick="() => ChangeView()" class="mx-auto bg-[#B9352E] hover:bg-red-500 w-40 p-2 rounded-2xl text-lg text-white font-medium leading-6 border hover:border-white">Descargar</button>
                 </div>
             </div>
         </div>
-        
-
-        <button @onclick="() => GoBack()" class="fixed z-10 inset-x-1 top-20 w-12">
-
-            <svg xmlns="http://www.w3.org/2000/svg" width="46" height="46" fill="#55595E" class="bi bi-arrow-left" viewBox="0 0 16 16">
-
-                <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z" />
-
-            </svg>
-
-        </button>
     }
     else
     {
@@ -431,6 +301,67 @@ else if (buttonReport == true)
             </div>
         </div>
     }
+
+    @if (_showPreviewFile)
+    {
+        <PreviewFile CloseModalLessor="@ChangeOpenModalPreview" Content="@_bytesPreviewFile" PdfName="@PDF_FILE_NAME" ShowModal="@_showPreviewFile"></PreviewFile>
+    }
+
+    @if (showModal == true)
+    {
+        @*Modal Ocultado*@
+        <div class="bg-zinc-300 h-screen w-screen fixed opacity-50"></div>
+        <div class="w-screen h-screen fixed inset-0 flex flex-col justify-center items-center">
+            <div class="w-[40rem] h-[35rem] bg-white border border-black rounded-lg flex flex-col justify-center items-center relative">
+                <div class="absolute top-2 right-2">
+                    <button @onclick="() => ChangeShowModal()">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="#254260 hover:text-sky-400" class="bi bi-x-circle" viewBox="0 0 16 16">
+                            <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
+                            <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z" />
+                        </svg>
+                    </button>
+                </div>
+                <div class="flex flex-col justify-center items-center relative">
+                    <div class="flex flex-col w-full">
+                        <label class="text-4xl my-4">Observaciones</label>
+                        <input type="text" class="h-32 w-[35rem] border border-black px-2" disabled placeholder="@observations">
+                    </div>
+                    <div class="flex flex-col w-full">
+                        <label class="text-4xl my-4">Fotografias</label>
+                        <div class="flex justify-around">
+                            @foreach (var item in images)
+                            {
+                                <div class="h-32 w-52 border border-black">
+                                    <img class="w-100 h-100" src="@item" />
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+
+    @if (alert == true)
+    {
+        <div class="bg-yellow-100 border border-yellow-400 text-yellow-700 pl-4 pr-12 py-2 rounded fixed right-4 w-[32]" style="top: 5.7rem;" role="alert">
+            <strong class="font-bold">¡Advertencia!</strong>
+            <span class="block sm:inline">@messageError</span>
+            <span class="absolute top-0 bottom-0 right-0 px-4 py-2">
+                <svg class="fill-current h-6 w-6 text-yellow-500" role="button" @onclick="() => ShowMessage()" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><title>Close</title><path d="M14.348 14.849a1.2 1.2 0 0 1-1.697 0L10 11.819l-2.651 3.029a1.2 1.2 0 1 1-1.697-1.697l2.758-3.15-2.759-3.152a1.2 1.2 0 1 1 1.697-1.697L10 8.183l2.651-3.031a1.2 1.2 0 1 1 1.697 1.697l-2.758 3.152 2.758 3.15a1.2 1.2 0 0 1 0 1.698z" /></svg>
+            </span>
+        </div>
+    }
+
+    <button @onclick="() => GoBack()" class="fixed z-10 inset-x-1 top-20 w-12">
+
+        <svg xmlns="http://www.w3.org/2000/svg" width="46" height="46" fill="#55595E" class="bi bi-arrow-left" viewBox="0 0 16 16">
+
+            <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z" />
+
+        </svg>
+
+    </button>
 }
 else
 {
