@@ -101,6 +101,7 @@ namespace Obra.Client.Pages
 
         private async void PreviewFileReport()
         {
+            //_showPreviewFile = true;
             _isLoadingProcess = true;
             var listActivityProgress = _idsActivitySelect.Select(x => new ActivityProgress
             {
@@ -111,9 +112,10 @@ namespace Obra.Client.Pages
             var bytes = await _reportService.PostProgressByActivityPDFAsync(listActivityProgress);
             if (bytes is not null)
             {
-                _bytesPreviewFile = bytes;
+                //_bytesPreviewFile = bytes;
                 _isLoadingProcess = false;
-                _showPreviewFile = true;
+                //_showPreviewFile = true;
+                await _JS.InvokeVoidAsync("OpenInNewPagePDF", bytes);
                 StateHasChanged();                
             }
             else
