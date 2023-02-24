@@ -59,6 +59,18 @@
         };
     </script>
     <script>
+        function OpenInNewPagePDF(data){
+            //var ifrm = document.getElementById('test')
+            const blob = new Blob([data], {type: 'application/pdf'});
+            const blobURL = URL.createObjectURL(blob);
+            window.open(blobURL)
+            
+            // ifrm.setAttribute("src", "https://drive.google.com/file/d/10RgIRGvstOkKm1juotOI-Dyl66jWuLID/preview?usp=share_link")
+            // ifrm.setAttribute("src", "data:application/pdf;base64," + data)
+            //ifrm.setAttribute("src", blobURL)
+        }
+    </script>
+    <script>
         window.loadImage = (ref, id, url) => {
             const img = document.getElementById(id);
             img.onload = () => ref.invokeMethodAsync('UpdateCanvasAsync');
