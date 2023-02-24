@@ -8,160 +8,134 @@
     if (loading == false)
     {
         <div class="h-screen pt-20 pb-12 fixed inset-0 flex flex-col justify-center items-center">
-            <div class="flex justify-center w-screen rounded-2xl my-2 px-72 h-5/6 flow-root">
+            <div class="flex justify-items-center w-screen rounded-2xl my-2 h-5/6 flow-root">
                 <div class="flex justify-center justify-content-around" style="direction: ltr;">
-                    @if (subElements.Count() == 0)
-                    {
-                        <div class="flex justify-content-around">
-                            <div class="p-1 w-[19rem] ml-4">
-                                <h1 class="rounded-xl text-xs md:text-base xl:text-xl text-white font-medium leading-6 bg-[#162D4E] text-center py-2">Departamento</h1>
-                            </div>
-                            <div class="p-1 w-[19rem] ml-4">
-                                <h1 class="rounded-xl text-xs md:text-base xl:text-xl text-white font-medium leading-6 bg-[#162D4E] text-center py-2">Actividad</h1>
-                            </div>
-                            @if (elements.Count() != 0)
-                            {
-                                <div class="p-1 w-[19rem]">
-                                    <h1 class="rounded-xl text-xs md:text-base xl:text-xl text-white font-medium leading-6 bg-[#162D4E] text-center py-2">Elemento</h1>
-                                </div>
-                            }
-                            @if (subElements.Count() != 0)
-                            {
-                                <div class="p-1 w-[19rem]">
-                                    <h1 class="rounded-xl text-xs md:text-base xl:text-xl text-white font-medium leading-6 bg-[#162D4E] text-center py-2">SubElemento</h1>
-                                </div>
-                            }
+                    <div class="flex justify-content-around">
+                        <div class="p-1 md:w-[8rem] lg:w-[12rem] xl:w-[17rem] 2xl:w-[19rem]">
+                            <h1 class="rounded-xl text-xs md:text-xs xl:text-lg 2xl:text-xl text-white font-medium leading-6 bg-[#162D4E] text-center py-2">Departamento</h1>
                         </div>
-                    }
-                    else
-                    {
-                        <div class="flex justify-content-around pr-10">
-                            <div class="p-1 w-[19rem] ml-4">
-                                <h1 class="rounded-xl text-xs md:text-base xl:text-xl text-white font-medium leading-6 bg-[#162D4E] text-center py-2">Departamento</h1>
-                            </div>
-                            <div class="p-1 w-[19rem] ml-5">
-                                <h1 class="rounded-xl text-xs md:text-base xl:text-xl text-white font-medium leading-6 bg-[#162D4E] text-center py-2">Actividad</h1>
-                            </div>
-                            @if (elements.Count() != 0)
-                            {
-                                <div class="p-1 w-[19rem]">
-                                    <h1 class="rounded-xl text-xs md:text-base xl:text-xl text-white font-medium leading-6 bg-[#162D4E] text-center py-2">Elemento</h1>
-                                </div>
-                            }
-                            @if (subElements.Count() != 0)
-                            {
-                                <div class="p-1 w-[19rem]">
-                                    <h1 class="rounded-xl text-xs md:text-base xl:text-xl text-white font-medium leading-6 bg-[#162D4E] text-center py-2">SubElemento</h1>
-                                </div>
-                            }
+                        <div class="p-1 md:w-[8rem] lg:w-[12rem] xl:w-[17rem] 2xl:w-[19rem]">
+                            <h1 class="rounded-xl text-xs md:text-xs xl:text-lg 2xl:text-xl text-white font-medium leading-6 bg-[#162D4E] text-center py-2">Actividad</h1>
                         </div>
-                    }
+                        @if (elements.Count() != 0)
+                        {
+                            <div class="p-1 md:w-[8rem] lg:w-[12rem] xl:w-[17rem] 2xl:w-[19rem]">
+                                <h1 class="rounded-xl text-xs md:text-xs xl:text-lg 2xl:text-xl text-white font-medium leading-6 bg-[#162D4E] text-center py-2">Elemento</h1>
+                            </div>
+                        }
+                        @if (subElements.Count() != 0)
+                        {
+                            <div class="p-1 md:w-[8rem] lg:w-[12rem] xl:w-[17rem] 2xl:w-[19rem]">
+                                <h1 class="rounded-xl text-xs md:text-xs xl:text-lg 2xl:text-xl text-white font-medium leading-6 bg-[#162D4E] text-center py-2">SubElemento</h1>
+                            </div>
+                        }
+                    </div>
                 </div>
-                <div class="mx-1 flex justify-content-center h-5/6 pl-9">
-                    <div class="overflow-y-scroll" style="direction: ltr;">
-                        <div>
-                            <div class="grid grid-col-1 p-1 w-[5rem] sm:w-[9.5rem] md:w-[11rem] lg:w-[15rem]  xl:w-[19rem]">
-                                <button @onclick="() => AllApartments()" class="@(allApartments ? "bg-[#9CA2A8]" : "bg-[#55595E]") h-12 border border-blue-700 grid">
-                                    <h1 class="text-xs md:text-base md:text-base text-white font-medium leading-6 text-center p-1">TODOS</h1>
+                <div class="w-screen h-5/6 flex justify-content-center">
+                    <div class="flex justify-content-center h-6/6 md:w-[600px] lg:w-[825px] xl:w-[1100px] 2xl:w-[1400px]">
+                        <div class="scroll">
+                            <div class="grid grid-col-1 w-[5rem] sm:w-[9.5rem] md:w-[8rem] lg:w-[12rem] xl:w-[17rem] 2xl:w-[19rem]">
+                                <button @onclick="() => AllApartments()" class="@(allApartments ? "bg-[#9CA2A8]" : "bg-[#55595E]") h-12 lg:w-[12rem] xl:w-[17rem] 2xl:w-[19rem] border border-blue-700">
+                                    <h1 class="text-xs md:text-xs xl:text-xl xl:text-lg 2xl:text-xl text-white font-medium leading-6 text-center p-1">TODOS</h1>
                                 </button>
                                 @foreach (var apartment in apartments)
                                 {
                                     <button @onclick="() => AddIdSelect(apartment.IdApartment, 1)" class="@(_idsAparmentSelect.Contains(apartment.IdApartment) ? "bg-[#9CA2A8]" : "bg-[#55595E]") h-12 border border-blue-700 grid">
-                                        <h1 class="text-xs md:text-base md:text-base text-white font-medium leading-6 text-center p-1">@apartment.ApartmentNumber</h1>
+                                        <h1 class="text-xs md:text-xs xl:text-lg 2xl:text-xl text-white font-medium leading-6 text-center p-1">@apartment.ApartmentNumber</h1>
                                     </button>
                                 }
                             </div>
                         </div>
-                    </div>
-                    <div class="overflow-y-scroll">
-                        <div class="flex justify-center rounded-br-2xl-2xl" style="direction: ltr;">
-                            <div class="flex justify-center">
-                                <div class="p-1 flex justify-items-center flow-root">
-                                    @if (activities != null)
-                                    {
-                                        <button @onclick="() => AllActivities()" class="@(allActivities ? "bg-[#9CA2A8]" : "bg-[#55595E]") h-12 w-[19rem] border border-blue-700">
-                                            <h1 class="text-xs md:text-base md:text-base text-white font-medium leading-6 text-center p-1">TODOS</h1>
-                                        </button>
-                                        @if (elements.Count() != 0)
+                        <div class="scroll">
+                            <div class="flex justify-center rounded-br-2xl-2xl" style="direction: ltr;">
+                                <div class="flex justify-center">
+                                    <div class="flex justify-items-center flow-root">
+                                        @if (activities != null)
                                         {
-                                            <button @onclick="() => AllElements()" class="@(allElements ? "bg-[#9CA2A8]" : "bg-[#55595E]") h-12 w-[19rem] border border-blue-700">
-                                                <h1 class="text-xs md:text-base md:text-base text-white font-medium leading-6 text-center p-1">TODOS</h1>
+                                            <button @onclick="() => AllActivities()" class="@(allActivities ? "bg-[#9CA2A8]" : "bg-[#55595E]") h-12 md:w-[8rem] lg:w-[12rem] xl:w-[17rem] 2xl:w-[19rem] border border-blue-700">
+                                                <h1 class="text-xs md:text-xs xl:text-lg 2xl:text-xl text-white font-medium leading-6 text-center p-1">TODOS</h1>
                                             </button>
-                                        }
-                                        @if (subElements.Count() != 0)
-                                        {
-                                            <button @onclick="() => AllSubElements()" class="@(allSubElements ? "bg-[#9CA2A8]" : "bg-[#55595E]") h-12 w-[19rem] border border-blue-700">
-                                                <h1 class="text-xs md:text-base md:text-base text-white font-medium leading-6 text-center p-1">TODOS</h1>
-                                            </button>
-                                        }
-                                        @foreach (var activity in activities)
-                                        {
-                                            <div class="flex justify-items-stretch">
-                                                <button @onclick="() => AddIdSelect(activity.IdActivity, 2)" class="@(_idsActivitiesSelect.Contains(activity.IdActivity) ? "bg-[#9CA2A8]" : "bg-[#55595E]") @(_idsActivitiesSelect.Contains(activity.IdActivity) ? "h-48" : "h-12") w-[19rem] border border-blue-700">
-                                                    <h1 class="text-xs md:text-base text-white font-medium leading-6 text-center p-1">@activity.ActivityName</h1>
+                                            @if (elements.Count() != 0)
+                                            {
+                                                <button @onclick="() => AllElements()" class="@(allElements ? "bg-[#9CA2A8]" : "bg-[#55595E]") h-12 md:w-[8rem] lg:w-[12rem] xl:w-[17rem] 2xl:w-[19rem] border border-blue-700">
+                                                    <h1 class="text-xs md:text-xs xl:text-lg 2xl:text-xl text-white font-medium leading-6 text-center p-1">TODOS</h1>
                                                 </button>
+                                            }
+                                            @if (subElements.Count() != 0)
+                                            {
+                                                <button @onclick="() => AllSubElements()" class="@(allSubElements ? "bg-[#9CA2A8]" : "bg-[#55595E]") h-12 md:w-[8rem] lg:w-[12rem] xl:w-[17rem] 2xl:w-[19rem] border border-blue-700">
+                                                    <h1 class="text-xs md:text-xs xl:text-lg 2xl:text-xl text-white font-medium leading-6 text-center p-1">TODOS</h1>
+                                                </button>
+                                            }
+                                            @foreach (var activity in activities)
+                                            {
+                                                <div class="flex justify-items-stretch">
+                                                    <button @onclick="() => AddIdSelect(activity.IdActivity, 2)" class="@(_idsActivitiesSelect.Contains(activity.IdActivity) ? "bg-[#9CA2A8]" : "bg-[#55595E]") @(_idsActivitiesSelect.Contains(activity.IdActivity) ? "h-48" : "h-12") md:w-[8rem] lg:w-[12rem] xl:w-[17rem] 2xl:w-[19rem] border border-blue-700">
+                                                        <h1 class="text-xs md:text-xs xl:text-lg 2xl:text-xl text-white font-medium leading-6 text-center p-1">@activity.ActivityName</h1>
+                                                    </button>
 
-                                                @if (_idsActivitiesSelect.Contains(activity.IdActivity) == true)
-                                                {
-                                                    @if (elements.Count() != 0)
+                                                    @if (_idsActivitiesSelect.Contains(activity.IdActivity) == true)
                                                     {
-                                                        <div class="flex-column flow-root overflow-y-scroll h-48">
-                                                            @foreach (var element in elements)
-                                                            {
-                                                                @if (element.IdActivity == activity.IdActivity)
+                                                        @if (elements.Count() != 0)
+                                                        {
+                                                            <div class="flex-column flow-root scroll h-48">
+                                                                @foreach (var element in elements)
                                                                 {
-                                                                    <div class="flex justify-items-stretch">
-                                                                        <button @onclick="() => AddIdSelect(element.IdElement, 3)" class="@(_idsElementsSelect.Contains(element.IdElement) ? "bg-[#9CA2A8]" : "bg-[#55595E]") h-24 w-[19rem] border border-blue-700 grid">
-                                                                            <h1 class="text-xs md:text-base md:text-base text-white font-medium leading-6 text-center p-1">@element.ElementName</h1>
-                                                                        </button>
+                                                                    @if (element.IdActivity == activity.IdActivity)
+                                                                    {
+                                                                        <div class="flex justify-items-stretch">
+                                                                            <button @onclick="() => AddIdSelect(element.IdElement, 3)" class="@(_idsElementsSelect.Contains(element.IdElement) ? "bg-[#9CA2A8]" : "bg-[#55595E]") h-24 md:w-[8rem] lg:w-[12rem] xl:w-[17rem] 2xl:w-[19rem] border border-blue-700 grid">
+                                                                                <h1 class="text-xs md:text-xs xl:text-lg 2xl:text-xl text-white font-medium leading-6 text-center p-1">@element.ElementName</h1>
+                                                                            </button>
 
-                                                                        @if (_idsElementsSelect.Contains(element.IdElement) == true)
-                                                                        {
-                                                                            @if (subElements.Count() != 0)
+                                                                            @if (_idsElementsSelect.Contains(element.IdElement) == true)
                                                                             {
-                                                                                <div class="flex-column flow-root overflow-y-scroll h-24">
-                                                                                    @foreach (var subElement in subElements)
-                                                                                    {
-                                                                                        @if (subElement.IdElement == element.IdElement)
+                                                                                @if (subElements.Count() != 0)
+                                                                                {
+                                                                                    <div class="flex-column flow-root scroll h-24">
+                                                                                        @foreach (var subElement in subElements)
                                                                                         {
-                                                                                            <div class="flex justify-items-stretch">
+                                                                                            @if (subElement.IdElement == element.IdElement)
+                                                                                            {
+                                                                                                <div class="flex justify-items-stretch">
 
-                                                                                                <button @onclick="() => AddIdSelect(subElement.IdSubElement, 4)" class="@(_idsSubElementsSelect.Contains(subElement.IdSubElement) ? "bg-[#9CA2A8]" : "bg-[#55595E]") h-12 w-[19rem] border border-blue-700 grid">
-                                                                                                    <h1 class="text-xs md:text-base md:text-base text-white font-medium leading-6 text-center p-1">@subElement.SubElementName</h1>
-                                                                                                </button>
-                                                                                            </div>
+                                                                                                    <button @onclick="() => AddIdSelect(subElement.IdSubElement, 4)" class="@(_idsSubElementsSelect.Contains(subElement.IdSubElement) ? "bg-[#9CA2A8]" : "bg-[#55595E]") h-12 md:w-[8rem] lg:w-[12rem] xl:w-[17rem] 2xl:w-[19rem] border border-blue-700 grid">
+                                                                                                        <h1 class="text-xs md:text-xs xl:text-lg 2xl:text-xl text-white font-medium leading-6 text-center p-1">@subElement.SubElementName</h1>
+                                                                                                    </button>
+                                                                                                </div>
+                                                                                            }
                                                                                         }
-                                                                                    }
-                                                                                </div>
+                                                                                    </div>
+                                                                                }
                                                                             }
-                                                                        }
-                                                                    </div>
+                                                                        </div>
+                                                                    }
                                                                 }
-                                                            }
-                                                        </div>
+                                                            </div>
+                                                        }
                                                     }
-                                                }
-                                            </div>
+                                                </div>
+                                            }
                                         }
-                                    }
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="w-full flex justify-end py-3">
-                <button @onclick="() => ShowReportAndHideApartment()" class="mx-auto bg-[#B9352E] hover:bg-red-500 p-2 rounded-2xl text-lg text-white font-medium leading-6 border border-stone-400 hover:border-white">Generar Reporte</button>
-                @if (alert == true)
-                {
-                    <div class="bg-red-100 border border-red-400 text-red-700 pl-4 pr-12 py-2 rounded fixed inset-x-90 bottom-20 w-[32]" role="alert">
-                        <strong class="font-bold">¡Advertencia!</strong>
-                        <span class="block sm:inline">@messageError</span>
-                        <span class="absolute top-0 bottom-0 right-0 px-4 py-2">
-                            <svg class="fill-current h-6 w-6 text-red-500" role="button" @onclick="() => ShowMessage()" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><title>Close</title><path d="M14.348 14.849a1.2 1.2 0 0 1-1.697 0L10 11.819l-2.651 3.029a1.2 1.2 0 1 1-1.697-1.697l2.758-3.15-2.759-3.152a1.2 1.2 0 1 1 1.697-1.697L10 8.183l2.651-3.031a1.2 1.2 0 1 1 1.697 1.697l-2.758 3.152 2.758 3.15a1.2 1.2 0 0 1 0 1.698z" /></svg>
-                        </span>
-                    </div>
-                }
+                <div class="w-full flex justify-end py-3">
+                    <button @onclick="() => ShowReportAndHideApartment()" class="mx-auto bg-[#B9352E] hover:bg-red-500 p-2 rounded-2xl text-lg text-white font-medium leading-6 border border-stone-400 hover:border-white">Generar Reporte</button>
+                    @if (alert == true)
+                    {
+                        <div class="bg-red-100 border border-red-400 text-red-700 pl-4 pr-12 py-2 rounded fixed inset-x-90 bottom-20 w-[32]" role="alert">
+                            <strong class="font-bold">¡Advertencia!</strong>
+                            <span class="block sm:inline">@messageError</span>
+                            <span class="absolute top-0 bottom-0 right-0 px-4 py-2">
+                                <svg class="fill-current h-6 w-6 text-red-500" role="button" @onclick="() => ShowMessage()" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><title>Close</title><path d="M14.348 14.849a1.2 1.2 0 0 1-1.697 0L10 11.819l-2.651 3.029a1.2 1.2 0 1 1-1.697-1.697l2.758-3.15-2.759-3.152a1.2 1.2 0 1 1 1.697-1.697L10 8.183l2.651-3.031a1.2 1.2 0 1 1 1.697 1.697l-2.758 3.152 2.758 3.15a1.2 1.2 0 0 1 0 1.698z" /></svg>
+                            </span>
+                        </div>
+                    }
+                </div>
             </div>
         </div>
 
@@ -191,7 +165,7 @@ else if (buttonReport == true)
             {
                 <div class="my-4 w-screen">
                     <div class="pt-10 flex justify-center">
-                        <label class="text-sm md:text-base lg:text-xl 2xl:text-4xl text-white leading-6 text-center bg-[#162D4E] rounded-lg py-3 px-24">Reporte Avance @aparment.ApartmentNumber</label>
+                        <label class="text-sm md:text-xs lg:text-xl 2xl:text-4xl text-white leading-6 text-center bg-[#162D4E] rounded-lg py-3 px-24">Reporte Avance @aparment.ApartmentNumber</label>
                     </div>
                     <div class="flex justify-center w-full mt-10 px-16">
                         <div class="flex flex-row justify-center items-center xl:w-3/6 pr-2">
@@ -211,13 +185,13 @@ else if (buttonReport == true)
                         </div>
                     </div>
                     <div class="overflow-y-scroll h-[17rem] lg:h-[10rem] xl:h-[15rem] 2xl:h-[20rem]">
-                        @foreach (var list in detalladoActividades)
+                        @foreach (var list in detalladoDepartamentos)
                         {
                             @if (list.numeroApartamento.Equals(aparment.ApartmentNumber) == true)
                             {
                                 <div class="flex justify-center w-full mt-2 px-16">
                                     <div class="flex flex-row justify-center items-center xl:w-3/6">
-                                        <label class="w-[6rem] xl:w-80 h-[3.5rem] xl:h-8 text-sm md:text-base lg:text-lg 2xl:text-xl text-white leading-6 text-center bg-[#254260] rounded-lg py-1 m-2 flex justify-center items-center">@activities.FirstOrDefault(x => x.ActivityName == list.actividad).ActivityName</label>
+                                        <label class="w-[6rem] xl:w-80 h-[3.5rem] xl:h-8 text-sm md:text-xs lg:text-lg 2xl:text-xl text-white leading-6 text-center bg-[#254260] rounded-lg py-1 m-2 flex justify-center items-center">@activities.FirstOrDefault(x => x.ActivityName == list.actividad).ActivityName</label>
 
                                         @if (@Areas.FirstOrDefault(x => x.AreaName == list.area).AreaName == "Recamara Principal" || @Areas.FirstOrDefault(x => x.AreaName == list.area).AreaName == "Cuarto de Lavado")
                                         {
@@ -225,7 +199,7 @@ else if (buttonReport == true)
                                         }
                                         else
                                         {
-                                            <label class="w-[6rem] xl:w-80 h-[3.5rem] xl:h-8 text-sm md:text-base lg:text-lg 2xl:text-xl text-white leading-6 text-center bg-[#254260] rounded-lg py-1 m-2 flex justify-center items-center">@Areas.FirstOrDefault(x => x.AreaName == list.area).AreaName</label>
+                                            <label class="w-[6rem] xl:w-80 h-[3.5rem] xl:h-8 text-sm md:text-xs lg:text-lg 2xl:text-xl text-white leading-6 text-center bg-[#254260] rounded-lg py-1 m-2 flex justify-center items-center">@Areas.FirstOrDefault(x => x.AreaName == list.area).AreaName</label>
                                         }
 
                                         @if (@elementsSelect.FirstOrDefault(x => x.ElementName == list.elemento).ElementName == "Cielo Raso (Falso Techo)" || @elementsSelect.FirstOrDefault(x => x.ElementName == list.elemento).ElementName == "Llave Mezcladora")
@@ -234,7 +208,7 @@ else if (buttonReport == true)
                                         }
                                         else
                                         {
-                                            <label class="w-[6rem] xl:w-80 h-[3.5rem] xl:h-8 text-sm md:text-base lg:text-lg 2xl:text-xl text-white leading-6 text-center bg-[#254260] rounded-lg py-1 m-2 flex justify-center items-center">@elementsSelect.FirstOrDefault(x => x.ElementName == list.elemento).ElementName</label>
+                                            <label class="w-[6rem] xl:w-80 h-[3.5rem] xl:h-8 text-sm md:text-xs lg:text-lg 2xl:text-xl text-white leading-6 text-center bg-[#254260] rounded-lg py-1 m-2 flex justify-center items-center">@elementsSelect.FirstOrDefault(x => x.ElementName == list.elemento).ElementName</label>
                                         }
 
                                         @if (list.subElemento == "N/A")
@@ -247,7 +221,7 @@ else if (buttonReport == true)
                                         }
                                         else
                                         {
-                                            <label class="w-[6rem] xl:w-80 h-[3.5rem] xl:h-8 text-sm md:text-base lg:text-lg 2xl:text-xl text-white leading-6 text-center bg-[#254260] rounded-lg py-1 m-2 flex justify-center items-center">@subElementsSelect.FirstOrDefault(x => x.SubElementName == list.subElemento).SubElementName</label>
+                                            <label class="w-[6rem] xl:w-80 h-[3.5rem] xl:h-8 text-sm md:text-xs lg:text-lg 2xl:text-xl text-white leading-6 text-center bg-[#254260] rounded-lg py-1 m-2 flex justify-center items-center">@subElementsSelect.FirstOrDefault(x => x.SubElementName == list.subElemento).SubElementName</label>
                                         }
                                     </div>
                                     <div class="flex flex-row justify-center items-center w-3/6">
