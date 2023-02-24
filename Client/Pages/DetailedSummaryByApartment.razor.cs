@@ -39,7 +39,7 @@ namespace Obra.Client.Pages
         private List<SubElement> subElementsSelect { get; set; } = new();
         private List<Apartment> apartmentsSelect { get; set; } = new();
 
-        private List<DetalladoActividades> detalladoActividades { get; set; } = new();
+        private List<DetalladoDepartamentos> detalladoDepartamentos { get; set; } = new();
 
         private string messageError = "";
         private bool alert = false;
@@ -536,7 +536,7 @@ namespace Obra.Client.Pages
             allElements = false;
             allActivities = false;
 
-            detalladoActividades.Clear();
+            detalladoDepartamentos.Clear();
         }
 
         public async Task ChangeView()
@@ -545,7 +545,7 @@ namespace Obra.Client.Pages
             loading = true;
             buttonReport = false;
 
-            var pdf = await _reportesService.PostReporteDetallesPorActividadesAsync(detalladoActividades, null);
+            var pdf = await _reportesService.PostReporteDetallesPorDepartamento(detalladoDepartamentos, null);
 
             if (pdf != null)
             {
@@ -604,7 +604,7 @@ namespace Obra.Client.Pages
             data.Elements = _idsElementsSelect;
             data.SubElements = _idsSubElementsSelect;
 
-            detalladoActividades = await _reportesService.PostDataDetallesActividades(data);
+            detalladoDepartamentos = await _reportesService.PostDataDetallesDepartamentos(data);
 
             loading = false;
         }

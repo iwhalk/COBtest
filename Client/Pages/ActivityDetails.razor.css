@@ -5,3 +5,12 @@
     background-position: center;
     background-repeat: no-repeat;
 }
+
+.scroll {
+    overflow-y: scroll;
+}
+
+    .scroll::-webkit-scrollbar {
+        display: none;
+    }
+
