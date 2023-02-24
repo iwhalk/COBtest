@@ -549,9 +549,10 @@ namespace Obra.Client.Pages
 
             if (pdf != null)
             {
-                _bytesPreviewFile = pdf;
+                //_bytesPreviewFile = pdf;
                 loading = false;
-                _showPreviewFile = true;
+                //_showPreviewFile = true;
+                await _JS.InvokeVoidAsync("OpenInNewPagePDF", pdf);
                 StateHasChanged();
             }
             else

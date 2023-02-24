@@ -101,7 +101,6 @@ namespace Obra.Client.Pages
 
         private async void PreviewFileReport()
         {
-            //_showPreviewFile = true;
             _isLoadingProcess = true;
             var listActivityProgress = _idsActivitySelect.Select(x => new ActivityProgress
             {
