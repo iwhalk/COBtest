@@ -57,7 +57,15 @@ namespace Obra.Client.Services
             parameters.Add("includeProgressLogs", includeProgressLogs.ToString());
 
             return await _repository.GetAsync<List<ProgressReport>>(parameters, path: "api/ProgressReport"); ;
-        } 
+        }
+
+        public async Task<ObjectAccessUser> GetObjectAccessAsync(string idSupervisor)
+        {
+            //Dictionary<string, string> parameters = new();
+            //parameters.Add("idSupervisor", idSupervisor);
+            return await _repository.GetAsync<ObjectAccessUser>(idSupervisor, path: "api/ProgressReport/ObjectAccess");
+        }
+
         public async Task<ProgressReport> PostProgressReportAsync(ProgressReport progressReport)
         {
             return await _repository.PostAsync(progressReport, path: "api/ProgressReport");

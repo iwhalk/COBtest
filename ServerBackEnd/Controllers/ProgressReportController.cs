@@ -85,6 +85,19 @@ namespace ApiGateway.Controllers
             return BadRequest(result);
         }
 
+        [HttpGet("ObjectAccess/{idSupervisor}")]
+        public async Task<ActionResult> GetObjectAccess(string idSupervisor)
+        {
+            var result = await _progressReportService.GetObjectAccessAsync(idSupervisor);
+
+            if (result.Succeeded)
+            {
+                return Ok(result);
+            }
+
+            return BadRequest(result);
+        }
+
         [HttpPost]
         public async Task<ActionResult> PostProgressReport(ProgressReport progressReport)
         {

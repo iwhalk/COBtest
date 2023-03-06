@@ -43,7 +43,7 @@ namespace Obra.Client.Pages
                                NavigationManager navigate,
                                IToastService toastService,
                                IBlobsService blobsService)
-        {
+        {            
             _buildingsService = buildingsService;
             _apartmentsService = apartmentsService;
             _areasService = areasService;
@@ -58,6 +58,8 @@ namespace Obra.Client.Pages
             _blobsService = blobsService;
         }
 
+
+        public ObjectAccessUser Accesos { get; private set; }
         public List<Apartment> ApartmentsList { get; private set; }
         public List<Area> AreasList { get; private set; }
         public List<Activity> ActivitiesList { get; private set; }
@@ -90,7 +92,11 @@ namespace Obra.Client.Pages
 
         protected override async Task OnInitializedAsync()
         {
-            ApartmentsList = await _apartmentsService.GetApartmentsAsync();
+            var authstate = await _getAuthenticationStateAsync.GetAuthenticationStateAsync();
+            string idSupervisor = authstate.User?.Claims?.FirstOrDefault(x => x.Type.Equals("sub"))?.Value;
+            Accesos = await _progressReportService.GetObjectAccessAsync(idSupervisor);
+            //ApartmentsList = await _apartmentsService.GetApartmentsAsync();
+            ApartmentsList = Accesos.Apartments;
             NewProgressLogs = new();
             CurrentProgressLog = new ProgressLog()
             {
@@ -109,7 +115,8 @@ namespace Obra.Client.Pages
             SelectedSubElement= 0;
             ShowDetalle= false;
 
-            AreasList = AreasList ?? await _areasService.GetAreasAsync();
+            //AreasList = AreasList ?? await _areasService.GetAreasAsync();
+            AreasList = AreasList ?? Accesos.Areas;
             CurrentApartment = ApartmentsList.First(x=>x.IdApartment == idApartment);
             StateHasChanged();
         }
@@ -124,6 +131,7 @@ namespace Obra.Client.Pages
             ShowDetalle = false;
 
             ActivitiesList = await _activitiesService.GetActivitiesAsync(idArea);
+            ActivitiesList = ActivitiesList.Where(x => Accesos.Activities.Contains(x)).ToList();///Probar
             CurrentArea = AreasList.First(x => x.IdArea == idArea);
             StateHasChanged();
         }

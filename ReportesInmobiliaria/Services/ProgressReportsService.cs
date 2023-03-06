@@ -2,6 +2,7 @@
 using ReportesObra.Interfaces;
 using SharedLibrary.Data;
 using SharedLibrary.Models;
+using System.Linq;
 using System.Net.NetworkInformation;
 
 namespace ReportesObra.Services
@@ -77,6 +78,42 @@ namespace ReportesObra.Services
             }
 
             return await progressReports.ToListAsync();
+        }
+
+        public async Task<ObjectAccessUser?> GetObjectsAccessAsync(string idSupervisor)
+        {
+            IQueryable<ProgressReport> progressReports = _dbContext.ProgressReports;
+            //Se filtra por el ID del AspNetUser para obtener los elementos a los que tiene acceso
+            progressReports = progressReports.Where(x => x.IdSupervisor == idSupervisor);
+            System.Linq.Expressions.Expression<Func<Element, Element>> selector = x => new Element
+            {
+                IdElement = x.IdElement,
+                ElementName = x.ElementName,
+                IdActivity = x.IdActivity,
+                Type = x.Type
+            };
+
+            //Se obtienen las listas de Id's de de los campos que se usan en la vista de Seguimiento del Proyecto
+            var idApartments = progressReports.GroupBy(a => a.IdApartment).Select(b => b.First().IdApartment);
+            var idAreas = progressReports.GroupBy(a => a.IdArea).Select(b => b.First().IdArea);            
+            var idElements = progressReports.GroupBy(a => a.IdElement).Select(b => b.First().IdElement).ToList();
+            var idSubelements = progressReports.GroupBy(a => a.IdSubElement).Select(b => b.First().IdSubElement).ToList();
+            //El selector para Elements evita que se ciclen las referencias a Activities
+            var elements0 = _dbContext.Elements.Select(selector);
+            //Obtenemos de una vez los objectos de Elements y la lista de ID'ss de Activities ya que ID_Activity no viene referenciado en la tabla de ProgressReport
+            var elements = elements0.Where(x => idElements.Contains(x.IdElement));
+            var idActivities = elements.GroupBy(a => a.IdActivity).Select(b => b.First().IdActivity);
+
+            ObjectAccessUser list = new ObjectAccessUser()
+            {
+                Apartments = _dbContext.Apartments.Where(x => idApartments.Contains(x.IdApartment)).ToList(),
+                Areas = _dbContext.Areas.Where(x => idAreas.Contains(x.IdArea)).ToList(),
+                Activities = _dbContext.Activities.Where(x => idActivities.Contains(x.IdActivity)).ToList(),
+                Elements = elements.ToList(),
+                SubElements = _dbContext.SubElements.Where(x => idSubelements.Contains(x.IdSubElement)).ToList(),
+            };
+
+            return list;
         }
 
         public async Task<ProgressReport?> CreateProgressReportAsync(ProgressReport progressReport)
