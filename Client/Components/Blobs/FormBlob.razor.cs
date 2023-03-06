@@ -78,7 +78,7 @@ namespace Obra.Client.Components.Blobs
             {
                 //validationError = "";
 
-                using var stream = eventArgs.File.OpenReadStream();
+                using var stream = eventArgs.File.OpenReadStream(maxAllowedSize: 52428800);
                 using var memoryStream = new MemoryStream();
                 await stream.CopyToAsync(memoryStream);
 
