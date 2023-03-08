@@ -181,8 +181,10 @@ namespace Obra.Client.Pages
         public async Task GetCurrentProgressReport(int? idElement =  null, int? idSubElement = null)
         {
             ShowFormBlob = true;
-            CurrentProgressReport = (await _progressReportService.GetProgressReportsAsync(idBuilding: Accesos.IdBuilding, idApartment: CurrentApartment?.IdApartment, idArea: CurrentArea?.IdArea, 
-                idElement: idElement ?? CurrentElement?.IdElement, idSubElement: idSubElement))?.OrderByDescending(x => x.DateCreated).FirstOrDefault();
+            var progressReports = await _progressReportService.GetProgressReportsAsync(idBuilding: Accesos.IdBuilding, idApartment: CurrentApartment?.IdApartment, idArea: CurrentArea?.IdArea,
+                idElement: idElement ?? CurrentElement?.IdElement, idSubElement: idSubElement);
+            CurrentProgressReport = progressReports?.OrderByDescending(x => x.DateCreated).FirstOrDefault();
+
             if (CurrentProgressReport != null)
             {
                 var NewProgressLog = NewProgressLogs.FirstOrDefault(x => x.IdProgressReport == CurrentProgressReport.IdProgressReport);
@@ -191,18 +193,37 @@ namespace Obra.Client.Pages
                     CurrentProgressLog.Observation = NewProgressLog.Observation;
                     CurrentProgressLog.IdStatus = NewProgressLog.IdStatus;
                     CurrentProgressLog.Pieces = NewProgressLog.Pieces;
-                    CurrentProgressLog.IdBlobs = NewProgressLog.IdBlobs ?? new List<Blob>();
+                    foreach (var log in NewProgressLogs.Where(x=>x.IdProgressReport == CurrentProgressReport.IdProgressReport))
+                    {
+                        foreach (var blob in log.IdBlobs)
+                        {
+                            CurrentProgressLog.IdBlobs.Add(blob);
+                        }
+                        //CurrentProgressLog.IdBlobs.ToList().AddRange(log.IdBlobs);
+                    }
+                    //CurrentProgressLog.IdBlobs = NewProgressLog.IdBlobs ?? new List<Blob>();
+                    CurrentProgressLog.IdBlobs ??= new List<Blob>();
                 }
                 else
                 {
-                    LastProgressLog = (await _progressLogsService.GetProgressLogsAsync(idProgressReport: CurrentProgressReport.IdProgressReport))?.OrderByDescending(x => x.DateCreated).FirstOrDefault();
+                    var progressLogs = await _progressLogsService.GetProgressLogsAsync(idProgressReport: CurrentProgressReport.IdProgressReport);
+                    LastProgressLog = progressLogs?.OrderByDescending(x => x.DateCreated).FirstOrDefault();
                     if (LastProgressLog != null)
                     {
                         CurrentProgressLog.IdProgressReport = LastProgressLog.IdProgressReport;
                         CurrentProgressLog.Observation = LastProgressLog.Observation;
                         CurrentProgressLog.IdStatus = LastProgressLog.IdStatus;
                         CurrentProgressLog.Pieces = LastProgressLog.Pieces;
-                        CurrentProgressLog.IdBlobs = LastProgressLog.IdBlobs ?? new List<Blob>();
+                        foreach (var log in progressLogs?.Where(x=>x.IdBlobs.Any()))
+                        {
+                            foreach (var blob in log.IdBlobs)
+                            {
+                                CurrentProgressLog.IdBlobs.Add(blob);
+                            }
+                            //CurrentProgressLog.IdBlobs.ToList().AddRange(log.IdBlobs);
+                        }
+                        //CurrentProgressLog.IdBlobs = LastProgressLog.IdBlobs ?? new List<Blob>();
+                        CurrentProgressLog.IdBlobs ??= new List<Blob>();
                         CurrentProgressLog.IdProgressLog = 0;
                     }
                     else
@@ -214,6 +235,10 @@ namespace Obra.Client.Pages
                     }
                 }
                 piecesCondition = CurrentProgressLog.Pieces;
+                foreach (var item in CurrentProgressLog.IdBlobs)
+                {
+                    item.Uri += $"?q={Guid.NewGuid().ToString().Remove(10):N}";
+                }
             }
             else
             {
