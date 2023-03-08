@@ -81,6 +81,8 @@ namespace Obra.Client.Pages
         public int IdBlob { get; private set; }
         public bool ShowModalPicture { get; private set; } = false;
 
+        private void CloseModalPicture() => ShowModalPicture = !ShowModalPicture; 
+
         private FormBlob FormBlob;
         private ImageAnnotation ImageAnnotationComponent;
 
