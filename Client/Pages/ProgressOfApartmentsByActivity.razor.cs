@@ -17,6 +17,7 @@ namespace Obra.Client.Pages
         private readonly IProgressLogsService _progressLogsService;
         private readonly IReportsService _reportService;
         private readonly IJSRuntime _JS;
+        private readonly IObjectAccessService _accessService;
         //Variable locales
         private Dictionary<int, Tuple<int, int>> _idsAparmentSelect { get; set; } = new();
         private Dictionary<int, List<InfoAparmentIn>> _idsActivitySelect { get; set; } = new();
@@ -25,7 +26,9 @@ namespace Obra.Client.Pages
         private bool _showPreviewFile { get; set; }
         private byte[] _bytesPreviewFile { get; set; }
         private const string PDF_FILE_NAME = "AvanceDepartamentoPorActividad.pdf";
-        public ProgressOfApartmentsByActivity(ApplicationContext context, NavigationManager navigationManager, IActivitiesService activityService, IApartmentsService apartmentService, IProgressLogsService progressLogsService, IReportsService reportService, IJSRuntime jS)
+        public ObjectAccessUser Accesos { get; private set; }
+        public ProgressOfApartmentsByActivity(ApplicationContext context, NavigationManager navigationManager, IActivitiesService activityService, IApartmentsService apartmentService,
+            IProgressLogsService progressLogsService, IReportsService reportService, IJSRuntime jS, IObjectAccessService accessService)
         {
             _context = context;
             _activityService = activityService;
@@ -34,11 +37,17 @@ namespace Obra.Client.Pages
             _progressLogsService = progressLogsService;
             _reportService = reportService;
             _JS = jS;
+            _accessService = accessService;
         }
         protected async override Task OnInitializedAsync()
         {
+            Accesos = await _accessService.GetObjectAccess();
+            var activitiesId = Accesos.Activities.Select(x => x.IdActivity);
+            var apartmentsId = Accesos.Apartments.Select(x => x.IdApartment);
             _context.Activity = await _activityService.GetActivitiesAsync();
+            _context.Activity = _context.Activity.Where(x => activitiesId.Contains(x.IdActivity)).ToList();
             _context.Apartment = await _apartmentService.GetApartmentsAsync();
+            _context.Apartment = _context.Apartment.Where(x => apartmentsId.Contains(x.IdApartment)).ToList();
         }
         private void BackPage() => _navigationManager.NavigateTo("/ProjectOverview");
         private void ChangeOpenModalPreview() => _showPreviewFile = _showPreviewFile ? false : true;
@@ -49,7 +58,7 @@ namespace Obra.Client.Pages
             if (!_idsActivitySelect.ContainsKey(idActivity))
             {
                 //change for real endpoint for this view
-                var infoProgress = await _reportService.GetProgressOfAparmentByActivityDataViewAsync(idActivity);
+                var infoProgress = await _reportService.GetProgressOfAparmentByActivityDataViewAsync(Accesos.IdBuilding, idActivity);
                 if (infoProgress != null)
                 {
                     List<InfoAparmentIn> listAparmentPorcentage = new List<InfoAparmentIn>();
@@ -94,7 +103,7 @@ namespace Obra.Client.Pages
             else
             {
                 _idsActivitySelect.Clear();
-                var infoProgress = await _reportService.GetProgressOfAparmentByActivityDataViewAsync(null);            
+                var infoProgress = await _reportService.GetProgressOfAparmentByActivityDataViewAsync(Accesos.IdBuilding, null);            
                 if (infoProgress != null)
                 {
                     

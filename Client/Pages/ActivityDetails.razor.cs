@@ -1,5 +1,6 @@
 ﻿using Blazored.Toast;
 using Blazored.Toast.Services;
+using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.Fast.Components.FluentUI;
 using Microsoft.JSInterop;
 using Obra.Client.Components;
@@ -23,6 +24,8 @@ namespace Obra.Client.Pages
         private readonly IReportsService _reportesService;
         private readonly IJSRuntime _JS;
         private readonly IToastService _toastService;
+        private readonly AuthenticationStateProvider _getAuthenticationStateAsync;
+        private readonly IObjectAccessService _accessService;
         private List<Apartment> apartments { get; set; } = new List<Apartment>();
         private List<SharedLibrary.Models.Activity> activities { get; set; } = new List<Activity>();
         private List<Area> Areas { get; set; }
@@ -53,6 +56,8 @@ namespace Obra.Client.Pages
         private bool apartmentDetails = true;
         private bool buttonReport = false;
 
+        public ObjectAccessUser Accesos { get; private set; }
+
         private bool showModal { get; set; } = false;
         private bool loading { get; set; } = false;
 
@@ -64,7 +69,9 @@ namespace Obra.Client.Pages
         private byte[] _bytesPreviewFile { get; set; }
         private const string PDF_FILE_NAME = "DetallePorActividad.pdf";
         private void ChangeOpenModalPreview() => _showPreviewFile = _showPreviewFile ? false : true;
-        public ActivityDetails(ApplicationContext context, IApartmentsService apartmentsService, IActivitiesService activitiesService, IAreasService areasService, IElementsService elementsService, ISubElementsService subElementsService, IProgressReportService progressReportService, IProgressLogsService progressLogsService, IReportsService reportesService, IJSRuntime jS, IToastService toastService)
+        public ActivityDetails(ApplicationContext context, IApartmentsService apartmentsService, IActivitiesService activitiesService, IAreasService areasService,
+            IElementsService elementsService, ISubElementsService subElementsService, IProgressReportService progressReportService, IProgressLogsService progressLogsService,
+            IReportsService reportesService, IJSRuntime jS, IToastService toastService, AuthenticationStateProvider getAuthenticationStateAsync, IObjectAccessService accessService)
         {
             _context = context;
             _apartmentsService = apartmentsService;
@@ -77,13 +84,22 @@ namespace Obra.Client.Pages
             _reportesService = reportesService;
             _JS = jS;
             _toastService = toastService;
-        }
+            _getAuthenticationStateAsync = getAuthenticationStateAsync;
+            _accessService = accessService;
+    }
 
         protected async override Task OnInitializedAsync()
         {
+            Accesos = await _accessService.GetObjectAccess();
+            var apartmentsId = Accesos.Apartments.Select(x => x.IdApartment);
+            var activitiesId = Accesos.Activities.Select(x => x.IdActivity);
+            var areasId = Accesos.Areas.Select(x => x.IdArea);
             apartments = await _apartmentsService.GetApartmentsAsync();
+            apartments = apartments.Where(x => apartmentsId.Contains(x.IdApartment)).ToList();
             activities = await _activitiesService.GetActivitiesAsync();
+            activities = activities.Where(x => activitiesId.Contains(x.IdActivity)).ToList();
             Areas = await _areasService.GetAreasAsync();
+            Areas = Areas.Where(x => areasId.Contains(x.IdArea)).ToList();
         }
 
         public async Task AddIdSelect(int id, int filter)
@@ -110,7 +126,8 @@ namespace Obra.Client.Pages
                     _idsActivitiesSelect.Add(id);
 
                     List<Element> auxElements = await _elementsService.GetElementsAsync(id);
-
+                    var elementsId = Accesos.Elements.Select(x => x.IdElement);
+                    auxElements = auxElements.Where(x => elementsId.Contains(x.IdElement)).ToList();
                     elements.AddRange(auxElements);
 
                     await ShowMessage();
@@ -210,7 +227,8 @@ namespace Obra.Client.Pages
                     _idsElementsSelect.Add(id);
 
                     List<SubElement> auxSubElement = await _subElementsService.GetSubElementsAsync(id);
-
+                    var subElementsId = Accesos.SubElements.Select(x => x.IdSubElement);
+                    auxSubElement = auxSubElement.Where(x => subElementsId.Contains(x.IdSubElement)).ToList();
                     subElements.AddRange(auxSubElement);
 
                     if (subElements == null || subElements.Count() < 1)
@@ -594,7 +612,7 @@ namespace Obra.Client.Pages
             }
 
             ActivitiesDetail data = new();
-            data.IdBuilding = 1;
+            data.IdBuilding = Accesos.IdBuilding;
             data.Apartments = _idsAparmentSelect;
             data.Activities = _idsActivitiesSelect;
             data.Elements = _idsElementsSelect;

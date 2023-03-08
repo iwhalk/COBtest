@@ -281,8 +281,10 @@ namespace ReportesObra.Services
             return list;
         }
 
-        public async Task<List<AparmentProgress>> GetAparments(int? idAparment)
+        public async Task<List<AparmentProgress>> GetAparments(int? idBuilding, int? idAparment)
         {
+            if (idBuilding == null)
+                idBuilding = 1;
             IQueryable<ProgressReport> progressReports = _dbContext.ProgressReports;
             IQueryable<ProgressLog> progressLogs = _dbContext.ProgressLogs;
             //IQueryable<ProgressLog> progressLogsMaxDate = _dbContext.ProgressLogs.GroupBy(x => x.IdProgressReport).Select(x => x.);
@@ -291,7 +293,7 @@ namespace ReportesObra.Services
             if (idAparment != null)
                 progressReports = progressReports.Where(x => x.IdApartment == idAparment);
 
-            progressReports = progressReports.Where(x => x.IdBuilding == 1);
+            progressReports = progressReports.Where(x => x.IdBuilding == idBuilding);
 
             List<TotalPicesByAparment> totalOfPicesByAparment = progressReports.GroupBy(x => x.IdApartment)
                     .Select(x => new TotalPicesByAparment
@@ -407,19 +409,27 @@ namespace ReportesObra.Services
             return nombreActividad == null ? null : nombreActividad.IdActivity;
         }
 
-        public async Task<List<AparmentProgress>> GetActivitiesByAparment(int? idActividad)
-        {
+        public async Task<List<AparmentProgress>> GetActivitiesByAparment(int? idBuilding, int? idActividad)
+        {            
+            if (idBuilding == null)
+                idBuilding = 1;
+            IQueryable<ProgressReport> progress = _dbContext.ProgressReports.Where(x => x.IdBuilding == idBuilding);
+            var apartmentsId = progress.Select(x => x.IdApartment).Distinct();
+            var activitiesId = progress.Select(x => x.IdElementNavigation.IdActivity).Distinct();
+
             IQueryable<ProgressReport> progressReports = _dbContext.ProgressReports.Include(x => x.IdApartmentNavigation).Include(x => x.IdElementNavigation).Include(x => x.IdElementNavigation.IdActivityNavigation);
             IQueryable<Activity> Activities = _dbContext.Activities;
+            Activities = Activities.Where(x => activitiesId.Contains(x.IdActivity));
             IQueryable<ProgressLog> progressLogs = _dbContext.ProgressLogs;
             IQueryable<Apartment> apartments = _dbContext.Apartments;
+            apartments = apartments.Where(x => apartmentsId.Contains(x.IdApartment)).OrderBy(x => x.IdApartment);
 
             var list = new List<AparmentProgress>();
 
             if (idActividad != null)
                 progressReports = progressReports.Where(x => x.IdElementNavigation.IdActivityNavigation.IdActivity == idActividad);
 
-            progressReports = progressReports.Where(x => x.IdBuilding == 1);
+            progressReports = progressReports.Where(x => x.IdBuilding == idBuilding);
 
             foreach(var activity in Activities)
             {
@@ -473,18 +483,26 @@ namespace ReportesObra.Services
             return _reportesFactory.CrearPdf(list);
         }
 
-        public async Task<List<ActivityProgressByAparment>> GetAparmentsByActivity(int? idApartment)
+        public async Task<List<ActivityProgressByAparment>> GetAparmentsByActivity(int? idBuilding, int? idApartment)
         {
+            if (idBuilding == null)
+                idBuilding = 1;
+            IQueryable<ProgressReport> progress = _dbContext.ProgressReports.Where(x => x.IdBuilding == idBuilding);
+            var apartmentsId = progress.Select(x => x.IdApartment).Distinct();
+            var activitiesId = progress.Select(x => x.IdElementNavigation.IdActivity).Distinct();
+
             IQueryable<ProgressReport> progressReports = _dbContext.ProgressReports.Include(x => x.IdApartmentNavigation).Include(x => x.IdElementNavigation).Include(x => x.IdElementNavigation.IdActivityNavigation);
             IQueryable<Activity> Activities = _dbContext.Activities;
+            Activities = Activities.Where(x => activitiesId.Contains(x.IdActivity));
             IQueryable<Apartment> apartments = _dbContext.Apartments;
+            apartments = apartments.Where(x => apartmentsId.Contains(x.IdApartment)).OrderBy(x => x.IdApartment);
             IQueryable<ProgressLog> progressLogs = _dbContext.ProgressLogs;
             var list = new List<ActivityProgressByAparment>();
 
             if (idApartment != null)
                 progressReports = progressReports.Where(x => x.IdApartment == idApartment);
 
-            progressReports = progressReports.Where(x => x.IdBuilding == 1);
+            progressReports = progressReports.Where(x => x.IdBuilding == idBuilding);
 
             foreach (var aparment in apartments)
             {

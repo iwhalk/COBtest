@@ -62,6 +62,11 @@ namespace ApiGateway.Services
             return await GetAsync<ObjectAccessUser>(idSupervisor, path: "ObjectsAccess");
         }
 
+        public async Task<ApiResponse<int>> GetBuildingAssignedAsync(string idSupervisor)
+        {
+            return await GetAsync<int>(idSupervisor, path: "BuildingAssigned");
+        }
+
         public async Task<ApiResponse<ProgressReport>> PostProgressReportAsync(ProgressReport progressReport)
         {
             return await PostAsync<ProgressReport>(progressReport, path: "ProgressReport");

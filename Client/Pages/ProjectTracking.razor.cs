@@ -30,6 +30,7 @@ namespace Obra.Client.Pages
         private readonly IBlobsService _blobsService;
         private readonly AuthenticationStateProvider _getAuthenticationStateAsync;
         private readonly NavigationManager _navigate;
+        private readonly IObjectAccessService _accessService;
 
         public ProjectTracking(IBuildingsService buildingsService,
                                IApartmentsService apartmentsService,
@@ -42,7 +43,8 @@ namespace Obra.Client.Pages
                                AuthenticationStateProvider getAuthenticationStateAsync,
                                NavigationManager navigate,
                                IToastService toastService,
-                               IBlobsService blobsService)
+                               IBlobsService blobsService,
+                               IObjectAccessService accessService)
         {            
             _buildingsService = buildingsService;
             _apartmentsService = apartmentsService;
@@ -56,6 +58,7 @@ namespace Obra.Client.Pages
             _navigate = navigate;
             _toastService = toastService;
             _blobsService = blobsService;
+            _accessService = accessService;
         }
 
 
@@ -92,9 +95,10 @@ namespace Obra.Client.Pages
 
         protected override async Task OnInitializedAsync()
         {
-            var authstate = await _getAuthenticationStateAsync.GetAuthenticationStateAsync();
-            string idSupervisor = authstate.User?.Claims?.FirstOrDefault(x => x.Type.Equals("sub"))?.Value;
-            Accesos = await _progressReportService.GetObjectAccessAsync(idSupervisor);
+            //var authstate = await _getAuthenticationStateAsync.GetAuthenticationStateAsync();
+            //string idSupervisor = authstate.User?.Claims?.FirstOrDefault(x => x.Type.Equals("sub"))?.Value;
+            //Accesos = await _progressReportService.GetObjectAccessAsync(idSupervisor);
+            Accesos = await _accessService.GetObjectAccess();
             //ApartmentsList = await _apartmentsService.GetApartmentsAsync();
             ApartmentsList = Accesos.Apartments;
             NewProgressLogs = new();
@@ -114,7 +118,6 @@ namespace Obra.Client.Pages
             CurrentSubElementsList = null;
             SelectedSubElement= 0;
             ShowDetalle= false;
-
             //AreasList = AreasList ?? await _areasService.GetAreasAsync();
             AreasList = AreasList ?? Accesos.Areas;
             CurrentApartment = ApartmentsList.First(x=>x.IdApartment == idApartment);
@@ -131,7 +134,8 @@ namespace Obra.Client.Pages
             ShowDetalle = false;
 
             ActivitiesList = await _activitiesService.GetActivitiesAsync(idArea);
-            ActivitiesList = ActivitiesList.Where(x => Accesos.Activities.Contains(x)).ToList();///Probar
+            var enteros1 = Accesos.Activities.Select(x => x.IdActivity);
+            ActivitiesList = ActivitiesList.Where(x => enteros1.Contains(x.IdActivity)).ToList();//*********************Probar
             CurrentArea = AreasList.First(x => x.IdArea == idArea);
             StateHasChanged();
         }
@@ -145,6 +149,8 @@ namespace Obra.Client.Pages
 
             CurrentActivity = ActivitiesList.First(x => x.IdActivity == idActivity);
             CurrentElementsList = await _elementsService.GetElementsAsync(idActivity);
+            var enteros2 = Accesos.Elements.Select(x => x.IdElement);
+            CurrentElementsList = CurrentElementsList.Where(x => enteros2.Contains(x.IdElement)).ToList();//*********************Probar
             StateHasChanged();
         }
         public async void ElementButtonClicked(int idElement)
@@ -155,6 +161,8 @@ namespace Obra.Client.Pages
 
             CurrentElement = CurrentElementsList.First(x => x.IdElement == idElement);
             CurrentSubElementsList = await _subElementsService.GetSubElementsAsync(idElement);
+            var enteros3 = Accesos.SubElements.Select(x => x.IdSubElement);
+            CurrentSubElementsList = CurrentSubElementsList.Where(x => enteros3.Contains(x.IdSubElement)).ToList();//*********************Probar
             if (CurrentSubElementsList == null || CurrentSubElementsList.Count < 1)
             {
                 GetCurrentProgressReport(idElement: idElement);
@@ -171,7 +179,7 @@ namespace Obra.Client.Pages
         public async Task GetCurrentProgressReport(int? idElement =  null, int? idSubElement = null)
         {
             ShowFormBlob = true;
-            CurrentProgressReport = (await _progressReportService.GetProgressReportsAsync(idBuilding: 1, idApartment: CurrentApartment?.IdApartment, idArea: CurrentArea?.IdArea, 
+            CurrentProgressReport = (await _progressReportService.GetProgressReportsAsync(idBuilding: Accesos.IdBuilding, idApartment: CurrentApartment?.IdApartment, idArea: CurrentArea?.IdArea, 
                 idElement: idElement ?? CurrentElement?.IdElement, idSubElement: idSubElement))?.OrderByDescending(x => x.DateCreated).FirstOrDefault();
             if (CurrentProgressReport != null)
             {

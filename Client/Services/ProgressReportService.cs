@@ -66,6 +66,11 @@ namespace Obra.Client.Services
             return await _repository.GetAsync<ObjectAccessUser>(idSupervisor, path: "api/ProgressReport/ObjectAccess");
         }
 
+        public async Task<int> GetBuildingAssignedAsync(string idSupervisor)
+        {
+            return await _repository.GetAsync<int>(idSupervisor, path: "api/ProgressReport/BuildingAssigned");
+        }
+
         public async Task<ProgressReport> PostProgressReportAsync(ProgressReport progressReport)
         {
             return await _repository.PostAsync(progressReport, path: "api/ProgressReport");

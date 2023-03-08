@@ -47,9 +47,10 @@ namespace Obra.Client.Services
         }
 
         //MetodosReportes
-        public async Task<List<AparmentProgress>?> GetProgressByAparmentDataViewAsync(int? idAparment)
+        public async Task<List<AparmentProgress>?> GetProgressByAparmentDataViewAsync(int? idBuilding, int? idAparment)
         {
             Dictionary<string, string> parameters = new();
+            parameters.Add("idBuilding", idBuilding.ToString());
             parameters.Add("idAparment", idAparment.ToString());
             return await _repository.GetAsync<List<AparmentProgress>?>(parameters, path: "api/Reports/ProgressByAparmentDataView");
         }
@@ -71,9 +72,10 @@ namespace Obra.Client.Services
             return await _repository.PostAsync<byte[]>(progressReportList, path: "api/Reports/ProgressByActivityPDF");
         }
 
-        public async Task<List<AparmentProgress>?> GetProgressOfAparmentByActivityDataViewAsync(int? idActivity)
+        public async Task<List<AparmentProgress>?> GetProgressOfAparmentByActivityDataViewAsync(int? idBuilding, int? idActivity)
         {
             Dictionary<string, string> parameters = new();
+            parameters.Add("idBuilding", idBuilding.ToString());
             parameters.Add("idActivity", idActivity.ToString());
             return await _repository.GetAsync<List<AparmentProgress>?>(parameters, path: "api/Reports/ProgressOfAparmentByActivityDataView");
         }
@@ -83,9 +85,10 @@ namespace Obra.Client.Services
             return await _repository.PostAsync<byte[]>(progressReportList, path: "api/Reports/ProgressOfAparmentByActivityPDF");
         }
 
-        public async Task<List<ActivityProgressByAparment>?> GetProgressOfActivityByAparmentDataViewAsync(int? idActivity)
+        public async Task<List<ActivityProgressByAparment>?> GetProgressOfActivityByAparmentDataViewAsync(int? idBuilding, int? idActivity)
         {
             Dictionary<string, string> parameters = new();
+            parameters.Add("idBuilding", idBuilding.ToString());
             parameters.Add("idApartment", idActivity.ToString());
             return await _repository.GetAsync<List<ActivityProgressByAparment>?>(parameters, path: "api/Reports/ProgressOfActivityByAparmentDataView");
         }

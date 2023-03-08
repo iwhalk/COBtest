@@ -14,6 +14,7 @@ namespace Obra.Client.Pages
         private readonly IProgressLogsService _progressLogsService;
         private readonly IReportsService _reportService;
         private readonly IJSRuntime _JS;
+        private readonly IObjectAccessService _accessService;
         //Variable locales
         private Dictionary<int, Tuple<double, double>> _idsActivitySelect { get; set; } = new();
         public bool _isLoadingProcess { get; set; }
@@ -22,20 +23,26 @@ namespace Obra.Client.Pages
         private byte[] _bytesPreviewFile { get; set; }
         private const string PDF_FILE_NAME = "AvancePorActividad.pdf"; 
         private readonly IJSInProcessRuntime _js;
+        public ObjectAccessUser Accesos { get; private set; }
 
-        public ProgressByActivity(ApplicationContext context, NavigationManager navigationManager, IActivitiesService activityService, IProgressLogsService progressLogsService, IReportsService _reportService, IJSRuntime jS, IJSInProcessRuntime js)
+        public ProgressByActivity(ApplicationContext context, NavigationManager navigationManager, IActivitiesService activityService, IProgressLogsService progressLogsService, IReportsService _reportService,
+            IJSRuntime jS, IJSInProcessRuntime js, IObjectAccessService accessService)
         {
             _context = context;
             _activityService = activityService;
             _navigationManager = navigationManager;
             _progressLogsService = progressLogsService;
-            this._reportService = _reportService;            
+            this._reportService = _reportService;
             _JS = jS;
             _js = js;
+            _accessService = accessService;
         }
         protected async override Task OnInitializedAsync()
         {
+            Accesos = await _accessService.GetObjectAccess();
+            var activitiesId = Accesos.Activities.Select(x => x.IdActivity);
             _context.Activity = await _activityService.GetActivitiesAsync();
+            _context.Activity = _context.Activity.Where(x => activitiesId.Contains(x.IdActivity)).ToList();
         }
 
         private void ChangeOpenModalPreview() => _showPreviewFile = _showPreviewFile ? false : true;
@@ -46,7 +53,7 @@ namespace Obra.Client.Pages
             if (!_idsActivitySelect.ContainsKey(idActivity))
             {
                 //change for real endpoint for this view
-                var infoProgress = await _reportService.GetProgressByActivityDataViewAsync(null, idActivity);
+                var infoProgress = await _reportService.GetProgressByActivityDataViewAsync(Accesos.IdBuilding, idActivity);
                 if (infoProgress != null)
                 {
                     var porcentageProgress = Math.Round(infoProgress.FirstOrDefault().Progress, 2);
@@ -76,7 +83,7 @@ namespace Obra.Client.Pages
             else
             {
                 _idsActivitySelect.Clear();
-                var infoProgress = await _reportService.GetProgressByActivityDataViewAsync(null, null);
+                var infoProgress = await _reportService.GetProgressByActivityDataViewAsync(Accesos.IdBuilding, null);
                 if (infoProgress != null)
                 {
                     foreach (var activity in _context.Activity)

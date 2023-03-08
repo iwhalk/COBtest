@@ -2,6 +2,7 @@
 using ReportesObra.Interfaces;
 using SharedLibrary.Data;
 using SharedLibrary.Models;
+using SixLabors.ImageSharp.ColorSpaces;
 using System.Linq;
 using System.Net.NetworkInformation;
 
@@ -84,7 +85,7 @@ namespace ReportesObra.Services
         {
             IQueryable<ProgressReport> progressReports = _dbContext.ProgressReports;
             //Se filtra por el ID del AspNetUser para obtener los elementos a los que tiene acceso
-            progressReports = progressReports.Where(x => x.IdSupervisor == idSupervisor);
+            progressReports = progressReports.Where(x => x.IdSupervisor == idSupervisor).OrderBy(x => x.IdApartment);
             System.Linq.Expressions.Expression<Func<Element, Element>> selector = x => new Element
             {
                 IdElement = x.IdElement,
@@ -95,28 +96,50 @@ namespace ReportesObra.Services
 
             //Se obtienen las listas de Id's de de los campos que se usan en la vista de Seguimiento del Proyecto
             var idApartments = progressReports.GroupBy(a => a.IdApartment).Select(b => b.First().IdApartment);
+            //var idApartments = progressReports.Select(x => x.IdApartment).Distinct();
             var idAreas = progressReports.GroupBy(a => a.IdArea).Select(b => b.First().IdArea);            
-            var idElements = progressReports.GroupBy(a => a.IdElement).Select(b => b.First().IdElement).ToList();
-            var idSubelements = progressReports.GroupBy(a => a.IdSubElement).Select(b => b.First().IdSubElement).ToList();
+            var idElements = progressReports.GroupBy(a => a.IdElement).Select(b => b.First().IdElement);
+            var idSubelements = progressReports.GroupBy(a => a.IdSubElement).Select(b => b.First().IdSubElement);
             //El selector para Elements evita que se ciclen las referencias a Activities
             var elements0 = _dbContext.Elements.Select(selector);
             //Obtenemos de una vez los objectos de Elements y la lista de ID'ss de Activities ya que ID_Activity no viene referenciado en la tabla de ProgressReport
             var elements = elements0.Where(x => idElements.Contains(x.IdElement));
             var idActivities = elements.GroupBy(a => a.IdActivity).Select(b => b.First().IdActivity);
+            //Calculando la moda con Entity Framework
+            var idBuildingFound = progressReports.GroupBy(x => x.IdBuilding)
+                .OrderByDescending(x => x.Count()).ThenBy(x => x.Key)
+                .Select(x => (int?)x.Key)
+                .FirstOrDefault();
+            //var q = progressReports.Select(x => x.IdBuilding).Distinct();
 
             ObjectAccessUser list = new ObjectAccessUser()
             {
-                Apartments = _dbContext.Apartments.Where(x => idApartments.Contains(x.IdApartment)).ToList(),
-                Areas = _dbContext.Areas.Where(x => idAreas.Contains(x.IdArea)).ToList(),
-                Activities = _dbContext.Activities.Where(x => idActivities.Contains(x.IdActivity)).ToList(),
-                Elements = elements.ToList(),
-                SubElements = _dbContext.SubElements.Where(x => idSubelements.Contains(x.IdSubElement)).ToList(),
+                IdBuilding = idBuildingFound ?? 0,
+                Apartments = _dbContext.Apartments.Where(x => idApartments.Contains(x.IdApartment)).OrderBy(x => x.IdApartment).ToList(),
+                Areas = _dbContext.Areas.Where(x => idAreas.Contains(x.IdArea)).OrderBy(x => x.IdArea).ToList(),
+                Activities = _dbContext.Activities.Where(x => idActivities.Contains(x.IdActivity)).OrderBy(x => x.IdActivity).ToList(),
+                Elements = elements.OrderBy(x => x.IdElement).ToList(),
+                SubElements = _dbContext.SubElements.Where(x => idSubelements.Contains(x.IdSubElement)).OrderBy(x => x.IdSubElement).ToList(),
             };
 
             return list;
         }
 
-        public async Task<ProgressReport?> CreateProgressReportAsync(ProgressReport progressReport)
+        public async Task<int> GetIdBuildingAssigned(string idSupervisor)
+        {
+            IQueryable<ProgressReport> progressReports = _dbContext.ProgressReports;
+            //Se filtra por el ID del AspNetUser para obtener los elementos a los que tiene acceso
+            progressReports = progressReports.Where(x => x.IdSupervisor == idSupervisor);
+
+            var idBuildingFound = progressReports.GroupBy(x => x.IdBuilding)
+                .OrderByDescending(x => x.Count()).ThenBy(x => x.Key)
+                .Select(x => (int?)x.Key)
+                .FirstOrDefault();
+
+            return idBuildingFound ?? 0;
+        }
+
+            public async Task<ProgressReport?> CreateProgressReportAsync(ProgressReport progressReport)
         {
             await _dbContext.ProgressReports.AddAsync(progressReport);
             try { await _dbContext.SaveChangesAsync(); }
