@@ -6,6 +6,7 @@ using Obra.Client.Interfaces;
 using System.Text;
 using System.Reflection.Metadata.Ecma335;
 using Microsoft.Fast.Components.FluentUI;
+using System.Runtime.CompilerServices;
 
 namespace Obra.Client.Components.Blobs
 {
@@ -37,6 +38,7 @@ namespace Obra.Client.Components.Blobs
         public EditContext CurrentBlobFileEditContext;
         private FluentDialog? MyFluentDialog;
 
+        public bool Loading { get; set; } = false;
 
         public FormBlob(IBlobsService blobService)
         {
@@ -71,6 +73,7 @@ namespace Obra.Client.Components.Blobs
         }
         private async Task OnChangeAsync(InputFileChangeEventArgs eventArgs)
         {
+            Loading = true;
             CurrentBlobFile.BrowserFile = eventArgs.File;
             CurrentBlobFileEditContext.NotifyFieldChanged(FieldIdentifier.Create(() => CurrentBlobFile.BrowserFile));
 
@@ -119,6 +122,7 @@ namespace Obra.Client.Components.Blobs
                 //BlobService.BlobFiles.Add(CurrentBlobFile);
             }
 
+            Loading = false;
         }
         private void OnClose()
         {
