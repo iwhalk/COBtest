@@ -34,12 +34,16 @@ namespace ApiGateway.Services
         }
 
         //Reports
-        public async Task<ApiResponse<List<AparmentProgress>>?> GetProgressByAparmentViewAsync(int? id)
+        public async Task<ApiResponse<List<AparmentProgress>>?> GetProgressByAparmentViewAsync(int? idBuilding, int? idApartment)
         {
             Dictionary<string, string> parameters = new();
-            if (id != null)
+            if (idBuilding != null)
             {
-                parameters.Add("idAparment", id.ToString());
+                parameters.Add("idBuilding", idBuilding.ToString());
+            }
+            if (idApartment != null)
+            {
+                parameters.Add("idAparment", idApartment.ToString());
             }
             return await GetAsync<List<AparmentProgress>?>(path: "ReportProgressByAparmentView", parameters: parameters);
         }
@@ -67,9 +71,13 @@ namespace ApiGateway.Services
             return await PostAsync<byte[]>(progressReport, path: "ReportProgressByActivityPDF");
         }
 
-        public async Task<ApiResponse<List<AparmentProgress>>?> GetProgressOfAparmentByActivityViewAsync(int? idActivity)
+        public async Task<ApiResponse<List<AparmentProgress>>?> GetProgressOfAparmentByActivityViewAsync(int? idBuilding, int? idActivity)
         {
             Dictionary<string, string> parameters = new();
+            if (idBuilding != null)
+            {
+                parameters.Add("idBuilding", idBuilding.ToString());
+            }
             if (idActivity != null)
             {
                 parameters.Add("idActivity", idActivity.ToString());
@@ -82,9 +90,13 @@ namespace ApiGateway.Services
             return await PostAsync<byte[]>(progressReport, path: "ReportOfAparmentByActivityPDF");
         }
 
-        public async Task<ApiResponse<List<ActivityProgressByAparment>>?> GetProgressOfActivityByAparmentViewAsync(int? idActivity)
+        public async Task<ApiResponse<List<ActivityProgressByAparment>>?> GetProgressOfActivityByAparmentViewAsync(int? idBuilding, int? idActivity)
         {
             Dictionary<string, string> parameters = new();
+            if (idBuilding != null)
+            {
+                parameters.Add("idBuilding", idBuilding.ToString());
+            }
             if (idActivity != null)
             {
                 parameters.Add("idApartment", idActivity.ToString());

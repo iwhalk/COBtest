@@ -115,11 +115,11 @@ namespace ReportesObra.Endpoints
             .Produces<HttpValidationProblemDetails>(StatusCodes.Status500InternalServerError, "application/problem+json")
             .AllowAnonymous();
 
-            routes.MapGet("/ReportProgressByAparmentView", async (int? idAparment, IReportesService _reportesService, ILogger<Program> _logger) =>
+            routes.MapGet("/ReportProgressByAparmentView", async (int? idBuilding, int? idAparment, IReportesService _reportesService, ILogger<Program> _logger) =>
             {
                 try
                 {
-                    var newModule = await _reportesService.GetAparments(idAparment);
+                    var newModule = await _reportesService.GetAparments(idBuilding, idAparment);
                     if (newModule.Count == 0) return Results.NoContent();                    
                     return Results.Ok(newModule);
                 }
@@ -137,11 +137,11 @@ namespace ReportesObra.Endpoints
             .Produces<HttpValidationProblemDetails>(StatusCodes.Status500InternalServerError, "application/problem+json")
             .AllowAnonymous();
 
-            routes.MapGet("/ReportOfAparmentByActivityView", async (int? idActivity, IReportesService _reportesService, ILogger<Program> _logger) =>
+            routes.MapGet("/ReportOfAparmentByActivityView", async (int? idBuilding, int? idActivity, IReportesService _reportesService, ILogger<Program> _logger) =>
             {
                 try
                 {
-                    var newModule = await _reportesService.GetActivitiesByAparment(idActivity);
+                    var newModule = await _reportesService.GetActivitiesByAparment(idBuilding, idActivity);
                     if (newModule.Count == 0) return Results.NoContent();
                     return Results.Ok(newModule);
                 }
@@ -223,11 +223,11 @@ namespace ReportesObra.Endpoints
             .Produces<HttpValidationProblemDetails>(StatusCodes.Status400BadRequest, "application/problem+json")
             .Produces<HttpValidationProblemDetails>(StatusCodes.Status500InternalServerError, "application/problem+json");
 
-            routes.MapGet("/ReportOfActivityByAparmentView", async (int? idApartment, IReportesService _reportesService, ILogger<Program> _logger) =>
+            routes.MapGet("/ReportOfActivityByAparmentView", async (int? idBuilding, int? idApartment, IReportesService _reportesService, ILogger<Program> _logger) =>
             {
                 try
                 {
-                    var newModule = await _reportesService.GetAparmentsByActivity(idApartment);
+                    var newModule = await _reportesService.GetAparmentsByActivity(idBuilding, idApartment);
                     if (newModule.Count == 0) return Results.NoContent();
                     return Results.Ok(newModule);
                 }

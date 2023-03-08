@@ -14,6 +14,7 @@ namespace Obra.Client.Pages
         private readonly NavigationManager _navigationManager;
         private readonly IReportsService _reportService;
         private readonly IJSRuntime _JS;
+        private readonly IObjectAccessService _accessService;
         //Variable locales
         private Dictionary<int, Tuple<double, double>> _idsAparmentSelect { get; set; } = new();
         public bool _isLoadingProcess { get; set; }
@@ -21,7 +22,9 @@ namespace Obra.Client.Pages
         private bool _showPreviewFile { get; set; }
         private byte[] _bytesPreviewFile { get; set; }
         private const string PDF_FILE_NAME = "AvancePorDepartamento.pdf";
-        public ProgressByApartment(ApplicationContext context, NavigationManager navigationManager, IApartmentsService apartmentsService, IProgressLogsService progressLogsService, IReportsService reportService, IJSRuntime jS)
+        public ObjectAccessUser Accesos { get; private set; }
+        public ProgressByApartment(ApplicationContext context, NavigationManager navigationManager, IApartmentsService apartmentsService,
+            IProgressLogsService progressLogsService, IReportsService reportService, IJSRuntime jS, IObjectAccessService accessService)
         {
             _context = context;
             _apartmentsService = apartmentsService;
@@ -29,10 +32,14 @@ namespace Obra.Client.Pages
             _navigationManager = navigationManager;
             _reportService = reportService;
             _JS = jS;
+            _accessService = accessService;
         }
         protected async override Task OnInitializedAsync()
         {
+            Accesos = await _accessService.GetObjectAccess();
+            var apartmentsId = Accesos.Apartments.Select(x => x.IdApartment);
             _context.Apartment = await _apartmentsService.GetApartmentsAsync();
+            _context.Apartment = _context.Apartment.Where(x => apartmentsId.Contains(x.IdApartment)).ToList();
         }
         private void BackPage() => _navigationManager.NavigateTo("/ProjectOverview");
         private void ChangeOpenModalPreview() => _showPreviewFile = _showPreviewFile ? false : true;
@@ -41,7 +48,7 @@ namespace Obra.Client.Pages
             _isLoadingProcess = true;
             if (!_idsAparmentSelect.ContainsKey(idDeparment))
             {
-                var infoProgress = await _reportService.GetProgressByAparmentDataViewAsync(idDeparment);
+                var infoProgress = await _reportService.GetProgressByAparmentDataViewAsync(Accesos.IdBuilding, idDeparment);
                 if (infoProgress != null)
                 {
                     var porcentageProgress = Math.Round(infoProgress.FirstOrDefault().ApartmentProgress, 2);
@@ -71,7 +78,7 @@ namespace Obra.Client.Pages
             else
             {
                 _idsAparmentSelect.Clear();
-                var infoProgress = await _reportService.GetProgressByAparmentDataViewAsync(null);
+                var infoProgress = await _reportService.GetProgressByAparmentDataViewAsync(Accesos.IdBuilding, null);
                 if (infoProgress != null)
                 {
                     foreach (var aparment in _context.Apartment)

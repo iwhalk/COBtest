@@ -30,6 +30,46 @@ namespace ReportesObra.Endpoints
             .Produces<HttpValidationProblemDetails>(StatusCodes.Status500InternalServerError, "application/problem+json")
             .AllowAnonymous();
 
+            routes.MapGet("/ObjectsAccess/{idSupervisor}", async (string idSupervisor, IProgressReportsService _progressReportsService, ILogger<Program> _logger) =>
+            {
+                try
+                {
+                    var progressReports = await _progressReportsService.GetObjectsAccessAsync(idSupervisor);
+                    return Results.Ok(progressReports);
+                }
+                catch (Exception e)
+                {
+                    _logger.LogError(e, e.Message);
+                    if (e.GetType() == typeof(ValidationException))
+                        return Results.Problem(e.Message, statusCode: 400);
+                    return Results.Problem(e.Message);
+                }
+            })
+            .WithName("GetObjectsAccessAsync")
+            .Produces<IResult>(StatusCodes.Status200OK)
+            .Produces<HttpValidationProblemDetails>(StatusCodes.Status400BadRequest, "application/problem+json")
+            .Produces<HttpValidationProblemDetails>(StatusCodes.Status500InternalServerError, "application/problem+json");
+
+            routes.MapGet("/BuildingAssigned/{idSupervisor}", async (string idSupervisor, IProgressReportsService _progressReportsService, ILogger<Program> _logger) =>
+            {
+                try
+                {
+                    var progressReports = await _progressReportsService.GetIdBuildingAssigned(idSupervisor);
+                    return Results.Ok(progressReports);
+                }
+                catch (Exception e)
+                {
+                    _logger.LogError(e, e.Message);
+                    if (e.GetType() == typeof(ValidationException))
+                        return Results.Problem(e.Message, statusCode: 400);
+                    return Results.Problem(e.Message);
+                }
+            })
+            .WithName("GetIdBuildingAssignedAsync")
+            .Produces<IResult>(StatusCodes.Status200OK)
+            .Produces<HttpValidationProblemDetails>(StatusCodes.Status400BadRequest, "application/problem+json")
+            .Produces<HttpValidationProblemDetails>(StatusCodes.Status500InternalServerError, "application/problem+json");
+
             routes.MapGet("/ProgressReports", async (int? idProgressReport, int? idBuilding, int? idApartment, int? idArea, int? idElement, int? idSubElement, string? idSupervisor, bool includeProgressLogs, IProgressReportsService _progressReportsService, ILogger<Program> _logger) =>
             {
                 try

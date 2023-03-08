@@ -3,6 +3,7 @@ using SharedLibrary;
 using ApiGateway.Proxies;
 using ApiGateway.Interfaces;
 using System.Xml.Linq;
+using static OpenIddict.Abstractions.OpenIddictConstants;
 
 namespace ApiGateway.Services
 {
@@ -54,7 +55,18 @@ namespace ApiGateway.Services
             parameters.Add("includeProgressLogs", includeProgressLogs.ToString());
 
             return await GetAsync<List<ProgressReport>>(path: "ProgressReports", parameters: parameters);
-        } 
+        }
+
+        public async Task<ApiResponse<ObjectAccessUser>> GetObjectAccessAsync(string idSupervisor)
+        {
+            return await GetAsync<ObjectAccessUser>(idSupervisor, path: "ObjectsAccess");
+        }
+
+        public async Task<ApiResponse<int>> GetBuildingAssignedAsync(string idSupervisor)
+        {
+            return await GetAsync<int>(idSupervisor, path: "BuildingAssigned");
+        }
+
         public async Task<ApiResponse<ProgressReport>> PostProgressReportAsync(ProgressReport progressReport)
         {
             return await PostAsync<ProgressReport>(progressReport, path: "ProgressReport");

@@ -73,9 +73,9 @@ namespace ApiGateway.Controllers
 
         //Reportes
         [HttpGet("ProgressByAparmentDataView")]
-        public async Task<ActionResult> GetProgressByAparmentView(int? idAparment)
+        public async Task<ActionResult> GetProgressByAparmentView(int? idBuilding, int? idAparment)
         {
-            var result = await _reportesService.GetProgressByAparmentViewAsync(idAparment);
+            var result = await _reportesService.GetProgressByAparmentViewAsync(idBuilding, idAparment);
             if (result != null)
             {
                 if (result.Succeeded)
@@ -131,9 +131,9 @@ namespace ApiGateway.Controllers
 
 
         [HttpGet("ProgressOfAparmentByActivityDataView")]
-        public async Task<ActionResult> GetProgressOfAparmentByActivityView(int? idActivity)
+        public async Task<ActionResult> GetProgressOfAparmentByActivityView(int? idBuilding, int? idActivity)
         {
-            var result = await _reportesService.GetProgressOfAparmentByActivityViewAsync(idActivity);
+            var result = await _reportesService.GetProgressOfAparmentByActivityViewAsync(idBuilding, idActivity);
             if (result != null)
             {
                 if (result.Succeeded)
@@ -159,9 +159,9 @@ namespace ApiGateway.Controllers
         }
 
         [HttpGet("ProgressOfActivityByAparmentDataView")]
-        public async Task<ActionResult> GetProgressOfActivityByAparmentView(int? idApartment)
+        public async Task<ActionResult> GetProgressOfActivityByAparmentView(int? idBuilding, int? idApartment)
         {
-            var result = await _reportesService.GetProgressOfActivityByAparmentViewAsync(idApartment);
+            var result = await _reportesService.GetProgressOfActivityByAparmentViewAsync(idBuilding, idApartment);
             if (result != null)
             {
                 if (result.Succeeded)
