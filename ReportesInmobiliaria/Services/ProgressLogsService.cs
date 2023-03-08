@@ -3,6 +3,7 @@ using ReportesObra.Interfaces;
 using SharedLibrary.Data;
 using SharedLibrary.Models;
 using System.Linq.Expressions;
+using System.Net.NetworkInformation;
 
 namespace ReportesObra.Services
 {
@@ -17,7 +18,29 @@ namespace ReportesObra.Services
 
         public async Task<ProgressLog> GetProgressLogAsync(int idProgressLog)
         {
-            return await _dbContext.ProgressLogs.FirstOrDefaultAsync(x => x.IdProgressLog == idProgressLog);
+            //return await _dbContext.ProgressLogs.FirstOrDefaultAsync(x => x.IdProgressLog == idProgressLog);
+            IQueryable<ProgressLog> progressLogs = _dbContext.ProgressLogs;
+            progressLogs = progressLogs.Where(x => x.IdProgressLog == idProgressLog);
+
+            Expression<Func<ProgressLog, ProgressLog>> selector = x => new ProgressLog
+            {
+                IdProgressLog = x.IdProgressLog,
+                IdProgressReport = x.IdProgressReport,
+                DateCreated = x.DateCreated,
+                IdStatus = x.IdStatus,
+                Pieces = x.Pieces,
+                Observation = x.Observation,
+                IdSupervisor = x.IdSupervisor,
+                IdBlobs = x.IdBlobs.Select(y => new Blob
+                {
+                    IdBlob = y.IdBlob,
+                    ContainerName = y.ContainerName,
+                    IsPrivate = y.IsPrivate,
+                    Uri = y.Uri,
+                    BlobSize = y.BlobSize
+                }).ToList()
+            };
+            return await progressLogs?.Select(selector).FirstOrDefaultAsync();
         }
 
         public async Task<List<ProgressLog>?>? GetProgressLogsAsync(int? idProgressLog, int? idProgressReport, int? idStatus, string? idSupervisor)
