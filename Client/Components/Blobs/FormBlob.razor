@@ -1,46 +1,52 @@
-﻿@if (CurrentBlobFile == null)
-{
-    <h2>Loading...</h2>
-}
-else
-{
-    <EditForm EditContext="CurrentBlobFileEditContext">
+﻿<EditForm EditContext="CurrentBlobFileEditContext">
     <DataAnnotationsValidator />
-    <div class="h-40 w-48 self-center rounded px-2 text-center bg-white">
-        <label for="fileinput" class="label-wrapper">
+    <div class="h-40 w-48 self-center rounded px-2 text-center bg-white ml-5">
+        @if (Loading == true)
+        {
+            <div class="loading">
+                <div class="flex justify-center items-center h-40 w-44">
+                    <FluentProgressRing style="width: 50px; height: 50px;">
+                        <ChildContent>100%</ChildContent>
+                    </FluentProgressRing>
+                </div>
+            </div>
+        }
+        else
+        {
+            <label for="fileinput" class="label-wrapper">
                 <span class="oi oi-camera-slr border" style="@ColorSpan"> Subir imagen</span>
-            <InputFile id="fileinput" class="custom-input-hide"
-                OnChange="@((InputFileChangeEventArgs args) => OnChangeAsync(args))" disabled="@IsDisabled"/>
-        </label>
-        @*
-        <InputFile OnChange="@((InputFileChangeEventArgs args) => OnChangeAsync(args))" />*@
-        <ValidationMessage For="() => CurrentBlobFile.BrowserFile" />
-        @*<h6>@CurrentBlobFile.Blob.BlodName</h6>*@
-        @*<h6>@CurrentBlobFile.Blob.BlobSize</h6>*@
-        <div class="overflow-y-auto">
-            @if (CurrentBlobs?.Count > 0)
-            {
-
-            <div class="grid grid-cols-3 gap-1 w-full">
-                @foreach (var blob in CurrentBlobs)
+                <InputFile id="fileinput" class="custom-input-hide"
+                       OnChange="@((InputFileChangeEventArgs args) => OnChangeAsync(args))" disabled="@IsDisabled" />
+            </label>
+            @*
+            <InputFile OnChange="@((InputFileChangeEventArgs args) => OnChangeAsync(args))" />*@
+            <ValidationMessage For="() => CurrentBlobFile.BrowserFile" />
+            @*<h6>@CurrentBlobFile.Blob.BlodName</h6>*@
+            @*<h6>@CurrentBlobFile.Blob.BlobSize</h6>*@
+            <div class="overflow-y-auto">
+                @if (CurrentBlobs?.Count > 0)
                 {
-                <span  @onclick="@(() => OnClicked(blob.IdBlob))"><img id="@blob.IdBlob" class="w-100 h-100 " src="@blob.Uri" /></span>
+
+                    <div class="grid grid-cols-3 gap-1 w-full">
+                        @foreach (var blob in CurrentBlobs)
+                        {
+                            <span @onclick="@(() => OnClicked(blob.IdBlob))"><img id="@blob.IdBlob" class="w-100 h-100 " src="@blob.Uri" /></span>
+                        }
+                    </div>
                 }
             </div>
-            }
-        </div>
+        }
     </div>
 </EditForm>
 
-}
 <style>
-     .label-wrapper:hover {
-         cursor: @Cursor;
-     }
+    .label-wrapper:hover {
+        cursor: @Cursor;
+    }
 
-     .custom-input-hide {
-         width: 0;
-         height: 0;
-         overflow: hidden;
-     }
+    .custom-input-hide {
+        width: 0;
+        height: 0;
+        overflow: hidden;
+    }
 </style>
