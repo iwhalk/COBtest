@@ -626,10 +626,31 @@ namespace Obra.Client.Pages
         public async Task CameraButton(int? idProgressLog)
         {
             await ShowMessage();
-
+            
             if (idProgressLog != null)
             {
+                int contador = 0;
                 int auxId = (int)idProgressLog;
+                var currentProgressReport = await _progressLogsService.GetProgressLogAsync(auxId);
+                var logsByProgressReport = await _progressLogsService.GetProgressLogsAsync(idProgressReport: currentProgressReport.IdProgressReport);
+                List<string> listUris = new List<string>();
+                if (logsByProgressReport != null)
+                {
+                    logsByProgressReport = logsByProgressReport.OrderByDescending(x => x.IdProgressLog).ToList();
+                    foreach (var log in logsByProgressReport)
+                    {
+                        var currentBlob = log.IdBlobs.FirstOrDefault();
+                        string? currentUri = currentBlob == null ? null : currentBlob.Uri;
+                        if (currentUri != null)
+                        {
+                            listUris.Add(currentUri);
+                            contador++;
+                        }
+                        if (contador == 3)
+                            break;
+                    }
+                }
+
                 ProgressLog aux = await _progressLogsService.GetProgressLogAsync(auxId);
 
                 if (aux.Observation != null)
@@ -637,11 +658,18 @@ namespace Obra.Client.Pages
                     observations = aux.Observation;
                 }
 
-                if (aux.IdBlobs != null)
+                //if (aux.IdBlobs != null)
+                //{
+                //    foreach (var item in aux.IdBlobs)
+                //    {
+                //        images.Add(item.Uri);
+                //    }
+                //}
+                if (listUris != null)
                 {
-                    foreach (var item in aux.IdBlobs)
+                    foreach (var item in listUris)
                     {
-                        images.Add(item.Uri);
+                        images.Add(item);
                     }
                 }
 
@@ -653,6 +681,10 @@ namespace Obra.Client.Pages
                 {
                     _toastService.ShowToast<ToastImages>(new ToastInstanceSettings(5, false));
                 }
+            }
+            else
+            {
+                _toastService.ShowToast<ToastImages>(new ToastInstanceSettings(5, false));
             }
         }
 
