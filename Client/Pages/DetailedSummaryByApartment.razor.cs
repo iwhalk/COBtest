@@ -53,6 +53,7 @@ namespace Obra.Client.Pages
         private bool allActivities = false;
         private bool apartmentDetails = true;
         private bool buttonReport = false;
+        private bool showActivities = false;
         public ObjectAccessUser Accesos { get; private set; }
 
         private bool showModal { get; set; } = false;
@@ -106,12 +107,24 @@ namespace Obra.Client.Pages
                     _idsAparmentSelect.Add(id);
 
                     allApartments = false;
-
+                    showActivities= true;
                     await ShowMessage();
                 }
                 else
                 {
                     _idsAparmentSelect.Remove(id);
+                    allApartments = false;
+                    allElements = false;
+                    allSubElements = false;
+                    if (_idsAparmentSelect.Count == 0)
+                    {
+                        showActivities = false;
+                        _idsActivitiesSelect.Clear();
+                        _idsElementsSelect.Clear();
+                        _idsSubElementsSelect.Clear();
+                        elements.Clear();
+                        subElements.Clear();
+                    }                    
                 }
             }
             else if (filter == 2) //Actividad
@@ -125,12 +138,11 @@ namespace Obra.Client.Pages
                     auxElements = auxElements.Where(x => elementsId.Contains(x.IdElement)).ToList();
                     elements.AddRange(auxElements);
 
-                    await ShowMessage();
+                    
                 }
                 else
                 {
                     _idsActivitiesSelect.Remove(id);
-
                     allActivities = false;
                     allElements = false;
                     allSubElements = false;
@@ -200,19 +212,19 @@ namespace Obra.Client.Pages
                         subElements.Remove(item);
                     }
 
-                    if (_idsActivitiesSelect.Count() == 0)
-                    {
-                        _idsAparmentSelect.Clear();
-                        department = false;
-                        allApartments = false;
-                    }
+                    //if (_idsActivitiesSelect.Count() == 0)
+                    //{
+                    //    _idsAparmentSelect.Clear();
+                    //    department = false;
+                    //    allApartments = false;
+                    //}
 
-                    if (_idsElementsSelect.Count() < 1)
-                    {
-                        _idsAparmentSelect.Clear();
-                        department = false;
-                        allApartments = false;
-                    }
+                    //if (_idsElementsSelect.Count() < 1)
+                    //{
+                    //    _idsAparmentSelect.Clear();
+                    //    department = false;
+                    //    allApartments = false;
+                    //}
                 }
             }
             else if (filter == 3) //Elemento
@@ -231,7 +243,7 @@ namespace Obra.Client.Pages
                         department = true;
                     }
 
-                    await ShowMessage();
+                    
                 }
                 else
                 {
@@ -270,12 +282,12 @@ namespace Obra.Client.Pages
                         subElements.Remove(item);
                     }
 
-                    if (_idsSubElementsSelect.Count() == 0)
-                    {
-                        _idsAparmentSelect.Clear();
-                        department = false;
-                        allApartments = false;
-                    }
+                    //if (_idsSubElementsSelect.Count() == 0)
+                    //{
+                    //    _idsAparmentSelect.Clear();
+                    //    department = false;
+                    //    allApartments = false;
+                    //}
                 }
             }
             else if (filter == 4) //SubElemento
@@ -286,7 +298,7 @@ namespace Obra.Client.Pages
 
                     department = true;
 
-                    await ShowMessage();
+                    
                 }
                 else
                 {
@@ -294,14 +306,14 @@ namespace Obra.Client.Pages
 
                     allSubElements = false;
 
-                    await ShowMessage();
+                    
 
-                    if (_idsSubElementsSelect.Count() < 1)
-                    {
-                        department = false;
-                        allApartments = false;
-                        _idsAparmentSelect.Clear();
-                    }
+                    //if (_idsSubElementsSelect.Count() < 1)
+                    //{
+                    //    department = false;
+                    //    allApartments = false;
+                    //    _idsAparmentSelect.Clear();
+                    //}
                 }
             }
         }
@@ -329,18 +341,18 @@ namespace Obra.Client.Pages
                 _idsActivitiesSelect.Clear();
                 _idsElementsSelect.Clear();
                 _idsSubElementsSelect.Clear();
-                _idsAparmentSelect.Clear();
+                //_idsAparmentSelect.Clear();
 
                 elements.Clear();
                 subElements.Clear();
 
                 allElements = false;
                 allSubElements = false;
-                allApartments = false;
+                //allApartments = false;
 
                 department = false;
 
-                await ShowMessage();
+                
             }
             else
             {
@@ -349,14 +361,14 @@ namespace Obra.Client.Pages
                 _idsActivitiesSelect.Clear();
                 _idsElementsSelect.Clear();
                 _idsSubElementsSelect.Clear();
-                _idsAparmentSelect.Clear();
+                //_idsAparmentSelect.Clear();
 
                 elements.Clear();
                 subElements.Clear();
 
                 allElements = false;
                 allSubElements = false;
-                allApartments = false;
+                //allApartments = false;
 
                 department = false;
 
@@ -370,7 +382,7 @@ namespace Obra.Client.Pages
 
                 elements = await _elementsService.GetElementsAsync(null);
 
-                await ShowMessage();
+                
             }
         }
 
@@ -396,16 +408,16 @@ namespace Obra.Client.Pages
 
                 _idsElementsSelect.Clear();
                 _idsSubElementsSelect.Clear();
-                _idsAparmentSelect.Clear();
+                //_idsAparmentSelect.Clear();
 
                 subElements.Clear();
 
                 allSubElements = false;
-                allApartments = false;
+                //allApartments = false;
 
                 department = false;
 
-                await ShowMessage();
+                
             }
             else
             {
@@ -413,12 +425,12 @@ namespace Obra.Client.Pages
 
                 _idsElementsSelect.Clear();
                 _idsSubElementsSelect.Clear();
-                _idsAparmentSelect.Clear();
+                //_idsAparmentSelect.Clear();
 
                 subElements.Clear();
 
                 allSubElements = false;
-                allApartments = false;
+                //allApartments = false;
 
                 department = false;
 
@@ -432,7 +444,7 @@ namespace Obra.Client.Pages
 
                 subElements = await _subElementsService.GetSubElementsAsync(null);
 
-                await ShowMessage();
+                
             }
         }
 
@@ -464,12 +476,12 @@ namespace Obra.Client.Pages
 
                 _idsSubElementsSelect.Clear();
 
-                if (_idsElementsSelect.Count == 0)
-                {
-                    _idsAparmentSelect.Clear();
-                    allApartments = false;
-                    department = false;
-                }
+                //if (_idsElementsSelect.Count == 0)
+                //{
+                //    _idsAparmentSelect.Clear();
+                //    allApartments = false;
+                //    department = false;
+                //}
 
                 if (allSubElements == true)
                 {
@@ -488,22 +500,38 @@ namespace Obra.Client.Pages
             if (_idsAparmentSelect.Count() < 1 && allApartments == false)
             {
                 allApartments = true;
+                if (allApartments == true)
+                    foreach (var apartment in apartments)
+                    {
+                        _idsAparmentSelect.Add(apartment.IdApartment);
+                    }
+                showActivities = true;
             }
             else if (allApartments == true)
             {
                 allApartments = false;
-
+                showActivities= false;
                 _idsAparmentSelect.Clear();
+                _idsActivitiesSelect.Clear();
+                _idsElementsSelect.Clear();
+                _idsSubElementsSelect.Clear();
+                elements.Clear();
+                subElements.Clear();
 
-                await ShowMessage();
+                
             }
             else
             {
                 allApartments = true;
+                showActivities = true;
+                //_idsAparmentSelect.Clear();
+                if (allApartments == true)
+                    foreach (var apartment in apartments)
+                    {
+                        _idsAparmentSelect.Add(apartment.IdApartment);
+                    }
 
-                _idsAparmentSelect.Clear();
-
-                await ShowMessage();
+                
             }
         }
 
@@ -519,7 +547,7 @@ namespace Obra.Client.Pages
 
         public async Task GoBack()
         {
-            await ShowMessage();
+            
 
             if (apartments != null)
             {
@@ -548,13 +576,14 @@ namespace Obra.Client.Pages
             allSubElements = false;
             allElements = false;
             allActivities = false;
+            showActivities= false;
 
             detalladoDepartamentos.Clear();
         }
 
         public async Task ChangeView()
         {
-            await ShowMessage();
+            
             loading = true;
             buttonReport = false;
 
@@ -625,7 +654,7 @@ namespace Obra.Client.Pages
 
         public async Task CameraButton(int? idProgressLog)
         {
-            await ShowMessage();
+            
             
             if (idProgressLog != null)
             {

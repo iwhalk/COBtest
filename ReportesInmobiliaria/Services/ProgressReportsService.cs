@@ -77,8 +77,24 @@ namespace ReportesObra.Services
 
                 return await progressReports.Select(selector).ToListAsync();
             }
+            else
+            {
+                System.Linq.Expressions.Expression<Func<ProgressReport, ProgressReport>> selector2 = x => new ProgressReport
+                {
+                    IdProgressReport = x.IdProgressReport,
+                    DateCreated = x.DateCreated,
+                    IdBuilding = x.IdBuilding,
+                    IdApartment = x.IdApartment,
+                    IdArea = x.IdArea,
+                    IdElement = x.IdElement,
+                    IdSubElement = x.IdSubElement,
+                    TotalPieces = x.TotalPieces,
+                    IdSupervisor = x.IdSupervisor,
+                    IdElementNavigation= x.IdElementNavigation
+                };
 
-            return await progressReports.ToListAsync();
+                return await progressReports.Select(selector2).ToListAsync();
+            }
         }
 
         public async Task<ObjectAccessUser?> GetObjectsAccessAsync(string idSupervisor)
