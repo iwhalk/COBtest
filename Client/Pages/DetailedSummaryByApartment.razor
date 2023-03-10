@@ -14,9 +14,12 @@
                         <div class="p-1 md:w-[8rem] lg:w-[12rem] xl:w-[17rem] 2xl:w-[19rem]">
                             <h1 class="rounded-xl text-xs md:text-xs xl:text-lg 2xl:text-xl text-white font-medium leading-6 bg-[#162D4E] text-center py-2">Departamento</h1>
                         </div>
-                        <div class="p-1 md:w-[8rem] lg:w-[12rem] xl:w-[17rem] 2xl:w-[19rem]">
-                            <h1 class="rounded-xl text-xs md:text-xs xl:text-lg 2xl:text-xl text-white font-medium leading-6 bg-[#162D4E] text-center py-2">Actividad</h1>
-                        </div>
+                        @if (showActivities)
+                        {
+                            <div class="p-1 md:w-[8rem] lg:w-[12rem] xl:w-[17rem] 2xl:w-[19rem]">
+                                <h1 class="rounded-xl text-xs md:text-xs xl:text-lg 2xl:text-xl text-white font-medium leading-6 bg-[#162D4E] text-center py-2">Actividad</h1>
+                            </div>
+                        }
                         @if (elements.Count() != 0)
                         {
                             <div class="p-1 md:w-[8rem] lg:w-[12rem] xl:w-[17rem] 2xl:w-[19rem]">
@@ -50,6 +53,7 @@
                             <div class="flex justify-center rounded-br-2xl-2xl" style="direction: ltr;">
                                 <div class="flex justify-center">
                                     <div class="flex justify-items-center flow-root">
+                                        @if (showActivities)
                                         @if (activities != null)
                                         {
                                             <button @onclick="() => AllActivities()" class="@(allActivities ? "bg-[#9CA2A8]" : "bg-[#55595E]") h-12 md:w-[8rem] lg:w-[12rem] xl:w-[17rem] 2xl:w-[19rem] border border-blue-700">
@@ -66,7 +70,7 @@
                                                 <button @onclick="() => AllSubElements()" class="@(allSubElements ? "bg-[#9CA2A8]" : "bg-[#55595E]") h-12 md:w-[8rem] lg:w-[12rem] xl:w-[17rem] 2xl:w-[19rem] border border-blue-700">
                                                     <h1 class="text-xs md:text-xs xl:text-lg 2xl:text-xl text-white font-medium leading-6 text-center p-1">TODOS</h1>
                                                 </button>
-                                            }
+                                            }                                            
                                             @foreach (var activity in activities)
                                             {
                                                 <div class="flex justify-items-stretch">
