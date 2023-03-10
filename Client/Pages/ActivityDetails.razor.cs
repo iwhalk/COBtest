@@ -7,6 +7,7 @@ using Obra.Client.Components;
 using Obra.Client.Interfaces;
 using Obra.Client.Stores;
 using SharedLibrary.Models;
+using System.Reflection.Metadata;
 using System.Security.Cryptography.X509Certificates;
 
 namespace Obra.Client.Pages
@@ -86,7 +87,7 @@ namespace Obra.Client.Pages
             _toastService = toastService;
             _getAuthenticationStateAsync = getAuthenticationStateAsync;
             _accessService = accessService;
-    }
+        }
 
         protected async override Task OnInitializedAsync()
         {
@@ -106,17 +107,44 @@ namespace Obra.Client.Pages
         {
             if (filter == 1) //Departemento
             {
-                if (!_idsAparmentSelect.Contains(id))
+                if (allActivities == true && allElements == true && allSubElements == true || activities.Count() == _idsActivitiesSelect.Count() && elements.Count() == _idsElementsSelect.Count() && subElements.Count() == _idsSubElementsSelect.Count())
                 {
-                    _idsAparmentSelect.Add(id);
+                    if (_idsAparmentSelect.Count() < 3)
+                    {
+                        if (!_idsAparmentSelect.Contains(id))
+                        {
+                            _idsAparmentSelect.Add(id);
+                        }
+                        else
+                        {
+                            _idsAparmentSelect.Remove(id);
+                        }
+                    }
+                    else if (!_idsAparmentSelect.Contains(id))
+                    {
+                        _toastService.ShowWarning("No puedes elegir mas de 3 departamentos si ya has elegido todas las actividades, todos los elementos y todos los subElementos", "¡Advertencia!");
 
-                    allApartments = false;
+                        _idsAparmentSelect.Clear();
 
-                    await ShowMessage();
+                        _idsAparmentSelect.Add(id);
+                    }
+                    else
+                    {
+                        _idsAparmentSelect.Remove(id);
+                    }
                 }
                 else
                 {
-                    _idsAparmentSelect.Remove(id);
+                    if (!_idsAparmentSelect.Contains(id))
+                    {
+                        _idsAparmentSelect.Add(id);
+
+                        allApartments = false;
+                    }
+                    else
+                    {
+                        _idsAparmentSelect.Remove(id);
+                    }
                 }
             }
             else if (filter == 2) //Actividad
@@ -129,8 +157,6 @@ namespace Obra.Client.Pages
                     var elementsId = Accesos.Elements.Select(x => x.IdElement);
                     auxElements = auxElements.Where(x => elementsId.Contains(x.IdElement)).ToList();
                     elements.AddRange(auxElements);
-
-                    await ShowMessage();
                 }
                 else
                 {
@@ -236,7 +262,6 @@ namespace Obra.Client.Pages
                         department = true;
                     }
 
-                    await ShowMessage();
                 }
                 else
                 {
@@ -289,17 +314,19 @@ namespace Obra.Client.Pages
                 {
                     _idsSubElementsSelect.Add(id);
 
-                    department = true;
+                    department = true;               
 
-                    await ShowMessage();
+                    if (subElements.Count() == _idsSubElementsSelect.Count())
+                    {
+                        allApartments = false;
+                        _idsAparmentSelect.Clear();
+                    }
                 }
                 else
                 {
                     _idsSubElementsSelect.Remove(id);
 
                     allSubElements = false;
-
-                    await ShowMessage();
 
                     if (_idsSubElementsSelect.Count() < 1)
                     {
@@ -344,8 +371,6 @@ namespace Obra.Client.Pages
                 allApartments = false;
 
                 department = false;
-
-                await ShowMessage();
             }
             else
             {
@@ -373,9 +398,7 @@ namespace Obra.Client.Pages
                     }
                 }
 
-                elements = await _elementsService.GetElementsAsync(null);
-
-                await ShowMessage();
+                elements = await _elementsService.GetElementsAsync(null);   
             }
         }
 
@@ -409,8 +432,6 @@ namespace Obra.Client.Pages
                 allApartments = false;
 
                 department = false;
-
-                await ShowMessage();
             }
             else
             {
@@ -436,8 +457,6 @@ namespace Obra.Client.Pages
                 }
 
                 subElements = await _subElementsService.GetSubElementsAsync(null);
-
-                await ShowMessage();
             }
         }
 
@@ -456,6 +475,9 @@ namespace Obra.Client.Pages
                 }
 
                 department = true;
+
+                allApartments = false;
+                _idsAparmentSelect.Clear();
             }
             else if (allSubElements == true)
             {
@@ -485,30 +507,36 @@ namespace Obra.Client.Pages
                 }
 
                 department = true;
+                allApartments = false;
+                _idsAparmentSelect.Clear();
             }
         }
 
         public async Task AllApartments()
         {
-            if (_idsAparmentSelect.Count() < 1 && allApartments == false)
+            if (allActivities == true && allElements == true && allSubElements == true || activities.Count() == _idsActivitiesSelect.Count() && elements.Count() == _idsElementsSelect.Count() && subElements.Count() == _idsSubElementsSelect.Count())
             {
-                allApartments = true;
-            }
-            else if (allApartments == true)
-            {
-                allApartments = false;
-
-                _idsAparmentSelect.Clear();
-
-                await ShowMessage();
+                _toastService.ShowWarning("No puedes elegir mas de 3 departamentos si ya has elegido todas las actividades, todos los elementos y todos los subElementos", "¡Advertencia!");
             }
             else
             {
-                allApartments = true;
+                if (_idsAparmentSelect.Count() < 1 && allApartments == false)
+                {
+                    allApartments = true;
+                }
+                else if (allApartments == true)
+                {
+                    allApartments = false;
 
-                _idsAparmentSelect.Clear();
+                    _idsAparmentSelect.Clear();
+                }
+                else
+                {
+                    allApartments = true;
 
-                await ShowMessage();
+                    _idsAparmentSelect.Clear();
+
+                }
             }
         }
 
@@ -523,9 +551,7 @@ namespace Obra.Client.Pages
         }
 
         public async Task GoBack()
-        {
-            await ShowMessage();
-
+        {           
             if (apartments != null)
             {
                 _idsAparmentSelect.Clear();
@@ -559,7 +585,7 @@ namespace Obra.Client.Pages
 
         public async Task ChangeView()
         {
-            await ShowMessage();
+            
             loading = true;
             buttonReport = false;
 
@@ -584,49 +610,125 @@ namespace Obra.Client.Pages
 
         public async Task ShowReportAndHideApartment()
         {
-            buttonReport = true;
-            apartmentDetails = false;
-            loading = true;
-
-            if (allApartments == true)
+            if (_idsActivitiesSelect.Count() != 0)
             {
-                foreach (var item in apartments)
+                if (_idsElementsSelect.Count() != 0)
                 {
-                    _idsAparmentSelect.Add(item.IdApartment);
+                    if (subElements.Count() != 0)
+                    {
+                        if (_idsSubElementsSelect.Count() != 0)
+                        {
+                            if (_idsAparmentSelect.Count() != 0)
+                            {
+                                buttonReport = true;
+                                apartmentDetails = false;
+                                loading = true;
+
+                                if (allApartments == true)
+                                {
+                                    foreach (var item in apartments)
+                                    {
+                                        _idsAparmentSelect.Add(item.IdApartment);
+                                    }
+                                }
+
+                                foreach (var item in _idsActivitiesSelect)
+                                {
+                                    activitiesSelect.Add(activities.FirstOrDefault(x => x.IdActivity.Equals(item)));
+                                }
+
+                                foreach (var item in _idsElementsSelect)
+                                {
+                                    elementsSelect.Add(elements.FirstOrDefault(x => x.IdElement.Equals(item)));
+                                }
+
+                                foreach (var item in _idsSubElementsSelect)
+                                {
+                                    subElementsSelect.Add(subElements.FirstOrDefault(x => x.IdSubElement.Equals(item)));
+                                }
+
+                                ActivitiesDetail data = new();
+                                data.IdBuilding = Accesos.IdBuilding;
+                                data.Apartments = _idsAparmentSelect;
+                                data.Activities = _idsActivitiesSelect;
+                                data.Elements = _idsElementsSelect;
+                                data.SubElements = _idsSubElementsSelect;
+
+                                detalladoActividades = await _reportesService.PostDataDetallesActividades(data);
+
+                                loading = false;
+                            }
+                            else
+                            {
+                                _toastService.ShowError("Es necesario elegir un departamento antes de generar el reporte", "¡Error!");
+                            }
+                        }
+                        else
+                        {
+                            _toastService.ShowError("Es necesario elegir un sub-elemento antes de generar el reporte", "¡Error!");
+                        }
+                    }
+                    else
+                    {
+                        if (_idsAparmentSelect.Count() != 0)
+                        {
+                            buttonReport = true;
+                            apartmentDetails = false;
+                            loading = true;
+
+                            if (allApartments == true)
+                            {
+                                foreach (var item in apartments)
+                                {
+                                    _idsAparmentSelect.Add(item.IdApartment);
+                                }
+                            }
+
+                            foreach (var item in _idsActivitiesSelect)
+                            {
+                                activitiesSelect.Add(activities.FirstOrDefault(x => x.IdActivity.Equals(item)));
+                            }
+
+                            foreach (var item in _idsElementsSelect)
+                            {
+                                elementsSelect.Add(elements.FirstOrDefault(x => x.IdElement.Equals(item)));
+                            }
+
+                            foreach (var item in _idsSubElementsSelect)
+                            {
+                                subElementsSelect.Add(subElements.FirstOrDefault(x => x.IdSubElement.Equals(item)));
+                            }
+
+                            ActivitiesDetail data = new();
+                            data.IdBuilding = Accesos.IdBuilding;
+                            data.Apartments = _idsAparmentSelect;
+                            data.Activities = _idsActivitiesSelect;
+                            data.Elements = _idsElementsSelect;
+                            data.SubElements = _idsSubElementsSelect;
+
+                            detalladoActividades = await _reportesService.PostDataDetallesActividades(data);
+
+                            loading = false;
+                        }
+                        else
+                        {
+                            _toastService.ShowError("Es necesario elegir un departamento antes de generar el reporte", "¡Error!");
+                        }
+                    }
+                }
+                else
+                {
+                    _toastService.ShowError("Es necesario elegir un elemento antes de generar el reporte", "¡Error!");
                 }
             }
-
-            foreach (var item in _idsActivitiesSelect)
+            else
             {
-                activitiesSelect.Add(activities.FirstOrDefault(x => x.IdActivity.Equals(item)));
+                _toastService.ShowError("Es necesario elegir una actividad antes de generar el reporte", "¡Error!");
             }
-
-            foreach (var item in _idsElementsSelect)
-            {
-                elementsSelect.Add(elements.FirstOrDefault(x => x.IdElement.Equals(item)));
-            }
-
-            foreach (var item in _idsSubElementsSelect)
-            {
-                subElementsSelect.Add(subElements.FirstOrDefault(x => x.IdSubElement.Equals(item)));
-            }
-
-            ActivitiesDetail data = new();
-            data.IdBuilding = Accesos.IdBuilding;
-            data.Apartments = _idsAparmentSelect;
-            data.Activities = _idsActivitiesSelect;
-            data.Elements = _idsElementsSelect;
-            data.SubElements = _idsSubElementsSelect;
-
-            detalladoActividades = await _reportesService.PostDataDetallesActividades(data);
-
-            loading = false;
         }
 
         public async Task CameraButton(int? idProgressLog)
-        {
-            await ShowMessage();
-
+        {            
             if (idProgressLog != null)
             {
                 int contador = 0;

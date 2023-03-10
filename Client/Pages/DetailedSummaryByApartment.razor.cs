@@ -107,7 +107,7 @@ namespace Obra.Client.Pages
 
                     allApartments = false;
 
-                    await ShowMessage();
+                    
                 }
                 else
                 {
@@ -125,7 +125,7 @@ namespace Obra.Client.Pages
                     auxElements = auxElements.Where(x => elementsId.Contains(x.IdElement)).ToList();
                     elements.AddRange(auxElements);
 
-                    await ShowMessage();
+                    
                 }
                 else
                 {
@@ -231,7 +231,7 @@ namespace Obra.Client.Pages
                         department = true;
                     }
 
-                    await ShowMessage();
+                    
                 }
                 else
                 {
@@ -286,7 +286,7 @@ namespace Obra.Client.Pages
 
                     department = true;
 
-                    await ShowMessage();
+                    
                 }
                 else
                 {
@@ -294,7 +294,7 @@ namespace Obra.Client.Pages
 
                     allSubElements = false;
 
-                    await ShowMessage();
+                    
 
                     if (_idsSubElementsSelect.Count() < 1)
                     {
@@ -340,7 +340,7 @@ namespace Obra.Client.Pages
 
                 department = false;
 
-                await ShowMessage();
+                
             }
             else
             {
@@ -370,7 +370,7 @@ namespace Obra.Client.Pages
 
                 elements = await _elementsService.GetElementsAsync(null);
 
-                await ShowMessage();
+                
             }
         }
 
@@ -405,7 +405,7 @@ namespace Obra.Client.Pages
 
                 department = false;
 
-                await ShowMessage();
+                
             }
             else
             {
@@ -432,7 +432,7 @@ namespace Obra.Client.Pages
 
                 subElements = await _subElementsService.GetSubElementsAsync(null);
 
-                await ShowMessage();
+                
             }
         }
 
@@ -495,7 +495,7 @@ namespace Obra.Client.Pages
 
                 _idsAparmentSelect.Clear();
 
-                await ShowMessage();
+                
             }
             else
             {
@@ -503,7 +503,7 @@ namespace Obra.Client.Pages
 
                 _idsAparmentSelect.Clear();
 
-                await ShowMessage();
+                
             }
         }
 
@@ -519,7 +519,7 @@ namespace Obra.Client.Pages
 
         public async Task GoBack()
         {
-            await ShowMessage();
+            
 
             if (apartments != null)
             {
@@ -554,7 +554,7 @@ namespace Obra.Client.Pages
 
         public async Task ChangeView()
         {
-            await ShowMessage();
+            
             loading = true;
             buttonReport = false;
 
@@ -625,7 +625,7 @@ namespace Obra.Client.Pages
 
         public async Task CameraButton(int? idProgressLog)
         {
-            await ShowMessage();
+            
             
             if (idProgressLog != null)
             {
