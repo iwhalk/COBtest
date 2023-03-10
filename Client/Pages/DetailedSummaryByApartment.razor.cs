@@ -54,6 +54,8 @@ namespace Obra.Client.Pages
         private bool apartmentDetails = true;
         private bool buttonReport = false;
         private bool showActivities = false;
+        private bool withoutSubelements = false;
+        private int _maximumActivities = 3;
         public ObjectAccessUser Accesos { get; private set; }
 
         private bool showModal { get; set; } = false;
@@ -105,8 +107,19 @@ namespace Obra.Client.Pages
                 if (!_idsAparmentSelect.Contains(id))
                 {
                     _idsAparmentSelect.Add(id);
+                    if (apartments.Count == _idsAparmentSelect.Count)
+                        allApartments = true;
+                    else
+                        allApartments = false;
 
-                    allApartments = false;
+                    if (allApartments && (allActivities || _idsActivitiesSelect.Count > 3))
+                    {
+                        allApartments = false;
+                        _idsAparmentSelect.Remove(id);
+                        _toastService.ShowWarning("Se deben seleccionar máximo 3 Actividades si elige todos los Departamentos", "Advertencia");
+                        return;
+                    }
+
                     showActivities= true;
                     await ShowMessage();
                 }
@@ -116,6 +129,7 @@ namespace Obra.Client.Pages
                     allApartments = false;
                     allElements = false;
                     allSubElements = false;
+                    allActivities = false;
                     if (_idsAparmentSelect.Count == 0)
                     {
                         showActivities = false;
@@ -131,7 +145,16 @@ namespace Obra.Client.Pages
             {
                 if (!_idsActivitiesSelect.Contains(id))
                 {
-                    _idsActivitiesSelect.Add(id);
+                    if (allApartments && _idsActivitiesSelect.Count == 3)
+                    {
+                        _toastService.ShowWarning("Se deben seleccionar máximo 3 Actividades si eligió todos los Departamentos", "Advertencia");
+                        return;
+                    }
+                    _idsActivitiesSelect.Add(id);                    
+                    if(activities.Count == _idsActivitiesSelect.Count)
+                        allActivities = true;
+                    else
+                        allActivities = false;
 
                     List<Element> auxElements = await _elementsService.GetElementsAsync(id);
                     var elementsId = Accesos.Elements.Select(x => x.IdElement);
@@ -240,8 +263,11 @@ namespace Obra.Client.Pages
 
                     if (subElements == null || subElements.Count() < 1)
                     {
+                        withoutSubelements = true;
                         department = true;
                     }
+                    else
+                        withoutSubelements = false;
 
                     await ShowMessage();
                 }
@@ -281,7 +307,10 @@ namespace Obra.Client.Pages
                     {
                         subElements.Remove(item);
                     }
-
+                    if (subElements == null || subElements.Count() < 1)
+                        withoutSubelements = true;
+                    else
+                        withoutSubelements = false;
                     //if (_idsSubElementsSelect.Count() == 0)
                     //{
                     //    _idsAparmentSelect.Clear();
@@ -322,6 +351,12 @@ namespace Obra.Client.Pages
         {
             if (_idsActivitiesSelect.Count() < 1 && allActivities == false)
             {
+                if (allApartments)
+                {
+                    _toastService.ShowWarning("Se deben seleccionar máximo 3 Actividades si eligió todos los Departamentos", "Advertencia");
+                    return;
+                }
+
                 allActivities = true;
 
                 if (allActivities == true)
@@ -356,6 +391,12 @@ namespace Obra.Client.Pages
             }
             else
             {
+                if (allApartments)
+                {
+                    _toastService.ShowWarning("Se deben seleccionar máximo 3 Actividades si eligió todos los Departamentos", "Advertencia");
+                    return;
+                }
+
                 allActivities = true;
 
                 _idsActivitiesSelect.Clear();
@@ -505,6 +546,14 @@ namespace Obra.Client.Pages
                     {
                         _idsAparmentSelect.Add(apartment.IdApartment);
                     }
+
+                if (allActivities || _idsActivitiesSelect.Count > 3)
+                {
+                    allApartments = false;
+                    _toastService.ShowWarning("Se deben seleccionar máximo 3 Actividades si elige todos los Departamentos", "Advertencia");
+                    return;
+                }
+
                 showActivities = true;
             }
             else if (allApartments == true)
@@ -525,11 +574,19 @@ namespace Obra.Client.Pages
                 allApartments = true;
                 showActivities = true;
                 //_idsAparmentSelect.Clear();
+
+                if (allActivities || _idsActivitiesSelect.Count > 3)
+                {
+                    allApartments = false;
+                    _toastService.ShowWarning("Se deben seleccionar máximo 3 Actividades si elige todos los Departamentos", "Advertencia");
+                    return;
+                }
+
                 if (allApartments == true)
                     foreach (var apartment in apartments)
                     {
                         _idsAparmentSelect.Add(apartment.IdApartment);
-                    }
+                    }                
 
                 await ShowMessage();
             }
@@ -608,10 +665,30 @@ namespace Obra.Client.Pages
 
         public async Task ShowReportAndHideApartment()
         {
+
+            if (_idsAparmentSelect.Count == 0)
+            {
+                _toastService.ShowError("Es necesario elegir un departamento antes", "¡Error!");
+                return;
+            }
+            if (_idsActivitiesSelect.Count == 0)
+            {
+                _toastService.ShowError("Es necesario elegir una actividad antes", "¡Error!");
+                return;
+            }
+            if (_idsElementsSelect.Count == 0)
+            {
+                _toastService.ShowError("Es necesario elegir un elemento antes", "¡Error!");
+                return;
+            }
+            if (_idsSubElementsSelect.Count == 0 && !withoutSubelements)
+            {
+                _toastService.ShowError("Es necesario elegir un subelemento antes", "¡Error!");
+                return;
+            }
             buttonReport = true;
             apartmentDetails = false;
             loading = true;
-
             if (allApartments == true)
             {
                 foreach (var item in apartments)
@@ -650,6 +727,7 @@ namespace Obra.Client.Pages
             detalladoDepartamentos = await _reportesService.PostDataDetallesDepartamentos(data);
 
             loading = false;
+                
         }
 
         public async Task CameraButton(int? idProgressLog)
