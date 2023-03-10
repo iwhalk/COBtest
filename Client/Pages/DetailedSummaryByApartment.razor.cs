@@ -128,10 +128,10 @@ namespace Obra.Client.Pages
                     _idsAparmentSelect.Remove(id);
                     allApartments = false;
                     allElements = false;
-                    allSubElements = false;
-                    allActivities = false;
+                    allSubElements = false;                    
                     if (_idsAparmentSelect.Count == 0)
                     {
+                        allActivities = false;
                         showActivities = false;
                         _idsActivitiesSelect.Clear();
                         _idsElementsSelect.Clear();
