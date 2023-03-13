@@ -601,6 +601,7 @@ namespace ReportesObra.Services
         public string getStausName(int idProgressReport)
         {
             var result = listProgressLog.LastOrDefault(x => x.IdProgressReport == idProgressReport);
+            var defaultName = _dbContext.Statuses.FirstOrDefault(x => x.IdStatus == 1).StatusName;
             if (result == null)
                 return "Pendiente";
             int? idStatus = result.IdStatus;
