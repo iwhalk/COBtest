@@ -14,7 +14,7 @@ namespace Obra.Client.Services
 
         public async Task<List<Status>> GetStatusesAsync()
         {
-            return await _repository.GetAsync<List<Status>>(path: "api/Statuses");
+            return await _repository.GetAsync<List<Status>>(path: "api/Status");
         }
         public async Task<Status> GetStatusAync(int idStatus)
         {
