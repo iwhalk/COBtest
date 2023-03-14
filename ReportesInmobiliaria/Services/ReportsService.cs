@@ -32,7 +32,12 @@ namespace ReportesObra.Services
         List<SharedLibrary.Models.Activity> listActivities;
         List<SubElement> listSubElements;
         List<Apartment> listApartments;
+        List<Status> listStatuses;
         private static string _titleDetails = "(All)";
+        private string _status1 = "Not Started";
+        private string _status2 = "Started";
+        private string _status3 = "Finished";
+
         //private readonly InmobiliariaDbContextProcedures _dbContextProcedure;
 
         public ReportsService(ObraDbContext dbContext, IHttpContextAccessor httpContextAccessor, ReportesFactory reportesFactory)
@@ -47,6 +52,13 @@ namespace ReportesObra.Services
             listActivities = _dbContext.Activities.ToList();
             listSubElements = _dbContext.SubElements.ToList();
             listApartments = _dbContext.Apartments.ToList();
+            listStatuses = _dbContext.Statuses.ToList();
+            if (listStatuses != null)
+            {
+                _status1 = listStatuses.ElementAtOrDefault(0) == null ? _status1 : listStatuses.ElementAt(0).StatusName;
+                _status2 = listStatuses.ElementAtOrDefault(1) == null ? _status2 : listStatuses.ElementAt(1).StatusName;
+                _status3 = listStatuses.ElementAtOrDefault(2) == null ? _status3 : listStatuses.ElementAt(2).StatusName;
+            }
         }
         //Task<List<DetalladoDepartamentos>>
         public async Task<List<DetalladoDepartamentos>> GetDataDetallesDepartamento(int idBuilding, List<int>? idApartments, List<int>? idAreas, List<int>? idActivities, List<int>? idElements, List<int>? idSubElements)
@@ -89,13 +101,13 @@ namespace ReportesObra.Services
                 switch (opcion)
                 {
                     case 1:
-                        detalladoDepartamentos = detalladoDepartamentos.Where(x => x.estatus == "Pendiente").ToList();
+                        detalladoDepartamentos = detalladoDepartamentos.Where(x => x.estatus == _status1).ToList();
                         break;
                     case 2:
-                        detalladoDepartamentos = detalladoDepartamentos.Where(x => x.estatus == "En curso").ToList();
+                        detalladoDepartamentos = detalladoDepartamentos.Where(x => x.estatus == _status2).ToList();
                         break;
                     case 3:
-                        detalladoDepartamentos = detalladoDepartamentos.Where(x => x.estatus == "Terminado").ToList();
+                        detalladoDepartamentos = detalladoDepartamentos.Where(x => x.estatus == _status3).ToList();
                         break;
                     default:
                         break;
@@ -152,13 +164,13 @@ namespace ReportesObra.Services
                 switch (opcion)
                 {
                     case 1:
-                        detalladoActividades = detalladoActividades.Where(x => x.estatus == "Pendiente").ToList();
+                        detalladoActividades = detalladoActividades.Where(x => x.estatus == _status1).ToList();
                         break;
                     case 2:
-                        detalladoActividades = detalladoActividades.Where(x => x.estatus == "En curso").ToList();
+                        detalladoActividades = detalladoActividades.Where(x => x.estatus == _status2).ToList();
                         break;
                     case 3:
-                        detalladoActividades = detalladoActividades.Where(x => x.estatus == "Terminado").ToList();
+                        detalladoActividades = detalladoActividades.Where(x => x.estatus == _status3).ToList();
                         break;
                     default:
                         break;
@@ -601,20 +613,20 @@ namespace ReportesObra.Services
         public string getStausName(int idProgressReport)
         {
             var result = listProgressLog.LastOrDefault(x => x.IdProgressReport == idProgressReport);
-            var defaultName = _dbContext.Statuses.FirstOrDefault(x => x.IdStatus == 1).StatusName;
+            //Se espera que el primer status en la BD sea "No iniciada"
             if (result == null)
-                return "Pendiente";
+                return _status1;
             int? idStatus = result.IdStatus;
             switch (idStatus)
             {
                 case 1:
-                    return "Pendiente";
+                    return _status1;
                 case 2:
-                    return "En curso";
+                    return _status2;
                 case 3:
-                    return "Terminado";
+                    return _status3;
                 default:
-                    return "Pendiente";
+                    return _status1;
             }
         }
 

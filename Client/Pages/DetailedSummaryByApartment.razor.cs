@@ -109,7 +109,6 @@ namespace Obra.Client.Pages
                 _status2 = resultStatuses.ElementAtOrDefault(1) == null ? _status2 : resultStatuses.ElementAt(1).StatusName;
                 _status3 = resultStatuses.ElementAtOrDefault(2) == null ? _status3 : resultStatuses.ElementAt(2).StatusName;
             }
-            ;
         }
 
         public async Task AddIdSelect(int id, int filter)
@@ -657,7 +656,7 @@ namespace Obra.Client.Pages
             loading = true;
             buttonReport = false;
 
-            var pdf = await _reportesService.PostReporteDetallesPorDepartamento(detalladoDepartamentos, null);
+            var pdf = await _reportesService.PostReporteDetallesPorDepartamento(detalladoDepartamentos, statusOption);
 
             if (pdf != null)
             {
