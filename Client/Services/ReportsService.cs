@@ -25,7 +25,10 @@ namespace Obra.Client.Services
         }
         public async Task<byte[]> PostReporteDetallesPorDepartamento(List<DetalladoDepartamentos> detalladoDepartamentos, int? opcion)
         {
-            return await _repository.PostAsync<byte[]>(detalladoDepartamentos, path: "api/Reports/ReporteDetallesDepartamentos");
+            if(opcion != null)
+                return await _repository.PostAsync<byte[]>(detalladoDepartamentos, path: "api/Reports/ReporteDetallesDepartamentos?opcion=" + opcion.ToString());
+            else
+                return await _repository.PostAsync<byte[]>(detalladoDepartamentos, path: "api/Reports/ReporteDetallesDepartamentos");
         }
         //Destalles por actividad
         public async Task<List<DetalladoActividades>> PostDataDetallesActividades(ActivitiesDetail reporteDetalle)
@@ -34,7 +37,10 @@ namespace Obra.Client.Services
         }
         public async Task<byte[]> PostReporteDetallesPorActividadesAsync(List<DetalladoActividades> detalladoActividades, int? opcion)
         {
-            return await _repository.PostAsync<byte[]>(detalladoActividades, path: "api/Reports/ReporteDetallesActividades");
+            if (opcion != null)
+                return await _repository.PostAsync<byte[]>(detalladoActividades, path: "api/Reports/ReporteDetallesActividades?opcion=" + opcion.ToString());
+            else
+                return await _repository.PostAsync<byte[]>(detalladoActividades, path: "api/Reports/ReporteDetallesActividades");
         }
 
         public async Task<byte[]> PostReporteDetallesAsync(ActivitiesDetail reporteDetalle)

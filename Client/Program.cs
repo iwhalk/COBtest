@@ -71,5 +71,6 @@ builder.Services.AddScoped<IBlobsService, BlobsService>();
 builder.Services.AddScoped<IProgressReportService, ProgressReportService>();
 builder.Services.AddScoped<IReportsService, ReportsService>();
 builder.Services.AddScoped<IObjectAccessService, ObjectAccessService>();
+builder.Services.AddScoped<IStatusesService, StatusesService>();
 
 await builder.Build().RunAsync();

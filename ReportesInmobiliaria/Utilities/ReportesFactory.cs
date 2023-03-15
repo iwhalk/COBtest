@@ -323,7 +323,7 @@ namespace ReportesObra.Utilities
                 // Put header in header frame
                 paragraph = headerFrame.AddParagraph("Reporte Detallado");//Titulo
                 paragraph.AddLineBreak();
-                paragraph.AddText("Por Departamento Pendientes");
+                paragraph.AddText("Por Departamento");
                 paragraph.AddLineBreak();
                 paragraph.AddText(_title);
                 paragraph.Format.Font.Name = "DejaVu Serif";
@@ -335,7 +335,7 @@ namespace ReportesObra.Utilities
             {
                 paragraph = headerFrame.AddParagraph("Reporte Detallado ");//Titulo
                 paragraph.AddLineBreak();
-                paragraph.AddText("Por Actividad Pendientes");
+                paragraph.AddText("Por Actividad");
                 paragraph.AddLineBreak();
                 paragraph.AddText(_title);
                 paragraph.Format.Font.Name = "DejaVu Serif";

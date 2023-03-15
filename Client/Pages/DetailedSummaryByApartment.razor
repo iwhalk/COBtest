@@ -126,7 +126,7 @@
                             </div>
                         </div>
                     </div>
-                </div>
+                </div>                
                 <div class="w-full flex justify-end py-3">
                     <button @onclick="() => ShowReportAndHideApartment()" class="mx-auto bg-[#B9352E] hover:bg-red-500 p-2 rounded-2xl text-lg text-white font-medium leading-6 border border-stone-400 hover:border-white">Generar Reporte</button>
                     @if (alert == true)
@@ -229,7 +229,7 @@ else if (buttonReport == true)
                                         }
                                     </div>
                                     <div class="flex flex-row justify-center items-center w-3/6">
-                                        @if (list.estatus.Equals("En curso") == true)
+                                        @if (list.estatus.Equals(_status2) == true)
                                         {
                                             <div class="flex justify-end text-white w-[@((list.avance * 100) / Convert.ToInt16(list.total))%] bg-[#115D28] h-8 xl:h-5">@list.avance</div>
                                             <div class="flex justify-end text-white w-[@(100 - (list.avance * 100) / Convert.ToInt16(list.total))%] bg-[#CB3030] h-8 xl:h-5">@list.total</div>
@@ -242,7 +242,7 @@ else if (buttonReport == true)
                                                 </button>
                                             </div>
                                         }
-                                        else if (list.estatus.Equals("Terminado") == true)
+                                        else if (list.estatus.Equals(_status3) == true)
                                         {
                                             <div class="flex justify-end text-white w-[100%] bg-[#115D28] h-8 xl:h-5">@list.avance</div>
                                             <div class="flex justify-end text-white w-[0%] bg-[#CB3030] h-8 xl:h-5">@list.total</div>
@@ -275,6 +275,28 @@ else if (buttonReport == true)
                     </div>
                 </div>
             }
+            <div class="flex justify-center">
+                    @*<<div>
+                    label class="mx-1 rounded-xl text-white font-medium leading-6 bg-[#162D4E] text-center py-2">Estatus de actividad:</label>
+                    </div>*@
+                    <span class="w-40 flex flex-col">
+                        <input style="accent-color: red" type="radio" name="status" value="0" class="h-6 w-6 self-center mb-4 bg-[#B9352E]" checked @onchange="e => { CheckboxClicked(null, e); }">
+                        <label class="mx-1 rounded-xl text-white font-medium leading-6 bg-[#55595e] text-center py-2" for="todos">Todas</label>
+                    </span>
+                    <span class="w-40 flex flex-col">
+                    <input style="accent-color: red" type="radio" name="status" value="1" class="h-6 w-6 self-center mb-4" @onchange="e => { CheckboxClicked(1, e); }">
+                        <label class="mx-1 rounded-xl text-white font-medium leading-6 bg-[#55595e] text-center py-2" for="todos">@_status1</label>
+                    </span>
+                    <span class="w-40 flex flex-col">
+                    <input style="accent-color: red" type="radio" name="status" value="2" class="h-6 w-6 self-center mb-4" @onchange="e => { CheckboxClicked(2, e); }">
+                        <label class="mx-1 rounded-xl text-white font-medium leading-6 bg-[#55595e] text-center py-2" for="todos">@_status2</label>
+                    </span>
+                    <span class="w-40 flex flex-col">
+                    <input style="accent-color: red" type="radio" name="status" value="3" class="h-6 w-6 self-center mb-4" @onchange="e => { CheckboxClicked(3, e); }">
+                        <label class="mx-1 rounded-xl text-white font-medium leading-6 bg-[#55595e] text-center py-2" for="todos">@_status3</label>
+                    </span>
+                </div>
+                <br>
             <div class="w-full flex justify-end py-2">
                 <div class="w-full flex inset-x-0 bottom-12">
                     <button @onclick="() => ChangeView()" class="mx-auto bg-[#B9352E] hover:bg-red-500 w-40 p-2 rounded-2xl text-lg text-white font-medium leading-6 border hover:border-white">Descargar</button>

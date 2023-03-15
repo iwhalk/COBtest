@@ -1,5 +1,6 @@
 ﻿using Blazored.Toast;
 using Blazored.Toast.Services;
+using Microsoft.AspNetCore.Components;
 using Microsoft.Fast.Components.FluentUI;
 using Microsoft.JSInterop;
 using Obra.Client.Components;
@@ -55,7 +56,10 @@ namespace Obra.Client.Pages
         private bool buttonReport = false;
         private bool showActivities = false;
         private bool withoutSubelements = false;
-        private int _maximumActivities = 3;
+        private int? statusOption = null;
+        private string _status1 = "Not Started";
+        private string _status2 = "Started";
+        private string _status3 = "Finished";
         public ObjectAccessUser Accesos { get; private set; }
 
         private bool showModal { get; set; } = false;
@@ -98,6 +102,13 @@ namespace Obra.Client.Pages
             activities = activities.Where(x => activitiesId.Contains(x.IdActivity)).ToList();
             Areas = await _areasService.GetAreasAsync();
             Areas = Areas.Where(x => areasId.Contains(x.IdArea)).ToList();
+            var resultStatuses = await _accessService.GetStatuses();
+            if (resultStatuses != null)
+            {
+                _status1 = resultStatuses.ElementAtOrDefault(0) == null ? _status1 : resultStatuses.ElementAt(0).StatusName;
+                _status2 = resultStatuses.ElementAtOrDefault(1) == null ? _status2 : resultStatuses.ElementAt(1).StatusName;
+                _status3 = resultStatuses.ElementAtOrDefault(2) == null ? _status3 : resultStatuses.ElementAt(2).StatusName;
+            }
         }
 
         public async Task AddIdSelect(int id, int filter)
@@ -634,6 +645,7 @@ namespace Obra.Client.Pages
             allElements = false;
             allActivities = false;
             showActivities= false;
+            statusOption = null;
 
             detalladoDepartamentos.Clear();
         }
@@ -644,7 +656,7 @@ namespace Obra.Client.Pages
             loading = true;
             buttonReport = false;
 
-            var pdf = await _reportesService.PostReporteDetallesPorDepartamento(detalladoDepartamentos, null);
+            var pdf = await _reportesService.PostReporteDetallesPorDepartamento(detalladoDepartamentos, statusOption);
 
             if (pdf != null)
             {
@@ -658,7 +670,7 @@ namespace Obra.Client.Pages
             {
                 _toastService.ShowToast<ToastReport>(new ToastInstanceSettings(5, false));
             }
-
+            statusOption = null;
             loading = false;
             buttonReport = true;
         }
@@ -686,6 +698,7 @@ namespace Obra.Client.Pages
                 _toastService.ShowError("Es necesario elegir un subelemento antes", "¡Error!");
                 return;
             }
+            var x = statusOption;
             buttonReport = true;
             apartmentDetails = false;
             loading = true;
@@ -798,6 +811,11 @@ namespace Obra.Client.Pages
         public async Task NotificationImages()
         {
             _toastService.ShowToast<ToastImages>(new ToastInstanceSettings(5, false));
+        }
+
+        public void CheckboxClicked(int? idStatus, ChangeEventArgs e)
+        {
+            statusOption = idStatus;
         }
     }
 }

@@ -288,6 +288,7 @@ builder.Services.AddScoped<IBlobsService, BlobsService>();
 builder.Services.AddScoped<IProgressReportService, ProgressReportService>();
 builder.Services.AddScoped<IReportsService, ReportsService>();
 builder.Services.AddScoped<IImageService, ImageService>();
+builder.Services.AddScoped<IStatusService, StatusService>();
 
 var app = builder.Build();
 

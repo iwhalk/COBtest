@@ -31,6 +31,7 @@ namespace ReportesObra.Services
                 Pieces = x.Pieces,
                 Observation = x.Observation,
                 IdSupervisor = x.IdSupervisor,
+                IdStatusNavigation = x.IdStatusNavigation,
                 IdBlobs = x.IdBlobs.Select(y => new Blob
                 {
                     IdBlob = y.IdBlob,

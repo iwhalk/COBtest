@@ -90,6 +90,7 @@ builder.Services.AddScoped<IElementsService, ElementsService>();
 builder.Services.AddScoped<ISubElementsService, SubElementsService>();
 builder.Services.AddScoped<IReportesService, ReportsService>();
 builder.Services.AddScoped<IImageService, ImageService>();
+builder.Services.AddScoped<IStatusService, StatusService>();
 
 builder.Services.AddScoped<ReportesFactory>();
 
@@ -130,6 +131,7 @@ app.MapProgressReportsEndpoints();
 app.MapBlobsEndpoints();
 app.MapReporteEndpoints();
 app.MapImageEndpoints();
+app.MapStatusEndpoints();
 
 #region Inmobiliaria
 

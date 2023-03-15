@@ -1,5 +1,6 @@
 ﻿using Blazored.Toast;
 using Blazored.Toast.Services;
+using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.Fast.Components.FluentUI;
 using Microsoft.JSInterop;
@@ -56,6 +57,10 @@ namespace Obra.Client.Pages
         private bool allActivities = false;
         private bool apartmentDetails = true;
         private bool buttonReport = false;
+        private int? statusOption = null;
+        private string _status1 = "Not Started";
+        private string _status2 = "Started";
+        private string _status3 = "Finished";
 
         public ObjectAccessUser Accesos { get; private set; }
 
@@ -101,6 +106,13 @@ namespace Obra.Client.Pages
             activities = activities.Where(x => activitiesId.Contains(x.IdActivity)).ToList();
             Areas = await _areasService.GetAreasAsync();
             Areas = Areas.Where(x => areasId.Contains(x.IdArea)).ToList();
+            var resultStatuses = await _accessService.GetStatuses();
+            if (resultStatuses != null)
+            {
+                _status1 = resultStatuses.ElementAtOrDefault(0) == null ? _status1 : resultStatuses.ElementAt(0).StatusName;
+                _status2 = resultStatuses.ElementAtOrDefault(1) == null ? _status2 : resultStatuses.ElementAt(1).StatusName;
+                _status3 = resultStatuses.ElementAtOrDefault(2) == null ? _status3 : resultStatuses.ElementAt(2).StatusName;
+            }
         }
 
         public async Task AddIdSelect(int id, int filter)
@@ -579,6 +591,7 @@ namespace Obra.Client.Pages
             allSubElements = false;
             allElements = false;
             allActivities = false;
+            statusOption = null;
 
             detalladoActividades.Clear();
         }
@@ -589,7 +602,7 @@ namespace Obra.Client.Pages
             loading = true;
             buttonReport = false;
 
-            var pdf = await _reportesService.PostReporteDetallesPorActividadesAsync(detalladoActividades, null);
+            var pdf = await _reportesService.PostReporteDetallesPorActividadesAsync(detalladoActividades, statusOption);
 
             if (pdf != null)
             {
@@ -603,7 +616,7 @@ namespace Obra.Client.Pages
             {
                 _toastService.ShowToast<ToastReport>(new ToastInstanceSettings(5, false));
             }
-
+            statusOption = null;
             loading = false;
             buttonReport = true;
         }
@@ -790,6 +803,11 @@ namespace Obra.Client.Pages
             {
                 _toastService.ShowToast<ToastImages>(new ToastInstanceSettings(5, false));
             }
+        }
+
+        public void CheckboxClicked(int? idStatus, ChangeEventArgs e)
+        {
+            statusOption = idStatus;
         }
 
         public async Task NotificationImages()

@@ -22,7 +22,10 @@ namespace ApiGateway.Services
         }
         public async Task<ApiResponse<byte[]>> PostReporteDetallesPorDepartamentosAsync(List<DetalladoDepartamentos> detalladoDepartamentos, int? opcion)
         {
-            return await PostAsync<byte[]>(detalladoDepartamentos, path: "ReporteDetalladoPorDepartamento");
+            if (opcion != null)
+                return await PostAsync<byte[]>(detalladoDepartamentos, path: "ReporteDetalladoPorDepartamento?opcion=" + opcion.ToString());
+            else
+                return await PostAsync<byte[]>(detalladoDepartamentos, path: "ReporteDetalladoPorDepartamento");
         }
         public async Task<ApiResponse<List<DetalladoActividades>>> PostDataDetallesPorActividadesAsync(ActivitiesDetail reporteDetalle)
         {
@@ -30,7 +33,10 @@ namespace ApiGateway.Services
         }
         public async Task<ApiResponse<byte[]>> PostReporteDetallesPorActividadesAsync(List<DetalladoActividades> detalladoActividades, int? opcion)
         {
-            return await PostAsync<byte[]>(detalladoActividades, path: "ReporteDetalladoPorActividad");
+            if (opcion != null)
+                return await PostAsync<byte[]>(detalladoActividades, path: "ReporteDetalladoPorActividad?opcion=" + opcion.ToString());
+            else
+                return await PostAsync<byte[]>(detalladoActividades, path: "ReporteDetalladoPorActividad");
         }
 
         //Reports
