@@ -293,9 +293,9 @@ else if (buttonReport == true)
             }
 
             <div class="flex justify-center">
-                <div>
-                    <label class="mx-1 rounded-xl text-white font-medium leading-6 bg-[#162D4E] text-center py-2">Estatus de actividad:</label>@*text-xs md:text-xs xl:text-lg 2xl:text-xl*@
-                </div>
+                @*<div>
+                    <label class="mx-1 rounded-xl text-white font-medium leading-6 bg-[#162D4E] text-center py-2">Estatus de actividad:</label>
+                </div>*@
                 <span class="w-40 flex flex-col">
                     <input style="accent-color: red" type="radio" name="status" value="0" class="h-6 w-6 self-center mb-4 bg-[#B9352E]" checked @onchange="e => { CheckboxClicked(null, e); }">
                     <label class="mx-1 rounded-xl text-white font-medium leading-6 bg-[#55595e] text-center py-2" for="todos">Todas</label>
