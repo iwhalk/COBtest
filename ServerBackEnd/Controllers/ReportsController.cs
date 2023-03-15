@@ -33,9 +33,9 @@ namespace ApiGateway.Controllers
         }
 
         [HttpPost("ReporteDetallesDepartamentos")]
-        public async Task<ActionResult> PostReporteDetallesPorDepartamento(List<DetalladoDepartamentos> detalladoDepartamentos)
+        public async Task<ActionResult> PostReporteDetallesPorDepartamento(List<DetalladoDepartamentos> detalladoDepartamentos, int? opcion)
         {
-            var result = await _reportesService.PostReporteDetallesPorDepartamentosAsync(detalladoDepartamentos, null);
+            var result = await _reportesService.PostReporteDetallesPorDepartamentosAsync(detalladoDepartamentos, opcion);
 
             if (result.Succeeded)
             {
@@ -59,9 +59,9 @@ namespace ApiGateway.Controllers
         }
 
         [HttpPost("ReporteDetallesActividades")]
-        public async Task<ActionResult> PostReporteDetallesPorActividad(List<DetalladoActividades> detalladoActividades)
+        public async Task<ActionResult> PostReporteDetallesPorActividad(List<DetalladoActividades> detalladoActividades, int? opcion)
         {
-            var result = await _reportesService.PostReporteDetallesPorActividadesAsync(detalladoActividades, null);
+            var result = await _reportesService.PostReporteDetallesPorActividadesAsync(detalladoActividades, opcion);
 
             if (result.Succeeded)
             {

@@ -616,7 +616,7 @@ namespace Obra.Client.Pages
             {
                 _toastService.ShowToast<ToastReport>(new ToastInstanceSettings(5, false));
             }
-
+            statusOption = null;
             loading = false;
             buttonReport = true;
         }
