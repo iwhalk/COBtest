@@ -35,7 +35,7 @@
                     {
                         <div class="@(_idsActivitySelect.ContainsKey(activity.IdActivity) ? "h-80" : "h-12") w-full inline-flex">
                             <div class="w-2/6 xl:w-1/6 p-0.5">
-                                <div class="@(_idsAparmentSelect.ContainsKey(activity.IdActivity) && _isFullAparment == false ? "bg-[#9CA2A8]" : "bg-[#55595E]") border border-stone-400 h-full flex justfy-center">
+                                <div class="@(_idsActivitySelect.ContainsKey(activity.IdActivity) && _isFullAparment == false ? "bg-[#9CA2A8]" : "bg-[#55595E]") border border-stone-400 h-full flex justfy-center">
                                     <button @onclick="() => AddIdActivitySelect(activity.IdActivity)" class="w-full">
                                         <p class="text-xs md:text-lg text-white font-medium leading-6 text-center">@activity.ActivityName</p>
                                     </button>
