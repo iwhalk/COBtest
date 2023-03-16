@@ -134,6 +134,7 @@ namespace Obra.Client.Pages
                             _idsActivitySelect.Add(activity.IdActivity, listAparmentPorcentage);
                         }
                     }
+                    _isFullAparment = true;
                 }
             }
             _isLoadingProcess = false;

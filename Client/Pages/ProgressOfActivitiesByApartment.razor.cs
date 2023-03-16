@@ -56,8 +56,7 @@ namespace Obra.Client.Pages
         {
             _isLoadingProcess = true;
             if (!_idsAparmentSelect.ContainsKey(idAparment))
-            {
-                //change for real endpoint for this view
+            {                
                 var infoProgress = await _reportService.GetProgressOfActivityByAparmentDataViewAsync(Accesos.IdBuilding, idAparment);
                 if (infoProgress != null)
                 {
@@ -133,6 +132,7 @@ namespace Obra.Client.Pages
                             _idsAparmentSelect.Add(apartment.IdApartment, listAparmentPorcentage);
                         }
                     }
+                    _isFullAparment = true;
                 }
             }
             _isLoadingProcess = false;
