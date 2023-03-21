@@ -155,11 +155,11 @@
                                         @*<input type="file" class="h-20 w-48 self-center rounded px-2 text-center bg-white"> ShowFormBlob || (*@
                                         @if (ShowFormBlob && (!string.IsNullOrEmpty(piecesCondition) && piecesCondition != "0"))
                                         {
-                                            <FormBlob @ref="FormBlob" InputBlobs="@CurrentProgressLog.IdBlobs" AddedBlob="HandleInputFile" ColorSpan="color:black" Cursor="pointer" IsDisabled=false OnImageClick="OnClickImage"></FormBlob>
+                                            <FormBlob @ref="FormBlob" InputBlobs="@CurrentProgressLog.IdBlobs" ShowModalWarning="ValidNumberOfPhotos" AddedBlob="HandleInputFile" ColorSpan="color:black" Cursor="pointer" IsDisabled=false OnImageClick="OnClickImage"></FormBlob>
                                         }
                                         else
                                         {
-                                            <FormBlob @ref="FormBlob" InputBlobs="@CurrentProgressLog.IdBlobs" AddedBlob="HandleInputFile" ColorSpan="color:gray" Cursor="not-allowed" IsDisabled=true OnImageClick="OnClickImage"></FormBlob>
+                                            <FormBlob @ref="FormBlob" InputBlobs="@CurrentProgressLog.IdBlobs" ShowModalWarning="ValidNumberOfPhotos" AddedBlob="HandleInputFile" ColorSpan="color:gray" Cursor="not-allowed" IsDisabled=true OnImageClick="OnClickImage"></FormBlob>
                                         }
                                     </span>
 
@@ -198,6 +198,30 @@
             </div>
         </div>
     }
+
+    @if (ShowModalValidPhoto)
+    {
+        <div class="relative z-10" role="dialog" aria-modal="true">
+            <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"></div>
+            <div class="fixed inset-0 z-10 overflow-y-auto">
+                <div class="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
+                    <div class="text-center mx-auto bg-white h-full w-full md:max-w-2xl sm:max-w-sm mt-20 rounded-lg border border-grey-300 drop-shadow-lg border-2">
+                        <div class="bg-[#162D4E] flex justify-center items-center text-white h-20 rounded-lg">
+                            <h2 class="font-blod text-2xl">¡Advertencia!</h2>
+                        </div>
+                        <div>
+                            <br>
+                            <p class="font-normal text-xl">Solo se pueden guardar 3 imagenes</p>
+                        </div>
+                        <div class="mt-4 flex justify-evenly">
+                            <button @onclick="() => ShowModalValidPhoto = !ShowModalValidPhoto" type="button" class="text-white text-l px-5 py-2.5 rounded-lg bg-[#162D4E]">Ok</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+
     @if (ShowModalWarnigEdit)
     {
         <div class="relative z-10" role="dialog" aria-modal="true">

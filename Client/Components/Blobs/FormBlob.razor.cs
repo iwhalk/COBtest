@@ -35,8 +35,10 @@ namespace Obra.Client.Components.Blobs
         public ICollection<Blob> CurrentBlobs { get; set; }
         public string ValidationError { get; private set; }
 
+        [Parameter] public EventCallback<bool> ShowModalWarning { get; set; }
+
         public EditContext CurrentBlobFileEditContext;
-        private FluentDialog? MyFluentDialog;
+        private FluentDialog? MyFluentDialog;        
 
         public bool Loading { get; set; } = false;
 
@@ -45,6 +47,14 @@ namespace Obra.Client.Components.Blobs
             _blobService = blobService;
         }
 
+        private async void InvokeValidNumberPhotos()
+        {
+            if(CurrentBlobs?.Count >= 3)
+            {
+                await ShowModalWarning.InvokeAsync(true);
+            }
+            return;
+        }
 
         protected override async Task OnInitializedAsync()
         {
@@ -71,8 +81,12 @@ namespace Obra.Client.Components.Blobs
             };
             CurrentBlobFileEditContext = new EditContext(CurrentBlobFile);
         }
+
         private async Task OnChangeAsync(InputFileChangeEventArgs eventArgs)
         {
+
+        
+
             Loading = true;
             CurrentBlobFile.BrowserFile = eventArgs.File;
             CurrentBlobFileEditContext.NotifyFieldChanged(FieldIdentifier.Create(() => CurrentBlobFile.BrowserFile));
@@ -132,8 +146,7 @@ namespace Obra.Client.Components.Blobs
         private async Task OnClicked(int IdBlob)
         {
             await OnImageClick.InvokeAsync(IdBlob);
-        }
-
+        }        
         private bool FileValidation(IBrowserFile file)
         {
             var extension = Path.GetExtension(file.Name);
