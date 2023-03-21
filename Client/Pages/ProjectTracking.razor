@@ -198,6 +198,29 @@
             </div>
         </div>
     }
+    @if (ShowModalWarnigEdit)
+    {
+        <div class="relative z-10" role="dialog" aria-modal="true">
+            <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"></div>
+            <div class="fixed inset-0 z-10 overflow-y-auto">
+                <div class="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
+                    <div class="text-center mx-auto bg-white h-[250px] w-[500px] md:max-w-2xl sm:max-w-sm mt-20 rounded-lg border border-grey-300 drop-shadow-lg border-2">
+                        <div class="bg-[#162D4E] flex justify-center items-center text-white h-20 rounded-lg">
+                            <h2 class="font-blod text-2xl">¡Advertencia!</h2>
+                        </div>
+                        <div>
+                            <br>
+                            <p class="font-normal text-xl">¿Esta seguro de que quiere salir?, la información no guardada se perdera</p>
+                        </div>
+                        <div class="mt-4 flex justify-evenly">
+                            <button @onclick="() => BackPage()" type="button" class="text-white text-l px-5 py-2.5 rounded-lg bg-[#162D4E]">Si</button>
+                            <button @onclick="() => CloseModalWarningEdit()" type="button" class="text-white text-l px-5 py-2.5 rounded-lg bg-[#162D4E]">No</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
     @if (Loading)
     {
         <div class="loading">
@@ -209,7 +232,7 @@
         </div>
     }
 
-    <a class="fixed z-10 inset-x-1 top-20 w-12" href="/">
+    <a class="fixed z-10 inset-x-1 top-20 w-12" @onclick="() => ValidBackPage()">
         <svg xmlns="http://www.w3.org/2000/svg" width="46" height="46" fill="#55595E" class="bi bi-arrow-left" viewBox="0 0 16 16">
             <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z" />
         </svg>

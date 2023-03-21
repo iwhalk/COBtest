@@ -11,6 +11,7 @@ using SharedLibrary.Models;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Reflection.Metadata;
+using TanvirArjel.Blazor.Extensions;
 using Activity = SharedLibrary.Models.Activity;
 using Blob = SharedLibrary.Models.Blob;
 
@@ -80,8 +81,10 @@ namespace Obra.Client.Pages
         public bool Loading { get; private set; }
         public int IdBlob { get; private set; }
         public bool ShowModalPicture { get; private set; } = false;
+        public bool ShowModalWarnigEdit { get; set; } = false;
 
-        private void CloseModalPicture() => ShowModalPicture = !ShowModalPicture; 
+        private void CloseModalPicture() => ShowModalPicture = !ShowModalPicture;
+        private void CloseModalWarningEdit() => ShowModalWarnigEdit = !ShowModalWarnigEdit;
 
         private FormBlob FormBlob;
         private ImageAnnotation ImageAnnotationComponent;
@@ -94,6 +97,8 @@ namespace Obra.Client.Pages
         private bool ShowDetalle;
         private bool ShowFormBlob = true;
         private string? piecesCondition;
+
+        private bool IsEditTrackProject = false;
 
         protected override async Task OnInitializedAsync()
         {
@@ -268,7 +273,7 @@ namespace Obra.Client.Pages
 
         public async void PiecesInput(ChangeEventArgs e)
         {
-
+            IsEditTrackProject = true;
             var NewProgressLog = NewProgressLogs.FirstOrDefault(x => x.IdProgressReport == CurrentProgressReport.IdProgressReport);
             if (NewProgressLog != null)
             {
@@ -310,7 +315,7 @@ namespace Obra.Client.Pages
         }
         public async void ObservationInput(ChangeEventArgs e)
         {
-
+            IsEditTrackProject = true;
             var NewProgressLog = NewProgressLogs.FirstOrDefault(x => x.IdProgressReport == CurrentProgressReport.IdProgressReport);
             if (NewProgressLog != null)
             {
@@ -334,6 +339,7 @@ namespace Obra.Client.Pages
         }
         public async void CheckboxClicked(int idStatus, ChangeEventArgs e)
         {
+            IsEditTrackProject = true;
             CurrentProgressLog.IdStatus = idStatus;
             var NewProgressLog = NewProgressLogs.FirstOrDefault(x => x.IdProgressReport == CurrentProgressReport.IdProgressReport);
             ShowFormBlob = (idStatus != 1) ? true :  false;
@@ -360,6 +366,7 @@ namespace Obra.Client.Pages
         public async void HandleInputFile(Blob blob)
         {
             //CurrentProgressLog.IdBlobs.Add(blob);
+            IsEditTrackProject = true;
             var NewProgressLog = NewProgressLogs.FirstOrDefault(x => x.IdProgressReport == CurrentProgressReport.IdProgressReport);
              if (NewProgressLog != null)
             {
@@ -383,26 +390,25 @@ namespace Obra.Client.Pages
             //StateHasChanged();
         }
         public void OnClickImage(int value)
-        {
+        {            
             IdBlob = value;
             ShowModalPicture = ShowModalPicture ? false : true;
         }
         public async Task OnAnnotatedImageSave()        
         {
-            //ShowBlobs = false;
+            IsEditTrackProject = true;
             var signature = await ImageAnnotationComponent._context.ToDataURLAsync();
             var blob = await _blobsService.GetBlobsAsync(IdBlob);
             await _blobsService.PostImageAsync(new() { BlobUri = blob.FirstOrDefault()?.Uri, StringBase64 = signature });
             foreach (var item in CurrentProgressLog.IdBlobs)
             {
                 item.Uri += $"?q={Guid.NewGuid().ToString().Remove(10):N}";
-            }
-            //FormBlobComponent.renderBlobsList = renderBlob;
-            //ShowBlobs = true;
+            }            
             ShowModalPicture = false;
         }
         public async Task OnAnnotatedImageDeleteAsync()
         {
+            IsEditTrackProject = true;
             ShowModalPicture = false;
             var res = await _blobsService.DeleteBlobAsync(IdBlob);
             //if(res)
@@ -410,6 +416,7 @@ namespace Obra.Client.Pages
         }
         public async void SaveButtonClicked()
         {
+            IsEditTrackProject = false;
             if (NewProgressLogs.Count < 1)
                 return;
             Loading = true;
@@ -421,11 +428,25 @@ namespace Obra.Client.Pages
                 _ = await _progressLogsService.PostProgressLogAsync(progressLog);
             }
             NewProgressLogs.Clear();
-            Loading = false;
+            Loading = false;            
             StateHasChanged();
             //_toastService.ShowSuccess("Se guardaron los campos del detalle de avance");
             _toastService.ShowToast<ToastComponent>(new ToastInstanceSettings(5, false));
             //_navigate.NavigateTo("/");
         }
+
+        private void ValidBackPage()
+        {
+            if (IsEditTrackProject)
+            {
+                ShowModalWarnigEdit = true;
+            }
+            else
+            {
+                BackPage();
+            }
+        }
+        private void BackPage() => _navigate.NavigateTo("/");
+       
     }
 }
