@@ -367,8 +367,8 @@ else if (buttonReport == true)
     @if (showModal == true)
     {
         @*Modal Ocultado*@
-        <div class="bg-zinc-300 h-screen w-screen fixed opacity-50"></div>
-        <div class="w-screen h-screen fixed inset-0 flex flex-col justify-center items-center">
+        <div class="z-10 flex justify-center items-center fixed inset-0 bg-gray-900 bg-opacity-75 transition-opacity"></div>     
+        <div class="z-10 w-screen h-screen fixed inset-0 flex flex-col justify-center items-center fixed">
             <div class="w-[40rem] h-[35rem] bg-white border border-black rounded-lg flex flex-col justify-center items-center relative">
                 <div class="absolute top-2 right-2">
                     <button @onclick="() => ChangeShowModal()">
