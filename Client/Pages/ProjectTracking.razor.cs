@@ -182,6 +182,7 @@ namespace Obra.Client.Pages
 
             StateHasChanged();
         }
+        private bool ShowModalValidPhoto { get; set; }
 
         public async Task GetCurrentProgressReport(int? idElement =  null, int? idSubElement = null)
         {
@@ -435,6 +436,14 @@ namespace Obra.Client.Pages
             //_navigate.NavigateTo("/");
         }
 
+        public void ValidNumberOfPhotos(bool value)
+        {
+            if (value)
+            {
+                ShowModalValidPhoto = true;
+                return;
+            }
+        }
         private void ValidBackPage()
         {
             if (IsEditTrackProject)

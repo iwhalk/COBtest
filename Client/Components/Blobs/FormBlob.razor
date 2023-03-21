@@ -13,10 +13,9 @@
         }
         else
         {
-            <label for="fileinput" class="label-wrapper">
+            <label @onclick="InvokeValidNumberPhotos" for="fileinput" class="label-wrapper">
                 <span class="oi oi-camera-slr border" style="@ColorSpan"> Subir imagen</span>
-                <InputFile id="fileinput" class="custom-input-hide"
-                       OnChange="@((InputFileChangeEventArgs args) => OnChangeAsync(args))" disabled="@IsDisabled" />
+                <InputFile id="fileinput" class="custom-input-hide" OnChange="@((InputFileChangeEventArgs args) => OnChangeAsync(args))" disabled="@(IsDisabled || CurrentBlobs?.Count >= 3)" />
             </label>
             @*
             <InputFile OnChange="@((InputFileChangeEventArgs args) => OnChangeAsync(args))" />*@
@@ -38,6 +37,7 @@
         }
     </div>
 </EditForm>
+
 
 <style>
     .label-wrapper:hover {
