@@ -44,4 +44,8 @@
     <ProjectReference Include="..\Shared\SharedLibrary.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\css\" />
+  </ItemGroup>
+
 </Project>

@@ -11,53 +11,54 @@
     <title>Inmuebles</title>
 </head>
 
-<header class="position-absolute -top-20 -start-10 d-none d-md-block" 
+<header class="absolute max-md:hidden" 
     style="width: 400px;
     height: 400px;
     -moz-border-radius: 50%;
     -webkit-border-radius: 50%;
     border-radius: 50%;
-    background: #E3F2F6;">
+    background: #E3F2F6;
+    top: -20% !important;
+    left: -10% !important;">
 </header>
 <body class="overflow-hidden">                              
-    <div id="Global" class="d-flex flex-column justify-content-center align-items-center min-vh-100">
-        <div id="RecuadrosDesktop" class="d-flex justify-content-center scaleLogin">
+    <div id="Global" class="flex flex-col justify-center items-center min-h-screen">
+        <div id="RecuadrosDesktop" class="flex justify-center scaleLogin">
 
-            <div id="Imagen" class="position-relative shadow-sm -ms-25 d-none d-md-block" style="left:18rem;">
-                <img src="~/img/imagenInmuebles.jpg" class="rounded-3" style="width: 40.55em;">
+            <div id="Imagen" class="relative shadow-xl bg-[url('/img/imagenInmuebles.jpg')] w-[39rem] h-[39rem] ml-[25rem] max-md:hidden rounded-lg" style="left:18rem;">
                 <label style="position: absolute; bottom: 50%; top: 30%; left: 30%; color:white; font-size: 4.5rem; font-weight: 500;">Sistema COB</label>
                 <label style="position: absolute; bottom: 50%; top: 43%; left: 50%; color:white; font-size: 2rem; font-style: italic;">Cierre de Obra Blanca</label>
             </div>            
-            <div id="FormularioDesktop" class="bg-white border rounded-3 shadow-lg my-6 position-relative d-none d-md-block" style="left:-48rem;">
+            <div id="FormularioDesktop" class="bg-white border rounded-md shadow-2xl my-6 relative max-md:hidden h-full" style="left:-48rem; top:2rem;">
                 <form id="account" method="post">
-                    <div class="d-flex flex-column p-5 px-6">
-                        <span class="my-3 mb-5 text-center fs-1 fw-bolder">Login</span>
+                    <div class="flex flex-col p-24 px-28">
+                        <span class="mb-16 text-center text-4xl font-bold">Login</span>
                         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                        <span class="d-flex border-start border-5 border-primary rounded shadow my-2 px-3 ">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-person my-auto opacity-38" viewBox="0 0 16 16">
+                        <span class="flex border-l-4 border-[#2B286F] rounded shadow-xl my-2 px-3 ">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-person my-auto" style="opacity: 0.38 !important;" viewBox="0 0 16 16">
                                 <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0zm4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4zm-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664h10z"/>
                             </svg>
-                            <input asp-for="Input.Email" class="border-start border-1 my-2 mx-3 ps-3" style="width: 15em; border: 0;" placeholder="Usuario" autocomplete="username" aria-required="true"/>
+                            <input asp-for="Input.Email" class="border-l my-2 mx-3 pl-3" style="width: 15em;" placeholder="Usuario" autocomplete="username" aria-required="true"/>
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-eye my-auto invisible" viewBox="0 0 16 16">
                                 <path d="M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 8 5.5S16 8 16 8zM1.173 8a13.133 13.133 0 0 1 1.66-2.043C4.12 4.668 5.88 3.5 8 3.5c2.12 0 3.879 1.168 5.168 2.457A13.133 13.133 0 0 1 14.828 8c-.058.087-.122.183-.195.288-.335.48-.83 1.12-1.465 1.755C11.879 11.332 10.119 12.5 8 12.5c-2.12 0-3.879-1.168-5.168-2.457A13.134 13.134 0 0 1 1.172 8z"/>
                                 <path d="M8 5.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5zM4.5 8a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0z"/>
                             </svg>
                         </span>
                         <span asp-validation-for="Input.Email" class="text-danger"></span>
-                        <span class="d-flex border-start border-5 border-primary rounded shadow my-2 px-3">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-key my-auto opacity-38" viewBox="0 0 16 16">
+                        <span class="flex border-l-4 border-[#2B286F] rounded shadow-xl my-2 px-3">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-key my-auto" style="opacity: 0.38 !important;" viewBox="0 0 16 16">
                                 <path d="M0 8a4 4 0 0 1 7.465-2H14a.5.5 0 0 1 .354.146l1.5 1.5a.5.5 0 0 1 0 .708l-1.5 1.5a.5.5 0 0 1-.708 0L13 9.207l-.646.647a.5.5 0 0 1-.708 0L11 9.207l-.646.647a.5.5 0 0 1-.708 0L9 9.207l-.646.647A.5.5 0 0 1 8 10h-.535A4 4 0 0 1 0 8zm4-3a3 3 0 1 0 2.712 4.285A.5.5 0 0 1 7.163 9h.63l.853-.854a.5.5 0 0 1 .708 0l.646.647.646-.647a.5.5 0 0 1 .708 0l.646.647.646-.647a.5.5 0 0 1 .708 0l.646.647.793-.793-1-1h-6.63a.5.5 0 0 1-.451-.285A3 3 0 0 0 4 5z"/>
                                 <path d="M4 8a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"/>
                             </svg>                                     
                             @if(Model.ShowPassword){ 
-                                <input asp-for="Input.Password" class="border-start border-1 my-2 mx-3 ps-3" style="width: 15em; border: 0;" placeholder="Contraseña" autocomplete="current-password" aria-required="true"/>
+                                <input asp-for="Input.Password" class="border-l my-2 mx-3 pl-3" style="width: 15em;" placeholder="Contraseña" autocomplete="current-password" aria-required="true"/>
                             }
                             else{
                                 @*324234<input asp-for="Input.Password" class="border-start border-1 my-2 mx-3 ps-3" style="width: 15em; border: 0;" placeholder="Contraseña" autocomplete="current-password" aria-required="true" type="text" />*@
                                 <h1>sdlkfjsdklfjsdklfj</h1>
                             }
-                            <button onclick="@Model.ChangeShowPassword()" prevent class="border border-white bg-transparent">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-eye my-auto opacity-38 invisible" viewBox="0 0 16 16">
+                            <button onclick="@Model.ChangeShowPassword()" prevent>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-eye my-auto invisible" viewBox="0 0 16 16">
                                     <path d="M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 8 5.5S16 8 16 8zM1.173 8a13.133 13.133 0 0 1 1.66-2.043C4.12 4.668 5.88 3.5 8 3.5c2.12 0 3.879 1.168 5.168 2.457A13.133 13.133 0 0 1 14.828 8c-.058.087-.122.183-.195.288-.335.48-.83 1.12-1.465 1.755C11.879 11.332 10.119 12.5 8 12.5c-2.12 0-3.879-1.168-5.168-2.457A13.134 13.134 0 0 1 1.172 8z" />
                                     <path d="M8 5.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5zM4.5 8a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0z" />
                                 </svg>
@@ -65,7 +66,7 @@
                         </span>                    
                         <span asp-validation-for="Input.Password" class="text-danger"></span>    
                         <a class="text-end fs-6 fst-italic mt-2 invisible" style="color: #B5B4CD;">Restablecer Contraseña</a>
-                        <button onclick:stopPropagation="true" id="login-submit" class="btn btn-primary btn-lg shadow mb-4 mt-2"><i class="bi bi-box-arrow-in-right p-1"></i>Iniciar Sesión</button>
+                        <button onclick:stopPropagation="true" id="login-submit" class="bg-[#2B286F] text-white text-xl shadow-xl mb-4 mt-2 py-2 rounded-lg"><i class="bi bi-box-arrow-in-right p-1"></i>Iniciar Sesión</button>
                     @*    <a class="nav-link" href="/Identity/Account/Register">
                             <span class="text-center fs-6 fst-italic mt-2" style="color: #B5B4CD;">¿Aún no tienes cuenta? Registrate</span>
                         </a>*@
@@ -74,36 +75,36 @@
             </div>
         </div>
 
-        <div id="RecuadroMobile" class="d-flex justify-content-center row w-90 d-block d-sm-block d-md-none">
-            <div id="FormularioMobile" class="bg-white border rounded-3 shadow-lg mt-6 start-20 p-1" style="--bs-bg-opacity: .61;">
+        <div id="RecuadroMobile" class="flex flex-col justify-center w-90 md:hidden">
+            <div id="FormularioMobile" class="bg-white border rounded-3 shadow-2xl mt-6 p-1" style="left: 20% !important;">
                 <form id="account" method="post">
-                    <div class="d-flex flex-column px-4">
-                        <span class="mb-2 text-center fs-1 fw-bolder">Login</span>
+                    <div class="flex flex-col px-4">
+                        <span class="mb-2 text-center text-xl font-bold">Login</span>
                         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                        <span class="bg-white d-flex justify-content-center border-start border-5 border-primary rounded shadow my-2 ps-4">
+                        <span class="bg-white flex justify-center border-l-4 border-[#2B286F] rounded shadow-xl my-2 pl-4">
                             <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-person my-auto opacity-38" viewBox="0 0 16 16">
                                 <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0zm4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4zm-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664h10z"/>
                             </svg>
-                            <input asp-for="Input.Email" class="border-start border-1 my-2 mx-3 ps-3" style="width: 15em; border: 0;" placeholder="Usuario" autocomplete="username" aria-required="true"y  />
+                            <input asp-for="Input.Email" class="border-l my-2 mx-3 pl-3" style="width: 15em;" placeholder="Usuario" autocomplete="username" aria-required="true" y />
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-eye my-auto me-2 invisible" viewBox="0 0 16 16">
                                 <path d="M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 8 5.5S16 8 16 8zM1.173 8a13.133 13.133 0 0 1 1.66-2.043C4.12 4.668 5.88 3.5 8 3.5c2.12 0 3.879 1.168 5.168 2.457A13.133 13.133 0 0 1 14.828 8c-.058.087-.122.183-.195.288-.335.48-.83 1.12-1.465 1.755C11.879 11.332 10.119 12.5 8 12.5c-2.12 0-3.879-1.168-5.168-2.457A13.134 13.134 0 0 1 1.172 8z"/>
                                 <path d="M8 5.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5zM4.5 8a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0z"/>
                             </svg>
                         </span>
                         <span asp-validation-for="Input.Email" class="text-danger"></span>
-                        <span class="bg-white d-flex justify-content-center border-start border-5 border-primary rounded shadow my-2 ps-4">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-key my-auto opacity-38" viewBox="0 0 16 16">
+                        <span class="bg-white flex justify-center border-l-4 border-[#2B286F] rounded shadow-xl my-2 pl-4">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-key my-auto" style="opacity: 0.38" viewBox="0 0 16 16">
                                 <path d="M0 8a4 4 0 0 1 7.465-2H14a.5.5 0 0 1 .354.146l1.5 1.5a.5.5 0 0 1 0 .708l-1.5 1.5a.5.5 0 0 1-.708 0L13 9.207l-.646.647a.5.5 0 0 1-.708 0L11 9.207l-.646.647a.5.5 0 0 1-.708 0L9 9.207l-.646.647A.5.5 0 0 1 8 10h-.535A4 4 0 0 1 0 8zm4-3a3 3 0 1 0 2.712 4.285A.5.5 0 0 1 7.163 9h.63l.853-.854a.5.5 0 0 1 .708 0l.646.647.646-.647a.5.5 0 0 1 .708 0l.646.647.646-.647a.5.5 0 0 1 .708 0l.646.647.793-.793-1-1h-6.63a.5.5 0 0 1-.451-.285A3 3 0 0 0 4 5z"/>
                                 <path d="M4 8a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"/>
                             </svg>
-                            <input asp-for="Input.Password" class="border-start border-1 my-2 mx-3 ps-3" style="width: 15em; border: 0;" placeholder="Contraseña" autocomplete="current-password" aria-required="true" />
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-eye my-auto me-2 opacity-38 invisible" viewBox="0 0 16 16">
+                            <input asp-for="Input.Password" class="border- my-2 mx-3 pl-3" style="width: 15em;" placeholder="Contraseña" autocomplete="current-password" aria-required="true" />
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-eye my-auto mr-2 invisible" style="opacity: 0.38" viewBox="0 0 16 16">
                                 <path d="M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 8 5.5S16 8 16 8zM1.173 8a13.133 13.133 0 0 1 1.66-2.043C4.12 4.668 5.88 3.5 8 3.5c2.12 0 3.879 1.168 5.168 2.457A13.133 13.133 0 0 1 14.828 8c-.058.087-.122.183-.195.288-.335.48-.83 1.12-1.465 1.755C11.879 11.332 10.119 12.5 8 12.5c-2.12 0-3.879-1.168-5.168-2.457A13.134 13.134 0 0 1 1.172 8z"/>
                                 <path d="M8 5.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5zM4.5 8a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0z"/>
                             </svg>
                         </span>                        
-                        <a href="" class="text-end fs-6 fst-italic mt-2" style="color: #717171;">Restablecer Contraseña</a>
-                        <button class="btn btn-primary btn-lg shadow mt-2 mb-2 mx-auto w-75">Iniciar Sesión</button>
+                        <a href="" class="text-end text-sm font-italic mt-2" style="color: #717171;">Restablecer Contraseña</a>
+                        <button class="bg-[#2B286F] text-white text-xl shadow-xl mb-4 mt-2 py-2 rounded-lg">Iniciar Sesión</button>
                     </div>
                 </form>
             </div>
@@ -119,24 +120,25 @@
         
     </div>
 
-    <footer class="position-absolute -bottom-20 -end-10 d-none d-md-block"
+    <footer class="absolute -end-10 max-md:hidden"
             style="width: 400px;
         height: 400px;
         -moz-border-radius: 50%;
         -webkit-border-radius: 50%;
         border-radius: 50%;
-        background: #2B286F;">
-        <label class="d-none d-xxl-block" style="position: fixed; bottom: 0; right: 0; font-size: 2.5rem; margin-right:1rem; color:white; font-style: italic;">V. 1.2.0</label>
+        background: #2B286F;
+        bottom: -20% !important;
+        right: -10% !important;">
     </footer>
 </body>
 
-<img src="~/img/AZUL.png" class="d-none d-md-block" style="position: fixed; top:0; left:0rem; height: 10rem;">
-<label class="d-none d-md-block" style="position: fixed; bottom: 0; right: 0; font-size: 2.5rem; margin-right:1rem; color:white; font-style: italic;">V. 1.2.0</label>
+<img src="~/img/AZUL.png" class="max-md:hidden" style="position: fixed; top:0; left:0rem; height: 10rem;">
+<label class="max-md:hidden" style="position: fixed; bottom: 0; right: 0; font-size: 2.5rem; margin-right:1rem; color:white; font-style: italic;">V. 1.2.0</label>
 
 @section Scripts {
-    <partial name="_ValidationScriptsPartial" />        
+    <partial name="_ValidationScriptsPartial" />  
+    
 }
-
 
 
     <style media="only screen and (min-width: 768px) and (max-width: 1023px)">
