@@ -60,9 +60,9 @@ namespace Obra.Client.Services
             parameters.Add("idAparment", idAparment.ToString());
             return await _repository.GetAsync<List<AparmentProgress>?>(parameters, path: "api/Reports/ProgressByAparmentDataView");
         }
-        public async Task<byte[]> PostProgressByAparmentPDFAsync(List<AparmentProgress> progressReportList)
+        public async Task<byte[]> PostProgressByAparmentPDFAsync(List<AparmentProgress> progressReportList, string subTitle)
         {
-            return await _repository.PostAsync<byte[]>(progressReportList, path: "api/Reports/ProgressByAparmentPDF");
+            return await _repository.PostAsync<byte[]>(progressReportList, path: "api/Reports/ProgressByAparmentPDF?subTitle=" + subTitle);
         }
 
         public async Task<List<ActivityProgress>?> GetProgressByActivityDataViewAsync(int? idBuilding, int? idActivity)
@@ -73,9 +73,9 @@ namespace Obra.Client.Services
             return await _repository.GetAsync<List<ActivityProgress>?>(parameters, path: "api/Reports/ProgressByActivityDataView");
         }
 
-        public async Task<byte[]> PostProgressByActivityPDFAsync(List<ActivityProgress> progressReportList)
+        public async Task<byte[]> PostProgressByActivityPDFAsync(List<ActivityProgress> progressReportList, string subTitle)
         {
-            return await _repository.PostAsync<byte[]>(progressReportList, path: "api/Reports/ProgressByActivityPDF");
+            return await _repository.PostAsync<byte[]>(progressReportList, path: "api/Reports/ProgressByActivityPDF?subTitle=" + subTitle);
         }
 
         public async Task<List<AparmentProgress>?> GetProgressOfAparmentByActivityDataViewAsync(int? idBuilding, int? idActivity)

@@ -93,11 +93,11 @@ namespace ReportesObra.Endpoints
             .Produces<HttpValidationProblemDetails>(StatusCodes.Status400BadRequest, "application/problem+json")
             .Produces<HttpValidationProblemDetails>(StatusCodes.Status500InternalServerError, "application/problem+json");
 
-            routes.MapPost("/ReportProgressByAparmentPDF", async (List<AparmentProgress> aparmentProgresses, IReportesService _reportesService, ILogger<Program> _logger) =>
+            routes.MapPost("/ReportProgressByAparmentPDF", async (List<AparmentProgress> aparmentProgresses, string subTitle, IReportesService _reportesService, ILogger<Program> _logger) =>
             {
                 try
                 {
-                    var newModule = await _reportesService.GetReporteAvance(aparmentProgresses);
+                    var newModule = await _reportesService.GetReporteAvance(aparmentProgresses, subTitle);
                     if (newModule == null) return Results.NoContent();
                     return Results.File(newModule, "application/pdf");
                 }
@@ -202,11 +202,11 @@ namespace ReportesObra.Endpoints
             .Produces<HttpValidationProblemDetails>(StatusCodes.Status400BadRequest, "application/problem+json")
             .Produces<HttpValidationProblemDetails>(StatusCodes.Status500InternalServerError, "application/problem+json");
 
-            routes.MapPost("/ReportProgressByActivityPDF", async (List<ActivityProgress> aparmentProgresses, IReportesService _reportesService, ILogger<Program> _logger) =>
+            routes.MapPost("/ReportProgressByActivityPDF", async (List<ActivityProgress> aparmentProgresses, string subTitle, IReportesService _reportesService, ILogger<Program> _logger) =>
             {
                 try
                 {
-                    var newModule = await _reportesService.GetReporteAvanceActividad(aparmentProgresses);
+                    var newModule = await _reportesService.GetReporteAvanceActividad(aparmentProgresses, subTitle);
                     if (newModule == null) return Results.NoContent();
                     return Results.File(newModule, "application/pdf");
                 }
