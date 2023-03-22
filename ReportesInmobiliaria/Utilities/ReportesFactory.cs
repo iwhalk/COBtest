@@ -529,6 +529,13 @@ namespace ReportesObra.Utilities
             headerFrame.Top = "2.70cm";
             headerFrame.RelativeVertical = RelativeVertical.Page;
 
+            subTitleFrame = section.AddTextFrame();
+            subTitleFrame.Width = "5.0cm";
+            subTitleFrame.Left = ShapePosition.Center;
+            subTitleFrame.RelativeHorizontal = RelativeHorizontal.Margin;
+            subTitleFrame.Top = "3.2cm";
+            subTitleFrame.RelativeVertical = RelativeVertical.Page;
+
             // Create the text frame for the data parameters
             dataParametersFrameLeft = section.AddTextFrame();
             dataParametersFrameLeft.Height = "2.0cm";
@@ -604,6 +611,12 @@ namespace ReportesObra.Utilities
             // Put header in header frame
             Paragraph paragraph = headerFrame.AddParagraph("Resumen de Avance General Por Departamento");//Titulo
             paragraph.AddLineBreak();
+            paragraph.Format.Font.Name = "DejaVu Serif";
+            paragraph.Format.Font.Size = 11;
+            paragraph.Format.Font.Bold = true;
+            paragraph.Format.Alignment = ParagraphAlignment.Center;
+
+            paragraph = subTitleFrame.AddParagraph(_title);
             paragraph.Format.Font.Name = "DejaVu Serif";
             paragraph.Format.Font.Size = 11;
             paragraph.Format.Font.Bold = true;
@@ -958,10 +971,10 @@ namespace ReportesObra.Utilities
             section.PageSetup.Orientation = Orientation.Portrait;
 
             headerFrame = section.AddTextFrame();
-            headerFrame.Width = "9.0cm";
-            headerFrame.Left = ShapePosition.Center;
-            headerFrame.RelativeHorizontal = RelativeHorizontal.Margin;
-            headerFrame.Top = "2.0cm";
+            headerFrame.Width = "22.5cm";
+            headerFrame.Left = "15cm";
+            headerFrame.RelativeHorizontal = RelativeHorizontal.Page;
+            headerFrame.Top = "2.70cm";
             headerFrame.RelativeVertical = RelativeVertical.Page;
 
             subTitleFrame = section.AddTextFrame();
@@ -1048,7 +1061,7 @@ namespace ReportesObra.Utilities
             //paragraph.AddLineBreak();
             //paragraph.AddText(_title);
             paragraph.Format.Font.Name = "DejaVu Serif";
-            paragraph.Format.Font.Size = 14;
+            paragraph.Format.Font.Size = 11;
             paragraph.Format.Font.Bold = true;
             paragraph.Format.Alignment = ParagraphAlignment.Center;
 

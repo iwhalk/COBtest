@@ -23,6 +23,8 @@ namespace Obra.Client.Pages
         private byte[] _bytesPreviewFile { get; set; }
         private const string PDF_FILE_NAME = "AvancePorActividad.pdf"; 
         private readonly IJSInProcessRuntime _js;
+        private IEnumerable<int> activitiesId;
+        private string subTitle = "(Seleccionadas)";
         public ObjectAccessUser Accesos { get; private set; }
 
         public ProgressByActivity(ApplicationContext context, NavigationManager navigationManager, IActivitiesService activityService, IProgressLogsService progressLogsService, IReportsService _reportService,
@@ -40,7 +42,7 @@ namespace Obra.Client.Pages
         protected async override Task OnInitializedAsync()
         {
             Accesos = await _accessService.GetObjectAccess();
-            var activitiesId = Accesos.Activities.Select(x => x.IdActivity);
+            activitiesId = Accesos.Activities.Select(x => x.IdActivity);
             _context.Activity = await _activityService.GetActivitiesAsync();
             _context.Activity = _context.Activity.Where(x => activitiesId.Contains(x.IdActivity)).ToList();
         }
@@ -64,10 +66,13 @@ namespace Obra.Client.Pages
                 {
                     _idsActivitySelect.Add(idActivity, new Tuple<double, double>(0.0, 100.0));
                 }
+                if (activitiesId.Count() == _idsActivitySelect.Count())
+                    subTitle = "(Todas)";
             }
             else
             {
                 _idsActivitySelect = _idsActivitySelect.Where(x => x.Key != idActivity).Select(x => new { x.Key, x.Value }).ToDictionary(x => x.Key, x => x.Value);
+                subTitle = "(Seleccionadas)";
             }
             _isLoadingProcess = false;
             StateHasChanged();
@@ -79,10 +84,12 @@ namespace Obra.Client.Pages
             {
                 _isFullActivity = false;
                 _idsActivitySelect.Clear();
+                subTitle = "(Seleccionadas)";
             }
             else
             {
                 _idsActivitySelect.Clear();
+                subTitle = "(Todas)";
                 var infoProgress = await _reportService.GetProgressByActivityDataViewAsync(Accesos.IdBuilding, null);
                 if (infoProgress != null)
                 {
@@ -115,7 +122,7 @@ namespace Obra.Client.Pages
                 Progress = x.Value.Item1 * 1.0
 
             }).ToList();
-            var bytes = await _reportService.PostProgressByActivityPDFAsync(listActivityProgress);
+            var bytes = await _reportService.PostProgressByActivityPDFAsync(listActivityProgress, subTitle);
             if (bytes is not null)
             {
                 //_bytesPreviewFile = bytes;
@@ -140,7 +147,7 @@ namespace Obra.Client.Pages
 
             }).ToList();
 
-            var bytesForPDF = await _reportService.PostProgressByActivityPDFAsync(listActivityProgress);
+            var bytesForPDF = await _reportService.PostProgressByActivityPDFAsync(listActivityProgress, subTitle);
 
             if (bytesForPDF != null)
             {

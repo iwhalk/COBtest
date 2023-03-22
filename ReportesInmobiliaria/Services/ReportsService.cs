@@ -37,6 +37,7 @@ namespace ReportesObra.Services
         private string _status1 = "Not Started";
         private string _status2 = "Started";
         private string _status3 = "Finished";
+        private static ObjectAccessUser accessUser;
 
         //private readonly InmobiliariaDbContextProcedures _dbContextProcedure;
 
@@ -241,14 +242,14 @@ namespace ReportesObra.Services
             return list;
         }
 
-        public async Task<byte[]> GetReporteAvance(List<AparmentProgress> aparmentProgress)
+        public async Task<byte[]> GetReporteAvance(List<AparmentProgress> aparmentProgress, string subTitle)
         {
             ReporteAvance reporteAvance = new()
             {
                 FechaGeneracion = DateTime.Now,
                 Apartments = aparmentProgress
             };
-            return _reportesFactory.CrearPdf(reporteAvance);
+            return _reportesFactory.CrearPdf(reporteAvance, subTitle);
         }
 
         public async Task<ReporteAvance> GetReporteAvanceVista(int? idAparment)
@@ -386,22 +387,11 @@ namespace ReportesObra.Services
             //return _reportesFactory.CrearPdf(reporteAvance, title);
         }
 
-        public async Task<byte[]> GetReporteAvanceActividad(List<ActivityProgress> activityProgress)
+        public async Task<byte[]> GetReporteAvanceActividad(List<ActivityProgress> activityProgress, string subTitle)
         {
-            string reportTitle = "";
             List<string> activityNames = new List<string>();
             foreach (var activity in activityProgress)
                 activityNames.Add(activity.ActivityName);
-            foreach (var activity in listActivities)
-            {
-                if (activityNames.Contains(activity.ActivityName))
-                    reportTitle = "(Todas)";
-                else
-                {
-                    reportTitle = "(Seleccionadas)";
-                    break;
-                }
-            }
 
             var name = listActivities.ElementAt(0).ActivityName;
             ReporteAvanceActividad reporteAvance = new()
@@ -409,7 +399,7 @@ namespace ReportesObra.Services
                 FechaGeneracion = DateTime.Now,
                 Activities = activityProgress
             };
-            return _reportesFactory.CrearPdf(reporteAvance, reportTitle);
+            return _reportesFactory.CrearPdf(reporteAvance, subTitle);
         }
 
         public int? getIdActividadByElement(int idElement)

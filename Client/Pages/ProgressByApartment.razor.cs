@@ -15,6 +15,8 @@ namespace Obra.Client.Pages
         private readonly IReportsService _reportService;
         private readonly IJSRuntime _JS;
         private readonly IObjectAccessService _accessService;
+        private IEnumerable<int> apartmentsId;
+        private string subTitle = "(Seleccionados)";
         //Variable locales
         private Dictionary<int, Tuple<double, double>> _idsAparmentSelect { get; set; } = new();
         public bool _isLoadingProcess { get; set; }
@@ -37,7 +39,7 @@ namespace Obra.Client.Pages
         protected async override Task OnInitializedAsync()
         {
             Accesos = await _accessService.GetObjectAccess();
-            var apartmentsId = Accesos.Apartments.Select(x => x.IdApartment);
+            apartmentsId = Accesos.Apartments.Select(x => x.IdApartment);
             _context.Apartment = await _apartmentsService.GetApartmentsAsync();
             _context.Apartment = _context.Apartment.Where(x => apartmentsId.Contains(x.IdApartment)).ToList();
         }
@@ -59,10 +61,13 @@ namespace Obra.Client.Pages
                 {
                     _idsAparmentSelect.Add(idDeparment, new Tuple<double, double>(0.0, 100.00));
                 }
+                if(apartmentsId.Count() == _idsAparmentSelect.Count())
+                    subTitle = "(Todos)";
             }
             else
             {
                 _idsAparmentSelect = _idsAparmentSelect.Where(x => x.Key != idDeparment).Select(x => new { x.Key, x.Value }).ToDictionary(x => x.Key, x => x.Value);
+                subTitle = "(Seleccionados)";
             }
             _isLoadingProcess = false;
             StateHasChanged();
@@ -74,10 +79,12 @@ namespace Obra.Client.Pages
             {
                 _isFullAparment = false;
                 _idsAparmentSelect.Clear();
+                subTitle = "(Seleccionados)";
             }
             else
             {
                 _idsAparmentSelect.Clear();
+                subTitle = "(Todos)";
                 var infoProgress = await _reportService.GetProgressByAparmentDataViewAsync(Accesos.IdBuilding, null);
                 if (infoProgress != null)
                 {
@@ -111,7 +118,7 @@ namespace Obra.Client.Pages
 
             }).ToList();
 
-            var bytes = await _reportService.PostProgressByAparmentPDFAsync(listAparmentProgress);
+            var bytes = await _reportService.PostProgressByAparmentPDFAsync(listAparmentProgress, subTitle);
             
             if (bytes is not null)
             {
@@ -137,7 +144,7 @@ namespace Obra.Client.Pages
 
             }).ToList();
 
-            var bytesForPDF = await _reportService.PostProgressByAparmentPDFAsync(listAparmentProgress);
+            var bytesForPDF = await _reportService.PostProgressByAparmentPDFAsync(listAparmentProgress, subTitle);
 
             if (bytesForPDF != null)
             {
