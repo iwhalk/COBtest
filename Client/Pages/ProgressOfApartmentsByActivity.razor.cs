@@ -157,7 +157,8 @@ namespace Obra.Client.Pages
                     });
                 }
             }
-            var bytes = await _reportService.PostProgressOfAparmentByActivityPDFAsync(listAparmentProgress);
+            bool all = Accesos.Activities.Select(x => x.IdActivity).Count() == listAparmentProgress.GroupBy(x => x.Activity_).ToList().Count();
+            var bytes = await _reportService.PostProgressOfAparmentByActivityPDFAsync(listAparmentProgress, all);
             
             if (bytes is not null)
             {
@@ -189,8 +190,9 @@ namespace Obra.Client.Pages
                         ApartmentProgress = aparment.porcentage.Item1
                     });
                 }
-            }
-            var bytesForPDF = await _reportService.PostProgressOfAparmentByActivityPDFAsync(listAparmentProgress);
+            }            
+            bool all = Accesos.Activities.Select(x => x.IdActivity).Count() == listAparmentProgress.GroupBy(x => x.Activity_).ToList().Count();
+            var bytesForPDF = await _reportService.PostProgressOfAparmentByActivityPDFAsync(listAparmentProgress, all);
 
             if (bytesForPDF != null)
             {
