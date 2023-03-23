@@ -1216,13 +1216,13 @@ namespace ReportesObra.Utilities
                         if (type == typeof(string))
                         {                            
                             row.Cells[fixIndex].AddParagraph(prop.GetValue(item, null)?.ToString());
-                            row.Cells[fixIndex].Borders.Visible = false;
-                            if (contador == 0)
-                            {
-                                row.Borders.Top.Color = newColorGray;
-                                row.Borders.Top.Visible = true;
-                                row.Borders.Top.Width = 1;
-                            }
+                            row.Cells[fixIndex].Borders.Visible = true;
+                            //if (contador == 0)
+                            //{
+                            //    row.Borders.Top.Color = newColorGray;
+                            //    row.Borders.Top.Visible = true;
+                            //    row.Borders.Top.Width = 1;
+                            //}
                             contador++;
                         }
                         if (type == typeof(bool))
@@ -1391,7 +1391,7 @@ namespace ReportesObra.Utilities
                 row.Format.Font.Size = (Unit)fontSize;
                 row.HeightRule = RowHeightRule.Exactly;
                 row.Height = 30;
-                row.VerticalAlignment = VerticalAlignment.Top;
+                row.VerticalAlignment = VerticalAlignment.Center;
 
                 if (item != null)
                     foreach (var (prop, index) in item.GetType().GetProperties().Select((v, i) => (v, i)))
@@ -1426,20 +1426,16 @@ namespace ReportesObra.Utilities
                             elements[0].LineFormat.Width = 3;
                             var xseries = clone_chart.XValues.AddXSeries();
                             xseries.Add("     ");
+                            //El TopPadding afectaba a toda la fila, la gráfica no se centraba con el VerticalAlignment = VerticalAlignment.Center. Por eso se agregan 2 saltos de línea antes de la gráfica
+                            row.Cells[2].Format.Font.Size = 8;
+                            row.Cells[2].AddParagraph("\n\n");
                             row.Cells[2].Add(clone_chart);
-                            row.Cells[2].Row.TopPadding = "0.35cm";// "0.25cm"
+                            //row.Cells[2].Row.TopPadding = "0.35cm";// "0.25cm"
                         }
                         if (type == typeof(string))
-                        {
+                        {                            
                             row.Cells[index].AddParagraph(prop.GetValue(item, null)?.ToString());
-                            //row.Cells[index].VerticalAlignment = VerticalAlignment.Top;
-                            row.Cells[index].Borders.Visible = false;
-                            if (contador == 0)
-                            {
-                                row.Borders.Top.Color = newColorGray;
-                                row.Borders.Top.Visible = true;
-                                row.Borders.Top.Width = 1;
-                            }
+                            row.Cells[index].Borders.Visible = true;
                             contador++;
 
                         }
