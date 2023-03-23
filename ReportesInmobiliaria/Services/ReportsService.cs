@@ -126,7 +126,7 @@ namespace ReportesObra.Services
         public async Task<List<DetalladoActividades>> GetDataDetallesActividad(int idBuilding, List<int>? idActivities, List<int>? idElements, List<int>? idSubElements, List<int>? idApartments)
         {
             List<ProgressReport> listReport = new List<ProgressReport>();
-            _titleDetails = "(Todas)";
+            _titleDetails = "(Todos)";
             listReport = progressReportsComplete.Where(x => x.IdBuilding == idBuilding).ToList();
             if (idElements != null && idElements.Count() != 0)
                 listReport = FiltradoIdElements(listReport, idElements);
@@ -151,7 +151,7 @@ namespace ReportesObra.Services
             if (idActivities != null && idActivities.Count() != 0)
             {
                 list = FiltradoIdActivities(list, idActivities);
-                _titleDetails = "(Seleccionadas)";
+                _titleDetails = "(Seleccionados)";
             }
             var orderedByApartment = list.OrderBy(x => x.numeroApartamento);
             var orderedByActivity = orderedByApartment.OrderBy(x => x.actividad);
@@ -469,7 +469,7 @@ namespace ReportesObra.Services
             return list;
         }
 
-        public async Task<byte[]> GetReporteAvancDeActividadPorDepartamento(List<AparmentProgress> aparmentProgress)
+        public async Task<byte[]> GetReporteAvancDeActividadPorDepartamento(List<AparmentProgress> aparmentProgress, bool all)
         {
             var listGroupedByActivity = aparmentProgress.GroupBy(x => x.Activity_).ToList();
             var list = new List<ReporteActividadPorDepartamento>();
@@ -482,7 +482,8 @@ namespace ReportesObra.Services
                     Apartments = aparmentProgress.Where(x => x.Activity_ == actividad.Key).ToList()
                 });
             }
-            return _reportesFactory.CrearPdf(list);
+            string subtitulo = all ? "(Todos)" : "(Seleccionados)";
+            return _reportesFactory.CrearPdf(list, subtitulo);
         }
 
         public async Task<List<ActivityProgressByAparment>> GetAparmentsByActivity(int? idBuilding, int? idApartment)
@@ -543,7 +544,7 @@ namespace ReportesObra.Services
             return list;
         }
 
-        public async Task<byte[]> GetReporteAvanceDeDepartamentoPorActividad(List<ActivityProgressByAparment> activityProgressByAparment)
+        public async Task<byte[]> GetReporteAvanceDeDepartamentoPorActividad(List<ActivityProgressByAparment> activityProgressByAparment, bool all)
         {
             var listGroupedByActivity = activityProgressByAparment.GroupBy(x => x.ApartmentNumber).ToList();
             var list = new List<ReporteDepartamentoPorActividad>();
@@ -555,8 +556,9 @@ namespace ReportesObra.Services
                     Aparment = aparment.Key,
                     Activitiess = activityProgressByAparment.Where(x => x.ApartmentNumber == aparment.Key).ToList()
                 });
-            }            
-            return _reportesFactory.CrearPdf(list);
+            }
+            string subtitulo = all ? "(Todos)" : "(Seleccionados)";
+            return _reportesFactory.CrearPdf(list, subtitulo);
         }
 
         public string? getActividadByElement(int idElement)

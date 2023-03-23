@@ -146,9 +146,9 @@ namespace ApiGateway.Controllers
         }
 
         [HttpPost("ProgressOfAparmentByActivityPDF")]
-        public async Task<ActionResult> PostProgressOfAparmentByActivityPDF(List<AparmentProgress> progressReport)
+        public async Task<ActionResult> PostProgressOfAparmentByActivityPDF(List<AparmentProgress> progressReport, bool all)
         {
-            var result = await _reportesService.PostProgressOfAparmentByActivityPDFAsync(progressReport);
+            var result = await _reportesService.PostProgressOfAparmentByActivityPDFAsync(progressReport, all);
 
             if (result.Succeeded)
             {
@@ -174,9 +174,9 @@ namespace ApiGateway.Controllers
         }
 
         [HttpPost("ProgressOfActivityByAparmentPDF")]
-        public async Task<ActionResult> PostProgressOfActivityByAparmentPDF(List<ActivityProgressByAparment> progressReport)
+        public async Task<ActionResult> PostProgressOfActivityByAparmentPDF(List<ActivityProgressByAparment> progressReport, bool all)
         {
-            var result = await _reportesService.PostProgressOfActivityByAparmentPDFAsync(progressReport);
+            var result = await _reportesService.PostProgressOfActivityByAparmentPDFAsync(progressReport, all);
 
             if (result.Succeeded)
             {

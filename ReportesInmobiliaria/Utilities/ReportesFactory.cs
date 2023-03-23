@@ -173,6 +173,12 @@ namespace ReportesObra.Utilities
                 case nameof(ReporteAvanceActividad):
                     CrearReporteAvanceActividad(reporte as ReporteAvanceActividad);
                     break;
+                case "List`1":
+                    if (typeof(T).FullName == "System.Collections.Generic.List`1[[SharedLibrary.Models.ReporteDepartamentoPorActividad, SharedLibrary, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]")
+                        CrearReporteAvanceDeDepartamentoPorActividad(reporte as List<ReporteDepartamentoPorActividad>);
+                    else
+                        CrearReporteAvanceDeActividadPorDepartamento(reporte as List<ReporteActividadPorDepartamento>);
+                    break;
                 default:
                     break;
             }
@@ -752,12 +758,8 @@ namespace ReportesObra.Utilities
             logoGeneric.WrapFormat.Style = WrapStyle.Through;
 
 
-            // Put header in header frame
-            string titulo = string.Empty;
-            if (reporteActividadPorDepartamento.Count() < _dbContext.Activities.Count())
-                titulo = "Resumen de Avance Departamento por Actividad\n(Seleccionadas)";
-            else
-                titulo = "Resumen de Avance Departamento por Actividad\n(Todas)";
+            // Put header in header frame            
+            string titulo = "Resumen de Avance Departamento por Actividad\n" + _title;
 
             Paragraph paragraph = headerFrame.AddParagraph(titulo);//Titulo
             paragraph.AddLineBreak();
@@ -908,10 +910,7 @@ namespace ReportesObra.Utilities
             // Put header in header frame
             string titulo = string.Empty;
             //if (reporteDepartamentoPorActividad.Count() < _dbContext.Apartments.Count())
-            if (reporteDepartamentoPorActividad.Count() < _dbContext.Apartments.Count())
-                    titulo = "Resumen de Avance Actividad por Departamento\n(Seleccionados)";
-            else
-                titulo = "Resumen de Avance Actividad por Departamento\n(Todos)";
+            titulo = "Resumen de Avance Actividad por Departamento\n"+ _title;
             Paragraph paragraph = headerFrame.AddParagraph(titulo);//Titulo
             paragraph.AddLineBreak();
             paragraph.Format.Font.Name = "DejaVu Serif";

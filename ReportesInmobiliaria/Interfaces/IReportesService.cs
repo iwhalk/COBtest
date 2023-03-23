@@ -14,7 +14,7 @@ namespace ReportesObra.Interfaces
         Task<List<ActivityProgressByAparment>> GetAparmentsByActivity(int? idBuilding, int? idApartment);
         Task<List<ActivityProgress>> GetActivityProgress(int? idBuilding, int? idActivity);
         Task<byte[]> GetReporteAvanceActividad(List<ActivityProgress> activityProgress, string subTitle);
-        Task<byte[]> GetReporteAvancDeActividadPorDepartamento(List<AparmentProgress> activityProgress);
-        Task<byte[]> GetReporteAvanceDeDepartamentoPorActividad(List<ActivityProgressByAparment> activityProgress);        
+        Task<byte[]> GetReporteAvancDeActividadPorDepartamento(List<AparmentProgress> activityProgress, bool all);
+        Task<byte[]> GetReporteAvanceDeDepartamentoPorActividad(List<ActivityProgressByAparment> activityProgress, bool all);        
     }
 }
