@@ -5,10 +5,10 @@
 @if (_context.Apartment is not null)
 {
     <div class="mt-28 mb-12 fixed inset-0 flex flex-col justify-center items-center overflow-y-scroll">
-        <div class="rounded-2xl md:mx-3">
+        <div class="rounded-2xl w-full md:mx-3 px-10">
             <div class="w-full inline-flex">
                 <div class="w-2/6 xl:w-1/6 md:p-1 p-2">
-                    <h1 class="rounded-br-lg rounded-tl-2xl text-xs md:text-xl  text-white font-medium leading-6 bg-[#162D4E] text-center p-0.5 md:p-2 xl:p-5">Departamentos</h1>
+                    <h1 class="rounded-br-lg rounded-tl-2xl text-xs md:text-xl  text-white font-medium leading-6 bg-[#162D4E] text-center p-0.5 md:p-2 xl:p-5">Departamentos</h1>                    
                 </div>
                 <div class="w-2/6 xl:w-2/6 md:p-1 p-2">
                     <h1 class="rounded-br-lg rounded-tl-2xl text-xs md:text-xl  text-white font-medium leading-6 bg-[#162D4E] text-center p-0.5 md:p-2 xl:p-5">Actividades</h1>
@@ -20,20 +20,20 @@
             <div class="grid grid-cols-1">
                 <div class="overflow-y-auto h-[29rem] lg:h-[18rem] xl:h-[22rem] 2xl:h-[40rem]">
                     <div class="w-full inline-flex">
-                        <div class="w-2/6 xl:w-1/6 p-1">
+                        <div class="w-2/6 xl:w-1/6 p-1 w-full">
                             <div class="@(_isFullAparment ? "bg-[#9CA2A8]" : "bg-[#55595E]") flex flex-col justify-center items-center border border-stone-40 h-12 md:h-14">
                                 <button @onclick="() => FullActivity()" class="w-full">
                                     <p class="text-xs md:text-lg  text-white font-medium leading-6 text-center p-1 xl:p-3">Todos</p>
                                 </button>
                             </div>
                         </div>
-                        <div class="w-2/6 xl:w-2/6 inline-flex p-1"></div>
-                        <div class="w-2/6 xl:w-3/6 inline-flex p-1"></div>
+                        <div class="w-2/6 xl:w-2/6 w-full inline-flex p-1"></div>
+                        <div class="w-2/6 xl:w-3/6 w-full inline-flex p-1"></div>
                     </div>
 
                     @foreach (var aparment in _context.Apartment)
                     {
-                        <div class="@(_idsAparmentSelect.ContainsKey(aparment.IdApartment) ? "h-80" : "h-12") w-full inline-flex">
+                        <div class="@(GetDynamicHeightForButtons(aparment.IdApartment)) w-full inline-flex">
                             <div class="w-2/6 xl:w-1/6 p-0.5">
                                 <div class="@(_idsAparmentSelect.ContainsKey(aparment.IdApartment) && _isFullAparment == false ? "bg-[#9CA2A8]" : "bg-[#55595E]") border border-stone-400 h-full flex justfy-center">
                                     <button @onclick="() => AddIdAparmentSelect(aparment.IdApartment)" class="w-full">
@@ -71,7 +71,6 @@
                 </div>
             </div>
             <div class="w-full flex py-2">
-                @* <button @onclick="() => GeneratePDfPorgressaprment()" class="mx-auto bg-[#B9352E] hover:bg-red-500 w-32 p-1 md:p-2 rounded-2xl text-base md:text-lg text-white font-medium leading-6 border border-stone-400 hover:border-white">Descargar</button> *@
                 <button @onclick="() => PreviewFileReport()" class="mx-auto bg-[#B9352E] hover:bg-red-500 w-32 p-1 md:p-2 rounded-2xl text-base md:text-lg text-white font-medium leading-6 border border-stone-400 hover:border-white">Descargar</button>
             </div>
         </div>
