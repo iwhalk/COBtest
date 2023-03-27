@@ -17,5 +17,6 @@ namespace SharedLibrary.Models
         public string total { get; set; }
         public int avance { get; set; }
         public int? IdProgressLog { get; set; }
+        public bool HasObservationsOrBlobs { get; set; }
     }
 }
