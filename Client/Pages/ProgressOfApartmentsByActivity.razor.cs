@@ -18,8 +18,7 @@ namespace Obra.Client.Pages
         private readonly IReportsService _reportService;
         private readonly IJSRuntime _JS;
         private readonly IObjectAccessService _accessService;
-        //Variable locales
-        private Dictionary<int, Tuple<int, int>> _idsAparmentSelect { get; set; } = new();
+        //Variable locales        
         private Dictionary<int, List<InfoAparmentIn>> _idsActivitySelect { get; set; } = new();
         public bool _isLoadingProcess { get; set; }
         private bool _isFullAparment { get; set; }
@@ -161,10 +160,8 @@ namespace Obra.Client.Pages
             var bytes = await _reportService.PostProgressOfAparmentByActivityPDFAsync(listAparmentProgress, all);
             
             if (bytes is not null)
-            {
-                //_bytesPreviewFile = bytes;
-                _isLoadingProcess = false;
-                //_showPreviewFile = true;
+            {                
+                _isLoadingProcess = false;                
                 await _JS.InvokeVoidAsync("OpenInNewPagePDF", bytes);
                 StateHasChanged();
             }
@@ -174,37 +171,16 @@ namespace Obra.Client.Pages
                 StateHasChanged();
             }
         }
-        private async void GeneratePDfPorgressaprment()
+        private string GetDynamicHeightForButtons(int idActivity)
         {
-            _isLoadingProcess = true;
-            var listAparmentProgress = new List<AparmentProgress>();
-
-            foreach (var item in _idsActivitySelect)
+            if (_idsActivitySelect.ContainsKey(idActivity))
             {
-                foreach(var aparment in item.Value)
-                {
-                    listAparmentProgress.Add(new AparmentProgress
-                    {
-                        Activity_ = _context.Activity.Find(x => x.IdActivity == item.Key).ActivityName,
-                        ApartmentNumber = aparment.aparmentNumber,
-                        ApartmentProgress = aparment.porcentage.Item1
-                    });
-                }
-            }            
-            bool all = Accesos.Activities.Select(x => x.IdActivity).Count() == listAparmentProgress.GroupBy(x => x.Activity_).ToList().Count();
-            var bytesForPDF = await _reportService.PostProgressOfAparmentByActivityPDFAsync(listAparmentProgress, all);
-
-            if (bytesForPDF != null)
-            {
-
-                var fileName = PDF_FILE_NAME;
-                var fileStream = new MemoryStream(bytesForPDF);
-                using var streamRef = new DotNetStreamReference(stream: fileStream);
-                await _JS.InvokeVoidAsync("downloadFileFromStream", fileName, streamRef);
+                return _idsActivitySelect[idActivity].Count == 4
+                    ? "h-auto"
+                    : "h-80";
             }
-            _isLoadingProcess = false;
-            StateHasChanged();
-        }
+            return "h-12";
+        } 
         public class InfoAparmentIn
         {
             public string aparmentNumber { get; set; }

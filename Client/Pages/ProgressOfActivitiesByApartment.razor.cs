@@ -10,7 +10,7 @@ namespace Obra.Client.Pages
 {
     public partial class ProgressOfActivitiesByApartment : ComponentBase
     {
-        public int MyProperty { get; set; }
+        
         private readonly ApplicationContext _context;
         private readonly IActivitiesService _activityService;
         private readonly IApartmentsService _apartmentService;
@@ -56,7 +56,7 @@ namespace Obra.Client.Pages
         {
             _isLoadingProcess = true;
             if (!_idsAparmentSelect.ContainsKey(idAparment))
-            {                
+            {
                 var infoProgress = await _reportService.GetProgressOfActivityByAparmentDataViewAsync(Accesos.IdBuilding, idAparment);
                 if (infoProgress != null)
                 {
@@ -147,64 +147,39 @@ namespace Obra.Client.Pages
                 foreach (var activity in item.Value)
                 {
                     listAparmentProgress.Add(new ActivityProgressByAparment
-                    {
-                        //Activity_ = _context.Activity.Find(x => x.ActivityName == item.).ActivityName,
+                    {                        
                         Activity_ = activity.activityNumber,
                         ApartmentNumber = activity.aparmentNumber,
                         ApartmentProgress = activity.porcentage.Item1
-                        
+
                     });
                 }
             }
             bool all = Accesos.Apartments.Select(x => x.IdApartment).Count() == listAparmentProgress.GroupBy(x => x.ApartmentNumber).ToList().Count();
             var bytes = await _reportService.PostProgressOfActivityByParmentPDFAsync(listAparmentProgress, all);
-            
+
             if (bytes is not null)
-            {
-                //_bytesPreviewFile = bytes;
-                _isLoadingProcess = false;
-                //_showPreviewFile = true;
+            {                
+                _isLoadingProcess = false;                
                 await _JS.InvokeVoidAsync("OpenInNewPagePDF", bytes);
                 StateHasChanged();
             }
             else
             {
-                _isLoadingProcess = false;   
+                _isLoadingProcess = false;
                 StateHasChanged();
             }
         }
-        private async void GeneratePDfPorgressaprment()
-        {
-            var listAparmentProgress = new List<ActivityProgressByAparment>();
-            foreach (var item in _idsAparmentSelect)
+        private string GetDynamicHeightForButtons(int idAparment)
+        {            
+            if (_idsAparmentSelect.ContainsKey(idAparment))
             {
-                foreach (var activity in item.Value)
-                {
-                    listAparmentProgress.Add(new ActivityProgressByAparment
-                    {
-                        //Activity_ = _context.Activity.Find(x => x.ActivityName == item.).ActivityName,
-                        Activity_ = activity.activityNumber,
-                        ApartmentNumber = activity.aparmentNumber,
-                        ApartmentProgress = activity.porcentage.Item1
-                        
-                    });
-                }
+                return _idsAparmentSelect[idAparment].Count == 4
+                    ? "h-auto"
+                    : "h-80";                
             }
-            bool all = Accesos.Apartments.Select(x => x.IdApartment).Count() == listAparmentProgress.GroupBy(x => x.ApartmentNumber).ToList().Count();
-            var bytesForPDF = await _reportService.PostProgressOfActivityByParmentPDFAsync(listAparmentProgress, all);
-
-            if (bytesForPDF != null)
-            {
-
-                var fileName = PDF_FILE_NAME;
-                var fileStream = new MemoryStream(bytesForPDF);
-                using var streamRef = new DotNetStreamReference(stream: fileStream);
-                await _JS.InvokeVoidAsync("downloadFileFromStream", fileName, streamRef);
-
-            }
-            _isLoadingProcess = false;
-            StateHasChanged();
-        }
+            return "h-12";
+        }  
         public class InfoActivityIn
         {
             public string activityNumber { get; set; }
