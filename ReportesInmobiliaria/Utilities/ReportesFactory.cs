@@ -1497,7 +1497,7 @@ namespace ReportesObra.Utilities
                                 currentName = prop.GetValue(item, null)?.ToString();
                                 //countCombination++;
                             }
-                            if(index != 8)
+                            if(index < 8)
                             {
                                 if (type == typeof(DateTime))
                                 {
@@ -1611,7 +1611,7 @@ namespace ReportesObra.Utilities
                             //{
                             //    currentApartment = prop.GetValue(item, null)?.ToString();
                             //}
-                            if (index != 8)
+                            if (index < 8)
                             {
                                 if (type == typeof(DateTime))
                                 {
