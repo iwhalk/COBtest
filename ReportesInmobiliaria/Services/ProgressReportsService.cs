@@ -98,23 +98,26 @@ namespace ReportesObra.Services
         }
 
         public async Task<List<ProgressReport>?> GetProgressReportsDetailedAsync(int idBuilding, List<int>? idApartments,
-            List<int>? idElements, List<int>? idSubElements, List<int>? idActivities)
+            List<int>? idAreas, List<int>? idElements, List<int>? idSubElements, List<int>? idActivities)
         {
             IQueryable<ProgressReport> progressReports = _dbContext.ProgressReports;
             progressReports = progressReports.Where(x => x.IdBuilding == idBuilding);
 
-            if (idApartments != null)
+            if (idApartments != null && idApartments.Count != 0)
                 progressReports = progressReports.Where(x => idApartments.Contains(x.IdApartment));
-            if(idElements != null)
+            if (idAreas != null && idAreas.Count != 0)
+                progressReports = progressReports.Where(x => idAreas.Contains(x.IdArea));
+            if (idElements != null && idElements.Count != 0)
                 progressReports = progressReports.Where(x => idElements.Contains(x.IdElement));
-            if (idSubElements != null)
+            if (idSubElements != null && idSubElements.Count != 0)
                 progressReports = progressReports.Where(x => idSubElements.Contains(x.IdSubElement ?? 0));
 
-            System.Linq.Expressions.Expression<Func<Element, Element>> selectorE = x => new Element
+            System.Linq.Expressions.Expression<Func<Element, Element>> selectorE = e => new Element
             {
-                IdElement = x.IdElement,
-                ElementName = x.ElementName,
-                IdActivityNavigation = x.IdActivityNavigation
+                IdElement = e.IdElement,
+                ElementName = e.ElementName,
+                IdActivity = e.IdActivity,
+                IdActivityNavigation = e.IdActivityNavigation
             };
 
             System.Linq.Expressions.Expression<Func<ProgressReport, ProgressReport>> selector = x => new ProgressReport
@@ -130,7 +133,7 @@ namespace ReportesObra.Services
                 IdSupervisor = x.IdSupervisor,
                 IdApartmentNavigation = x.IdApartmentNavigation,
                 IdAreaNavigation = x.IdAreaNavigation,
-                IdElementNavigation = x.IdElementNavigation.IdActivityNavigation,
+                IdElementNavigation = _dbContext.Elements.Select(selectorE).FirstOrDefault(a => a.IdElement == x.IdElement),
                 IdSubElementNavigation = x.IdSubElementNavigation,
                 ProgressLogs = x.ProgressLogs.Select(y => new ProgressLog
                 {
@@ -141,6 +144,7 @@ namespace ReportesObra.Services
                     Pieces = y.Pieces,
                     Observation = y.Observation,
                     IdSupervisor = y.IdSupervisor,
+                    IdStatusNavigation = y.IdStatusNavigation,
                     IdBlobs = y.IdBlobs.Select(z => new Blob
                     {
                         IdBlob = z.IdBlob,
@@ -152,7 +156,10 @@ namespace ReportesObra.Services
 
                 }).ToList()
             };
-            return null;
+            var result = progressReports.Select(selector);
+            if (idActivities != null && idActivities.Count != 0)
+                result = result.Where(x => idActivities.Contains(x.IdElementNavigation.IdActivity));
+            return await result.ToListAsync();
         }
 
         public async Task<ObjectAccessUser?> GetObjectsAccessAsync(string idSupervisor)

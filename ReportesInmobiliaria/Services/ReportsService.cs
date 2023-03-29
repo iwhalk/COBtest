@@ -25,6 +25,7 @@ namespace ReportesObra.Services
         private readonly ObraDbContext _dbContext;
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly IProgressLogsService _progressLogsService;
+        private readonly IProgressReportsService _progressReportsService;
         private readonly ReportesFactory _reportesFactory;
         List<ProgressReport> progressReportsComplete;
         List<ProgressLog> listProgressLog;
@@ -42,11 +43,12 @@ namespace ReportesObra.Services
 
         //private readonly InmobiliariaDbContextProcedures _dbContextProcedure;
 
-        public ReportsService(ObraDbContext dbContext, IHttpContextAccessor httpContextAccessor, ReportesFactory reportesFactory, IProgressLogsService progressLogsService)
+        public ReportsService(ObraDbContext dbContext, IHttpContextAccessor httpContextAccessor, ReportesFactory reportesFactory, IProgressReportsService progressReportsService, IProgressLogsService progressLogsService)
         {
             _dbContext = dbContext;
             _httpContextAccessor = httpContextAccessor;
             _reportesFactory = reportesFactory;
+            _progressReportsService = progressReportsService;
             _progressLogsService = progressLogsService;
             progressReportsComplete = _dbContext.ProgressReports.ToList();
             listProgressLog = _progressLogsService.GetProgressLogsAsync(null, null, null, null).Result;
@@ -66,36 +68,35 @@ namespace ReportesObra.Services
         //Task<List<DetalladoDepartamentos>>
         public async Task<List<DetalladoDepartamentos>> GetDataDetallesDepartamento(int idBuilding, List<int>? idApartments, List<int>? idAreas, List<int>? idActivities, List<int>? idElements, List<int>? idSubElements)
         {
-            List<ProgressReport> listReport = new List<ProgressReport>();
-            _titleDetails = "(Todos)";
-            listReport = progressReportsComplete.Where(x => x.IdBuilding == idBuilding).ToList();
-            var idSupervisor = listReport.ElementAtOrDefault(0).IdSupervisor;
-            listProgressLog = listProgressLog.Where(x => x.IdSupervisor == idSupervisor).ToList();
             if (idApartments != null && idApartments.Count() != 0)
-            {
-                listReport = FiltradoIdApartments(listReport, idApartments);
                 _titleDetails = "(Seleccionados)";
-            }
-            if (idAreas != null && idAreas.Count() != 0)
-                listReport = FiltradoIdAreas(listReport, idAreas);
-            if (idElements != null && idElements.Count() != 0)
-                listReport = FiltradoIdElements(listReport, idElements);
-            if (idSubElements != null && idSubElements.Count() != 0)
-                listReport = FiltradoIdSubElements(listReport, idSubElements);
+            else
+                _titleDetails = "(Todos)";
+
+            List<ProgressReport> listReport = new List<ProgressReport>();
+            listReport = await _progressReportsService.GetProgressReportsDetailedAsync(idBuilding, idApartments, idAreas, idElements, idSubElements, idActivities);            
+            
+            //listReport = progressReportsComplete.Where(x => x.IdBuilding == idBuilding).ToList();
+            //var idSupervisor = listReport.ElementAtOrDefault(0).IdSupervisor;
+            //listProgressLog = listProgressLog.Where(x => x.IdSupervisor == idSupervisor).ToList();
+            //if (idApartments != null && idApartments.Count() != 0)
+            //{
+            //    listReport = FiltradoIdApartments(listReport, idApartments);
+            //    _titleDetails = "(Seleccionados)";
+            //}
+            //if (idAreas != null && idAreas.Count() != 0)
+            //    listReport = FiltradoIdAreas(listReport, idAreas);
+            //if (idElements != null && idElements.Count() != 0)
+            //    listReport = FiltradoIdElements(listReport, idElements);
+            //if (idSubElements != null && idSubElements.Count() != 0)
+            //    listReport = FiltradoIdSubElements(listReport, idSubElements);
+            
             listReport = listReport.OrderBy(x => x.IdArea).ToList();
             var list = new List<DetalladoDepartamentos>();
-            list = GetSubElementsAsync(listReport);
-            //ReporteDetalles reporteDetalles = new()
-            //{
-            //    detalladoDepartamentos = GetSubElementsAsync(listReport)
-            //};
+            list = GetDetalladoDepartamentos(listReport);
+
             //if (idActivities != null && idActivities.Count() != 0)
-            //    reporteDetalles.detalladoDepartamentos = FiltradoIdActivities(reporteDetalles.detalladoDepartamentos, idActivities);
-            //if (reporteDetalles.detalladoDepartamentos.Count == 0)
-            //    return null;                
-            //return _reportesFactory.CrearPdf(reporteDetalles, _titleDetails);
-            if (idActivities != null && idActivities.Count() != 0)
-                list = FiltradoIdActivities(list, idActivities);
+            //    list = FiltradoIdActivities(list, idActivities);
             return list.OrderBy(x => x.numeroApartamento).ToList();
         }
 
@@ -192,31 +193,26 @@ namespace ReportesObra.Services
             return _reportesFactory.CrearPdf(reporteDetalles, _titleDetails);
         }
 
-        public List<DetalladoDepartamentos> GetSubElementsAsync(List<ProgressReport> progressList)
+        public List<DetalladoDepartamentos> GetDetalladoDepartamentos(List<ProgressReport> progressList)
         {
-            int contador = 0;
-            var list = new List<DetalladoDepartamentos>();                       
-            foreach (var subElement in progressList)
+            var list = new List<DetalladoDepartamentos>();
+            foreach (var progress in progressList)
             {
-                //if (getStausName(subElement.IdProgressReport) == "Terminado")
-                //{
-                //    contador++;
-                //    continue;
-                //}
-                var LogResult = getIdLogAndContent(subElement.IdProgressReport);
                 list.Add(new DetalladoDepartamentos()
                 {
-                    numeroApartamento = getApartmentNumber(subElement.IdApartment),
-                    actividad = getActividadByElement(subElement.IdElement),
-                    area = getArea(subElement.IdArea),
-                    elemento = getElemento(subElement.IdElement),
-                    subElemento = getSubElemento(subElement.IdSubElement),
-                    estatus = getStausName(subElement.IdProgressReport),
-                    total = subElement.TotalPieces,
-                    avance = getProgress(subElement.IdProgressReport),
-                    IdProgressLog = LogResult == null ? null : LogResult.Item1,
-                    HasObservationsOrBlobs = LogResult == null ? false : LogResult.Item2
-                });
+                    numeroApartamento = progress.IdApartmentNavigation.ApartmentNumber,
+                    actividad = progress.IdElementNavigation.IdActivityNavigation.ActivityName,
+                    area = progress.IdAreaNavigation.AreaName,
+                    elemento = progress.IdElementNavigation.ElementName,
+                    subElemento = progress.IdSubElementNavigation != null ? progress.IdSubElementNavigation.SubElementName : "N/A",
+                    estatus = progress.ProgressLogs != null && progress.ProgressLogs.Count != 0 ? progress.ProgressLogs.Last().IdStatusNavigation.StatusName : _status1,
+                    total = progress.TotalPieces,
+                    avance = progress.ProgressLogs != null && progress.ProgressLogs.Count != 0 ? Int32.Parse(progress.ProgressLogs.Last().Pieces) : 0,
+                    IdProgressLog = progress.ProgressLogs != null && progress.ProgressLogs.Count != 0 ? progress.ProgressLogs.Last().IdProgressLog : null, // LogResult == null ? null : LogResult.Item1,
+                    HasObservationsOrBlobs = false, //LogResult == null ? false : LogResult.Item2
+                    Obserbation = progress.ProgressLogs.Count != 0 ? (progress.ProgressLogs.Last().Observation ?? null) : null
+                    // progress.ProgressLogs.Count != 0 && progress.ProgressLogs.Last().Observation != null ? progress.ProgressLogs.Last().Observation : null
+                }) ;
             }
             return list;
         }
@@ -629,6 +625,24 @@ namespace ReportesObra.Services
                     return _status1;
             }
         }
+
+        //public string getStausName(List<ProgressLog>? logs)
+        //{
+        //    if (logs == null)
+        //        return _status1;
+        //    int? idStatus = logs.LastOrDefault().IdStatus;
+        //    switch (idStatus)
+        //    {
+        //        case 1:
+        //            return _status1;
+        //        case 2:
+        //            return _status2;
+        //        case 3:
+        //            return _status3;
+        //        default:
+        //            return _status1;
+        //    }
+        //}
 
         private int getProgress(int idProgressReport)
         {
