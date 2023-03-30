@@ -134,7 +134,7 @@ namespace Obra.Client.Pages
                     }
                     else if (!_idsAparmentSelect.Contains(id))
                     {
-                        _toastService.ShowWarning("No puedes elegir mas de 3 departamentos si ya has elegido todas las actividades, todos los elementos y todos los subElementos", "¡Advertencia!");
+                        _toastService.ShowWarning("Para limitar el volumen a generar, se permite máximo 3 departamentos cuando se eligen todas las actividades", "¡Advertencia!");
 
                         _idsAparmentSelect.Clear();
 
@@ -590,7 +590,7 @@ namespace Obra.Client.Pages
         {
             if (allActivities == true && allElements == true && allSubElements == true || activities.Count() == _idsActivitiesSelect.Count() && elements.Count() == _idsElementsSelect.Count() && subElements.Count() == _idsSubElementsSelect.Count())
             {
-                _toastService.ShowWarning("No puedes elegir mas de 3 departamentos si ya has elegido todas las actividades, todos los elementos y todos los subElementos", "¡Advertencia!");
+                _toastService.ShowWarning("Para limitar el volumen a generar, se permite máximo 3 departamentos cuando se eligen todas las actividades", "¡Advertencia!");
             }
             else
             {
