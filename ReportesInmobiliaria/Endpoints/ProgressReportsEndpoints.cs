@@ -91,6 +91,27 @@ namespace ReportesObra.Endpoints
             .Produces<HttpValidationProblemDetails>(StatusCodes.Status500InternalServerError, "application/problem+json")
             .AllowAnonymous();
 
+            routes.MapPost("/xxx", async (ActivitiesDetail XXX, IProgressReportsService _progressReportsService, ILogger<Program> _logger) =>
+            {
+                try
+                {
+                    var progressReports = await _progressReportsService.GetProgressReportsDetailedAsync(XXX.IdBuilding, XXX.Apartments, XXX.Areas, XXX.Elements, XXX.SubElements, XXX.Activities);
+                    return Results.Ok(progressReports);
+                }
+                catch (Exception e)
+                {
+                    _logger.LogError(e, e.Message);
+                    if (e.GetType() == typeof(ValidationException))
+                        return Results.Problem(e.Message, statusCode: 400);
+                    return Results.Problem(e.Message);
+                }
+            })
+            .WithName("Getxxx")
+            .Produces<IResult>(StatusCodes.Status200OK)
+            .Produces<HttpValidationProblemDetails>(StatusCodes.Status400BadRequest, "application/problem+json")
+            .Produces<HttpValidationProblemDetails>(StatusCodes.Status500InternalServerError, "application/problem+json")
+            .AllowAnonymous();
+
             routes.MapPost("/ProgressReport", async (ProgressReport progressReport, IProgressReportsService _progressReportsService, ILogger<Program> _logger) =>
             {
                 try

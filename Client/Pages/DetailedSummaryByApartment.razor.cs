@@ -34,7 +34,7 @@ namespace Obra.Client.Pages
         private List<int> _idsAparmentSelect { get; set; } = new();
         private List<int> _idsActivitiesSelect { get; set; } = new();
         private List<int> _idsElementsSelect { get; set; } = new();
-        private List<int> _idsSubElementsSelect { get; set; } = new();
+        private List<int>? _idsSubElementsSelect { get; set; } = new();
 
         private List<Activity> activitiesSelect { get; set; } = new();
         private List<Element> elementsSelect { get; set; } = new();
@@ -768,14 +768,13 @@ namespace Obra.Client.Pages
             buttonReport = true;
             apartmentDetails = false;
             loading = true;
-            if (allApartments == true)
-            {
-                foreach (var item in apartments)
-                {
-                    _idsAparmentSelect.Add(item.IdApartment);
-                }
-            }
-
+            //if (allApartments == true)
+            //{
+            //    foreach (var item in apartments)
+            //    {
+            //        _idsAparmentSelect.Add(item.IdApartment);
+            //    }
+            //}
             foreach (var item in _idsAparmentSelect)
             {
                 apartmentsSelect.Add(apartments.FirstOrDefault(x => x.IdApartment.Equals(item)));
@@ -791,17 +790,18 @@ namespace Obra.Client.Pages
                 elementsSelect.Add(elements.FirstOrDefault(x => x.IdElement.Equals(item)));
             }
 
-            foreach (var item in _idsSubElementsSelect)
-            {
-                subElementsSelect.Add(subElements.FirstOrDefault(x => x.IdSubElement.Equals(item)));
-            }
+            //if (allSubElements)
+            //    _idsSubElementsSelect = null;
+            //else
+                foreach (var item in _idsSubElementsSelect)
+                    subElementsSelect.Add(subElements.FirstOrDefault(x => x.IdSubElement.Equals(item)));
 
             ActivitiesDetail data = new();
             data.IdBuilding = Accesos.IdBuilding;
             data.Apartments = _idsAparmentSelect;
             data.Activities = _idsActivitiesSelect;
             data.Elements = _idsElementsSelect;
-            data.SubElements = _idsSubElementsSelect;
+            data.SubElements = allSubElements ? null : _idsSubElementsSelect;
 
             detalladoDepartamentos = await _reportesService.PostDataDetallesDepartamentos(data);
 
@@ -816,6 +816,7 @@ namespace Obra.Client.Pages
             if (idProgressLog != null)
             {
                 int contador = 0;
+                string? currentUri;
                 int auxId = (int)idProgressLog;
                 var currentProgressReport = await _progressLogsService.GetProgressLogAsync(auxId);
                 var logsByProgressReport = await _progressLogsService.GetProgressLogsAsync(idProgressReport: currentProgressReport.IdProgressReport);
@@ -825,14 +826,19 @@ namespace Obra.Client.Pages
                     logsByProgressReport = logsByProgressReport.OrderByDescending(x => x.IdProgressLog).ToList();
                     foreach (var log in logsByProgressReport)
                     {
-                        var currentBlob = log.IdBlobs.FirstOrDefault();
-                        string? currentUri = currentBlob == null ? null : currentBlob.Uri;
-                        if (currentUri != null)
+                        var currentBlobs = log.IdBlobs;
+                        foreach (var blob in currentBlobs)
                         {
-                            listUris.Add(currentUri);
-                            contador++;
+                            currentUri = blob.Uri;
+                            if (currentUri != null)
+                            {
+                                listUris.Add(currentUri);
+                                contador++;
+                            }
+                            if (contador >= 3)
+                                break;
                         }
-                        if (contador == 3)
+                        if (contador >= 3)
                             break;
                     }
                 }

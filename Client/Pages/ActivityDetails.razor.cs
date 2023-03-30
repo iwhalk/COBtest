@@ -727,7 +727,7 @@ namespace Obra.Client.Pages
                                 data.Apartments = _idsAparmentSelect;
                                 data.Activities = _idsActivitiesSelect;
                                 data.Elements = _idsElementsSelect;
-                                data.SubElements = _idsSubElementsSelect;
+                                data.SubElements = allSubElements ? null : _idsSubElementsSelect;
 
                                 detalladoActividades = await _reportesService.PostDataDetallesActividades(data);
 
@@ -806,6 +806,7 @@ namespace Obra.Client.Pages
         {
             if (idProgressLog != null)
             {
+                string? currentUri;
                 int contador = 0;
                 int auxId = (int)idProgressLog;
 
@@ -817,18 +818,22 @@ namespace Obra.Client.Pages
                     logsByProgressReport = logsByProgressReport.OrderByDescending(x => x.IdProgressLog).ToList();
                     foreach (var log in logsByProgressReport)
                     {
-                        var currentBlob = log.IdBlobs.FirstOrDefault();
-                        string? currentUri = currentBlob == null ? null : currentBlob.Uri;
-                        if (currentUri != null)
+                        var currentBlobs = log.IdBlobs;
+                        foreach (var blob in currentBlobs)
                         {
-                            listUris.Add(currentUri);
-                            contador++;
+                            currentUri = blob.Uri;
+                            if (currentUri != null)
+                            {
+                                listUris.Add(currentUri);
+                                contador++;
+                            }
+                            if (contador >= 3)
+                                break;
                         }
-                        if (contador == 3)
+                        if (contador >= 3)
                             break;
                     }
                 }
-
 
                 ProgressLog aux = await _progressLogsService.GetProgressLogAsync(auxId);
 

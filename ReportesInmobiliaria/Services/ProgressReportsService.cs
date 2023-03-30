@@ -97,6 +97,71 @@ namespace ReportesObra.Services
             }
         }
 
+        public async Task<List<ProgressReport>?> GetProgressReportsDetailedAsync(int idBuilding, List<int>? idApartments,
+            List<int>? idAreas, List<int>? idElements, List<int>? idSubElements, List<int>? idActivities)
+        {
+            IQueryable<ProgressReport> progressReports = _dbContext.ProgressReports;
+            progressReports = progressReports.Where(x => x.IdBuilding == idBuilding);
+
+            if (idApartments != null && idApartments.Count != 0)
+                progressReports = progressReports.Where(x => idApartments.Contains(x.IdApartment));
+            if (idAreas != null && idAreas.Count != 0)
+                progressReports = progressReports.Where(x => idAreas.Contains(x.IdArea));
+            if (idElements != null && idElements.Count != 0)
+                progressReports = progressReports.Where(x => idElements.Contains(x.IdElement));
+            if (idSubElements != null && idSubElements.Count != 0)
+                progressReports = progressReports.Where(x => idSubElements.Contains(x.IdSubElement ?? 0));
+
+            System.Linq.Expressions.Expression<Func<Element, Element>> selectorE = e => new Element
+            {
+                IdElement = e.IdElement,
+                ElementName = e.ElementName,
+                IdActivity = e.IdActivity,
+                IdActivityNavigation = e.IdActivityNavigation
+            };
+
+            System.Linq.Expressions.Expression<Func<ProgressReport, ProgressReport>> selector = x => new ProgressReport
+            {
+                IdProgressReport = x.IdProgressReport,
+                DateCreated = x.DateCreated,
+                IdBuilding = x.IdBuilding,
+                IdApartment = x.IdApartment,
+                IdArea = x.IdArea,
+                IdElement = x.IdElement,
+                IdSubElement = x.IdSubElement,
+                TotalPieces = x.TotalPieces,
+                IdSupervisor = x.IdSupervisor,
+                IdApartmentNavigation = x.IdApartmentNavigation,
+                IdAreaNavigation = x.IdAreaNavigation,
+                IdElementNavigation = _dbContext.Elements.Select(selectorE).FirstOrDefault(a => a.IdElement == x.IdElement),
+                IdSubElementNavigation = x.IdSubElementNavigation,
+                ProgressLogs = x.ProgressLogs.Select(y => new ProgressLog
+                {
+                    IdProgressLog = y.IdProgressLog,
+                    IdProgressReport = y.IdProgressReport,
+                    DateCreated = y.DateCreated,
+                    IdStatus = y.IdStatus,
+                    Pieces = y.Pieces,
+                    Observation = y.Observation,
+                    IdSupervisor = y.IdSupervisor,
+                    IdStatusNavigation = y.IdStatusNavigation,
+                    IdBlobs = y.IdBlobs.Select(z => new Blob
+                    {
+                        IdBlob = z.IdBlob,
+                        ContainerName = z.ContainerName,
+                        IsPrivate = z.IsPrivate,
+                        Uri = z.Uri,
+                        BlobSize = z.BlobSize
+                    }).ToList()
+
+                }).ToList()
+            };
+            var result = progressReports.Select(selector);
+            if (idActivities != null && idActivities.Count != 0)
+                result = result.Where(x => idActivities.Contains(x.IdElementNavigation.IdActivity));
+            return await result.ToListAsync();
+        }
+
         public async Task<ObjectAccessUser?> GetObjectsAccessAsync(string idSupervisor)
         {
             IQueryable<ProgressReport> progressReports = _dbContext.ProgressReports;

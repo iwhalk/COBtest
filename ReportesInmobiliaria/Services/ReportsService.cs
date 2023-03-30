@@ -25,9 +25,8 @@ namespace ReportesObra.Services
         private readonly ObraDbContext _dbContext;
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly IProgressLogsService _progressLogsService;
+        private readonly IProgressReportsService _progressReportsService;
         private readonly ReportesFactory _reportesFactory;
-        List<ProgressReport> progressReportsComplete;
-        List<ProgressLog> listProgressLog;
         List<Area> listAreas;
         List<Element> listElements;
         List<SharedLibrary.Models.Activity> listActivities;
@@ -38,18 +37,16 @@ namespace ReportesObra.Services
         private string _status1 = "Not Started";
         private string _status2 = "Started";
         private string _status3 = "Finished";
-        private static ObjectAccessUser accessUser;
 
         //private readonly InmobiliariaDbContextProcedures _dbContextProcedure;
 
-        public ReportsService(ObraDbContext dbContext, IHttpContextAccessor httpContextAccessor, ReportesFactory reportesFactory, IProgressLogsService progressLogsService)
+        public ReportsService(ObraDbContext dbContext, IHttpContextAccessor httpContextAccessor, ReportesFactory reportesFactory, IProgressReportsService progressReportsService, IProgressLogsService progressLogsService)
         {
             _dbContext = dbContext;
             _httpContextAccessor = httpContextAccessor;
             _reportesFactory = reportesFactory;
+            _progressReportsService = progressReportsService;
             _progressLogsService = progressLogsService;
-            progressReportsComplete = _dbContext.ProgressReports.ToList();
-            listProgressLog = _progressLogsService.GetProgressLogsAsync(null, null, null, null).Result;
             listAreas = _dbContext.Areas.ToList();
             listElements = _dbContext.Elements.ToList();
             listActivities = _dbContext.Activities.ToList();
@@ -63,40 +60,22 @@ namespace ReportesObra.Services
                 _status3 = listStatuses.ElementAtOrDefault(2) == null ? _status3 : listStatuses.ElementAt(2).StatusName;
             }            
         }
-        //Task<List<DetalladoDepartamentos>>
+
         public async Task<List<DetalladoDepartamentos>> GetDataDetallesDepartamento(int idBuilding, List<int>? idApartments, List<int>? idAreas, List<int>? idActivities, List<int>? idElements, List<int>? idSubElements)
         {
-            List<ProgressReport> listReport = new List<ProgressReport>();
-            _titleDetails = "(Todos)";
-            listReport = progressReportsComplete.Where(x => x.IdBuilding == idBuilding).ToList();
-            var idSupervisor = listReport.ElementAtOrDefault(0).IdSupervisor;
-            listProgressLog = listProgressLog.Where(x => x.IdSupervisor == idSupervisor).ToList();
             if (idApartments != null && idApartments.Count() != 0)
-            {
-                listReport = FiltradoIdApartments(listReport, idApartments);
                 _titleDetails = "(Seleccionados)";
-            }
-            if (idAreas != null && idAreas.Count() != 0)
-                listReport = FiltradoIdAreas(listReport, idAreas);
-            if (idElements != null && idElements.Count() != 0)
-                listReport = FiltradoIdElements(listReport, idElements);
-            if (idSubElements != null && idSubElements.Count() != 0)
-                listReport = FiltradoIdSubElements(listReport, idSubElements);
-            listReport = listReport.OrderBy(x => x.IdArea).ToList();
+            else
+                _titleDetails = "(Todos)";
+
+            List<ProgressReport> listReport = new List<ProgressReport>();
+            listReport = await _progressReportsService.GetProgressReportsDetailedAsync(idBuilding, idApartments, idAreas, idElements, idSubElements, idActivities);
+            
+            listReport = listReport.OrderBy(x => x.IdApartment).ThenBy(x => x.IdArea).ToList();
             var list = new List<DetalladoDepartamentos>();
-            list = GetSubElementsAsync(listReport);
-            //ReporteDetalles reporteDetalles = new()
-            //{
-            //    detalladoDepartamentos = GetSubElementsAsync(listReport)
-            //};
-            //if (idActivities != null && idActivities.Count() != 0)
-            //    reporteDetalles.detalladoDepartamentos = FiltradoIdActivities(reporteDetalles.detalladoDepartamentos, idActivities);
-            //if (reporteDetalles.detalladoDepartamentos.Count == 0)
-            //    return null;                
-            //return _reportesFactory.CrearPdf(reporteDetalles, _titleDetails);
-            if (idActivities != null && idActivities.Count() != 0)
-                list = FiltradoIdActivities(list, idActivities);
-            return list.OrderBy(x => x.numeroApartamento).ToList();
+            list = GetDetalladoDepartamentos(listReport);
+
+            return list;
         }
 
         public async Task<byte[]> GetReporteDetallesDepartamento(List<DetalladoDepartamentos> detalladoDepartamentos, int? opcion)
@@ -129,39 +108,19 @@ namespace ReportesObra.Services
 
         public async Task<List<DetalladoActividades>> GetDataDetallesActividad(int idBuilding, List<int>? idActivities, List<int>? idElements, List<int>? idSubElements, List<int>? idApartments)
         {
-            List<ProgressReport> listReport = new List<ProgressReport>();
-            _titleDetails = "(Todos)";
-            listReport = progressReportsComplete.Where(x => x.IdBuilding == idBuilding).ToList();
-            var idSupervisor = listReport.ElementAtOrDefault(0).IdSupervisor;
-            listProgressLog = listProgressLog.Where(x => x.IdSupervisor == idSupervisor).ToList();
-            if (idElements != null && idElements.Count() != 0)
-                listReport = FiltradoIdElements(listReport, idElements);
-            if (idSubElements != null && idSubElements.Count() != 0)
-                listReport = FiltradoIdSubElements(listReport, idSubElements);
-            if (idApartments != null && idApartments.Count() != 0)
-                listReport = FiltradoIdApartments(listReport, idApartments);
-            listReport = listReport.OrderBy(x => x.IdArea).ToList();
-            //ReporteDetallesActividad reporteDetalles = new()
-            //{
-            //    detalladoActividades = GetSubElementsActividadesAsync(listReport)
-            //};
-            //if (idActivities != null && idActivities.Count() != 0){
-            //    reporteDetalles.detalladoActividades = FiltradoIdActivities(reporteDetalles.detalladoActividades, idActivities);
-            //    _titleDetails = "(Seleccionadas)";
-            //}
-
-            //if (reporteDetalles.detalladoActividades.Count == 0)
-            //    return null;
-            //return _reportesFactory.CrearPdf(reporteDetalles, _titleDetails);
-            List<DetalladoActividades> list = GetSubElementsActividadesAsync(listReport);
             if (idActivities != null && idActivities.Count() != 0)
-            {
-                list = FiltradoIdActivities(list, idActivities);
                 _titleDetails = "(Seleccionados)";
-            }
-            var orderedByApartment = list.OrderBy(x => x.numeroApartamento);
-            var orderedByActivity = orderedByApartment.OrderBy(x => x.actividad);
-            return orderedByActivity.ToList();
+            else
+                _titleDetails = "(Todos)";
+
+            List<ProgressReport> listReport = new List<ProgressReport>();
+            listReport = await _progressReportsService.GetProgressReportsDetailedAsync(idBuilding, idApartments, null, idElements, idSubElements, idActivities);
+
+            listReport = listReport.OrderBy(x => x.IdApartment).ThenBy(x => x.IdElement).ThenBy(x => x.IdArea).ToList();
+            var list = new List<DetalladoActividades>();
+            list = GetDetalladoActividades(listReport);
+
+            return list;
         }
 
         public async Task<byte[]?> GetReporteDetallesActividad(List<DetalladoActividades> detalladoActividades, int? opcion)
@@ -192,60 +151,101 @@ namespace ReportesObra.Services
             return _reportesFactory.CrearPdf(reporteDetalles, _titleDetails);
         }
 
-        public List<DetalladoDepartamentos> GetSubElementsAsync(List<ProgressReport> progressList)
+        public List<DetalladoDepartamentos> GetDetalladoDepartamentos(List<ProgressReport> progressList)
         {
-            int contador = 0;
-            var list = new List<DetalladoDepartamentos>();                       
-            foreach (var subElement in progressList)
+            var list = new List<DetalladoDepartamentos>();
+            foreach (var progress in progressList)
             {
-                //if (getStausName(subElement.IdProgressReport) == "Terminado")
-                //{
-                //    contador++;
-                //    continue;
-                //}
-                var LogResult = getIdLogAndContent(subElement.IdProgressReport);
                 list.Add(new DetalladoDepartamentos()
                 {
-                    numeroApartamento = getApartmentNumber(subElement.IdApartment),
-                    actividad = getActividadByElement(subElement.IdElement),
-                    area = getArea(subElement.IdArea),
-                    elemento = getElemento(subElement.IdElement),
-                    subElemento = getSubElemento(subElement.IdSubElement),
-                    estatus = getStausName(subElement.IdProgressReport),
-                    total = subElement.TotalPieces,
-                    avance = getProgress(subElement.IdProgressReport),
-                    IdProgressLog = LogResult == null ? null : LogResult.Item1,
-                    HasObservationsOrBlobs = LogResult == null ? false : LogResult.Item2
-                });
+                    numeroApartamento = progress.IdApartmentNavigation.ApartmentNumber,
+                    actividad = progress.IdElementNavigation.IdActivityNavigation.ActivityName,
+                    area = progress.IdAreaNavigation.AreaName,
+                    elemento = progress.IdElementNavigation.ElementName,
+                    subElemento = progress.IdSubElementNavigation != null ? progress.IdSubElementNavigation.SubElementName : "N/A",
+                    estatus = progress.ProgressLogs != null && progress.ProgressLogs.Count != 0 ? progress.ProgressLogs.Last().IdStatusNavigation.StatusName : _status1,
+                    total = progress.TotalPieces,
+                    avance = progress.ProgressLogs != null && progress.ProgressLogs.Count != 0 ? Int32.Parse(progress.ProgressLogs.Last().Pieces) : 0,
+                    IdProgressLog = progress.ProgressLogs != null && progress.ProgressLogs.Count != 0 ? progress.ProgressLogs.Last().IdProgressLog : null,
+                    HasObservationsOrBlobs = progress.ProgressLogs != null && progress.ProgressLogs.Count != 0 ? progressLogHasContent(progress.ProgressLogs) : false
+                    //Obserbation = progress.ProgressLogs != null && progress.ProgressLogs.Count != 0 ? (progress.ProgressLogs.Last().Observation ?? null) : null,
+                    //Blobs = getURIBlobs(progress.ProgressLogs)
+                }) ;
             }
             return list;
         }
 
-        public List<DetalladoActividades> GetSubElementsActividadesAsync(List<ProgressReport> progressList)
+        public List<DetalladoActividades> GetDetalladoActividades(List<ProgressReport> progressList)
         {
-            int contador = 0;
             var list = new List<DetalladoActividades>();
-            foreach (var subElement in progressList)
+            foreach (var progress in progressList)
             {
-                //if (getStausName(subElement.IdProgressReport) == "Terminado")
-                //{
-                //    contador++;
-                //    continue;
-                //}
-                var LogResult = getIdLogAndContent(subElement.IdProgressReport);
                 list.Add(new DetalladoActividades()
                 {
-                    actividad = getActividadByElement(subElement.IdElement),
-                    area = getArea(subElement.IdArea),
-                    elemento = getElemento(subElement.IdElement),
-                    subElemento = getSubElemento(subElement.IdSubElement),
-                    numeroApartamento = getApartmentNumber(subElement.IdApartment),
-                    estatus = getStausName(subElement.IdProgressReport),
-                    total = subElement.TotalPieces,
-                    avance = getProgress(subElement.IdProgressReport),
-                    IdProgressLog = LogResult == null ? null : LogResult.Item1,
-                    HasObservationsOrBlobs = LogResult == null ? false : LogResult.Item2
+                    actividad = progress.IdElementNavigation.IdActivityNavigation.ActivityName,
+                    area = progress.IdAreaNavigation.AreaName,
+                    elemento = progress.IdElementNavigation.ElementName,
+                    subElemento = progress.IdSubElementNavigation != null ? progress.IdSubElementNavigation.SubElementName : "N/A",
+                    numeroApartamento = progress.IdApartmentNavigation.ApartmentNumber,
+                    estatus = progress.ProgressLogs != null && progress.ProgressLogs.Count != 0 ? progress.ProgressLogs.Last().IdStatusNavigation.StatusName : _status1,
+                    total = progress.TotalPieces,
+                    avance = progress.ProgressLogs != null && progress.ProgressLogs.Count != 0 ? Int32.Parse(progress.ProgressLogs.Last().Pieces) : 0,
+                    IdProgressLog = progress.ProgressLogs != null && progress.ProgressLogs.Count != 0 ? progress.ProgressLogs.Last().IdProgressLog : null,
+                    HasObservationsOrBlobs = progress.ProgressLogs != null && progress.ProgressLogs.Count != 0 ? progressLogHasContent(progress.ProgressLogs) : false
                 }) ;
+            }
+            return list;
+        }
+
+        private bool progressLogHasContent(ICollection<ProgressLog> progressLogs)
+        {
+            bool hasContent = false;
+            var progressLog = progressLogs.Last();
+            if (!string.IsNullOrEmpty(progressLog.Observation))
+                hasContent = true;
+            else
+            {
+                //Si no hay observaciones en ese progressLog verifica si tiene Blobs
+                progressLogs = progressLogs.OrderByDescending(x => x.IdProgressLog).ToList();
+                foreach (var log in progressLogs)
+                {
+                    var currentBlob = log.IdBlobs.FirstOrDefault();
+                    if (currentBlob != null)
+                    {
+                        hasContent = true;
+                        break;
+                    }
+                }
+            }
+
+            return hasContent;
+        }
+
+        private List<string>? getURIBlobs(ICollection<ProgressLog>? logs)
+        {
+            int contador = 0;
+            string? currentUri;
+            var list = new List<string>();
+            if (logs != null && logs.Count != 0)
+            {
+                logs = logs.OrderByDescending(x => x.IdProgressLog).ToList();
+                foreach (var log in logs)
+                {
+                    var currentBlobs = log.IdBlobs;
+                    foreach (var blob in currentBlobs)
+                    {
+                        currentUri = blob.Uri;
+                        if (currentUri != null)
+                        {
+                            list.Add(currentUri);
+                            contador++;
+                        }
+                        if (contador >= 3)
+                            break;
+                    }
+                    if (contador >= 3)
+                        break;
+                }
             }
             return list;
         }
@@ -569,258 +569,30 @@ namespace ReportesObra.Services
             return _reportesFactory.CrearPdf(list, subtitulo);
         }
 
-        public string? getActividadByElement(int idElement)
-        {
-            var localElement = listElements.FirstOrDefault(x => x.IdElement == idElement);
-            if (localElement == null)
-                return null;
-            var nombreActividad = listActivities.FirstOrDefault(x => x.IdActivity == localElement.IdActivity);
-            return nombreActividad == null ? null : nombreActividad.ActivityName;            
-        }
-
-        private string? getActividad(int idActividad)
-        {
-            var nombreActividad = listActivities.FirstOrDefault(x => x.IdActivity == idActividad);
-            return nombreActividad == null ? null : nombreActividad.ActivityName;
-        }
-
-        private string? getArea(int idArea)
-        {
-            var nameArea = listAreas.FirstOrDefault(x => x.IdArea == idArea);
-            if(nameArea == null)
-                return null;
-            return nameArea.AreaName;
-        }
-
-        public string? getElemento(int? idElement)
-        {
-            var nameElement = listElements.FirstOrDefault(x => x.IdElement == idElement);
-            if (nameElement == null)
-                return null;
-            return nameElement.ElementName;
-        }
-
-        public string? getSubElemento(int? idSubElement)
-        {
-            if (idSubElement == null)
-                return "N/A";
-            var nameSubElement = listSubElements.FirstOrDefault(x => x.IdSubElement == idSubElement);
-            if (nameSubElement == null)
-                return null;
-            return nameSubElement.SubElementName;
-        }
-
-        public string getStausName(int idProgressReport)
-        {
-            var result = listProgressLog.LastOrDefault(x => x.IdProgressReport == idProgressReport);
-            //Se espera que el primer status en la BD sea "No iniciada"
-            if (result == null)
-                return _status1;
-            int? idStatus = result.IdStatus;
-            switch (idStatus)
-            {
-                case 1:
-                    return _status1;
-                case 2:
-                    return _status2;
-                case 3:
-                    return _status3;
-                default:
-                    return _status1;
-            }
-        }
-
-        private int getProgress(int idProgressReport)
-        {
-            int i = 0;
-            var result = listProgressLog.LastOrDefault(x => x.IdProgressReport == idProgressReport);
-            if (result == null)
-                return 0;
-            string pieces = result.Pieces;
-            bool canConvert = Int32.TryParse(pieces, out i);
-            return i;
-        }
-
-        //private Tuple<int, List<string>, string>? getIdProgressLog(int idProgressReportLocal)
+        //private Tuple<int, bool>? getIdLogAndContent(int idProgressReportLocal)
         //{
-        //    int contador = 0;
+        //    bool hasContent = false;
         //    var progressLog = listProgressLog.LastOrDefault(x => x.IdProgressReport == idProgressReportLocal);
         //    if (progressLog == null)
         //        return null;
-        //    var logs = listProgressLog.Where(x => x.IdProgressReport == idProgressReportLocal).ToList();
-        //    logs = logs.OrderByDescending(x => x.IdProgressLog).ToList();
-        //    List<string> listUris = new List<string>();
-        //    foreach (var log in logs)
-        //    {
-        //        var currentBlob = log.IdBlobs.FirstOrDefault();
-        //        string? currentUri = currentBlob == null ? null : currentBlob.Uri;
-        //        if (currentUri != null)
+        //    if (!string.IsNullOrEmpty(progressLog.Observation))
+        //        hasContent = true;
+        //    else {
+        //        //Si no hay observaciones en ese progressLog verifica si tiene Blobs
+        //        var logs = listProgressLog.Where(x => x.IdProgressReport == idProgressReportLocal).ToList();
+        //        logs = logs.OrderByDescending(x => x.IdProgressLog).ToList();
+        //        foreach (var log in logs)
         //        {
-        //            listUris.Add(currentUri);
-        //            contador++;
+        //            var currentBlob = log.IdBlobs.FirstOrDefault();
+        //            if (currentBlob != null)
+        //            {
+        //                hasContent = true;
+        //                break;
+        //            }
         //        }
-        //        if (contador == 3)
-        //            break;
         //    }
-        //    return Tuple.Create(progressLog.IdProgressLog, listUris, progressLog.Observation);
-        //}
 
-        private int? getIdProgressLog(int idProgressReport)
-        {
-            var progressLog = listProgressLog.LastOrDefault(x => x.IdProgressReport == idProgressReport);
-            if (progressLog == null)
-                return null;
-            return progressLog.IdProgressLog;
-        }
-
-        private Tuple<int, bool>? getIdLogAndContent(int idProgressReportLocal)
-        {
-            bool hasContent = false;
-            var progressLog = listProgressLog.LastOrDefault(x => x.IdProgressReport == idProgressReportLocal);
-            if (progressLog == null)
-                return null;
-            if (!string.IsNullOrEmpty(progressLog.Observation))
-                hasContent = true;
-            else {
-                //Si no hay observaciones en ese progressLog verifica si tiene Blobs
-                var logs = listProgressLog.Where(x => x.IdProgressReport == idProgressReportLocal).ToList();
-                logs = logs.OrderByDescending(x => x.IdProgressLog).ToList();
-                foreach (var log in logs)
-                {
-                    var currentBlob = log.IdBlobs.FirstOrDefault();
-                    if (currentBlob != null)
-                    {
-                        hasContent = true;
-                        break;
-                    }
-                }
-            }
-
-            return Tuple.Create(progressLog.IdProgressLog, hasContent);
-        }
-
-        //private Tuple<List<string>, string> GetLogContent(int idProgressReport)
-        //{
-        //    var progressLog = listProgressLog.LastOrDefault(x => x.IdProgressReport == idProgressReport);
-        //}
-
-        private string getApartmentNumber(int idApartment)
-        {
-            var result = listApartments.FirstOrDefault(x => x.IdApartment == idApartment);
-            if (result == null)
-                return null;
-            return result.ApartmentNumber;
-        }
-
-        private List<ProgressReportActivityAdded> FiltradoProgressByActivity(List<ProgressReportActivityAdded> listProgress, List<int> idActivities)
-        {
-            List<ProgressReportActivityAdded> listProgressFiltred = new List<ProgressReportActivityAdded>();
-            foreach (var idActivity in idActivities)
-            {
-                var subListActivity = listProgress.Where(x => x.IdActivity == idActivity);
-                if (subListActivity == null)
-                    continue;
-                listProgressFiltred.AddRange(subListActivity.ToList());
-            }
-            return listProgressFiltred;
-        }
-
-        private List<ProgressReport> FiltradoIdApartments(List<ProgressReport>  ListAllAparments, List<int> idApartments)
-        {
-            List<ProgressReport> apartmentsFiltred = new List<ProgressReport>();
-            foreach (var idApartment in idApartments)
-            {
-                var subListApartments = ListAllAparments.Where(x => x.IdApartment == idApartment);
-                if (subListApartments == null)
-                    continue;
-                apartmentsFiltred.AddRange(subListApartments.ToList());
-            }
-            return apartmentsFiltred;
-        }
-
-        private List<ProgressReport> FiltradoIdAreas(List<ProgressReport> ListAllAreas, List<int> idAreas)
-        {
-            List<ProgressReport> areasFiltred = new List<ProgressReport>();
-            foreach (var idArea in idAreas)
-            {
-                var subListArea = ListAllAreas.Where(x => x.IdArea == idArea);
-                if (subListArea == null)
-                    continue;
-                areasFiltred.AddRange(subListArea.ToList());
-            }
-            return areasFiltred;
-        }
-
-        private List<DetalladoDepartamentos> FiltradoIdActivities(List<DetalladoDepartamentos> ListAllActivities, List<int> idActivities)
-        {
-            List<string> activityNames = new List<string>();
-            List<DetalladoDepartamentos> activitiesFiltred = new List<DetalladoDepartamentos>();
-            foreach (var idActivity in idActivities)
-            {
-                string activityName = getActividad(idActivity);
-                if (activityName == null)
-                    continue;
-                activityNames.Add(activityName);
-            }
-
-            foreach (var activityName in activityNames)
-            {
-                var subListActivities = ListAllActivities.Where(x => x.actividad == activityName);
-                if (subListActivities == null)
-                    continue;
-                activitiesFiltred.AddRange(subListActivities.ToList());
-            }
-            return activitiesFiltred;
-        }
-
-        private List<DetalladoActividades> FiltradoIdActivities(List<DetalladoActividades> ListAllActivities, List<int> idActivities)
-        {
-            List<string> activityNames = new List<string>();
-            List<DetalladoActividades> activitiesFiltred = new List<DetalladoActividades>();
-            foreach (var idActivity in idActivities)
-            {
-                string activityName = getActividad(idActivity);
-                if (activityName == null)
-                    continue;
-                activityNames.Add(activityName);
-            }
-
-            foreach (var activityName in activityNames)
-            {
-                var subListActivities = ListAllActivities.Where(x => x.actividad == activityName);
-                if (subListActivities == null)
-                    continue;
-                activitiesFiltred.AddRange(subListActivities.ToList());
-            }
-            return activitiesFiltred;
-        }
-
-        private List<ProgressReport> FiltradoIdElements(List<ProgressReport> ListAllElements, List<int> idElements)
-        {
-            List<ProgressReport> elementsFiltred = new List<ProgressReport>();
-            foreach (var idElement in idElements)
-            {
-                var subListElements = ListAllElements.Where(x => x.IdElement == idElement);
-                if (subListElements== null)
-                    continue;
-                elementsFiltred.AddRange(subListElements.ToList());
-            }
-            return elementsFiltred;
-        }
-
-        private List<ProgressReport> FiltradoIdSubElements(List<ProgressReport> ListAllSubElements, List<int> idSubElements)
-        {
-            List<ProgressReport> subElementsFiltred = new List<ProgressReport> ();
-            foreach (var idSubElement in idSubElements)
-            {
-                var subListSubElements = ListAllSubElements.Where(x => x.IdSubElement == idSubElement);
-                if(subListSubElements == null)
-                    continue;
-                subElementsFiltred.AddRange(subListSubElements.ToList());
-            }
-            var listSubElementsNull = ListAllSubElements.Where(x => x.IdSubElement == null).ToList();
-            subElementsFiltred.AddRange(listSubElementsNull);
-            return subElementsFiltred;
-        } 
+        //    return Tuple.Create(progressLog.IdProgressLog, hasContent);
+        //} 
     }
 }
