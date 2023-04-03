@@ -278,19 +278,18 @@ namespace Obra.Client.Pages
             var NewProgressLog = NewProgressLogs.FirstOrDefault(x => x.IdProgressReport == CurrentProgressReport.IdProgressReport);
             if (NewProgressLog != null)
             {
-                NewProgressLogs.FirstOrDefault(x => x.IdProgressReport == CurrentProgressReport.IdProgressReport).Pieces = e.Value?.ToString();
+                NewProgressLogs.FirstOrDefault(x => x.IdProgressReport == CurrentProgressReport.IdProgressReport).Pieces = String.IsNullOrWhiteSpace(e.Value?.ToString()) ? "0" : e.Value?.ToString();
                 //NewProgressLogs.FirstOrDefault(x => x.IdProgressReport == CurrentProgressReport.IdProgressReport).IdProgressReport = CurrentProgressReport?.IdProgressReport ?? 1;
-                piecesCondition = e.Value?.ToString();
+                piecesCondition = String.IsNullOrWhiteSpace(e.Value?.ToString()) ? "0" : e.Value?.ToString();
             }
             else
             {
                 int.TryParse(e.Value?.ToString(), out int pieces);
                 CurrentProgressLog.Pieces = pieces.ToString();
-                CurrentProgressLog.IdProgressReport = CurrentProgressReport?.IdProgressReport ?? 1;                
-
+                CurrentProgressLog.IdProgressReport = CurrentProgressReport?.IdProgressReport ?? 1;
                 NewProgressLogs.Add(new ProgressLog()
                 {
-                    Pieces = pieces.ToString(),
+                    Pieces = String.IsNullOrEmpty(pieces.ToString()) || String.IsNullOrWhiteSpace(pieces.ToString())? "0" : pieces.ToString(),
                     IdProgressReport = CurrentProgressReport?.IdProgressReport ?? 1,
                     Observation = CurrentProgressLog.Observation,
                     IdStatus = CurrentProgressLog.IdStatus
@@ -303,7 +302,7 @@ namespace Obra.Client.Pages
             {
                 CheckboxClicked(3, null);
             }
-            else if (e.Value?.ToString() != "0")
+            else if (!String.IsNullOrWhiteSpace(e.Value?.ToString()) && e.Value?.ToString() != "0")
             {
                 CheckboxClicked(2, null);
             }
@@ -329,7 +328,7 @@ namespace Obra.Client.Pages
                 CurrentProgressLog.IdProgressReport = CurrentProgressReport?.IdProgressReport ?? 1;
                 NewProgressLogs.Add(new ProgressLog()
                 {
-                    Pieces = CurrentProgressLog.Pieces,
+                    Pieces = String.IsNullOrEmpty(CurrentProgressLog.Pieces) || String.IsNullOrWhiteSpace(CurrentProgressLog.Pieces) ? "0" : CurrentProgressLog.Pieces,
                     Observation = e.Value?.ToString(),
                     IdProgressReport = CurrentProgressReport?.IdProgressReport ?? 1,
                     IdStatus = CurrentProgressLog.IdStatus
@@ -355,7 +354,7 @@ namespace Obra.Client.Pages
                 CurrentProgressLog.IdProgressReport = CurrentProgressReport?.IdProgressReport ?? 1;
                 NewProgressLogs.Add(new ProgressLog()
                 {
-                    Pieces = CurrentProgressLog.Pieces,
+                    Pieces = String.IsNullOrEmpty(CurrentProgressLog.Pieces) || String.IsNullOrWhiteSpace(CurrentProgressLog.Pieces) ? "0" : CurrentProgressLog.Pieces,
                     Observation = CurrentProgressLog.Observation,
                     IdProgressReport = CurrentProgressReport?.IdProgressReport ?? 1,
                     IdStatus = idStatus
@@ -380,7 +379,7 @@ namespace Obra.Client.Pages
                 CurrentProgressLog.IdProgressReport = CurrentProgressReport?.IdProgressReport ?? 1;
                 NewProgressLogs.Add(new ProgressLog()
                 {
-                    Pieces = CurrentProgressLog.Pieces,
+                    Pieces = String.IsNullOrEmpty(CurrentProgressLog.Pieces) || String.IsNullOrWhiteSpace(CurrentProgressLog.Pieces) ? "0" : CurrentProgressLog.Pieces,
                     Observation = CurrentProgressLog.Observation,
                     IdProgressReport = CurrentProgressReport?.IdProgressReport ?? 1,
                     IdStatus = CurrentProgressLog.IdStatus,
