@@ -130,7 +130,7 @@ namespace Obra.Client.Pages
                         {
                             allApartments = false;
                             _idsAparmentSelect.Remove(id);
-                            _toastService.ShowWarning("Se deben seleccionar máximo 3 Actividades si elige todos los Departamentos", "Advertencia");
+                            _toastService.ShowWarning("Para limitar el volumen a generar, se permite máximo 3 actividades cuando se eligen todos los departamentos", "¡Advertencia!");
                             return;
                         }
 
@@ -183,7 +183,7 @@ namespace Obra.Client.Pages
                     {
                         if (allApartments && _idsActivitiesSelect.Count == 3)
                         {
-                            _toastService.ShowWarning("Se deben seleccionar máximo 3 Actividades si eligió todos los Departamentos", "Advertencia");
+                            _toastService.ShowWarning("Para limitar el volumen a generar, se permite máximo 3 actividades cuando se eligen todos los departamentos", "Advertencia");
                             return;
                         }
 
@@ -417,7 +417,7 @@ namespace Obra.Client.Pages
             {
                 if (allApartments)
                 {
-                    _toastService.ShowWarning("Se deben seleccionar máximo 3 Actividades si eligió todos los Departamentos", "Advertencia");
+                    _toastService.ShowWarning("Para limitar el volumen a generar, se permite máximo 3 actividades cuando se eligen todos los departamentos", "Advertencia");
                     return;
                 }
 
