@@ -13,7 +13,7 @@ namespace ReportesObra.Endpoints
             {
                 try
                 {
-                    var newModule = await _reportesService.GetDataDetallesDepartamento(detallesActividad.IdBuilding, detallesActividad.Apartments, detallesActividad.Areas, detallesActividad.Activities, detallesActividad.Elements, detallesActividad.SubElements);
+                    var newModule = await _reportesService.GetDataDetallesDepartamento(detallesActividad.IdBuilding, detallesActividad.Apartments, detallesActividad.Areas, detallesActividad.Activities, detallesActividad.Elements, detallesActividad.SubElements, detallesActividad.StatusOption);
                     if (newModule.Count == 0) return Results.NotFound();
                     return Results.Ok(newModule);
                 }
@@ -34,7 +34,7 @@ namespace ReportesObra.Endpoints
             {
                 try
                 {
-                    var newModule = await _reportesService.GetReporteDetallesDepartamento(detalladoDepartamentos, opcion);
+                    var newModule = await _reportesService.GetReporteDetallesDepartamento(detalladoDepartamentos);
                     if (newModule == null) return Results.NotFound();
                     return Results.File(newModule, "application/pdf");
                 }
@@ -55,7 +55,7 @@ namespace ReportesObra.Endpoints
             {
                 try
                 {
-                    var newModule = await _reportesService.GetDataDetallesActividad(detallesActividad.IdBuilding, detallesActividad.Activities, detallesActividad.Elements, detallesActividad.SubElements, detallesActividad.Apartments);
+                    var newModule = await _reportesService.GetDataDetallesActividad(detallesActividad.IdBuilding, detallesActividad.Activities, detallesActividad.Elements, detallesActividad.SubElements, detallesActividad.Apartments, detallesActividad.StatusOption);
                     if (newModule.Count == 0) return Results.NotFound();
                     return Results.Ok(newModule);
                 }
@@ -76,7 +76,7 @@ namespace ReportesObra.Endpoints
             {
                 try
                 {
-                    var newModule = await _reportesService.GetReporteDetallesActividad(detalladoActividades, opcion);
+                    var newModule = await _reportesService.GetReporteDetallesActividad(detalladoActividades);
                     if (newModule == null) return Results.NotFound();
                     return Results.File(newModule, "application/pdf");
                 }

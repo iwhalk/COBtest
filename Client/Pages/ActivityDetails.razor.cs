@@ -62,6 +62,9 @@ namespace Obra.Client.Pages
         private string _status2 = "Started";
         private string _status3 = "Finished";
 
+        private enum Statuses { Todos = 0, Pendiente = 1, EnCurso = 2, Terminado = 3 }
+        private int optionStatus = 0;
+
         public ObjectAccessUser Accesos { get; private set; }
 
         private bool showModal { get; set; } = false;
@@ -113,6 +116,7 @@ namespace Obra.Client.Pages
                 _status2 = resultStatuses.ElementAtOrDefault(1) == null ? _status2 : resultStatuses.ElementAt(1).StatusName;
                 _status3 = resultStatuses.ElementAtOrDefault(2) == null ? _status3 : resultStatuses.ElementAt(2).StatusName;
             }
+            optionStatus = 0;
         }
 
         public async Task AddIdSelect(int id, int filter)
@@ -664,7 +668,7 @@ namespace Obra.Client.Pages
             loading = true;
             buttonReport = false;
 
-            var pdf = await _reportesService.PostReporteDetallesPorActividadesAsync(detalladoActividades, statusOption);
+            var pdf = await _reportesService.PostReporteDetallesPorActividadesAsync(detalladoActividades, null);
 
             if (pdf != null)
             {
@@ -728,6 +732,7 @@ namespace Obra.Client.Pages
                                 data.Activities = _idsActivitiesSelect;
                                 data.Elements = _idsElementsSelect;
                                 data.SubElements = allSubElements ? null : _idsSubElementsSelect;
+                                data.StatusOption = optionStatus == 0 ? null : optionStatus;
 
                                 detalladoActividades = await _reportesService.PostDataDetallesActividades(data);
 
@@ -880,6 +885,11 @@ namespace Obra.Client.Pages
         public async Task NotificationImages()
         {
             _toastService.ShowToast<ToastImages>(new ToastInstanceSettings(5, false));
+        }
+
+        public void StatusChanged(int idStatus)
+        {
+            optionStatus = idStatus;
         }
     }
 }

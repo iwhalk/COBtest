@@ -61,7 +61,8 @@ namespace ReportesObra.Services
             }            
         }
 
-        public async Task<List<DetalladoDepartamentos>> GetDataDetallesDepartamento(int idBuilding, List<int>? idApartments, List<int>? idAreas, List<int>? idActivities, List<int>? idElements, List<int>? idSubElements)
+        public async Task<List<DetalladoDepartamentos>> GetDataDetallesDepartamento(int idBuilding, List<int>? idApartments, List<int>? idAreas, List<int>? idActivities,
+            List<int>? idElements, List<int>? idSubElements, int? statusOption)
         {
             if (idApartments != null && idApartments.Count() != 0)
                 _titleDetails = "(Seleccionados)";
@@ -72,31 +73,17 @@ namespace ReportesObra.Services
             listReport = await _progressReportsService.GetProgressReportsDetailedAsync(idBuilding, idApartments, idAreas, idElements, idSubElements, idActivities);
             
             listReport = listReport.OrderBy(x => x.IdApartment).ThenBy(x => x.IdArea).ToList();
+            if(statusOption != null)
+                listReport = listReport.Where(x => (x.ProgressLogs != null && x.ProgressLogs.Count != 0 ? x.ProgressLogs.Last().IdStatus : 1) == statusOption).ToList();
+
             var list = new List<DetalladoDepartamentos>();
             list = GetDetalladoDepartamentos(listReport);
 
             return list;
         }
 
-        public async Task<byte[]> GetReporteDetallesDepartamento(List<DetalladoDepartamentos> detalladoDepartamentos, int? opcion)
+        public async Task<byte[]> GetReporteDetallesDepartamento(List<DetalladoDepartamentos> detalladoDepartamentos)
         {
-            if (opcion != null)
-            {
-                switch (opcion)
-                {
-                    case 1:
-                        detalladoDepartamentos = detalladoDepartamentos.Where(x => x.estatus == _status1).ToList();
-                        break;
-                    case 2:
-                        detalladoDepartamentos = detalladoDepartamentos.Where(x => x.estatus == _status2).ToList();
-                        break;
-                    case 3:
-                        detalladoDepartamentos = detalladoDepartamentos.Where(x => x.estatus == _status3).ToList();
-                        break;
-                    default:
-                        break;
-                }
-            }
             ReporteDetalles reporteDetalles = new()
             {
                 detalladoDepartamentos = detalladoDepartamentos
@@ -106,7 +93,8 @@ namespace ReportesObra.Services
             return _reportesFactory.CrearPdf(reporteDetalles, _titleDetails);
         }
 
-        public async Task<List<DetalladoActividades>> GetDataDetallesActividad(int idBuilding, List<int>? idActivities, List<int>? idElements, List<int>? idSubElements, List<int>? idApartments)
+        public async Task<List<DetalladoActividades>> GetDataDetallesActividad(int idBuilding, List<int>? idActivities, List<int>? idElements,
+            List<int>? idSubElements, List<int>? idApartments, int? statusOption)
         {
             if (idActivities != null && idActivities.Count() != 0)
                 _titleDetails = "(Seleccionados)";
@@ -117,31 +105,17 @@ namespace ReportesObra.Services
             listReport = await _progressReportsService.GetProgressReportsDetailedAsync(idBuilding, idApartments, null, idElements, idSubElements, idActivities);
 
             listReport = listReport.OrderBy(x => x.IdApartment).ThenBy(x => x.IdElement).ThenBy(x => x.IdArea).ToList();
+            if (statusOption != null)
+                listReport = listReport.Where(x => (x.ProgressLogs != null && x.ProgressLogs.Count != 0 ? x.ProgressLogs.Last().IdStatus : 1) == statusOption).ToList();
+
             var list = new List<DetalladoActividades>();
             list = GetDetalladoActividades(listReport);
 
             return list;
         }
 
-        public async Task<byte[]?> GetReporteDetallesActividad(List<DetalladoActividades> detalladoActividades, int? opcion)
+        public async Task<byte[]?> GetReporteDetallesActividad(List<DetalladoActividades> detalladoActividades)
         {
-            if (opcion != null)
-            {
-                switch (opcion)
-                {
-                    case 1:
-                        detalladoActividades = detalladoActividades.Where(x => x.estatus == _status1).ToList();
-                        break;
-                    case 2:
-                        detalladoActividades = detalladoActividades.Where(x => x.estatus == _status2).ToList();
-                        break;
-                    case 3:
-                        detalladoActividades = detalladoActividades.Where(x => x.estatus == _status3).ToList();
-                        break;
-                    default:
-                        break;
-                }
-            }
             ReporteDetallesActividad reporteDetalles = new()
             {
                 detalladoActividades = detalladoActividades
