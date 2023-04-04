@@ -60,6 +60,8 @@ namespace Obra.Client.Pages
         private string _status1 = "Not Started";
         private string _status2 = "Started";
         private string _status3 = "Finished";
+        private enum Statuses { Todos = 1, Pendiente = 2, EnCurso = 3, Terminado = 4 }
+        private int optionStatus = 4;
         public ObjectAccessUser Accesos { get; private set; }
 
         private bool showModal { get; set; } = false;
