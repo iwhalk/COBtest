@@ -158,7 +158,7 @@ namespace ReportesObra.Services
             };
             var result = progressReports.Select(selector);
             if (idActivities != null && idActivities.Count != 0)
-                result = result.Where(x => idActivities.Contains(x.IdElementNavigation.IdActivity));
+                result = result.Where(x => idActivities.Contains(x.IdElementNavigation.IdActivity));            
             return await result.ToListAsync();
         }
 

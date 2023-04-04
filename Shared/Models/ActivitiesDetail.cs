@@ -14,6 +14,6 @@ namespace SharedLibrary.Models
         public List<int>? Activities { get; set; }
         public List<int>? Elements { get; set; }
         public List<int>? SubElements { get; set; }
-
+        public int? StatusOption { get; set; }
     }
 }

@@ -4,10 +4,10 @@ namespace ReportesObra.Interfaces
 {
     public interface IReportesService
     {
-        Task<List<DetalladoDepartamentos>> GetDataDetallesDepartamento(int idBuilding, List<int> idApartments, List<int>? idAreas, List<int>? idActivities, List<int>? idElements, List<int>? idSubElements);
-        Task<byte[]> GetReporteDetallesDepartamento(List<DetalladoDepartamentos> detalladoDepartamentos, int? opcion);
-        Task<List<DetalladoActividades>> GetDataDetallesActividad(int idBuilding, List<int>? idActivities, List<int>? idElements, List<int>? idSubElements, List<int>? idApartments);
-        Task<byte[]> GetReporteDetallesActividad(List<DetalladoActividades> detalladoActividades, int? opcion);
+        Task<List<DetalladoDepartamentos>> GetDataDetallesDepartamento(int idBuilding, List<int> idApartments, List<int>? idAreas, List<int>? idActivities, List<int>? idElements, List<int>? idSubElements, int? statusOption);
+        Task<byte[]> GetReporteDetallesDepartamento(List<DetalladoDepartamentos> detalladoDepartamentos);
+        Task<List<DetalladoActividades>> GetDataDetallesActividad(int idBuilding, List<int>? idActivities, List<int>? idElements, List<int>? idSubElements, List<int>? idApartments, int? statusOption);
+        Task<byte[]> GetReporteDetallesActividad(List<DetalladoActividades> detalladoActividades);
         Task<byte[]> GetReporteAvance(List<AparmentProgress> aparmentProgress, string subTitle);
         Task<List<AparmentProgress>> GetAparments(int? idBuilding, int? idAparment);
         Task<List<AparmentProgress>> GetActivitiesByAparment(int? idBuilding, int? idAparment);
