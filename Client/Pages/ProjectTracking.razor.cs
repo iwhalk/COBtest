@@ -430,8 +430,8 @@ namespace Obra.Client.Pages
             NewProgressLogs.Clear();
             Loading = false;            
             StateHasChanged();
-            //_toastService.ShowSuccess("Se guardaron los campos del detalle de avance");
-            _toastService.ShowToast<ToastComponent>(new ToastInstanceSettings(5, false));
+            _toastService.ShowSuccess("Se guardaron los campos del detalle de avance", "CORRECTO");
+            //_toastService.ShowToast<ToastComponent>(new ToastInstanceSettings(5, false));
             //_navigate.NavigateTo("/");
         }
 
