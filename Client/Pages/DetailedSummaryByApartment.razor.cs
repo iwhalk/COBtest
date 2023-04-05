@@ -767,7 +767,7 @@ namespace Obra.Client.Pages
                 _toastService.ShowError("Es necesario elegir un subelemento antes", "¡Error!");
                 return;
             }
-            var x = statusOption;
+
             buttonReport = true;
             apartmentDetails = false;
             loading = true;
@@ -808,6 +808,17 @@ namespace Obra.Client.Pages
             data.StatusOption = optionStatus == 0 ? null : optionStatus;
 
             detalladoDepartamentos = await _reportesService.PostDataDetallesDepartamentos(data);
+            if (detalladoDepartamentos == null || detalladoDepartamentos.Count == 0)
+            {
+                apartmentsSelect.Clear();
+                activitiesSelect.Clear();
+                elementsSelect.Clear();
+                subElementsSelect.Clear();
+                loading = false;
+                apartmentDetails = true;
+                _toastService.ShowWarning("La consulta requerida no tiene información relacionada", "AVISO");                
+                return;
+            }
 
             loading = false;
 

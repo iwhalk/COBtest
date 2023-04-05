@@ -735,6 +735,17 @@ namespace Obra.Client.Pages
                                 data.StatusOption = optionStatus == 0 ? null : optionStatus;
 
                                 detalladoActividades = await _reportesService.PostDataDetallesActividades(data);
+                                if (detalladoActividades == null || detalladoActividades.Count == 0)
+                                {
+                                    apartmentsSelect.Clear();
+                                    activitiesSelect.Clear();
+                                    elementsSelect.Clear();
+                                    subElementsSelect.Clear();
+                                    loading = false;
+                                    apartmentDetails = true;
+                                    _toastService.ShowWarning("La consulta requerida no tiene información relacionada", "AVISO");
+                                    return;
+                                }
 
                                 loading = false;
                             }
@@ -785,8 +796,20 @@ namespace Obra.Client.Pages
                             data.Activities = _idsActivitiesSelect;
                             data.Elements = _idsElementsSelect;
                             data.SubElements = _idsSubElementsSelect;
+                            data.StatusOption = optionStatus == 0 ? null : optionStatus;
 
                             detalladoActividades = await _reportesService.PostDataDetallesActividades(data);
+                            if (detalladoActividades == null || detalladoActividades.Count == 0)
+                            {
+                                apartmentsSelect.Clear();
+                                activitiesSelect.Clear();
+                                elementsSelect.Clear();
+                                subElementsSelect.Clear();
+                                loading = false;
+                                apartmentDetails = true;
+                                _toastService.ShowWarning("La consulta requerida no tiene información relacionada", "AVISO");
+                                return;
+                            }
 
                             loading = false;
                         }
