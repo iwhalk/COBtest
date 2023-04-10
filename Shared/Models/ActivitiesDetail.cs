@@ -15,5 +15,7 @@ namespace SharedLibrary.Models
         public List<int>? Elements { get; set; }
         public List<int>? SubElements { get; set; }
         public int? StatusOption { get; set; }
+        public DateTime FechaInicio { get; set; }
+        public DateTime FechaFin { get; set; }
     }
 }

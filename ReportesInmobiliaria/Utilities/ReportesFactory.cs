@@ -114,6 +114,9 @@ namespace ReportesObra.Utilities
                 case nameof(ReporteDetallesActividad):
                     CrearReporteDetalleActividades(reporte as ReporteDetallesActividad);
                     break;
+                case nameof(ReportEvolution):
+                    CrearReporteEvolucion(reporte as ReportEvolution);
+                     break;
                 case nameof(ReporteAvance):
                     CrearReporteAvance(reporte as ReporteAvance);
                     break;
@@ -353,17 +356,28 @@ namespace ReportesObra.Utilities
                 //paragraph.AddLineBreak();
                 //paragraph.Format.SpaceBefore = "0.6cm";
             }
+            else if (option == 3)
+            {
+                paragraph = headerFrame.AddParagraph("Avances por Periodo de Tiempo");
+                paragraph.Format.Font.Name = "DejaVu Serif";
+                paragraph.Format.Font.Size = 12;
+                paragraph.Format.Font.Bold = true;
+                paragraph.Format.Alignment = ParagraphAlignment.Center;
+            }
 
-            // Put parameters in data Frame
-            paragraph = dataParametersFrameRight.AddParagraph();
-            paragraph.Format.Font.Bold = true;
-            paragraph.Format.Font.Size = 9;
-            paragraph.AddText("Fecha de creación: ");
+            if (option != 3)
+            {
+                // Put parameters in data Frame
+                paragraph = dataParametersFrameRight.AddParagraph();
+                paragraph.Format.Font.Bold = true;
+                paragraph.Format.Font.Size = 9;
+                paragraph.AddText("Fecha de creación: ");
 
-            // Put values in data Frame
-            paragraph = dataValuesFrameRight.AddParagraph();
-            paragraph.AddText(DateTime.Now.ToString("dd/MM/yyyy"));
-            paragraph.Format.Font.Size = 9;
+                // Put values in data Frame
+                paragraph = dataValuesFrameRight.AddParagraph();
+                paragraph.AddText(DateTime.Now.ToString("dd/MM/yyyy"));
+                paragraph.Format.Font.Size = 9;
+            }
         }
 
         void CrearReporteDetalle(ReporteDetalles? reporteDetalles)
@@ -523,7 +537,96 @@ namespace ReportesObra.Utilities
             }
         }
 
-        void CrearReporteAvance(ReporteAvance? reporteAvance)
+        void CrearReporteEvolucion(ReportEvolution report)
+        {
+            CrearEncabezadoGenerico(3);
+            string apartmentTitle;
+            Table dates;
+            Table info;
+            Row rowD;
+            Row rowInfo;
+            Paragraph paragraph;
+            
+            //rowH.Cells[0].MergeRight = 1;
+            //rowH.Cells[0].Format.Font.Bold = true;
+            //rowH.Cells[0].Format.Font.Size = 12;
+            //rowH.Cells[0].AddParagraph("Datos del vendedor:");
+            //rowH.Cells[2].MergeRight = 1;
+            //rowH.Cells[2].Format.Font.Bold = true;
+            //rowH.Cells[2].Format.Font.Size = 12;
+            //rowH.Cells[2].AddParagraph("Datos del cliente:");
+
+            for (int i = 0; i < report.ObjectsEvolution.Count; i++)
+            {
+                apartmentTitle = report.ObjectsEvolution.ElementAt(i).Apartment;
+                paragraph = section.AddParagraph();
+                paragraph.AddLineBreak();
+                paragraph.Format.SpaceBefore = "-2.4cm";
+                paragraph.Format.SpaceAfter = "1.0cm";
+                paragraph.Format.Font.Size = 12;
+                paragraph.Format.Font.Bold = true;
+                paragraph.AddText("Departamento " + apartmentTitle);
+                paragraph.Format.Alignment = ParagraphAlignment.Center;
+
+                dates = section.AddTable();
+                dates.Style = "Table";
+                dates.Rows.Height = 20;
+                dates.Rows.VerticalAlignment = VerticalAlignment.Center;
+                dates.Format.Alignment = ParagraphAlignment.Right;
+                dates.Format.Font.Size = 10;
+                dates.AddColumn("1.0cm");
+                dates.AddColumn("3.5cm");
+                dates.AddColumn("2.5cm");
+                rowD = dates.AddRow();
+                rowD.Cells[1].AddParagraph("Fecha de inicio:");
+                rowD.Cells[2].AddParagraph(report.FechaInicio.ToString("dd/MM/yyyy"));
+                rowD = dates.AddRow();
+                rowD.Cells[1].AddParagraph("Fecha de fin:");
+                rowD.Cells[2].AddParagraph(report.FechaFin.ToString("dd/MM/yyyy"));
+
+                paragraph = section.AddParagraph();
+                paragraph.Format.SpaceAfter = "1.0cm";
+
+                info = section.AddTable();
+                info.Style = "Table";
+                info.Rows.VerticalAlignment = VerticalAlignment.Center;
+                info.Format.Alignment = ParagraphAlignment.Center;
+                info.Format.Font.Size = 9;
+                info.AddColumn("1.8cm");
+                info.AddColumn("2.2cm");
+                info.AddColumn("2.2cm");
+                info.AddColumn("2.8cm");
+                info.AddColumn("2.8cm");
+                info.AddColumn("2.5cm");
+                info.AddColumn("2.0cm");
+                info.AddColumn("2.0cm");
+
+                rowInfo = info.AddRow();
+                rowInfo.HeadingFormat = true;
+                rowInfo.Format.Font.Size = 10;
+                rowInfo.Cells[4].AddParagraph("Ejecutado");
+                rowInfo.Cells[4].MergeRight = 1;
+
+                rowInfo = info.AddRow();
+                rowInfo.HeadingFormat = true;
+                rowInfo.Format.Alignment = ParagraphAlignment.Center;
+                //row.Format.Font.Bold = true;
+                rowInfo.Format.Font.Size = 10;
+                rowInfo.Borders.Visible = false;
+                rowInfo.Cells[0].AddParagraph("Actividad");
+                rowInfo.Cells[1].AddParagraph("Área");
+                rowInfo.Cells[2].AddParagraph("Elemento");
+                rowInfo.Cells[3].AddParagraph("Subelemento");
+                rowInfo.Cells[4].AddParagraph("Inicio Periodo");
+                rowInfo.Cells[5].AddParagraph("Fin Periodo");
+                rowInfo.Cells[6].AddParagraph("Total");
+                rowInfo.Cells[7].AddParagraph("Estatus");
+
+                break;
+            }
+        }
+
+            void CrearReporteAvance(ReporteAvance? reporteAvance)
         {
             section.PageSetup.Orientation = Orientation.Portrait;
             section.PageSetup.TopMargin = "4.9cm";
@@ -1678,6 +1781,11 @@ namespace ReportesObra.Utilities
                 }
             }
             return value.Count;
+        }
+
+        private int FillInfoEvolution<T>(List<T> value, Table table, int tableIndex, string title, int fontSize = 8)
+        {
+            return 0;
         }
 
         int FillGenericContentCombination<T>(List<T> value, Table table, int tableIndex, string title, int fontSize = 8)
