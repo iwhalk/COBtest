@@ -17,6 +17,7 @@ using System.Data.Common;
 using System.Data.Entity.Infrastructure;
 //using System.Diagnostics;
 using System.Linq;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace ReportesObra.Services
 {
@@ -58,7 +59,7 @@ namespace ReportesObra.Services
                 _status1 = listStatuses.ElementAtOrDefault(0) == null ? _status1 : listStatuses.ElementAt(0).StatusName;
                 _status2 = listStatuses.ElementAtOrDefault(1) == null ? _status2 : listStatuses.ElementAt(1).StatusName;
                 _status3 = listStatuses.ElementAtOrDefault(2) == null ? _status3 : listStatuses.ElementAt(2).StatusName;
-            }            
+            }
         }
 
         public async Task<List<DetalladoDepartamentos>> GetDataDetallesDepartamento(int idBuilding, List<int>? idApartments, List<int>? idAreas, List<int>? idActivities,
@@ -71,9 +72,9 @@ namespace ReportesObra.Services
 
             List<ProgressReport> listReport = new List<ProgressReport>();
             listReport = await _progressReportsService.GetProgressReportsDetailedAsync(idBuilding, idApartments, idAreas, idElements, idSubElements, idActivities);
-            
+
             listReport = listReport.OrderBy(x => x.IdApartment).ThenBy(x => x.IdArea).ToList();
-            if(statusOption != null)
+            if (statusOption != null)
                 listReport = listReport.Where(x => (x.ProgressLogs != null && x.ProgressLogs.Count != 0 ? x.ProgressLogs.Last().IdStatus : 1) == statusOption).ToList();
 
             var list = new List<DetalladoDepartamentos>();
@@ -125,6 +126,30 @@ namespace ReportesObra.Services
             return _reportesFactory.CrearPdf(reporteDetalles, _titleDetails);
         }
 
+        public async Task<byte[]> GetReportEvolution(int idBuilding, DateTime inicio, DateTime fin, List<int>? idApartments, List<int>? idAreas,
+            List<int>? idActivities, List<int>? idElements, List<int>? idSubElements)
+        {
+            List<ProgressReport> listReport = new List<ProgressReport>();
+            listReport = await _progressReportsService.GetProgressReportsDetailedAsync(idBuilding, idApartments, idAreas, idElements, idSubElements, idActivities);
+            listReport = listReport.OrderBy(x => x.IdApartment).ThenBy(x => x.IdArea).ToList();
+
+            var list = new List<ObjectEvolution>();
+            //Se agrega un día a las fechas porque la hora se queda en 00:00 por defecto
+            inicio = inicio.AddDays(1).AddSeconds(-1);
+            fin = fin.AddDays(1).AddSeconds(-1);
+            list = GetDetailEvolution(listReport, inicio , fin);
+            if (list.Count == 0)
+                return null;
+
+            ReportEvolution reportE = new()
+            {
+                ObjectsEvolution = list,
+                FechaInicio = inicio,
+                FechaFin = fin
+            };
+            return _reportesFactory.CrearPdf(reportE);
+        }
+
         public List<DetalladoDepartamentos> GetDetalladoDepartamentos(List<ProgressReport> progressList)
         {
             var list = new List<DetalladoDepartamentos>();
@@ -169,6 +194,41 @@ namespace ReportesObra.Services
                 }) ;
             }
             return list;
+        }
+
+        public List<ObjectEvolution> GetDetailEvolution(List<ProgressReport> progressList, DateTime fechaInicio, DateTime fechaFin)
+        {
+            int start = 0;
+            int end = 0;
+
+            var list = new List<ObjectEvolution>();
+            foreach (var progress in progressList)
+            {
+                start = progress.ProgressLogs != null && progress.ProgressLogs.Count != 0 ? GetPiecesByDate(progress.ProgressLogs, fechaInicio) : 0;
+                end = (progress.ProgressLogs != null && progress.ProgressLogs.Count != 0 ? GetPiecesByDate(progress.ProgressLogs, fechaFin) : 0) - start;
+                list.Add(new ObjectEvolution()
+                {
+                    Apartment = progress.IdApartmentNavigation.ApartmentNumber,
+                    Activity = progress.IdElementNavigation.IdActivityNavigation.ActivityName,
+                    Area = progress.IdAreaNavigation.AreaName,
+                    Element = progress.IdElementNavigation.ElementName,
+                    Subelement = progress.IdSubElementNavigation != null ? progress.IdSubElementNavigation.SubElementName : "N/A",
+                    StartPeriod = start,
+                    EndPeriod = end,
+                    Total = (start + end) + "/" + progress.TotalPieces,
+                    Status = (progress.ProgressLogs != null && progress.ProgressLogs.Count != 0 && progress.ProgressLogs.LastOrDefault(x => x.DateCreated <= fechaFin) != null) ?
+                    (progress.ProgressLogs.Last(x => x.DateCreated <= fechaFin).IdStatusNavigation.StatusName) : _status1,
+                });
+            }
+            return list;
+        }
+
+        private int GetPiecesByDate(ICollection<ProgressLog> logs, DateTime date)
+        {
+            var log = logs.LastOrDefault(x => x.DateCreated <= date);
+            var pieces = log != null ? Int32.Parse(log.Pieces) : 0;
+
+            return pieces;
         }
 
         private bool progressLogHasContent(ICollection<ProgressLog> progressLogs)
