@@ -547,34 +547,25 @@ namespace ReportesObra.Utilities
             Row rowInfo;
             Paragraph paragraph;
             
-            //rowH.Cells[0].MergeRight = 1;
-            //rowH.Cells[0].Format.Font.Bold = true;
-            //rowH.Cells[0].Format.Font.Size = 12;
-            //rowH.Cells[0].AddParagraph("Datos del vendedor:");
-            //rowH.Cells[2].MergeRight = 1;
-            //rowH.Cells[2].Format.Font.Bold = true;
-            //rowH.Cells[2].Format.Font.Size = 12;
-            //rowH.Cells[2].AddParagraph("Datos del cliente:");
-
             for (int i = 0; i < report.ObjectsEvolution.Count; i++)
             {
                 apartmentTitle = report.ObjectsEvolution.ElementAt(i).Apartment;
                 paragraph = section.AddParagraph();
                 paragraph.AddLineBreak();
                 paragraph.Format.SpaceBefore = "-2.4cm";
-                paragraph.Format.SpaceAfter = "1.0cm";
-                paragraph.Format.Font.Size = 12;
+                paragraph.Format.SpaceAfter = "0.8cm";
+                paragraph.Format.Font.Size = 11;
                 paragraph.Format.Font.Bold = true;
                 paragraph.AddText("Departamento " + apartmentTitle);
                 paragraph.Format.Alignment = ParagraphAlignment.Center;
 
                 dates = section.AddTable();
                 dates.Style = "Table";
-                dates.Rows.Height = 20;
+                dates.Rows.Height = 15;
                 dates.Rows.VerticalAlignment = VerticalAlignment.Center;
                 dates.Format.Alignment = ParagraphAlignment.Right;
-                dates.Format.Font.Size = 10;
-                dates.AddColumn("1.0cm");
+                dates.Format.Font.Size = 8;
+                dates.AddColumn("0.5cm");
                 dates.AddColumn("3.5cm");
                 dates.AddColumn("2.5cm");
                 rowD = dates.AddRow();
@@ -585,44 +576,55 @@ namespace ReportesObra.Utilities
                 rowD.Cells[2].AddParagraph(report.FechaFin.ToString("dd/MM/yyyy"));
 
                 paragraph = section.AddParagraph();
-                paragraph.Format.SpaceAfter = "1.0cm";
+                paragraph.Format.SpaceAfter = "0.5cm";
 
                 info = section.AddTable();
                 info.Style = "Table";
+                info.Format.Alignment = ParagraphAlignment.Center;
+                info.Rows.Height = 20;
                 info.Rows.VerticalAlignment = VerticalAlignment.Center;
                 info.Format.Alignment = ParagraphAlignment.Center;
-                info.Format.Font.Size = 9;
+                info.Format.Font.Size = 8;
                 info.AddColumn("1.8cm");
                 info.AddColumn("2.2cm");
                 info.AddColumn("2.2cm");
-                info.AddColumn("2.8cm");
+                info.AddColumn("2.4cm");
                 info.AddColumn("2.8cm");
                 info.AddColumn("2.5cm");
-                info.AddColumn("2.0cm");
-                info.AddColumn("2.0cm");
+                info.AddColumn("1.6cm");
+                info.AddColumn("1.8cm");
 
                 rowInfo = info.AddRow();
                 rowInfo.HeadingFormat = true;
-                rowInfo.Format.Font.Size = 10;
+                rowInfo.Format.Font.Size = 9;
+                rowInfo.Cells[0].AddParagraph("Actividad");
+                rowInfo.Cells[0].MergeDown = 1;
+                rowInfo.Cells[1].AddParagraph("Área");
+                rowInfo.Cells[1].MergeDown = 1;
+                rowInfo.Cells[2].AddParagraph("Elemento");
+                rowInfo.Cells[2].MergeDown = 1;
+                rowInfo.Cells[3].AddParagraph("Subelemento");
+                rowInfo.Cells[3].MergeDown = 1;
                 rowInfo.Cells[4].AddParagraph("Ejecutado");
                 rowInfo.Cells[4].MergeRight = 1;
+                rowInfo.Cells[6].AddParagraph("Total");
+                rowInfo.Cells[6].MergeDown = 1;
+                rowInfo.Cells[7].AddParagraph("Estatus");
+                rowInfo.Cells[7].MergeDown = 1;
 
                 rowInfo = info.AddRow();
                 rowInfo.HeadingFormat = true;
                 rowInfo.Format.Alignment = ParagraphAlignment.Center;
-                //row.Format.Font.Bold = true;
-                rowInfo.Format.Font.Size = 10;
-                rowInfo.Borders.Visible = false;
-                rowInfo.Cells[0].AddParagraph("Actividad");
-                rowInfo.Cells[1].AddParagraph("Área");
-                rowInfo.Cells[2].AddParagraph("Elemento");
-                rowInfo.Cells[3].AddParagraph("Subelemento");
+                rowInfo.Format.Font.Size = 9;                
                 rowInfo.Cells[4].AddParagraph("Inicio Periodo");
-                rowInfo.Cells[5].AddParagraph("Fin Periodo");
-                rowInfo.Cells[6].AddParagraph("Total");
-                rowInfo.Cells[7].AddParagraph("Estatus");
+                rowInfo.Cells[5].AddParagraph("Fin Periodo");                
 
-                break;
+                i = FillInfoEvolution(report.ObjectsEvolution, info, i, apartmentTitle) - 1;
+                if (i < report.ObjectsEvolution.Count() - 1)
+                {
+                    paragraph = section.AddParagraph();
+                    paragraph.Format.SpaceAfter = "3.0cm";
+                }
             }
         }
 
@@ -1785,7 +1787,80 @@ namespace ReportesObra.Utilities
 
         private int FillInfoEvolution<T>(List<T> value, Table table, int tableIndex, string title, int fontSize = 8)
         {
-            return 0;
+            Table _table = table;
+            string currentName = "";
+            string beforeName = "";
+            Row lastRow = null;
+            Row row;
+            string currentApartmentName;
+            int rowCount = 0;
+            var newColorGray = MigraDocCore.DocumentObjectModel.Color.Parse("0xffE5E8E8");
+            for (int i = tableIndex; i < value.Count; i++)
+            {
+                var item = value.ElementAt(i);
+                row = _table.AddRow();
+                row.Format.Font.Size = (Unit)fontSize;
+                if (item != null)
+                    foreach (var (prop, index) in item.GetType().GetProperties().Select((v, i) => (v, i)))
+                    {
+                        var type = Nullable.GetUnderlyingType(prop.PropertyType) ?? prop.PropertyType;
+                        if (index == 0)
+                        {
+                            currentApartmentName = prop.GetValue(item, null)?.ToString();
+                            //Si emepiezan los datos de otro departamento, elimina la fila extra, agrega el borde inferior a la última celda y regresa
+                            if (currentApartmentName != title)
+                            {
+                                table.Rows.RemoveObjectAt(table.Rows.Count - 1);
+                                //if (lastRow != null)
+                                //    lastRow.Cells[0].Borders.Bottom.Width = 1.5;
+                                return i;
+                            }
+                        }
+                        else
+                        {
+                            if (index < 9)
+                            {
+                                if (type == typeof(DateTime))
+                                {
+                                    row.Cells[index - 1].AddParagraph(((DateTime?)prop.GetValue(item, null))?.ToString("dd/MM/yyyy hh:mm:ss tt") ?? "");
+                                }
+                                if (type == typeof(string))
+                                {
+                                    row.Cells[index - 1].AddParagraph(prop.GetValue(item, null)?.ToString());
+                                }
+                                if (type == typeof(bool))
+                                {
+                                    row.Cells[index - 1].AddParagraph((bool?)prop.GetValue(item, null) ?? false ? "SI" : "NO");
+                                }
+                                if (type == typeof(int))
+                                {
+                                    row.Cells[index - 1].AddParagraph(prop.GetValue(item, null)?.ToString());
+                                }
+                                if (type == typeof(long))
+                                {
+                                    row.Cells[index - 1].AddParagraph(prop.GetValue(item, null)?.ToString());
+                                }
+                            }
+
+                            beforeName = currentName;
+                        }
+                    }
+                lastRow = row;
+
+                if (rowCount % 2 == 0)
+                {
+                    row.Cells[0].Shading.Color = newColorGray;
+                    row.Cells[1].Shading.Color = newColorGray;
+                    row.Cells[2].Shading.Color = newColorGray;
+                    row.Cells[3].Shading.Color = newColorGray;
+                    row.Cells[4].Shading.Color = newColorGray;
+                    row.Cells[5].Shading.Color = newColorGray;
+                    row.Cells[6].Shading.Color = newColorGray;
+                    row.Cells[7].Shading.Color = newColorGray;
+                }
+                rowCount++;
+            }
+            return value.Count;
         }
 
         int FillGenericContentCombination<T>(List<T> value, Table table, int tableIndex, string title, int fontSize = 8)

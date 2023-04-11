@@ -17,6 +17,7 @@ using System.Data.Common;
 using System.Data.Entity.Infrastructure;
 //using System.Diagnostics;
 using System.Linq;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace ReportesObra.Services
 {
@@ -134,8 +135,8 @@ namespace ReportesObra.Services
 
             var list = new List<ObjectEvolution>();
             //Se agrega un día a las fechas porque la hora se queda en 00:00 por defecto
-            inicio = inicio.AddDays(1);
-            fin = fin.AddDays(1);
+            inicio = inicio.AddDays(1).AddSeconds(-1);
+            fin = fin.AddDays(1).AddSeconds(-1);
             list = GetDetailEvolution(listReport, inicio , fin);
             if (list.Count == 0)
                 return null;
@@ -204,17 +205,19 @@ namespace ReportesObra.Services
             foreach (var progress in progressList)
             {
                 start = progress.ProgressLogs != null && progress.ProgressLogs.Count != 0 ? GetPiecesByDate(progress.ProgressLogs, fechaInicio) : 0;
-                end = progress.ProgressLogs != null && progress.ProgressLogs.Count != 0 ? GetPiecesByDate(progress.ProgressLogs, fechaFin) : 0;
+                end = (progress.ProgressLogs != null && progress.ProgressLogs.Count != 0 ? GetPiecesByDate(progress.ProgressLogs, fechaFin) : 0) - start;
                 list.Add(new ObjectEvolution()
                 {
                     Apartment = progress.IdApartmentNavigation.ApartmentNumber,
+                    Activity = progress.IdElementNavigation.IdActivityNavigation.ActivityName,
                     Area = progress.IdAreaNavigation.AreaName,
                     Element = progress.IdElementNavigation.ElementName,
                     Subelement = progress.IdSubElementNavigation != null ? progress.IdSubElementNavigation.SubElementName : "N/A",
                     StartPeriod = start,
                     EndPeriod = end,
                     Total = (start + end) + "/" + progress.TotalPieces,
-                    Status = progress.ProgressLogs != null && progress.ProgressLogs.Count != 0 ? progress.ProgressLogs.Last().IdStatusNavigation.StatusName : _status1,
+                    Status = (progress.ProgressLogs != null && progress.ProgressLogs.Count != 0 && progress.ProgressLogs.LastOrDefault(x => x.DateCreated <= fechaFin) != null) ?
+                    (progress.ProgressLogs.Last(x => x.DateCreated <= fechaFin).IdStatusNavigation.StatusName) : _status1,
                 });
             }
             return list;
