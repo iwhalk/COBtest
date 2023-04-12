@@ -52,6 +52,12 @@ namespace Obra.Client.Services
             return await _repository.PostAsync<byte[]>(reporteDetalle, path: "api/Reports/DetallesPorActividad");
         }
 
+        //Evolucion del proyecto
+        public async Task<byte[]> PostReporteEvolucionAsync(ActivitiesDetail reporteDetalle)
+        {
+            return await _repository.PostAsync<byte[]>(reporteDetalle, path: "api/Reports/ReporteEvolucion");
+        }
+
         //MetodosReportes
         public async Task<List<AparmentProgress>?> GetProgressByAparmentDataViewAsync(int? idBuilding, int? idAparment)
         {
