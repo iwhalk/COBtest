@@ -7,8 +7,8 @@
 {
     if (loading == false)
     {
-        <div class="h-screen pt-20 pb-12 fixed inset-0 flex flex-col justify-center items-center">
-            <div class="flex justify-items-center w-screen rounded-2xl my-2 h-5/6 flow-root">
+        <div class="h-screen 2xl:pt-20 2xl:pb-12 fixed inset-0 flex flex-col justify-center items-center">
+            <div class="flex justify-items-center w-screen rounded-2xl 2xl:my-2 xl:h-4/6 2xl:h-5/6 flow-root">
                 <div class="flex justify-center justify-content-around" style="direction: ltr;">
                     <div class="flex justify-content-around">
                         <div class="p-1 md:w-[8rem] lg:w-[12rem] xl:w-[17rem] 2xl:w-[19rem]">
@@ -172,7 +172,7 @@
                     </div>
                 </div>
 
-               <div class="w-full flex justify-center items-center mt-4">
+               <div class="w-full flex justify-center items-center xl:mt-2 2xl:mt-4">
                     <div class="flex justify-between items-center w-[50rem]">
                         <label class="bg-[#162D4E] rounded-2xl text-lg text-white font-medium leading-6 w-[10rem] h-[2.5rem] text-center">Fecha Inicio</label>
                         <input @bind-value="DateStart" type="date" class="rounded-2xl text-lg text-black font-medium leading-6 border border-stone-400 w-[12rem] h-[2.5rem]" />
@@ -180,8 +180,7 @@
                         <input @bind-value ="DateEnd" type="date" class="rounded-2xl text-lg text-black font-medium leading-6 border border-stone-400 w-[12rem] h-[2.5rem]" />
                     </div>
                </div>
-
-                <div class="w-full flex justify-end py-3">
+                <div class="w-full flex justify-end xl:mt-2 2xl:py-3">
 
                     <button @onclick="() => ShowReportAndHideApartment()" class="mx-auto bg-[#B9352E] hover:bg-red-500 p-2 rounded-2xl text-lg text-white font-medium leading-6 border border-stone-400 hover:border-white">Generar Reporte</button>                  
                 </div>
