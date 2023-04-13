@@ -8,6 +8,14 @@
     if (loading == false)
     {
         <div class="h-screen 2xl:pt-20 2xl:pb-12 fixed inset-0 flex flex-col justify-center items-center">
+            <div class="w-full flex justify-center items-center xl:mb-2 2xl:mt-2">
+                <div class="flex justify-between items-center w-[50rem]">
+                    <label class="bg-[#162D4E] rounded-2xl text-lg text-white font-medium leading-6 w-[10rem] h-[2.5rem] flex justify-center items-center">Fecha Inicio</label>
+                    <input @bind-value="DateStart" type="date" class="rounded-2xl text-lg text-black font-medium leading-6 border border-stone-400 w-[12rem] h-[2.5rem]" />
+                    <label class="bg-[#162D4E] rounded-2xl text-lg text-white font-medium leading-6 w-[10rem] h-[2.5rem] flex justify-center items-center">Fecha Fin</label>
+                    <input @bind-value="DateEnd" type="date" class="rounded-2xl text-lg text-black font-medium leading-6 border border-stone-400 w-[12rem] h-[2.5rem]" />
+                </div>
+            </div>
             <div class="flex justify-items-center w-screen rounded-2xl 2xl:my-2 xl:h-4/6 2xl:h-5/6 flow-root">
                 <div class="flex justify-center justify-content-around" style="direction: ltr;">
                     <div class="flex justify-content-around">
@@ -170,17 +178,8 @@
                             </div>
                         </div>
                     </div>
-                </div>
-
-               <div class="w-full flex justify-center items-center xl:mt-2 2xl:mt-4">
-                    <div class="flex justify-between items-center w-[50rem]">
-                        <label class="bg-[#162D4E] rounded-2xl text-lg text-white font-medium leading-6 w-[10rem] h-[2.5rem] flex justify-center items-center">Fecha Inicio</label>
-                        <input @bind-value="DateStart" type="date" class="rounded-2xl text-lg text-black font-medium leading-6 border border-stone-400 w-[12rem] h-[2.5rem]" />
-                        <label class="bg-[#162D4E] rounded-2xl text-lg text-white font-medium leading-6 w-[10rem] h-[2.5rem] flex justify-center items-center">Fecha Fin</label>
-                        <input @bind-value ="DateEnd" type="date" class="rounded-2xl text-lg text-black font-medium leading-6 border border-stone-400 w-[12rem] h-[2.5rem]" />
-                    </div>
-               </div>
-                <div class="w-full flex justify-end xl:mt-2 2xl:py-3">
+                </div>           
+                <div class="w-full flex justify-end xl:mt-4 2xl:mt-3">
 
                     <button @onclick="() => ShowReportAndHideApartment()" class="mx-auto bg-[#B9352E] hover:bg-red-500 p-2 rounded-2xl text-lg text-white font-medium leading-6 border border-stone-400 hover:border-white">Generar Reporte</button>                  
                 </div>
@@ -218,4 +217,4 @@ else
 <Navbar></Navbar>
 <Footer></Footer>
 
-<label class="hidden lg:block mx-64 fixed top-0 left-0 right-0 text-base md:text-xl lg:text-2xl xl:text-4xl text-white leading-6 text-center py-2 mt-3">Evolución del Proyecto</label>
+<label class="hidden lg:block mx-64 fixed top-0 left-0 right-0 text-base md:text-xl lg:text-2xl xl:text-4xl text-white leading-6 text-center py-2 mt-3">Avance por Periodo</label>
