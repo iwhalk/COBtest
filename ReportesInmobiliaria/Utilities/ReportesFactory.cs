@@ -617,7 +617,7 @@ namespace ReportesObra.Utilities
                 rowInfo.Format.Alignment = ParagraphAlignment.Center;
                 rowInfo.Format.Font.Size = 9;                
                 rowInfo.Cells[4].AddParagraph("Inicio Periodo");
-                rowInfo.Cells[5].AddParagraph("Fin Periodo");                
+                rowInfo.Cells[5].AddParagraph("Periodo");                
 
                 i = FillInfoEvolution(report.ObjectsEvolution, info, i, apartmentTitle) - 1;
                 if (i < report.ObjectsEvolution.Count() - 1)
