@@ -170,10 +170,10 @@
             </div>
             @*hover:bg-blue-500 p-2 rounded-2xl*@
             <div class="d-flex justify-center">
-                <buton @onclick="() => StatusChanged(0)" class="mx-2 @(optionStatus == (int)Statuses.Todos ? "bg-[#0000FF]" : "bg-[#3498DB]") p-2 rounded-2xl text-lg text-white font-medium leading-6 border border-stone-400 hover:border-white">Todos los Estatus</buton>
-                <buton @onclick="() => StatusChanged(1)" class="mx-2 @(optionStatus == (int)Statuses.Pendiente ? "bg-[#0000FF]" : "bg-[#0000AA]") p-2 rounded-2xl text-lg text-white font-medium leading-6 border border-stone-400 hover:border-white">Estatus Pendiente</buton>
-                <buton @onclick="() => StatusChanged(2)" class="mx-2 @(optionStatus == (int)Statuses.EnCurso ? "bg-[#0000FF]" : "bg-[#5050FF]") p-2 rounded-2xl text-lg text-white font-medium leading-6 border border-stone-400 hover:border-white">Estatus En Curso</buton>
-                <buton @onclick="() => StatusChanged(3)" class="mx-2 @(optionStatus == (int)Statuses.Terminado ? "bg-[#0000FF]" : "bg-[#7777FF]") p-2 rounded-2xl text-lg text-white font-medium leading-6 border border-stone-400 hover:border-white">Estatus Terminado</buton>
+                <buton @onclick="() => StatusChanged(0)" class="mx-2 @(optionStatus == (int)Statuses.Todos ? "bg-[#19376D]" : "bg-[#BDCDD6]") p-2 rounded-2xl text-lg text-white font-medium leading-6 border border-stone-400 hover:border-white">Todos los Estatus</buton>
+                <buton @onclick="() => StatusChanged(1)" class="mx-2 @(optionStatus == (int)Statuses.Pendiente ? "bg-[#19376D]" : "bg-[#BDCDD6]") p-2 rounded-2xl text-lg text-white font-medium leading-6 border border-stone-400 hover:border-white">Estatus Pendiente</buton>
+                <buton @onclick="() => StatusChanged(2)" class="mx-2 @(optionStatus == (int)Statuses.EnCurso ? "bg-[#19376D]" : "bg-[#BDCDD6]") p-2 rounded-2xl text-lg text-white font-medium leading-6 border border-stone-400 hover:border-white">Estatus En Curso</buton>
+                <buton @onclick="() => StatusChanged(3)" class="mx-2 @(optionStatus == (int)Statuses.Terminado ? "bg-[#19376D]" : "bg-[#BDCDD6]") p-2 rounded-2xl text-lg text-white font-medium leading-6 border border-stone-400 hover:border-white">Estatus Terminado</buton>
             </div>
 
             <div class="w-full flex justify-end py-3">
