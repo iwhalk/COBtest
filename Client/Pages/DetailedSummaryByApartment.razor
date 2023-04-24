@@ -172,14 +172,12 @@
                     </div>
                 </div>
             </div>
-
-                <div class="d-flex justify-center max-xl:py-2">
-                    <buton @onclick="() => StatusChanged(0)" class="mx-2 @(optionStatus == (int)Statuses.Todos ? "bg-[#19376D]" : "bg-[#BDCDD6]") p-2 rounded-2xl text-lg text-white font-medium leading-6 border border-stone-400 hover:border-white">Todos los Estatus</buton>
-                    <buton @onclick="() => StatusChanged(1)" class="mx-2 @(optionStatus == (int)Statuses.Pendiente ? "bg-[#19376D]" : "bg-[#BDCDD6]") p-2 rounded-2xl text-lg text-white font-medium leading-6 border border-stone-400 hover:border-white">Estatus Pendiente</buton>
-                    <buton @onclick="() => StatusChanged(2)" class="mx-2 @(optionStatus == (int)Statuses.EnCurso ? "bg-[#19376D]" : "bg-[#BDCDD6]") p-2 rounded-2xl text-lg text-white font-medium leading-6 border border-stone-400 hover:border-white">Estatus En Curso</buton>
-                    <buton @onclick="() => StatusChanged(3)" class="mx-2 @(optionStatus == (int)Statuses.Terminado ? "bg-[#19376D]" : "bg-[#BDCDD6]") p-2 rounded-2xl text-lg text-white font-medium leading-6 border border-stone-400 hover:border-white">Estatus Terminado</buton>
-                </div>
-
+            <div class="d-flex justify-center max-xl:py-2">
+                <buton @onclick="() => StatusChanged(0)" class="mx-2 @(optionStatus == (int)Statuses.Todos ? "bg-[#19376D]" : "bg-[#BDCDD6]") p-2 rounded-2xl text-lg text-white font-medium leading-6 border border-stone-400 hover:border-white">Todos los Estatus</buton>
+                <buton @onclick="() => StatusChanged(1)" class="mx-2 @(optionStatus == (int)Statuses.Pendiente ? "bg-[#19376D]" : "bg-[#BDCDD6]") p-2 rounded-2xl text-lg text-white font-medium leading-6 border border-stone-400 hover:border-white">Estatus Pendiente</buton>
+                <buton @onclick="() => StatusChanged(2)" class="mx-2 @(optionStatus == (int)Statuses.EnCurso ? "bg-[#19376D]" : "bg-[#BDCDD6]") p-2 rounded-2xl text-lg text-white font-medium leading-6 border border-stone-400 hover:border-white">Estatus En Curso</buton>
+                <buton @onclick="() => StatusChanged(3)" class="mx-2 @(optionStatus == (int)Statuses.Terminado ? "bg-[#19376D]" : "bg-[#BDCDD6]") p-2 rounded-2xl text-lg text-white font-medium leading-6 border border-stone-400 hover:border-white">Estatus Terminado</buton>
+            </div>
             <div class="w-full flex justify-end xl:py-2 2xl:py-3">
 
                 <button @onclick="() => ShowReportAndHideApartment()" class="mx-auto bg-[#B9352E] hover:bg-red-500 p-2 rounded-2xl text-lg text-white font-medium leading-6 border border-stone-400 hover:border-white">Generar Reporte</button>
@@ -332,23 +330,23 @@ else if (buttonReport == true)
             </div>
             <div class="h-1/6 flex flex-col justify-end">
                 @*<div class="flex justify-center">
-                    <span class="w-40 flex flex-col">
-                        <input style="accent-color: red" type="radio" name="status" value="0" class="h-4 2xl:h-6 w-4 2xl:w-6 self-center mb-2 bg-[#B9352E]" checked @onchange="e => { CheckboxClicked(null, e); }">
-                        <label class="mx-1 rounded-xl text-white font-medium leading-6 bg-[#55595e] text-center py-0.5 2xl:py-2" for="todos">Todas</label>
-                    </span>
-                    <span class="w-40 flex flex-col">
-                        <input style="accent-color: red" type="radio" name="status" value="1" class="h-4 2xl:h-6 w-4 2xl:w-6 self-center mb-2" @onchange="e => { CheckboxClicked(1, e); }">
-                        <label class="mx-1 rounded-xl text-white font-medium leading-6 bg-[#55595e] text-center py-0.5 2xl:py-2" for="todos">@_status1</label>
-                    </span>
-                    <span class="w-40 flex flex-col">
-                        <input style="accent-color: red" type="radio" name="status" value="2" class="h-4 2xl:h-6 w-4 2xl:w-6 self-center mb-2" @onchange="e => { CheckboxClicked(2, e); }">
-                        <label class="mx-1 rounded-xl text-white font-medium leading-6 bg-[#55595e] text-center py-0.5 2xl:py-2" for="todos">@_status2</label>
-                    </span>
-                    <span class="w-40 flex flex-col">
-                        <input style="accent-color: red" type="radio" name="status" value="3" class="h-4 2xl:h-6 w-4 2xl:w-6 self-center mb-2" @onchange="e => { CheckboxClicked(3, e); }">
-                        <label class="mx-1 rounded-xl text-white font-medium leading-6 bg-[#55595e] text-center py-0.5 2xl:py-2" for="todos">@_status3</label>
-                    </span>
-                </div>*@
+        <span class="w-40 flex flex-col">
+        <input style="accent-color: red" type="radio" name="status" value="0" class="h-4 2xl:h-6 w-4 2xl:w-6 self-center mb-2 bg-[#B9352E]" checked @onchange="e => { CheckboxClicked(null, e); }">
+        <label class="mx-1 rounded-xl text-white font-medium leading-6 bg-[#55595e] text-center py-0.5 2xl:py-2" for="todos">Todas</label>
+        </span>
+        <span class="w-40 flex flex-col">
+        <input style="accent-color: red" type="radio" name="status" value="1" class="h-4 2xl:h-6 w-4 2xl:w-6 self-center mb-2" @onchange="e => { CheckboxClicked(1, e); }">
+        <label class="mx-1 rounded-xl text-white font-medium leading-6 bg-[#55595e] text-center py-0.5 2xl:py-2" for="todos">@_status1</label>
+        </span>
+        <span class="w-40 flex flex-col">
+        <input style="accent-color: red" type="radio" name="status" value="2" class="h-4 2xl:h-6 w-4 2xl:w-6 self-center mb-2" @onchange="e => { CheckboxClicked(2, e); }">
+        <label class="mx-1 rounded-xl text-white font-medium leading-6 bg-[#55595e] text-center py-0.5 2xl:py-2" for="todos">@_status2</label>
+        </span>
+        <span class="w-40 flex flex-col">
+        <input style="accent-color: red" type="radio" name="status" value="3" class="h-4 2xl:h-6 w-4 2xl:w-6 self-center mb-2" @onchange="e => { CheckboxClicked(3, e); }">
+        <label class="mx-1 rounded-xl text-white font-medium leading-6 bg-[#55595e] text-center py-0.5 2xl:py-2" for="todos">@_status3</label>
+        </span>
+        </div>*@
                 <div class="w-full flex justify-end py-1">
                     <div class="w-full flex inset-x-0 bottom-12">
                         <button @onclick="() => ChangeView()" class="mx-auto bg-[#B9352E] hover:bg-red-500 w-40 p-0.5 2xl:p-2 rounded-2xl text-lg text-white font-medium leading-6 border hover:border-white">Descargar</button>
@@ -376,7 +374,7 @@ else if (buttonReport == true)
     @if (showModal == true)
     {
         @*Modal Ocultado*@
-        <div class="z-10 flex justify-center items-center fixed inset-0 bg-gray-900 bg-opacity-75 transition-opacity"></div>     
+        <div class="z-10 flex justify-center items-center fixed inset-0 bg-gray-900 bg-opacity-75 transition-opacity"></div>
         <div class="z-10 w-screen h-screen fixed inset-0 flex flex-col justify-center items-center fixed">
             <div class="w-[40rem] h-[35rem] bg-white border border-black rounded-lg flex flex-col justify-center items-center relative">
                 <div class="absolute top-2 right-2">

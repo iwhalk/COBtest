@@ -8,59 +8,59 @@
     if (loading == false)
     {
         <div class="h-screen 2xl:pt-20 2xl:pb-12 fixed inset-0 flex flex-col justify-center items-center">
-            <div class="w-full flex justify-center items-center xl:mb-2 2xl:mt-2">
+            <div class="w-full flex justify-center items-center xl:mt-9 2xl:mt-2">
                 <div class="flex justify-between items-center w-[50rem]">
-                    <label class="bg-[#162D4E] rounded-2xl text-lg text-white font-medium leading-6 w-[10rem] h-[2.5rem] flex justify-center items-center">Fecha Inicio</label>
-                    <input @bind-value="DateStart" type="date" class="rounded-2xl text-lg text-black font-medium leading-6 border border-stone-400 w-[12rem] h-[2.5rem]" />
-                    <label class="bg-[#162D4E] rounded-2xl text-lg text-white font-medium leading-6 w-[10rem] h-[2.5rem] flex justify-center items-center">Fecha Fin</label>
-                    <input @bind-value="DateEnd" type="date" class="rounded-2xl text-lg text-black font-medium leading-6 border border-stone-400 w-[12rem] h-[2.5rem]" />
+                    <label class="bg-[#162D4E] rounded-2xl xl:text-base 2xl:text-lg text-white font-medium leading-6 xl:w-[7rem] xl:h-[2rem] 2xl:w-[10rem] 2xl:h-[2.5rem] flex justify-center items-center">Fecha Inicio</label>
+                    <input @bind-value="DateStart" type="date" class="rounded-2xl xl:text-base 2xl:text-lg  text-black font-medium leading-6 border border-stone-400 xl:w-[9rem] xl:h-[2rem] 2xl:w-[12rem] 2xl:h-[2.5rem]" />
+                    <label class="bg-[#162D4E] rounded-2xl xl:text-base 2xl:text-lg  text-white font-medium leading-6 xl:w-[7rem] xl:h-[2rem] 2xl:w-[10rem] 2xl:h-[2.5rem] flex justify-center items-center">Fecha Fin</label>
+                    <input @bind-value="DateEnd" type="date" class="rounded-2xl xl:text-base 2xl:text-lg  text-black font-medium leading-6 border border-stone-400 xl:w-[9rem] xl:h-[2rem] 2xl:w-[12rem] 2xl:h-[2.5rem]" />
                 </div>
             </div>
             <div class="flex justify-items-center w-screen rounded-2xl 2xl:my-2 xl:h-4/6 2xl:h-5/6 flow-root">
                 <div class="flex justify-center justify-content-around" style="direction: ltr;">
                     <div class="flex justify-content-around">
-                        <div class="p-1 md:w-[8rem] lg:w-[12rem] xl:w-[17rem] 2xl:w-[19rem]">
-                            <h1 class="rounded-xl text-xs md:text-xs xl:text-lg 2xl:text-xl text-white font-medium leading-6 bg-[#162D4E] text-center py-2">Departamento</h1>
+                        <div class="p-1 md:w-[8rem] lg:w-[12rem] xl:w-[15rem] 2xl:w-[19rem]">
+                            <h1 class="rounded-xl text-xs md:text-xs xl:text-base 2xl:text-xl text-white font-medium leading-6 bg-[#162D4E] text-center py-2">Departamento</h1>
                         </div>
                         @if (showActivities)
                         {
-                            <div class="p-1 md:w-[8rem] lg:w-[12rem] xl:w-[17rem] 2xl:w-[19rem]">
-                                <h1 class="rounded-xl text-xs md:text-xs xl:text-lg 2xl:text-xl text-white font-medium leading-6 bg-[#162D4E] text-center py-2">Actividad</h1>
+                            <div class="p-1 md:w-[8rem] lg:w-[12rem] xl:w-[15rem] 2xl:w-[19rem]">
+                                <h1 class="rounded-xl text-xs md:text-xs xl:text-base 2xl:text-xl text-white font-medium leading-6 bg-[#162D4E] text-center py-2">Actividad</h1>
                             </div>
                         }
                         @if (elements.Count() != 0)
                         {
-                            <div class="p-1 md:w-[8rem] lg:w-[12rem] xl:w-[17rem] 2xl:w-[19rem]">
-                                <h1 class="rounded-xl text-xs md:text-xs xl:text-lg 2xl:text-xl text-white font-medium leading-6 bg-[#162D4E] text-center py-2">Elemento</h1>
+                            <div class="p-1 md:w-[8rem] lg:w-[12rem] xl:w-[15rem] 2xl:w-[19rem]">
+                                <h1 class="rounded-xl text-xs md:text-xs xl:text-base 2xl:text-xl text-white font-medium leading-6 bg-[#162D4E] text-center py-2">Elemento</h1>
                             </div>
                         }
                         @if (subElements.Count() != 0)
                         {
-                            <div class="p-1 md:w-[8rem] lg:w-[12rem] xl:w-[17rem] 2xl:w-[19rem]">
-                                <h1 class="rounded-xl text-xs md:text-xs xl:text-lg 2xl:text-xl text-white font-medium leading-6 bg-[#162D4E] text-center py-2">SubElemento</h1>
+                            <div class="p-1 md:w-[8rem] lg:w-[12rem] xl:w-[15rem] 2xl:w-[19rem]">
+                                <h1 class="rounded-xl text-xs md:text-xs xl:text-base 2xl:text-xl text-white font-medium leading-6 bg-[#162D4E] text-center py-2">SubElemento</h1>
                             </div>
                         }
                     </div>
                 </div>
-                <div class="w-screen h-5/6 flex justify-content-center">
-                    <div class="flex justify-content-center h-6/6 md:w-[600px] lg:w-[825px] xl:w-[1100px] 2xl:w-[1400px]">
+                <div class="w-screen xl:h-5/6 2xl:h-full 2xl:pb-16 flex justify-content-center">
+                    <div class="flex justify-content-center xl:h-6/6 2xl:h-full md:w-[600px] lg:w-[825px] xl:w-[1100px] 2xl:w-[1400px]">
                         <div class="scroll">
-                            <div class="grid grid-col-1 w-[5rem] sm:w-[9.5rem] md:w-[8rem] lg:w-[12rem] xl:w-[17rem] 2xl:w-[19rem]">
-                                <button @onclick="() => AllApartments()" class="@(allApartments ? "bg-[#9CA2A8]" : "bg-[#55595E]") h-12 lg:w-[12rem] xl:w-[17rem] 2xl:w-[19rem] border border-blue-700">
-                                    <h1 class="text-xs md:text-xs xl:text-xl xl:text-lg 2xl:text-xl text-white font-medium leading-6 text-center p-1">TODOS</h1>
+                            <div class="grid grid-col-1 w-[5rem] sm:w-[9.5rem] md:w-[8rem] lg:w-[12rem] xl:w-[15rem] 2xl:w-[19rem]">
+                                <button @onclick="() => AllApartments()" class="@(allApartments ? "bg-[#9CA2A8]" : "bg-[#55595E]") h-12 lg:w-[12rem] xl:w-[15rem] 2xl:w-[19rem] border border-blue-700">
+                                    <h1 class="text-xs md:text-xs xl:text-base 2xl:text-xl text-white font-medium leading-6 text-center p-1">TODOS</h1>
                                 </button>
                                 @foreach (var apartment in apartments)
                                 {
                                     @if (allApartments == false)
                                     {
                                         <button @onclick="() => AddIdSelect(apartment.IdApartment, 1)" class="@(_idsAparmentSelect.Contains(apartment.IdApartment) ? "bg-[#9CA2A8]" : "bg-[#55595E]") h-12 border border-blue-700 grid">
-                                            <h1 class="text-xs md:text-xs xl:text-lg 2xl:text-xl text-white font-medium leading-6 text-center p-1">@apartment.ApartmentNumber</h1>
+                                            <h1 class="text-xs md:text-xs xl:text-base 2xl:text-xl text-white font-medium leading-6 text-center p-1">@apartment.ApartmentNumber</h1>
                                         </button>
                                     }
                                     else
                                     {
                                         <button @onclick="() => AddIdSelect(apartment.IdApartment, 1)" class="bg-[#55595E] h-12 border border-blue-700 grid">
-                                            <h1 class="text-xs md:text-xs xl:text-lg 2xl:text-xl text-white font-medium leading-6 text-center p-1">@apartment.ApartmentNumber</h1>
+                                            <h1 class="text-xs md:text-xs xl:text-base 2xl:text-xl text-white font-medium leading-6 text-center p-1">@apartment.ApartmentNumber</h1>
                                         </button>
                                     }
                                 }
@@ -75,26 +75,26 @@
                                             {
                                                 if (allApartments == false)
                                                 {
-                                                    <button @onclick="() => AllActivities()" class="@(allActivities ? "bg-[#9CA2A8]" : "bg-[#55595E]") h-12 md:w-[8rem] lg:w-[12rem] xl:w-[17rem] 2xl:w-[19rem] border border-blue-700">
-                                                        <h1 class="text-xs md:text-xs xl:text-lg 2xl:text-xl text-white font-medium leading-6 text-center p-1">TODOS</h1>
+                                                    <button @onclick="() => AllActivities()" class="@(allActivities ? "bg-[#9CA2A8]" : "bg-[#55595E]") h-12 md:w-[8rem] lg:w-[12rem] xl:w-[15rem] 2xl:w-[19rem] border border-blue-700">
+                                                        <h1 class="text-xs md:text-xs xl:text-base 2xl:text-xl text-white font-medium leading-6 text-center p-1">TODOS</h1>
                                                     </button>
                                                 }
                                                 else
                                                 {
-                                                    <button class="bg-transparent h-12 md:w-[8rem] lg:w-[12rem] xl:w-[17rem] 2xl:w-[19rem]">
-                                                        <h1 class="text-xs md:text-xs xl:text-lg 2xl:text-xl text-transparent font-medium leading-6 text-center p-1">TODOS</h1>
+                                                    <button class="bg-transparent h-12 md:w-[8rem] lg:w-[12rem] xl:w-[15rem] 2xl:w-[19rem]">
+                                                        <h1 class="text-xs md:text-xs xl:text-base 2xl:text-xl text-transparent font-medium leading-6 text-center p-1">TODOS</h1>
                                                     </button>
                                                 }
                                                 @if (elements.Count() != 0)
                                                 {
-                                                    <button @onclick="() => AllElements()" class="@(allElements ? "bg-[#9CA2A8]" : "bg-[#55595E]") h-12 md:w-[8rem] lg:w-[12rem] xl:w-[17rem] 2xl:w-[19rem] border border-blue-700">
-                                                        <h1 class="text-xs md:text-xs xl:text-lg 2xl:text-xl text-white font-medium leading-6 text-center p-1">TODOS</h1>
+                                                    <button @onclick="() => AllElements()" class="@(allElements ? "bg-[#9CA2A8]" : "bg-[#55595E]") h-12 md:w-[8rem] lg:w-[12rem] xl:w-[15rem] 2xl:w-[19rem] border border-blue-700">
+                                                        <h1 class="text-xs md:text-xs xl:text-base 2xl:text-xl text-white font-medium leading-6 text-center p-1">TODOS</h1>
                                                     </button>
                                                 }
                                                 @if (subElements.Count() != 0)
                                                 {
-                                                    <button @onclick="() => AllSubElements()" class="@(allSubElements ? "bg-[#9CA2A8]" : "bg-[#55595E]") h-12 md:w-[8rem] lg:w-[12rem] xl:w-[17rem] 2xl:w-[19rem] border border-blue-700">
-                                                        <h1 class="text-xs md:text-xs xl:text-lg 2xl:text-xl text-white font-medium leading-6 text-center p-1">TODOS</h1>
+                                                    <button @onclick="() => AllSubElements()" class="@(allSubElements ? "bg-[#9CA2A8]" : "bg-[#55595E]") h-12 md:w-[8rem] lg:w-[12rem] xl:w-[15rem] 2xl:w-[19rem] border border-blue-700">
+                                                        <h1 class="text-xs md:text-xs xl:text-base 2xl:text-xl text-white font-medium leading-6 text-center p-1">TODOS</h1>
                                                     </button>
                                                 }
                                                 @foreach (var activity in activities)
@@ -102,14 +102,14 @@
                                                     <div class="flex justify-items-stretch">
                                                         @if (allActivities == false)
                                                         {
-                                                            <button @onclick="() => AddIdSelect(activity.IdActivity, 2)" class="@(_idsActivitiesSelect.Contains(activity.IdActivity) ? "bg-[#9CA2A8]" : "bg-[#55595E]") @(_idsActivitiesSelect.Contains(activity.IdActivity) ? "h-48" : "h-12") md:w-[8rem] lg:w-[12rem] xl:w-[17rem] 2xl:w-[19rem] border border-blue-700">
-                                                                <h1 class="text-xs md:text-xs xl:text-lg 2xl:text-xl text-white font-medium leading-6 text-center p-1">@activity.ActivityName</h1>
+                                                            <button @onclick="() => AddIdSelect(activity.IdActivity, 2)" class="@(_idsActivitiesSelect.Contains(activity.IdActivity) ? "bg-[#9CA2A8]" : "bg-[#55595E]") @(_idsActivitiesSelect.Contains(activity.IdActivity) ? "h-48" : "h-12") md:w-[8rem] lg:w-[12rem] xl:w-[15rem] 2xl:w-[19rem] border border-blue-700">
+                                                                <h1 class="text-xs md:text-xs xl:text-base 2xl:text-xl text-white font-medium leading-6 text-center p-1">@activity.ActivityName</h1>
                                                             </button>
                                                         }
                                                         else
                                                         {
-                                                            <button @onclick="() => AddIdSelect(activity.IdActivity, 2)" class="bg-[#55595E] @(_idsActivitiesSelect.Contains(activity.IdActivity) ? "h-48" : "h-12") md:w-[8rem] lg:w-[12rem] xl:w-[17rem] 2xl:w-[19rem] border border-blue-700">
-                                                                <h1 class="text-xs md:text-xs xl:text-lg 2xl:text-xl text-white font-medium leading-6 text-center p-1">@activity.ActivityName</h1>
+                                                            <button @onclick="() => AddIdSelect(activity.IdActivity, 2)" class="bg-[#55595E] @(_idsActivitiesSelect.Contains(activity.IdActivity) ? "h-48" : "h-12") md:w-[8rem] lg:w-[12rem] xl:w-[15rem] 2xl:w-[19rem] border border-blue-700">
+                                                                <h1 class="text-xs md:text-xs xl:text-base 2xl:text-xl text-white font-medium leading-6 text-center p-1">@activity.ActivityName</h1>
                                                             </button>
                                                         }
 
@@ -125,14 +125,14 @@
                                                                             <div class="flex justify-items-stretch">
                                                                                 @if (allElements == false)
                                                                                 {
-                                                                                    <button @onclick="() => AddIdSelect(element.IdElement, 3)" class="@(_idsElementsSelect.Contains(element.IdElement) ? "bg-[#9CA2A8]" : "bg-[#55595E]") h-24 md:w-[8rem] lg:w-[12rem] xl:w-[17rem] 2xl:w-[19rem] border border-blue-700 grid">
-                                                                                        <h1 class="text-xs md:text-xs xl:text-lg 2xl:text-xl text-white font-medium leading-6 text-center p-1">@element.ElementName</h1>
+                                                                                    <button @onclick="() => AddIdSelect(element.IdElement, 3)" class="@(_idsElementsSelect.Contains(element.IdElement) ? "bg-[#9CA2A8]" : "bg-[#55595E]") h-24 md:w-[8rem] lg:w-[12rem] xl:w-[15rem] 2xl:w-[19rem] border border-blue-700 grid">
+                                                                                        <h1 class="text-xs md:text-xs xl:text-base 2xl:text-xl text-white font-medium leading-6 text-center p-1">@element.ElementName</h1>
                                                                                     </button>
                                                                                 }
                                                                                 else
                                                                                 {
-                                                                                    <button @onclick="() => AddIdSelect(element.IdElement, 3)" class="bg-[#55595E] h-24 md:w-[8rem] lg:w-[12rem] xl:w-[17rem] 2xl:w-[19rem] border border-blue-700 grid">
-                                                                                        <h1 class="text-xs md:text-xs xl:text-lg 2xl:text-xl text-white font-medium leading-6 text-center p-1">@element.ElementName</h1>
+                                                                                    <button @onclick="() => AddIdSelect(element.IdElement, 3)" class="bg-[#55595E] h-24 md:w-[8rem] lg:w-[12rem] xl:w-[15rem] 2xl:w-[19rem] border border-blue-700 grid">
+                                                                                        <h1 class="text-xs md:text-xs xl:text-base 2xl:text-xl text-white font-medium leading-6 text-center p-1">@element.ElementName</h1>
                                                                                     </button>
                                                                                 }
 
@@ -148,14 +148,14 @@
                                                                                                     <div class="flex justify-items-stretch">
                                                                                                         @if (allSubElements == false)
                                                                                                         {
-                                                                                                            <button @onclick="() => AddIdSelect(subElement.IdSubElement, 4)" class="@(_idsSubElementsSelect.Contains(subElement.IdSubElement) ? "bg-[#9CA2A8]" : "bg-[#55595E]") h-12 md:w-[8rem] lg:w-[12rem] xl:w-[17rem] 2xl:w-[19rem] border border-blue-700 grid">
-                                                                                                                <h1 class="text-xs md:text-xs xl:text-lg 2xl:text-xl text-white font-medium leading-6 text-center p-1">@subElement.SubElementName</h1>
+                                                                                                            <button @onclick="() => AddIdSelect(subElement.IdSubElement, 4)" class="@(_idsSubElementsSelect.Contains(subElement.IdSubElement) ? "bg-[#9CA2A8]" : "bg-[#55595E]") h-12 md:w-[8rem] lg:w-[12rem] xl:w-[15rem] 2xl:w-[19rem] border border-blue-700 grid">
+                                                                                                                <h1 class="text-xs md:text-xs xl:text-base 2xl:text-xl text-white font-medium leading-6 text-center p-1">@subElement.SubElementName</h1>
                                                                                                             </button>
                                                                                                         }
                                                                                                         else
                                                                                                         {
-                                                                                                            <button @onclick="() => AddIdSelect(subElement.IdSubElement, 4)" class="bg-[#55595E] h-12 md:w-[8rem] lg:w-[12rem] xl:w-[17rem] 2xl:w-[19rem] border border-blue-700 grid">
-                                                                                                                <h1 class="text-xs md:text-xs xl:text-lg 2xl:text-xl text-white font-medium leading-6 text-center p-1">@subElement.SubElementName</h1>
+                                                                                                            <button @onclick="() => AddIdSelect(subElement.IdSubElement, 4)" class="bg-[#55595E] h-12 md:w-[8rem] lg:w-[12rem] xl:w-[15rem] 2xl:w-[19rem] border border-blue-700 grid">
+                                                                                                                <h1 class="text-xs md:text-xs xl:text-base 2xl:text-xl text-white font-medium leading-6 text-center p-1">@subElement.SubElementName</h1>
                                                                                                             </button>
                                                                                                         }
                                                                                                     </div>
@@ -178,11 +178,24 @@
                             </div>
                         </div>
                     </div>
-                </div>           
-                <div class="w-full flex justify-end xl:mt-4 2xl:mt-3">
-
-                    <button @onclick="() => ShowReportAndHideApartment()" class="mx-auto bg-[#B9352E] hover:bg-red-500 p-2 rounded-2xl text-lg text-white font-medium leading-6 border border-stone-400 hover:border-white">Generar Reporte</button>                  
                 </div>
+            </div>
+            <div class="d-flex justify-between xl:mb-2 2xl:mb-2">
+                <div class="xl:mr-[4rem] 2xl:mr-[15rem]">
+                    <buton @onclick="() => StatusChanged(0)" class="mx-2 @(optionStatus == (int)Statuses.Todos ? "bg-[#19376D]" : "bg-[#BDCDD6]") p-2 rounded-2xl xl:text-base 2xl:text-lg text-white font-medium leading-6 border border-stone-400 hover:border-white">Todos los Estatus</buton>
+                    <buton @onclick="() => StatusChanged(1)" class="mx-2 @(optionStatus == (int)Statuses.Pendiente ? "bg-[#19376D]" : "bg-[#BDCDD6]") p-2 rounded-2xl xl:text-base 2xl:text-lg text-white font-medium leading-6 border border-stone-400 hover:border-white">Estatus Pendiente</buton>
+                    <buton @onclick="() => StatusChanged(2)" class="mx-2 @(optionStatus == (int)Statuses.EnCurso ? "bg-[#19376D]" : "bg-[#BDCDD6]") p-2 rounded-2xl xl:text-base 2xl:text-lg text-white font-medium leading-6 border border-stone-400 hover:border-white">Estatus En Curso</buton>
+                    <buton @onclick="() => StatusChanged(3)" class="mx-2 @(optionStatus == (int)Statuses.Terminado ? "bg-[#19376D]" : "bg-[#BDCDD6]") p-2 rounded-2xl xl:text-base 2xl:text-lg text-white font-medium leading-6 border border-stone-400 hover:border-white">Estatus Terminado</buton>
+                </div>
+                <div>
+                    <buton class="mx-2 bg-lime-400 p-2 rounded-2xl xl:text-base 2xl:text-lg text-white font-medium leading-6 border border-green-400">Con actividad</buton>
+                    <buton class="mx-2 bg-red-400 p-2 rounded-2xl xl:text-base 2xl:text-lg text-white font-medium leading-6 border border-red-600">Sin actividad</buton>
+
+                </div>
+            </div>
+            <div class="w-full flex justify-end xl:mb-1 2xl:mb-2">
+
+                <button @onclick="() => ShowReportAndHideApartment()" class="mx-auto bg-[#B9352E] hover:bg-red-500 p-2 rounded-2xl xl:text-base 2xl:text-lg text-white font-medium leading-6 border border-stone-400 hover:border-white">Generar Reporte</button>
             </div>
         </div>
 

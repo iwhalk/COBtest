@@ -65,6 +65,9 @@ namespace Obra.Client.Pages
         private const string PDF_FILE_NAME = "EvolucionDelProyecto.pdf";
         private void ChangeOpenModalPreview() => _showPreviewFile = _showPreviewFile ? false : true;
 
+        private enum Statuses { Todos = 0, Pendiente = 1, EnCurso = 2, Terminado = 3 }
+        private int optionStatus = 0;
+
         public ProjectProgressReport(ApplicationContext context, IApartmentsService apartmentsService, IActivitiesService activitiesService, IAreasService areasService, IElementsService elementsService, ISubElementsService subElementsService, IProgressReportService progressReportService,
             IProgressLogsService progressLogsService, IReportsService reportesService, IJSRuntime jS, IToastService toastService, IObjectAccessService accessService)
         {
@@ -765,6 +768,12 @@ namespace Obra.Client.Pages
             }          
 
             loading = false;
+        }
+
+        public void StatusChanged(int idStatus)
+        {
+            optionStatus = idStatus;
+            //StateHasChanged();
         }
     }
 }
