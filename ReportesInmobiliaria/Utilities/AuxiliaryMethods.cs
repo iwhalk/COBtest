@@ -1,57 +1,64 @@
 ﻿using SharedLibrary.Models;
+using SixLabors.Fonts;
+using SixLabors.ImageSharp;
+using SixLabors.ImageSharp.PixelFormats;
+using SixLabors.ImageSharp.Processing;
+using SixLabors.ImageSharp;
+using SixLabors.ImageSharp.Formats.Gif;
+using SixLabors.ImageSharp.Formats;
+using SixLabors.Fonts;
+using SixLabors.ImageSharp.Formats.Png;
+using SixLabors.ImageSharp.Formats.Jpeg;
+using SixLabors.ImageSharp.Drawing.Processing;
 using System.Globalization;
 
 namespace ReportesObra.Utilities
 {
     public class AuxiliaryMethods
     {
-        //public Dates ObtenerFechas(string? day, string? month, string? week)
-        //{
-        //    Dates? dates = new();
+        public Image DateImage(MemoryStream imgageStream)
+        {
+            try
+            {                
 
-        //    if (!string.IsNullOrEmpty(day))
-        //    {
-        //        TimeSpan ts = new TimeSpan(00, 00, 0);
-        //        dates.StartDate = DateTime.Parse(day).Date + ts;
-        //        dates.EndDate = dates.StartDate.AddHours(23).AddMinutes(59);
-        //    }
-        //    else if (!string.IsNullOrEmpty(month))
-        //    {
-        //        string[] dateSection = month.Split('-');
 
-        //        DateTime startDate = new DateTime(int.Parse(dateSection[0]), int.Parse(dateSection[1]), 1);
-        //        DateTime endDate = new DateTime(int.Parse(dateSection[0]), int.Parse(dateSection[1]), DateTime.DaysInMonth(int.Parse(dateSection[0]), int.Parse(dateSection[1])));
+                FontFamily fontFamily;
 
-        //        dates.StartDate = startDate;
-        //        dates.EndDate = endDate.AddHours(23).AddMinutes(59);
-        //    }
-        //    else if (!string.IsNullOrEmpty(week))
-        //    {
-        //        string[] dateSection = week.Split("-W");
-        //        DateTime startDate = FirstDateOfWeek(int.Parse(dateSection[0]), int.Parse(dateSection[1]));
-        //        DateTime endDate = startDate.AddDays(6);
 
-        //        dates.StartDate = startDate;
-        //        dates.EndDate = endDate.AddHours(23).AddMinutes(59);
-        //    }
-        //    else
-        //        return dates = null;
+                string text = "2023-04-24";
+                float WatermarkPadding = 18f;
+                string WatermarkFont = "Roboto";
+                float WatermarkFontSize = 64f;
 
-        //    return dates;
-        //}
+                var font = fontFamily.CreateFont(WatermarkFontSize, FontStyle.Regular);
 
-        //public static DateTime FirstDateOfWeek(int year, int weekOfYear)
-        //{
-        //    DateTime jan1 = new DateTime(year, 1, 1);
-        //    int daysOffset = Convert.ToInt32(CultureInfo.CurrentCulture.DateTimeFormat.FirstDayOfWeek) - Convert.ToInt32(jan1.DayOfWeek);
-        //    DateTime firstWeekDay = jan1.AddDays(daysOffset);
-        //    CultureInfo curCulture = CultureInfo.CurrentCulture;
-        //    int firstWeek = curCulture.Calendar.GetWeekOfYear(jan1, curCulture.DateTimeFormat.CalendarWeekRule, curCulture.DateTimeFormat.FirstDayOfWeek);
-        //    if (firstWeek <= 1)
-        //    {
-        //        weekOfYear -= 1;
-        //    }
-        //    return firstWeekDay.AddDays(weekOfYear * 7);
-        //}
+                var options = new TextOptions(font)
+                {
+                    Dpi = 72,
+                    KerningMode = KerningMode.Normal
+                };
+
+                var rect = TextMeasurer.Measure(text, options);
+
+                IImageInfo imageInfo = Image.Identify(imgageStream);
+                imgageStream.Position = 0;
+
+                Image imagen = Image.Load(imgageStream);
+
+                imagen.Mutate(x => x.DrawText(
+                    text,
+                    font,
+                    new Color(Rgba32.ParseHex("#FFFFFFEE")),
+                    new PointF(imagen.Width - rect.Width - WatermarkPadding,
+                            imagen.Height - rect.Height - WatermarkPadding)));
+
+                return imagen;
+            }
+            catch
+            {
+                throw;
+            }
+
+        }
     }
 }

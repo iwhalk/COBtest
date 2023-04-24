@@ -8,20 +8,18 @@ using SharedLibrary.Models;
 using SixLabors.ImageSharp.PixelFormats;
 using SixLabors.ImageSharp.Processing;
 using SixLabors.ImageSharp;
-using System.IO;
-using Org.BouncyCastle.Utilities.Zlib;
-using SixLabors.ImageSharp.Formats.Png;
-using SixLabors.ImageSharp.Formats.Jpeg;
-using System.Net;
-using System.Reflection.Metadata;
 using SixLabors.ImageSharp.Formats.Gif;
 using SixLabors.ImageSharp.Formats;
+using SixLabors.Fonts;
+using SixLabors.ImageSharp.Formats.Png;
+using SixLabors.ImageSharp.Formats.Jpeg;
+using SixLabors.ImageSharp.Drawing.Processing;
+using System.Net;
 using System.Text.RegularExpressions;
-using NuGet.ContentModel;
 using Microsoft.CodeAnalysis;
-using System.Web;
-using System.Data.Entity;
-using System.Buffers.Text;
+using Microsoft.Maui.Graphics;
+using Color = SixLabors.ImageSharp.Color;
+using PointF = SixLabors.ImageSharp.PointF;
 
 namespace ReportesObra.Services
 {
@@ -60,12 +58,12 @@ namespace ReportesObra.Services
                 using (Image<Rgba32> outputImage = new Image<Rgba32>(imageInfo.Width, imageInfo.Height)) // create output image of the correct dimensions
                 {
                     //sello.Mutate(o => o.Resize(new Size(, 150)));
-                    draw.Mutate(o => o.Resize(new Size(imageInfo.Width, imageInfo.Height)));
-                    imageToDraw.Mutate(o => o.Resize(new Size(imageInfo.Width, imageInfo.Height)));
+                    draw.Mutate(o => o.Resize(new SixLabors.ImageSharp.Size(imageInfo.Width, imageInfo.Height)));
+                    imageToDraw.Mutate(o => o.Resize(new SixLabors.ImageSharp.Size(imageInfo.Width, imageInfo.Height)));
 
                     outputImage.Mutate(o => o
-                        .DrawImage(imageToDraw, new Point(0, 0), 0.5f) // draw the first one top left
-                        .DrawImage(draw, new Point(0, 0), 1f) // draw the second next to it                    
+                        .DrawImage(imageToDraw, new SixLabors.ImageSharp.Point(0, 0), 0.5f) // draw the first one top left
+                        .DrawImage(draw, new SixLabors.ImageSharp.Point(0, 0), 1f) // draw the second next to it                    
                 );
                     outputImage.Save(output, encoder);                    
                     output.Position = 0;
