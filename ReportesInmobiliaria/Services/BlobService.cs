@@ -74,12 +74,12 @@ namespace ReportesObra.Services
                 {
                     Quality = file.Length > 100000 ? 15 : 30 //Use variable to set between 5-30 based on your requirements
                 };
-                image.Save(memoryStream, encoder);
-                memoryStream.Position = 0;
+                //image.Save(memoryStream, encoder);
+                //memoryStream.Position = 0;
 
                 var auxiliaryMethods = new AuxiliaryMethods();
                 var newImageStream = new MemoryStream();
-                auxiliaryMethods.DateImage(memoryStream).Save(newImageStream, encoder);
+                auxiliaryMethods.DateImage(image).Save(newImageStream, encoder);
                 newImageStream.Position = 0;
 
                 var response = await blobClient.UploadAsync(

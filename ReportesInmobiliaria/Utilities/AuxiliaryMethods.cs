@@ -17,7 +17,7 @@ namespace ReportesObra.Utilities
 {
     public class AuxiliaryMethods
     {
-        public Image DateImage(MemoryStream imgageStream)
+        public Image DateImage(Image imageToAddDate)
         {
             try
             {                
@@ -27,34 +27,39 @@ namespace ReportesObra.Utilities
 
                 string currentDate = DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss");
                 float WatermarkPadding = 12f;
+                float fontSize = 12f;
                 string WatermarkFont = "DejaVu Serif";                
 
                 if (!SystemFonts.TryGet(WatermarkFont, out fontFamily))
                     throw new Exception($"Couldn't find font {WatermarkFont}");
 
-                var font = fontFamily.CreateFont(12, FontStyle.Bold);
-
+                if (imageToAddDate.Width > 100 && imageToAddDate.Width < 500)
+                    fontSize = 12f;
+                else if (imageToAddDate.Width >= 500 && imageToAddDate.Width < 1100)
+                    fontSize = 20f;
+                else if (imageToAddDate.Width >= 1100)
+                    fontSize = 64f;
+                else
+                    fontSize = 8f;
+                    var font = fontFamily.CreateFont(fontSize, FontStyle.Bold);
                 var options = new TextOptions(font)
-                {
+                {                    
                     Dpi = 72,
                     KerningMode = KerningMode.Normal
                 };
 
                 var rect = TextMeasurer.Measure(currentDate, options);
 
-                IImageInfo imageInfo = Image.Identify(imgageStream);
-                imgageStream.Position = 0;
+                //Image imagen = Image.Load(imgageStream);
 
-                Image imagen = Image.Load(imgageStream);
-
-                imagen.Mutate(x => x.DrawText(
+                imageToAddDate.Mutate(x => x.DrawText(
                     currentDate,
                     font,
                     new Color(Rgba32.ParseHex("#FFE23F")),
-                    new PointF(imagen.Width - rect.Width - WatermarkPadding,
-                            imagen.Height - rect.Height - WatermarkPadding)));
+                    new PointF(imageToAddDate.Width - rect.Width - WatermarkPadding,
+                            imageToAddDate.Height - rect.Height - WatermarkPadding)));
 
-                return imagen;
+                return imageToAddDate;
             }
             catch
             {
