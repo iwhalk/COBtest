@@ -80,6 +80,7 @@ namespace ReportesObra.Services
                 var auxiliaryMethods = new AuxiliaryMethods();
                 var newImageStream = new MemoryStream();
                 auxiliaryMethods.DateImage(memoryStream).Save(newImageStream, encoder);
+                newImageStream.Position = 0;
 
                 var response = await blobClient.UploadAsync(
                 newImageStream,

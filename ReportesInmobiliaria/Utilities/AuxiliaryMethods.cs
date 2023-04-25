@@ -11,6 +11,7 @@ using SixLabors.ImageSharp.Formats.Png;
 using SixLabors.ImageSharp.Formats.Jpeg;
 using SixLabors.ImageSharp.Drawing.Processing;
 using System.Globalization;
+using Microsoft.Extensions.Options;
 
 namespace ReportesObra.Utilities
 {
@@ -24,13 +25,14 @@ namespace ReportesObra.Utilities
 
                 FontFamily fontFamily;
 
+                string currentDate = DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss");
+                float WatermarkPadding = 12f;
+                string WatermarkFont = "DejaVu Serif";                
 
-                string text = "2023-04-24";
-                float WatermarkPadding = 18f;
-                string WatermarkFont = "Roboto";
-                float WatermarkFontSize = 64f;
+                if (!SystemFonts.TryGet(WatermarkFont, out fontFamily))
+                    throw new Exception($"Couldn't find font {WatermarkFont}");
 
-                var font = fontFamily.CreateFont(WatermarkFontSize, FontStyle.Regular);
+                var font = fontFamily.CreateFont(12, FontStyle.Bold);
 
                 var options = new TextOptions(font)
                 {
@@ -38,7 +40,7 @@ namespace ReportesObra.Utilities
                     KerningMode = KerningMode.Normal
                 };
 
-                var rect = TextMeasurer.Measure(text, options);
+                var rect = TextMeasurer.Measure(currentDate, options);
 
                 IImageInfo imageInfo = Image.Identify(imgageStream);
                 imgageStream.Position = 0;
@@ -46,9 +48,9 @@ namespace ReportesObra.Utilities
                 Image imagen = Image.Load(imgageStream);
 
                 imagen.Mutate(x => x.DrawText(
-                    text,
+                    currentDate,
                     font,
-                    new Color(Rgba32.ParseHex("#FFFFFFEE")),
+                    new Color(Rgba32.ParseHex("#FFE23F")),
                     new PointF(imagen.Width - rect.Width - WatermarkPadding,
                             imagen.Height - rect.Height - WatermarkPadding)));
 
