@@ -2,6 +2,7 @@
 using Azure.Storage.Blobs.Models;
 using Microsoft.EntityFrameworkCore;
 using ReportesObra.Interfaces;
+using ReportesObra.Utilities;
 using SharedLibrary.Data;
 using SharedLibrary.Models;
 using SixLabors.ImageSharp;
@@ -13,12 +14,12 @@ namespace ReportesObra.Services
     public class BlobService : IBlobService
     {
         private readonly ObraDbContext _dbContext;
-        private readonly BlobServiceClient _blobServiceClient;
+        private readonly BlobServiceClient _blobServiceClient;        
 
         public BlobService(ObraDbContext dbContext, BlobServiceClient blobServiceClient)
         {
             _dbContext = dbContext;
-            _blobServiceClient = blobServiceClient;
+            _blobServiceClient = blobServiceClient;            
         }
 
         public async Task<BlobDownloadInfo>? GetBlobFileAsync(int id)
@@ -40,16 +41,16 @@ namespace ReportesObra.Services
 
         public async Task<List<Blob>> GetBlobsAsync(int? id)
         {
-            IQueryable<Blob> blobs  = _dbContext.Blobs;
+            IQueryable<Blob> blobs = _dbContext.Blobs;
             if (id != null)
-                blobs =  blobs.Where(x => x.IdBlob == id);
+                blobs = blobs.Where(x => x.IdBlob == id);
             return await blobs.ToListAsync();
         }
         public async Task<Blob?> CreateBlobAsync(IFormFile file)
         {
 
             var blobContainerClient = _blobServiceClient.GetBlobContainerClient("imagescob");
-            var extensionFile = file.ContentType == "" ? "jpeg" : file.ContentType.Split("/")[1]?? "jpeg";
+            var extensionFile = file.ContentType == "" ? "jpeg" : file.ContentType.Split("/")[1] ?? "jpeg";
             var blobName = Guid.NewGuid().ToString() + "." + extensionFile;
             var blobClient = blobContainerClient.GetBlobClient(blobName);
 
@@ -61,7 +62,7 @@ namespace ReportesObra.Services
                 ContainerName = "imagescob",
                 IsPrivate = false,
                 BlobTypeId = "",
-                ContentType = file.ContentType == "" ? "image/jpeg" : file.ContentType?? "image/jpeg",
+                ContentType = file.ContentType == "" ? "image/jpeg" : file.ContentType ?? "image/jpeg",
                 DateCreated = DateTime.Now,
                 DateModified = DateTime.Now
             };
@@ -73,10 +74,16 @@ namespace ReportesObra.Services
                 {
                     Quality = file.Length > 100000 ? 15 : 30 //Use variable to set between 5-30 based on your requirements
                 };
-                image.Save(memoryStream, encoder);
-                memoryStream.Position = 0; 
+                //image.Save(memoryStream, encoder);
+                //memoryStream.Position = 0;
+
+                var auxiliaryMethods = new AuxiliaryMethods();
+                var newImageStream = new MemoryStream();
+                auxiliaryMethods.DateImage(image).Save(newImageStream, encoder);
+                newImageStream.Position = 0;
+
                 var response = await blobClient.UploadAsync(
-                memoryStream,
+                newImageStream,
                 new BlobHttpHeaders
                 {
                     ContentType = file.ContentType == "" ? "image/jpeg" : file.ContentType ?? "image/jpeg"
