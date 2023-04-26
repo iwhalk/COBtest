@@ -7,6 +7,7 @@ using Obra.Client.Components;
 using Obra.Client.Interfaces;
 using Obra.Client.Stores;
 using SharedLibrary.Models;
+using System.Runtime.CompilerServices;
 using System.Security.Cryptography.X509Certificates;
 
 namespace Obra.Client.Pages
@@ -55,6 +56,15 @@ namespace Obra.Client.Pages
         private bool apartmentDetails = true;
         private bool showActivities = false;
         private bool withoutSubelements = false;
+        private bool ActivityButtonTrue { get; set; } = true;
+        private bool ActivityButtonFalse { get; set; } = false;
+
+        private void ActivityFunc()
+        {
+            ActivityButtonTrue = !ActivityButtonTrue;
+            ActivityButtonFalse = !ActivityButtonFalse;
+        }
+
         public ObjectAccessUser Accesos { get; private set; }
 
         private bool loading { get; set; } = false;
@@ -751,6 +761,17 @@ namespace Obra.Client.Pages
             data.SubElements = allSubElements ? null : _idsSubElementsSelect;
             data.FechaInicio = DateStart;
             data.FechaFin = DateEnd;
+            data.StatusOption = optionStatus == 0 ? null : optionStatus;
+
+            if (ActivityButtonTrue == true)
+            {
+                data.WithActivities = true;
+            }
+
+            if (ActivityButtonFalse == true)
+            {
+                data.WithActivities = false;
+            }
 
             var pdf = await _reportesService.PostReporteEvolucionAsync(data);
 
