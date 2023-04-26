@@ -9,7 +9,7 @@ namespace ReportesObra.Interfaces
         Task<List<DetalladoActividades>> GetDataDetallesActividad(int idBuilding, List<int>? idActivities, List<int>? idElements, List<int>? idSubElements, List<int>? idApartments, int? statusOption);
         Task<byte[]> GetReporteDetallesActividad(List<DetalladoActividades> detalladoActividades);
 
-        Task<byte[]> GetReportEvolution(int idBuilding, DateTime inicio, DateTime fin, List<int>? idApartments, List<int>? idAreas, List<int>? idActivities, List<int>? idElements, List<int>? idSubElements);
+        Task<byte[]> GetReportEvolution(int idBuilding, DateTime inicio, DateTime fin, List<int>? idApartments, List<int>? idAreas, List<int>? idActivities, List<int>? idElements, List<int>? idSubElements, int? status, bool? withActivities);
 
         Task<byte[]> GetReporteAvance(List<AparmentProgress> aparmentProgress, string subTitle);
         Task<List<AparmentProgress>> GetAparments(int? idBuilding, int? idAparment);

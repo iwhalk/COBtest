@@ -98,7 +98,7 @@ namespace ReportesObra.Endpoints
                 try
                 {
                     var report = await _reportesService.GetReportEvolution(details.IdBuilding, details.FechaInicio, details.FechaFin, details.Apartments,
-                        details.Areas, details.Activities, details.Elements, details.SubElements);
+                        details.Areas, details.Activities, details.Elements, details.SubElements, details.StatusOption, details.WithActivities);
                     if (report == null) return Results.NotFound();
                     return Results.File(report, "application/pdf");
                 }
