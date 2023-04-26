@@ -1,57 +1,71 @@
 ﻿using SharedLibrary.Models;
+using SixLabors.Fonts;
+using SixLabors.ImageSharp;
+using SixLabors.ImageSharp.PixelFormats;
+using SixLabors.ImageSharp.Processing;
+using SixLabors.ImageSharp;
+using SixLabors.ImageSharp.Formats.Gif;
+using SixLabors.ImageSharp.Formats;
+using SixLabors.Fonts;
+using SixLabors.ImageSharp.Formats.Png;
+using SixLabors.ImageSharp.Formats.Jpeg;
+using SixLabors.ImageSharp.Drawing.Processing;
 using System.Globalization;
+using Microsoft.Extensions.Options;
 
 namespace ReportesObra.Utilities
 {
     public class AuxiliaryMethods
     {
-        //public Dates ObtenerFechas(string? day, string? month, string? week)
-        //{
-        //    Dates? dates = new();
+        public Image DateImage(Image imageToAddDate)
+        {
+            try
+            {                
 
-        //    if (!string.IsNullOrEmpty(day))
-        //    {
-        //        TimeSpan ts = new TimeSpan(00, 00, 0);
-        //        dates.StartDate = DateTime.Parse(day).Date + ts;
-        //        dates.EndDate = dates.StartDate.AddHours(23).AddMinutes(59);
-        //    }
-        //    else if (!string.IsNullOrEmpty(month))
-        //    {
-        //        string[] dateSection = month.Split('-');
 
-        //        DateTime startDate = new DateTime(int.Parse(dateSection[0]), int.Parse(dateSection[1]), 1);
-        //        DateTime endDate = new DateTime(int.Parse(dateSection[0]), int.Parse(dateSection[1]), DateTime.DaysInMonth(int.Parse(dateSection[0]), int.Parse(dateSection[1])));
+                FontFamily fontFamily;
 
-        //        dates.StartDate = startDate;
-        //        dates.EndDate = endDate.AddHours(23).AddMinutes(59);
-        //    }
-        //    else if (!string.IsNullOrEmpty(week))
-        //    {
-        //        string[] dateSection = week.Split("-W");
-        //        DateTime startDate = FirstDateOfWeek(int.Parse(dateSection[0]), int.Parse(dateSection[1]));
-        //        DateTime endDate = startDate.AddDays(6);
+                string currentDate = DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss");
+                float WatermarkPadding = 12f;
+                float fontSize = 12f;
+                string WatermarkFont = "DejaVu Serif";                
 
-        //        dates.StartDate = startDate;
-        //        dates.EndDate = endDate.AddHours(23).AddMinutes(59);
-        //    }
-        //    else
-        //        return dates = null;
+                if (!SystemFonts.TryGet(WatermarkFont, out fontFamily))
+                    throw new Exception($"Couldn't find font {WatermarkFont}");
 
-        //    return dates;
-        //}
+                if (imageToAddDate.Width > 100 && imageToAddDate.Width < 500)
+                    fontSize = 12f;
+                else if (imageToAddDate.Width >= 500 && imageToAddDate.Width < 1100)
+                    fontSize = 20f;
+                else if (imageToAddDate.Width >= 1100)
+                    fontSize = 64f;
+                else
+                    fontSize = 8f;
+                    var font = fontFamily.CreateFont(fontSize, FontStyle.Bold);
+                var options = new TextOptions(font)
+                {                    
+                    Dpi = 72,
+                    KerningMode = KerningMode.Normal
+                };
 
-        //public static DateTime FirstDateOfWeek(int year, int weekOfYear)
-        //{
-        //    DateTime jan1 = new DateTime(year, 1, 1);
-        //    int daysOffset = Convert.ToInt32(CultureInfo.CurrentCulture.DateTimeFormat.FirstDayOfWeek) - Convert.ToInt32(jan1.DayOfWeek);
-        //    DateTime firstWeekDay = jan1.AddDays(daysOffset);
-        //    CultureInfo curCulture = CultureInfo.CurrentCulture;
-        //    int firstWeek = curCulture.Calendar.GetWeekOfYear(jan1, curCulture.DateTimeFormat.CalendarWeekRule, curCulture.DateTimeFormat.FirstDayOfWeek);
-        //    if (firstWeek <= 1)
-        //    {
-        //        weekOfYear -= 1;
-        //    }
-        //    return firstWeekDay.AddDays(weekOfYear * 7);
-        //}
+                var rect = TextMeasurer.Measure(currentDate, options);
+
+                //Image imagen = Image.Load(imgageStream);
+
+                imageToAddDate.Mutate(x => x.DrawText(
+                    currentDate,
+                    font,
+                    new Color(Rgba32.ParseHex("#FFE23F")),
+                    new PointF(imageToAddDate.Width - rect.Width - WatermarkPadding,
+                            imageToAddDate.Height - rect.Height - WatermarkPadding)));
+
+                return imageToAddDate;
+            }
+            catch
+            {
+                throw;
+            }
+
+        }
     }
 }
