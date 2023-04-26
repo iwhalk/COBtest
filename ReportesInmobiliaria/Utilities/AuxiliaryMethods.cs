@@ -12,6 +12,7 @@ using SixLabors.ImageSharp.Formats.Jpeg;
 using SixLabors.ImageSharp.Drawing.Processing;
 using System.Globalization;
 using Microsoft.Extensions.Options;
+using ReportesObra.Interfaces;
 
 namespace ReportesObra.Utilities
 {
@@ -20,12 +21,16 @@ namespace ReportesObra.Utilities
         public Image DateImage(Image imageToAddDate)
         {
             try
-            {                
-
-
+            {
                 FontFamily fontFamily;
 
-                string currentDate = DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss");
+                DateTimeOffset dateTime = new DateTimeOffset(DateTime.Now);
+                var offset = dateTime.Offset;
+                var total = offset.TotalHours;
+                //if (TimeZone.CurrentTimeZone.Equals("Coordinated Universal Time")) ;
+                //receptionCertificate.CreationDate = TimeZoneInfo.ConvertTimeToUtc(DateTime.Now, TimeZoneInfo.Local).AddHours(offset.TotalHours);
+
+                string currentDate = TimeZoneInfo.ConvertTimeToUtc(DateTime.Now, TimeZoneInfo.Local).AddHours(offset.TotalHours).ToString("yyyy/MM/dd HH:mm:ss");
                 float WatermarkPadding = 12f;
                 float fontSize = 12f;
                 string WatermarkFont = "DejaVu Serif";                
@@ -52,7 +57,7 @@ namespace ReportesObra.Utilities
 
                 //Image imagen = Image.Load(imgageStream);
 
-                imageToAddDate.Mutate(x => x.DrawText(
+                imageToAddDate.Mutate(x => x.DrawText( 
                     currentDate,
                     font,
                     new Color(Rgba32.ParseHex("#FFE23F")),
