@@ -78,6 +78,7 @@ namespace ReportesObra.Utilities
         private string _title = "";
         private bool _firstActivity = true;
         private int contadorIndexTitulo = 0;
+        private int contadorFilasEvolucion = 0;
         /// <summary>
         /// Initializes a new instance of the class BillFrom and opens the specified XML document.
         /// </summary>
@@ -546,6 +547,7 @@ namespace ReportesObra.Utilities
             Row rowD;
             Row rowInfo;
             Paragraph paragraph;
+            bool firstApartment = true;
             
             for (int i = 0; i < report.ObjectsEvolution.Count; i++)
             {
@@ -559,21 +561,28 @@ namespace ReportesObra.Utilities
                 paragraph.AddText("Departamento " + apartmentTitle);
                 paragraph.Format.Alignment = ParagraphAlignment.Center;
 
-                dates = section.AddTable();
-                dates.Style = "Table";
-                dates.Rows.Height = 15;
-                dates.Rows.VerticalAlignment = VerticalAlignment.Center;
-                dates.Format.Alignment = ParagraphAlignment.Right;
-                dates.Format.Font.Size = 8;
-                dates.AddColumn("0.5cm");
-                dates.AddColumn("3.5cm");
-                dates.AddColumn("2.5cm");
-                rowD = dates.AddRow();
-                rowD.Cells[1].AddParagraph("Fecha de inicio:");
-                rowD.Cells[2].AddParagraph(report.FechaInicio.ToString("dd/MM/yyyy"));
-                rowD = dates.AddRow();
-                rowD.Cells[1].AddParagraph("Fecha de fin:");
-                rowD.Cells[2].AddParagraph(report.FechaFin.ToString("dd/MM/yyyy"));
+                if (firstApartment)
+                {
+                    dates = section.AddTable();
+                    dates.Style = "Table";
+                    dates.Rows.Height = 15;
+                    dates.Rows.VerticalAlignment = VerticalAlignment.Center;
+                    dates.Format.Alignment = ParagraphAlignment.Right;
+                    dates.Format.Font.Size = 8;
+                    dates.AddColumn("0.5cm");
+                    dates.AddColumn("3.5cm");
+                    dates.AddColumn("2.5cm");
+                    rowD = dates.AddRow();
+                    rowD.Cells[1].AddParagraph("Fecha de inicio:");
+                    rowD.Cells[2].AddParagraph(report.FechaInicio.ToString("dd/MM/yyyy"));
+                    rowD = dates.AddRow();
+                    rowD.Cells[1].AddParagraph("Fecha de fin:");
+                    rowD.Cells[2].AddParagraph(report.FechaFin.ToString("dd/MM/yyyy"));
+                    firstApartment = false;
+                    contadorFilasEvolucion += 2;
+                }
+                else
+                    contadorFilasEvolucion += 6;
 
                 paragraph = section.AddParagraph();
                 paragraph.Format.SpaceAfter = "0.5cm";
@@ -617,13 +626,19 @@ namespace ReportesObra.Utilities
                 rowInfo.Format.Alignment = ParagraphAlignment.Center;
                 rowInfo.Format.Font.Size = 9;                
                 rowInfo.Cells[4].AddParagraph("Inicio Periodo");
-                rowInfo.Cells[5].AddParagraph("Periodo");                
+                rowInfo.Cells[5].AddParagraph("Periodo");
 
+                contadorFilasEvolucion++;
                 i = FillInfoEvolution(report.ObjectsEvolution, info, i, apartmentTitle) - 1;
                 if (i < report.ObjectsEvolution.Count() - 1)
                 {
                     paragraph = section.AddParagraph();
                     paragraph.Format.SpaceAfter = "3.0cm";
+                    if (contadorFilasEvolucion % 30 > 20)//Si no hay espacio suficiente para mostrar algunas filas de la siguiente tabla, que haga un salto de página
+                    {
+                        document.LastSection.AddPageBreak();
+                        contadorFilasEvolucion = 0;
+                    }
                 }
             }
         }
@@ -1799,6 +1814,9 @@ namespace ReportesObra.Utilities
             {
                 var item = value.ElementAt(i);
                 row = _table.AddRow();
+                contadorFilasEvolucion++;
+                if (contadorFilasEvolucion % 31 == 0)//Cuando se agrega una nueva página debido a que la tabla es muy larga también se genera nuevamente el encabezado por defecto
+                    contadorFilasEvolucion++;
                 row.Format.Font.Size = (Unit)fontSize;
                 if (item != null)
                     foreach (var (prop, index) in item.GetType().GetProperties().Select((v, i) => (v, i)))
@@ -1811,6 +1829,7 @@ namespace ReportesObra.Utilities
                             if (currentApartmentName != title)
                             {
                                 table.Rows.RemoveObjectAt(table.Rows.Count - 1);
+                                contadorFilasEvolucion--;
                                 //if (lastRow != null)
                                 //    lastRow.Cells[0].Borders.Bottom.Width = 1.5;
                                 return i;
