@@ -52,7 +52,7 @@ namespace ReportesObra.Utilities
 
                 //Image imagen = Image.Load(imgageStream);
 
-                imageToAddDate.Mutate(x => x.DrawText(
+                imageToAddDate.Mutate(x => x.DrawText( 
                     currentDate,
                     font,
                     new Color(Rgba32.ParseHex("#FFE23F")),
