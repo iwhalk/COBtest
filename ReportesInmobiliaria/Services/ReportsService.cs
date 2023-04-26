@@ -127,17 +127,46 @@ namespace ReportesObra.Services
         }
 
         public async Task<byte[]> GetReportEvolution(int idBuilding, DateTime inicio, DateTime fin, List<int>? idApartments, List<int>? idAreas,
-            List<int>? idActivities, List<int>? idElements, List<int>? idSubElements)
+            List<int>? idActivities, List<int>? idElements, List<int>? idSubElements, int? status, bool? withActivities)
         {
             List<ProgressReport> listReport = new List<ProgressReport>();
             listReport = await _progressReportsService.GetProgressReportsDetailedAsync(idBuilding, idApartments, idAreas, idElements, idSubElements, idActivities);
-            listReport = listReport.OrderBy(x => x.IdApartment).ThenBy(x => x.IdArea).ToList();
+            listReport = listReport.OrderBy(x => x.IdApartment).ThenBy(x => x.IdArea).ToList();                       
 
             var list = new List<ObjectEvolution>();
             //Se agrega un día a las fechas porque la hora se queda en 00:00 por defecto
             inicio = inicio.AddDays(1).AddSeconds(-1);
             fin = fin.AddDays(1).AddSeconds(-1);
-            list = GetDetailEvolution(listReport, inicio , fin);
+            list = GetDetailEvolution(listReport, inicio , fin);            
+            
+            if (status != null)
+            {
+                string statusSelected;
+                switch (status)
+                {
+                    case 1:
+                        statusSelected = _status1;
+                        break;
+                    case 2:
+                        statusSelected = _status2;
+                        break;
+                    case 3:
+                        statusSelected = _status3;
+                        break;
+                    default:
+                        statusSelected = _status1;
+                        break;
+                }
+                list = list.Where(x => x.Status == statusSelected).ToList(); 
+            }
+            if (withActivities != null)
+            {
+                if (withActivities ?? true)
+                    list = list.Where(x => x.EndPeriod > 0).ToList();
+                else
+                    list = list.Where(x => x.EndPeriod == 0).ToList();
+            }
+
             if (list.Count == 0)
                 return null;
 

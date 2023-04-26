@@ -7,6 +7,7 @@ using Obra.Client.Components;
 using Obra.Client.Interfaces;
 using Obra.Client.Stores;
 using SharedLibrary.Models;
+using System.Runtime.CompilerServices;
 using System.Security.Cryptography.X509Certificates;
 
 namespace Obra.Client.Pages
@@ -55,6 +56,15 @@ namespace Obra.Client.Pages
         private bool apartmentDetails = true;
         private bool showActivities = false;
         private bool withoutSubelements = false;
+        private bool ActivityButtonTrue { get; set; } = true;
+        private bool ActivityButtonFalse { get; set; } = false;
+
+        private void ActivityFunc()
+        {
+            ActivityButtonTrue = !ActivityButtonTrue;
+            ActivityButtonFalse = !ActivityButtonFalse;
+        }
+
         public ObjectAccessUser Accesos { get; private set; }
 
         private bool loading { get; set; } = false;
@@ -64,6 +74,9 @@ namespace Obra.Client.Pages
         private byte[] _bytesPreviewFile { get; set; }
         private const string PDF_FILE_NAME = "EvolucionDelProyecto.pdf";
         private void ChangeOpenModalPreview() => _showPreviewFile = _showPreviewFile ? false : true;
+
+        private enum Statuses { Todos = 0, Pendiente = 1, EnCurso = 2, Terminado = 3 }
+        private int optionStatus = 0;
 
         public ProjectProgressReport(ApplicationContext context, IApartmentsService apartmentsService, IActivitiesService activitiesService, IAreasService areasService, IElementsService elementsService, ISubElementsService subElementsService, IProgressReportService progressReportService,
             IProgressLogsService progressLogsService, IReportsService reportesService, IJSRuntime jS, IToastService toastService, IObjectAccessService accessService)
@@ -748,6 +761,17 @@ namespace Obra.Client.Pages
             data.SubElements = allSubElements ? null : _idsSubElementsSelect;
             data.FechaInicio = DateStart;
             data.FechaFin = DateEnd;
+            data.StatusOption = optionStatus == 0 ? null : optionStatus;
+
+            if (ActivityButtonTrue == true)
+            {
+                data.WithActivities = true;
+            }
+
+            if (ActivityButtonFalse == true)
+            {
+                data.WithActivities = false;
+            }
 
             var pdf = await _reportesService.PostReporteEvolucionAsync(data);
 
@@ -765,6 +789,12 @@ namespace Obra.Client.Pages
             }          
 
             loading = false;
+        }
+
+        public void StatusChanged(int idStatus)
+        {
+            optionStatus = idStatus;
+            //StateHasChanged();
         }
     }
 }

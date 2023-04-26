@@ -17,5 +17,6 @@ namespace SharedLibrary.Models
         public int? StatusOption { get; set; }
         public DateTime FechaInicio { get; set; }
         public DateTime FechaFin { get; set; }
+        public bool? WithActivities { get; set; }
     }
 }
