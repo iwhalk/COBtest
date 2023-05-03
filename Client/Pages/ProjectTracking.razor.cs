@@ -196,6 +196,16 @@ namespace Obra.Client.Pages
                 var NewProgressLog = NewProgressLogs.FirstOrDefault(x => x.IdProgressReport == CurrentProgressReport.IdProgressReport);
                 if (NewProgressLog != null)
                 {
+                    //Agrgando blobs previos ya guardados al CurrentProggresLog
+                    var progressLogs = await _progressLogsService.GetProgressLogsAsync(idProgressReport: CurrentProgressReport.IdProgressReport);
+                    foreach (var log in progressLogs?.Where(x => x.IdBlobs.Any()))
+                    {
+                        foreach (var blob in log.IdBlobs)
+                        {
+                            CurrentProgressLog.IdBlobs.Add(blob);
+                        }
+                        //CurrentProgressLog.IdBlobs.ToList().AddRange(log.IdBlobs);
+                    }
                     CurrentProgressLog.Observation = NewProgressLog.Observation;
                     CurrentProgressLog.IdStatus = NewProgressLog.IdStatus;
                     CurrentProgressLog.Pieces = NewProgressLog.Pieces;
@@ -220,6 +230,7 @@ namespace Obra.Client.Pages
                         CurrentProgressLog.Observation = LastProgressLog.Observation;
                         CurrentProgressLog.IdStatus = LastProgressLog.IdStatus;
                         CurrentProgressLog.Pieces = LastProgressLog.Pieces;
+                        var PL = progressLogs?.Where(x => x.IdBlobs.Any()).ToList();
                         foreach (var log in progressLogs?.Where(x=>x.IdBlobs.Any()))
                         {
                             foreach (var blob in log.IdBlobs)
