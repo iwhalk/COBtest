@@ -230,8 +230,7 @@ namespace Obra.Client.Pages
                         CurrentProgressLog.IdProgressReport = LastProgressLog.IdProgressReport;
                         CurrentProgressLog.Observation = LastProgressLog.Observation;
                         CurrentProgressLog.IdStatus = LastProgressLog.IdStatus;
-                        CurrentProgressLog.Pieces = LastProgressLog.Pieces;
-                        var PL = progressLogs?.Where(x => x.IdBlobs.Any()).ToList();
+                        CurrentProgressLog.Pieces = LastProgressLog.Pieces;                        
                         foreach (var log in progressLogs?.Where(x=>x.IdBlobs.Any()))
                         {
                             foreach (var blob in log.IdBlobs)
