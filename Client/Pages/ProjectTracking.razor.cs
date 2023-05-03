@@ -164,7 +164,8 @@ namespace Obra.Client.Pages
         {
             if (SelectedElement == idElement) return;
             SelectedElement= idElement;
-            SelectedSubElement = 0;          
+            SelectedSubElement = 0;
+            CurrentProgressLog = new();
 
             CurrentElement = CurrentElementsList.First(x => x.IdElement == idElement);
             CurrentSubElementsList = await _subElementsService.GetSubElementsAsync(idElement);
