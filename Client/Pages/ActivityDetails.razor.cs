@@ -611,11 +611,18 @@ namespace Obra.Client.Pages
                 else
                 {
                     allApartments = true;
-
                     _idsAparmentSelect.Clear();
 
                 }
-            }
+
+                if (allApartments)
+                {
+                    foreach (var item in apartments)
+                    {
+                        _idsAparmentSelect.Add(item.IdApartment);
+                    }
+                }
+            }            
         }
 
         public async Task ShowMessage() => alert = false;
@@ -701,15 +708,7 @@ namespace Obra.Client.Pages
                             {
                                 buttonReport = true;
                                 apartmentDetails = false;
-                                loading = true;
-
-                                if (allApartments == true)
-                                {
-                                    foreach (var item in apartments)
-                                    {
-                                        _idsAparmentSelect.Add(item.IdApartment);
-                                    }
-                                }
+                                loading = true;                                
 
                                 foreach (var item in _idsActivitiesSelect)
                                 {
@@ -766,14 +765,6 @@ namespace Obra.Client.Pages
                             buttonReport = true;
                             apartmentDetails = false;
                             loading = true;
-
-                            if (allApartments == true)
-                            {
-                                foreach (var item in apartments)
-                                {
-                                    _idsAparmentSelect.Add(item.IdApartment);
-                                }
-                            }
 
                             foreach (var item in _idsActivitiesSelect)
                             {
