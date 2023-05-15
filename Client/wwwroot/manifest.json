@@ -1,6 +1,6 @@
 {
-  "name": "BlazorAppLogin",
-  "short_name": "BlazorAppLogin",
+  "name": "Sistema COB",
+  "short_name": "Sistema COB",
   "start_url": "./",
   "display": "standalone",
   "background_color": "#ffffff",
