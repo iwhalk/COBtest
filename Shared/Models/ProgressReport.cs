@@ -36,6 +36,8 @@ namespace SharedLibrary.Models
         [Column("ID_Supervisor")]
         [StringLength(450)]
         public string IdSupervisor { get; set; }
+        public double? TimePiece { get; set; }
+        public double? CostPiece { get; set; }
 
         [ForeignKey("IdApartment")]
         [InverseProperty("ProgressReports")]
