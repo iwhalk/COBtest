@@ -67,9 +67,11 @@
          "ObjectType": 0
       }
    ],
-   "UiHint": "arisoft2245.prosisdb_4",
+   "UiHint": "soft2245.prosisdb_4.dbo",
+   "UncountableWords": null,
    "UseBoolPropertiesWithoutDefaultSql": false,
    "UseDatabaseNames": false,
+   "UseDateOnlyTimeOnly": false,
    "UseDbContextSplitting": false,
    "UseFluentApiOnly": false,
    "UseHandleBars": false,
@@ -77,9 +79,7 @@
    "UseInflector": true,
    "UseLegacyPluralizer": false,
    "UseManyToManyEntity": false,
-   "UseNoConstructor": false,
    "UseNoDefaultConstructor": false,
-   "UseNoNavigations": false,
    "UseNoObjectFilter": false,
    "UseNodaTime": false,
    "UseNullableReferences": false,
