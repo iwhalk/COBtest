@@ -118,6 +118,9 @@ namespace ReportesObra.Utilities
                 case nameof(ReportEvolution):
                     CrearReporteEvolucion(reporte as ReportEvolution);
                      break;
+                case nameof(ReportAdvanceCost):
+                    CrearReporteAvancePorCosto(reporte as ReportAdvanceCost);
+                    break;
                 case nameof(ReporteAvance):
                     CrearReporteAvance(reporte as ReporteAvance);
                     break;
@@ -365,9 +368,17 @@ namespace ReportesObra.Utilities
                 paragraph.Format.Font.Bold = true;
                 paragraph.Format.Alignment = ParagraphAlignment.Center;
             }
-
-            if (option != 3)
+            else if (option == 4)
             {
+                paragraph = headerFrame.AddParagraph("Avances por Costo");
+                paragraph.Format.Font.Name = "DejaVu Serif";
+                paragraph.Format.Font.Size = 12;
+                paragraph.Format.Font.Bold = true;
+                paragraph.Format.Alignment = ParagraphAlignment.Center;
+            }
+
+            //if (option != 4)
+            //{
                 // Put parameters in data Frame
                 paragraph = dataParametersFrameRight.AddParagraph();
                 paragraph.Format.Font.Bold = true;
@@ -378,7 +389,7 @@ namespace ReportesObra.Utilities
                 paragraph = dataValuesFrameRight.AddParagraph();
                 paragraph.AddText(DateTime.Now.ToString("dd/MM/yyyy"));
                 paragraph.Format.Font.Size = 9;
-            }
+            //}
         }
 
         void CrearReporteDetalle(ReporteDetalles? reporteDetalles)
@@ -643,7 +654,74 @@ namespace ReportesObra.Utilities
             }
         }
 
-            void CrearReporteAvance(ReporteAvance? reporteAvance)
+        void CrearReporteAvancePorCosto(ReportAdvanceCost report)
+        {
+            CrearEncabezadoGenerico(4);
+            string apartmentTitle;
+            Table dates;
+            Table info;
+            Row rowD;
+            Row rowInfo;
+            Paragraph paragraph;
+            bool firstApartment = true;
+
+            for (int i = 0; i < report.ListAdvanceCost.Count; i++)
+            {
+                apartmentTitle = report.ListAdvanceCost.ElementAt(i).Apartment;
+                paragraph = section.AddParagraph();
+                paragraph.AddLineBreak();
+                paragraph.Format.SpaceBefore = "-2.4cm";
+                paragraph.Format.SpaceAfter = "0.8cm";
+                paragraph.Format.Font.Size = 11;
+                paragraph.Format.Font.Bold = true;
+                paragraph.AddText("Departamento " + apartmentTitle);
+                paragraph.Format.Alignment = ParagraphAlignment.Center;
+
+                paragraph = section.AddParagraph();
+                paragraph.Format.SpaceAfter = "0.5cm";
+
+                info = section.AddTable();
+                info.Style = "Table";
+                info.Format.Alignment = ParagraphAlignment.Center;
+                info.Rows.Height = 20;
+                info.Rows.VerticalAlignment = VerticalAlignment.Center;
+                info.Format.Alignment = ParagraphAlignment.Center;
+                info.Format.Font.Size = 8;
+                info.AddColumn("1.8cm");
+                info.AddColumn("2.2cm");
+                info.AddColumn("2.2cm");
+                info.AddColumn("2.4cm");
+                info.AddColumn("2.8cm");
+                info.AddColumn("2.5cm");
+                info.AddColumn("1.6cm");
+
+                rowInfo = info.AddRow();
+                rowInfo.HeadingFormat = true;
+                rowInfo.Format.Font.Size = 9;
+                rowInfo.Cells[0].AddParagraph("Actividad");
+                rowInfo.Cells[1].AddParagraph("Área");
+                rowInfo.Cells[2].AddParagraph("Elemento");
+                rowInfo.Cells[3].AddParagraph("Subelemento");
+                rowInfo.Cells[4].AddParagraph("Costo Total");
+                rowInfo.Cells[5].AddParagraph("Avance");
+                rowInfo.Cells[6].AddParagraph("Estatus");
+
+                //contadorFilasEvolucion++;
+                i = FillInfoAdvanceCost(report.ListAdvanceCost, info, i, apartmentTitle) - 1;
+                if (i < report.ListAdvanceCost.Count() - 1)
+                {
+                    paragraph = section.AddParagraph();
+                    paragraph.Format.SpaceAfter = "3.0cm";
+                    //if (contadorFilasEvolucion % 30 > 20)//Si no hay espacio suficiente para mostrar algunas filas de la siguiente tabla, que haga un salto de página
+                    //{
+                    //    document.LastSection.AddPageBreak();
+                    //    contadorFilasEvolucion = 0;
+                    //}
+                }
+            }
+        }
+
+        void CrearReporteAvance(ReporteAvance? reporteAvance)
         {
             section.PageSetup.Orientation = Orientation.Portrait;
             section.PageSetup.TopMargin = "4.9cm";
@@ -1876,6 +1954,91 @@ namespace ReportesObra.Utilities
                     row.Cells[5].Shading.Color = newColorGray;
                     row.Cells[6].Shading.Color = newColorGray;
                     row.Cells[7].Shading.Color = newColorGray;
+                }
+                rowCount++;
+            }
+            return value.Count;
+        }
+
+        private int FillInfoAdvanceCost<T>(List<T> value, Table table, int tableIndex, string title, int fontSize = 8)
+        {
+            Table _table = table;
+            string currentName = "";
+            string beforeName = "";
+            Row lastRow = null;
+            Row row;
+            string currentApartmentName;
+            int rowCount = 0;
+            var newColorGray = MigraDocCore.DocumentObjectModel.Color.Parse("0xffE5E8E8");
+            for (int i = tableIndex; i < value.Count; i++)
+            {
+                var item = value.ElementAt(i);
+                row = _table.AddRow();
+                contadorFilasEvolucion++;
+                //if (contadorFilasEvolucion % 31 == 0)//Cuando se agrega una nueva página debido a que la tabla es muy larga también se genera nuevamente el encabezado por defecto
+                //    contadorFilasEvolucion++;
+                row.Format.Font.Size = (Unit)fontSize;
+                if (item != null)
+                    foreach (var (prop, index) in item.GetType().GetProperties().Select((v, i) => (v, i)))
+                    {
+                        var type = Nullable.GetUnderlyingType(prop.PropertyType) ?? prop.PropertyType;
+                        if (index == 0)
+                        {
+                            currentApartmentName = prop.GetValue(item, null)?.ToString();
+                            //Si emepiezan los datos de otro departamento, elimina la fila extra, agrega el borde inferior a la última celda y regresa
+                            if (currentApartmentName != title)
+                            {
+                                table.Rows.RemoveObjectAt(table.Rows.Count - 1);
+                                //contadorFilasEvolucion--;
+                                //if (lastRow != null)
+                                //    lastRow.Cells[0].Borders.Bottom.Width = 1.5;
+                                return i;
+                            }
+                        }
+                        else
+                        {
+                            if (index < 8)
+                            {
+                                if (type == typeof(DateTime))
+                                {
+                                    row.Cells[index - 1].AddParagraph(((DateTime?)prop.GetValue(item, null))?.ToString("dd/MM/yyyy hh:mm:ss tt") ?? "");
+                                }
+                                if (type == typeof(string))
+                                {
+                                    row.Cells[index - 1].AddParagraph(prop.GetValue(item, null)?.ToString());
+                                }
+                                if (type == typeof(bool))
+                                {
+                                    row.Cells[index - 1].AddParagraph((bool?)prop.GetValue(item, null) ?? false ? "SI" : "NO");
+                                }
+                                if (type == typeof(int))
+                                {
+                                    row.Cells[index - 1].AddParagraph(prop.GetValue(item, null)?.ToString());
+                                }
+                                if (type == typeof(long))
+                                {
+                                    row.Cells[index - 1].AddParagraph(prop.GetValue(item, null)?.ToString());
+                                }
+                                if (type == typeof(double))
+                                {
+                                    row.Cells[index - 1].AddParagraph(((double)prop.GetValue(item, null)).ToString("C0", CultureInfo.CreateSpecificCulture("en-US")));
+                                }
+                            }
+
+                            beforeName = currentName;
+                        }
+                    }
+                lastRow = row;
+
+                if (rowCount % 2 == 0)
+                {
+                    row.Cells[0].Shading.Color = newColorGray;
+                    row.Cells[1].Shading.Color = newColorGray;
+                    row.Cells[2].Shading.Color = newColorGray;
+                    row.Cells[3].Shading.Color = newColorGray;
+                    row.Cells[4].Shading.Color = newColorGray;
+                    row.Cells[5].Shading.Color = newColorGray;
+                    row.Cells[6].Shading.Color = newColorGray;
                 }
                 rowCount++;
             }

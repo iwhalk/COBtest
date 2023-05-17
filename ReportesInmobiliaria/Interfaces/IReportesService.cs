@@ -11,6 +11,12 @@ namespace ReportesObra.Interfaces
 
         Task<byte[]> GetReportEvolution(int idBuilding, DateTime inicio, DateTime fin, List<int>? idApartments, List<int>? idAreas, List<int>? idActivities, List<int>? idElements, List<int>? idSubElements, int? status, bool? withActivities);
 
+        Task<byte[]> GetReportAdvanceCost(int idBuilding, List<int>? idApartments, List<int>? idAreas,
+            List<int>? idActivities, List<int>? idElements, List<int>? idSubElements, int? status);
+
+        Task<byte[]> GetReportAdvanceTime(int idBuilding, List<int>? idApartments, List<int>? idAreas,
+            List<int>? idActivities, List<int>? idElements, List<int>? idSubElements, int? status);
+
         Task<byte[]> GetReporteAvance(List<AparmentProgress> aparmentProgress, string subTitle);
         Task<List<AparmentProgress>> GetAparments(int? idBuilding, int? idAparment);
         Task<List<AparmentProgress>> GetActivitiesByAparment(int? idBuilding, int? idAparment);

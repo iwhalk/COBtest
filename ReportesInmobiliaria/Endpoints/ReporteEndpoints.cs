@@ -115,6 +115,50 @@ namespace ReportesObra.Endpoints
             .Produces<HttpValidationProblemDetails>(StatusCodes.Status400BadRequest, "application/problem+json")
             .Produces<HttpValidationProblemDetails>(StatusCodes.Status500InternalServerError, "application/problem+json");
 
+            routes.MapPost("/ReportAdvanceCost", async (ActivitiesDetail details, IReportesService _reportesService, ILogger<Program> _logger) =>
+            {
+                try
+                {
+                    var report = await _reportesService.GetReportAdvanceCost(details.IdBuilding, details.Apartments,
+                        details.Areas, details.Activities, details.Elements, details.SubElements, details.StatusOption);
+                    if (report == null) return Results.NotFound();
+                    return Results.File(report, "application/pdf");
+                }
+                catch (Exception e)
+                {
+                    _logger.LogError(e, e.Message);
+                    if (e.GetType() == typeof(ValidationException))
+                        return Results.Problem(e.Message, statusCode: 400);
+                    return Results.Problem(e.Message);
+                }
+            })
+            .WithName("GetReportAdvanceCost")
+            .Produces<IResult>(StatusCodes.Status200OK, "application/pdf")
+            .Produces<HttpValidationProblemDetails>(StatusCodes.Status400BadRequest, "application/problem+json")
+            .Produces<HttpValidationProblemDetails>(StatusCodes.Status500InternalServerError, "application/problem+json");
+
+            routes.MapPost("/ReportAdvanceTime", async (ActivitiesDetail details, IReportesService _reportesService, ILogger<Program> _logger) =>
+            {
+                try
+                {
+                    var report = await _reportesService.GetReportAdvanceTime(details.IdBuilding, details.Apartments,
+                        details.Areas, details.Activities, details.Elements, details.SubElements, details.StatusOption);
+                    if (report == null) return Results.NotFound();
+                    return Results.File(report, "application/pdf");
+                }
+                catch (Exception e)
+                {
+                    _logger.LogError(e, e.Message);
+                    if (e.GetType() == typeof(ValidationException))
+                        return Results.Problem(e.Message, statusCode: 400);
+                    return Results.Problem(e.Message);
+                }
+            })
+            .WithName("GetReportAdvanceTime")
+            .Produces<IResult>(StatusCodes.Status200OK, "application/pdf")
+            .Produces<HttpValidationProblemDetails>(StatusCodes.Status400BadRequest, "application/problem+json")
+            .Produces<HttpValidationProblemDetails>(StatusCodes.Status500InternalServerError, "application/problem+json");
+
             routes.MapPost("/ReportProgressByAparmentPDF", async (List<AparmentProgress> aparmentProgresses, string subTitle, IReportesService _reportesService, ILogger<Program> _logger) =>
             {
                 try
