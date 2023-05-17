@@ -179,6 +179,84 @@ namespace ReportesObra.Services
             return _reportesFactory.CrearPdf(reportE);
         }
 
+        public async Task<byte[]> GetReportAdvanceCost(int idBuilding, List<int>? idApartments, List<int>? idAreas,
+            List<int>? idActivities, List<int>? idElements, List<int>? idSubElements, int? status)
+        {
+            List<ProgressReport> listReport = new List<ProgressReport>();
+            listReport = await _progressReportsService.GetProgressReportsDetailedAsync(idBuilding, idApartments, idAreas, idElements, idSubElements, idActivities);
+            listReport = listReport.OrderBy(x => x.IdApartment).ThenBy(x => x.IdArea).ToList();
+
+            var listCosts = new List<ObjectAdvanceCost>();
+            listCosts = GetListAdvanceCost(listReport);
+
+            if (status != null)
+            {
+                string statusSelected;
+                switch (status)
+                {
+                    case 1:
+                        statusSelected = _status1;
+                        break;
+                    case 2:
+                        statusSelected = _status2;
+                        break;
+                    case 3:
+                        statusSelected = _status3;
+                        break;
+                    default:
+                        statusSelected = _status1;
+                        break;
+                }
+                listCosts = listCosts.Where(x => x.Status == statusSelected).ToList();
+            }
+
+            if (listCosts.Count == 0)
+                return null;
+
+            ReportAdvanceCost reportAdvanceCost = new() { ListAdvanceCost = listCosts };
+
+            return _reportesFactory.CrearPdf(reportAdvanceCost);
+        }
+
+        public async Task<byte[]> GetReportAdvanceTime(int idBuilding, List<int>? idApartments, List<int>? idAreas,
+            List<int>? idActivities, List<int>? idElements, List<int>? idSubElements, int? status)
+        {
+            List<ProgressReport> listReport = new List<ProgressReport>();
+            listReport = await _progressReportsService.GetProgressReportsDetailedAsync(idBuilding, idApartments, idAreas, idElements, idSubElements, idActivities);
+            listReport = listReport.OrderBy(x => x.IdApartment).ThenBy(x => x.IdArea).ToList();
+
+            var listTime = new List<ObjectAdvanceTime>();
+            listTime = GetListAdvanceTime(listReport);
+
+            if (status != null)
+            {
+                string statusSelected;
+                switch (status)
+                {
+                    case 1:
+                        statusSelected = _status1;
+                        break;
+                    case 2:
+                        statusSelected = _status2;
+                        break;
+                    case 3:
+                        statusSelected = _status3;
+                        break;
+                    default:
+                        statusSelected = _status1;
+                        break;
+                }
+                listTime = listTime.Where(x => x.Status == statusSelected).ToList();
+            }
+
+            if (listTime.Count == 0)
+                return null;
+
+            ReportAdvanceTime reportAdvanceTime = new() { ListAdvanceTime = listTime };
+            return null;
+            //return _reportesFactory.CrearPdf(reportAdvanceCost);
+        }
+
         public List<DetalladoDepartamentos> GetDetalladoDepartamentos(List<ProgressReport> progressList)
         {
             var list = new List<DetalladoDepartamentos>();
@@ -250,6 +328,62 @@ namespace ReportesObra.Services
                 });
             }
             return list;
+        }
+
+        public List<ObjectAdvanceCost> GetListAdvanceCost(List<ProgressReport> progressList)
+        {
+            var listAdvanceCost = new List<ObjectAdvanceCost>();
+            string advance;
+            foreach (var progress in progressList)
+            {
+                advance = progress.ProgressLogs != null && progress.ProgressLogs.Count != 0 ? progress.ProgressLogs.Last().Pieces : "0";
+                listAdvanceCost.Add(new ObjectAdvanceCost()
+                {
+                    Apartment = progress.IdApartmentNavigation.ApartmentNumber,
+                    Activity = progress.IdElementNavigation.IdActivityNavigation.ActivityName,
+                    Area = progress.IdAreaNavigation.AreaName,
+                    Element = progress.IdElementNavigation.ElementName,
+                    Subelement = progress.IdSubElementNavigation != null ? progress.IdSubElementNavigation.SubElementName : "N/A",
+                    TotalCost = double.Parse(progress.TotalPieces) * (progress.CostPiece ?? 1),
+                    AdvanceCost = Int32.Parse(advance) * (progress.CostPiece ?? 1),
+                    Status = advance != "0" ? progress.ProgressLogs.Last().IdStatusNavigation.StatusName : _status1,
+                });
+            }
+            return listAdvanceCost;
+        }
+
+
+        public List<ObjectAdvanceTime> GetListAdvanceTime(List<ProgressReport> progressList)
+        {
+            var listAdvanceTime = new List<ObjectAdvanceTime>();
+            string advance;
+            foreach (var progress in progressList)
+            {
+                advance = progress.ProgressLogs != null && progress.ProgressLogs.Count != 0 ? progress.ProgressLogs.Last().Pieces : "0";
+                listAdvanceTime.Add(new ObjectAdvanceTime()
+                {
+                    Apartment = progress.IdApartmentNavigation.ApartmentNumber,
+                    Activity = progress.IdElementNavigation.IdActivityNavigation.ActivityName,
+                    Area = progress.IdAreaNavigation.AreaName,
+                    Element = progress.IdElementNavigation.ElementName,
+                    Subelement = progress.IdSubElementNavigation != null ? progress.IdSubElementNavigation.SubElementName : "N/A",
+                    TotalTime = getTimeMultiplication(Int32.Parse(progress.TotalPieces), progress.TimePiece ?? 1),
+                    AdvanceTime = getTimeMultiplication(Int32.Parse(advance), progress.TimePiece ?? 1),
+                    Status = advance != "0" ? progress.ProgressLogs.Last().IdStatusNavigation.StatusName : _status1,
+                });
+            }
+            return listAdvanceTime;
+        }
+
+        private string getTimeMultiplication(int factor1, double factor2)
+        {
+            TimeSpan hours = TimeSpan.FromHours(Math.Truncate(factor2));
+            var min = Math.Round( (factor2 % 1) * 100 );
+            TimeSpan minutes = TimeSpan.FromMinutes(min);
+            var product = (factor1 * hours) + (factor1 * minutes);
+            string days = product.Days == 1 ? "día" : "días";
+            string result = string.Format("{0:%d} {1} {0:hh\\:mm}", product, days);
+            return result;
         }
 
         private int GetPiecesByDate(ICollection<ProgressLog> logs, DateTime date)

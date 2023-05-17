@@ -36,19 +36,19 @@ namespace SharedLibrary.Data
             modelBuilder.Entity<Activity>(entity =>
             {
                 entity.HasKey(e => e.IdActivity)
-                    .HasName("PK__Activiti__CAB441F1BECDF6E3");
+                    .HasName("PK__Activiti__CAB441F1395D50C0");
             });
 
             modelBuilder.Entity<Apartment>(entity =>
             {
                 entity.HasKey(e => e.IdApartment)
-                    .HasName("PK__Apartmen__C395DC3F32985CAF");
+                    .HasName("PK__Apartmen__C395DC3FB9C6F8F8");
             });
 
             modelBuilder.Entity<Area>(entity =>
             {
                 entity.HasKey(e => e.IdArea)
-                    .HasName("PK__Areas__42A5C44CD07CA77C");
+                    .HasName("PK__Areas__42A5C44CE598C02F");
 
                 entity.HasMany(d => d.IdActivities)
                     .WithMany(p => p.IdAreas)
@@ -77,13 +77,13 @@ namespace SharedLibrary.Data
             modelBuilder.Entity<Building>(entity =>
             {
                 entity.HasKey(e => e.IdBuilding)
-                    .HasName("PK__Building__369BC65331FE8412");
+                    .HasName("PK__Building__369BC653159F46EB");
             });
 
             modelBuilder.Entity<Element>(entity =>
             {
                 entity.HasKey(e => e.IdElement)
-                    .HasName("PK__Elements__DEA2498C1B8254AD");
+                    .HasName("PK__Elements__DEA2498CA1490052");
 
                 entity.HasOne(d => d.IdActivityNavigation)
                     .WithMany(p => p.Elements)
@@ -95,7 +95,7 @@ namespace SharedLibrary.Data
             modelBuilder.Entity<ProgressLog>(entity =>
             {
                 entity.HasKey(e => e.IdProgressLog)
-                    .HasName("PK__Progress__F031B417F3C2DA0F");
+                    .HasName("PK__Progress__F031B4172072D010");
 
                 entity.HasOne(d => d.IdProgressReportNavigation)
                     .WithMany(p => p.ProgressLogs)
@@ -117,11 +117,11 @@ namespace SharedLibrary.Data
                     .WithMany(p => p.IdProgressLogs)
                     .UsingEntity<Dictionary<string, object>>(
                         "ProgressLogsBlob",
-                        l => l.HasOne<Blob>().WithMany().HasForeignKey("IdBlobs").OnDelete(DeleteBehavior.ClientSetNull).HasConstraintName("FK_ProgressLogsBlobs_ID_Blobs"),
+                        l => l.HasOne<Blob>().WithMany().HasForeignKey("IdBlobs").HasConstraintName("FK_ProgressLogsBlobs_ID_Blobs"),
                         r => r.HasOne<ProgressLog>().WithMany().HasForeignKey("IdProgressLog").OnDelete(DeleteBehavior.ClientSetNull).HasConstraintName("FK_ProgressLogsBlobs_ID_ProgressLog"),
                         j =>
                         {
-                            j.HasKey("IdProgressLog", "IdBlobs").HasName("PK__Progress__2DDCFBE924DDA683");
+                            j.HasKey("IdProgressLog", "IdBlobs").HasName("PK__Progress__2DDCFBE9DA4874B2");
 
                             j.ToTable("ProgressLogsBlobs");
 
@@ -134,7 +134,7 @@ namespace SharedLibrary.Data
             modelBuilder.Entity<ProgressReport>(entity =>
             {
                 entity.HasKey(e => e.IdProgressReport)
-                    .HasName("PK__Progress__2DC7E849EE4E1FED");
+                    .HasName("PK__Progress__2DC7E849B489CFA8");
 
                 entity.HasOne(d => d.IdApartmentNavigation)
                     .WithMany(p => p.ProgressReports)
@@ -174,13 +174,13 @@ namespace SharedLibrary.Data
             modelBuilder.Entity<Status>(entity =>
             {
                 entity.HasKey(e => e.IdStatus)
-                    .HasName("PK__Statuses__5AC2A7347B1A3A31");
+                    .HasName("PK__Statuses__5AC2A734D8EADAFB");
             });
 
             modelBuilder.Entity<SubElement>(entity =>
             {
                 entity.HasKey(e => e.IdSubElement)
-                    .HasName("PK__SubEleme__CFE5FC21FAE59E3D");
+                    .HasName("PK__SubEleme__CFE5FC21EEE5ECFE");
 
                 entity.HasOne(d => d.IdElementNavigation)
                     .WithMany(p => p.SubElements)

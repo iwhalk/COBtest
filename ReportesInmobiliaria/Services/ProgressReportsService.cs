@@ -135,6 +135,8 @@ namespace ReportesObra.Services
                 IdAreaNavigation = x.IdAreaNavigation,
                 IdElementNavigation = _dbContext.Elements.Select(selectorE).FirstOrDefault(a => a.IdElement == x.IdElement),
                 IdSubElementNavigation = x.IdSubElementNavigation,
+                TimePiece = x.TimePiece,
+                CostPiece = x.CostPiece,
                 ProgressLogs = x.ProgressLogs.Select(y => new ProgressLog
                 {
                     IdProgressLog = y.IdProgressLog,
