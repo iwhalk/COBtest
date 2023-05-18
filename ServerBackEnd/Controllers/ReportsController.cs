@@ -84,6 +84,32 @@ namespace ApiGateway.Controllers
             return BadRequest(result);
         }
 
+        [HttpPost("ReporteAvanceCosto")]
+        public async Task<ActionResult> PostReporteAvanceCosto(ActivitiesDetail reporteDetalle)
+        {
+            var result = await _reportesService.PostReporteAvanceCostoAsync(reporteDetalle);
+
+            if (result.Succeeded)
+            {
+                return Ok(result);
+            }
+
+            return BadRequest(result);
+        }
+
+        [HttpPost("ReporteAvanceTiempo")]
+        public async Task<ActionResult> PostReporteAvanceTiempo(ActivitiesDetail reporteDetalle)
+        {
+            var result = await _reportesService.PostReporteAvanceTiempoAsync(reporteDetalle);
+
+            if (result.Succeeded)
+            {
+                return Ok(result);
+            }
+
+            return BadRequest(result);
+        }
+
         //Reportes
         [HttpGet("ProgressByAparmentDataView")]
         public async Task<ActionResult> GetProgressByAparmentView(int? idBuilding, int? idAparment)

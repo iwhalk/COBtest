@@ -11,6 +11,8 @@ namespace ApiGateway.Interfaces
         Task<ApiResponse<List<DetalladoActividades>>> PostDataDetallesPorActividadesAsync(ActivitiesDetail reporteDetalle);        
         Task<ApiResponse<byte[]>> PostReporteDetallesPorActividadesAsync(List<DetalladoActividades> detalladoActividades, int? opcion);
         Task<ApiResponse<byte[]>> PostReporteEvolucionAsync(ActivitiesDetail reporteDetalle);
+        Task<ApiResponse<byte[]>> PostReporteAvanceCostoAsync(ActivitiesDetail reporteDetalle);
+        Task<ApiResponse<byte[]>> PostReporteAvanceTiempoAsync(ActivitiesDetail reporteDetalle);
 
         Task<ApiResponse<List<AparmentProgress>>?> GetProgressByAparmentViewAsync(int? idBuilding, int? id);
         Task<ApiResponse<byte[]>> PostProgressByAparmentPDFAsync(List<AparmentProgress> progressReport, string subTitle);

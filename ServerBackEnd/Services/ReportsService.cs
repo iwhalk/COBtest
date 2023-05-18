@@ -44,6 +44,16 @@ namespace ApiGateway.Services
             return await PostAsync<byte[]>(reporteDetalle, path: "ReportEvolution");
         }
 
+        public async Task<ApiResponse<byte[]>> PostReporteAvanceCostoAsync(ActivitiesDetail reporteDetalle)
+        {
+            return await PostAsync<byte[]>(reporteDetalle, path: "ReportAdvanceCost");
+        }
+
+        public async Task<ApiResponse<byte[]>> PostReporteAvanceTiempoAsync(ActivitiesDetail reporteDetalle)
+        {
+            return await PostAsync<byte[]>(reporteDetalle, path: "ReportAdvanceTime");
+        }
+
         //Reports
         public async Task<ApiResponse<List<AparmentProgress>>?> GetProgressByAparmentViewAsync(int? idBuilding, int? idApartment)
         {

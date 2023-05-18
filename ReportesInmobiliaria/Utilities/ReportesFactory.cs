@@ -121,6 +121,9 @@ namespace ReportesObra.Utilities
                 case nameof(ReportAdvanceCost):
                     CrearReporteAvancePorCosto(reporte as ReportAdvanceCost);
                     break;
+                case nameof(ReportAdvanceTime):
+                    CrearReporteAvancePorTiempo(reporte as ReportAdvanceTime);
+                    break;
                 case nameof(ReporteAvance):
                     CrearReporteAvance(reporte as ReporteAvance);
                     break;
@@ -329,6 +332,18 @@ namespace ReportesObra.Utilities
             //COBRender.Top = "8.0cm";
             //COBRender.Left = "2.0cm";
             //COBRender.WrapFormat.Style = WrapStyle.Through;
+            string title;
+            switch(option)
+            {
+                case 3: title = "Avances por Periodo de Tiempo";
+                    break;
+                case 4: title = "Avances por Costo";
+                    break;
+                case 5: title = "Avances por Tiempo";
+                    break;
+                default: title = "";
+                    break;
+            }
 
             Paragraph paragraph;
             if (option == 1)
@@ -360,17 +375,9 @@ namespace ReportesObra.Utilities
                 //paragraph.AddLineBreak();
                 //paragraph.Format.SpaceBefore = "0.6cm";
             }
-            else if (option == 3)
+            else
             {
-                paragraph = headerFrame.AddParagraph("Avances por Periodo de Tiempo");
-                paragraph.Format.Font.Name = "DejaVu Serif";
-                paragraph.Format.Font.Size = 12;
-                paragraph.Format.Font.Bold = true;
-                paragraph.Format.Alignment = ParagraphAlignment.Center;
-            }
-            else if (option == 4)
-            {
-                paragraph = headerFrame.AddParagraph("Avances por Costo");
+                paragraph = headerFrame.AddParagraph(title);
                 paragraph.Format.Font.Name = "DejaVu Serif";
                 paragraph.Format.Font.Size = 12;
                 paragraph.Format.Font.Bold = true;
@@ -707,8 +714,75 @@ namespace ReportesObra.Utilities
                 rowInfo.Cells[6].AddParagraph("Estatus");
 
                 //contadorFilasEvolucion++;
-                i = FillInfoAdvanceCost(report.ListAdvanceCost, info, i, apartmentTitle) - 1;
+                i = FillInfoAdvanceCostOrtTime(report.ListAdvanceCost, info, i, apartmentTitle) - 1;
                 if (i < report.ListAdvanceCost.Count() - 1)
+                {
+                    paragraph = section.AddParagraph();
+                    paragraph.Format.SpaceAfter = "3.0cm";
+                    //if (contadorFilasEvolucion % 30 > 20)//Si no hay espacio suficiente para mostrar algunas filas de la siguiente tabla, que haga un salto de página
+                    //{
+                    //    document.LastSection.AddPageBreak();
+                    //    contadorFilasEvolucion = 0;
+                    //}
+                }
+            }
+        }
+
+        void CrearReporteAvancePorTiempo(ReportAdvanceTime report)
+        {
+            CrearEncabezadoGenerico(5);
+            string apartmentTitle;
+            Table dates;
+            Table info;
+            Row rowD;
+            Row rowInfo;
+            Paragraph paragraph;
+            bool firstApartment = true;
+
+            for (int i = 0; i < report.ListAdvanceTime.Count; i++)
+            {
+                apartmentTitle = report.ListAdvanceTime.ElementAt(i).Apartment;
+                paragraph = section.AddParagraph();
+                paragraph.AddLineBreak();
+                paragraph.Format.SpaceBefore = "-2.4cm";
+                paragraph.Format.SpaceAfter = "0.8cm";
+                paragraph.Format.Font.Size = 11;
+                paragraph.Format.Font.Bold = true;
+                paragraph.AddText("Departamento " + apartmentTitle);
+                paragraph.Format.Alignment = ParagraphAlignment.Center;
+
+                paragraph = section.AddParagraph();
+                paragraph.Format.SpaceAfter = "0.5cm";
+
+                info = section.AddTable();
+                info.Style = "Table";
+                info.Format.Alignment = ParagraphAlignment.Center;
+                info.Rows.Height = 20;
+                info.Rows.VerticalAlignment = VerticalAlignment.Center;
+                info.Format.Alignment = ParagraphAlignment.Center;
+                info.Format.Font.Size = 8;
+                info.AddColumn("1.8cm");
+                info.AddColumn("2.2cm");
+                info.AddColumn("2.2cm");
+                info.AddColumn("2.4cm");
+                info.AddColumn("3.2cm");
+                info.AddColumn("3.2cm");
+                info.AddColumn("1.6cm");
+
+                rowInfo = info.AddRow();
+                rowInfo.HeadingFormat = true;
+                rowInfo.Format.Font.Size = 9;
+                rowInfo.Cells[0].AddParagraph("Actividad");
+                rowInfo.Cells[1].AddParagraph("Área");
+                rowInfo.Cells[2].AddParagraph("Elemento");
+                rowInfo.Cells[3].AddParagraph("Subelemento");
+                rowInfo.Cells[4].AddParagraph("Tiempo Total");
+                rowInfo.Cells[5].AddParagraph("Avance");
+                rowInfo.Cells[6].AddParagraph("Estatus");
+
+                //contadorFilasEvolucion++;
+                i = FillInfoAdvanceCostOrtTime(report.ListAdvanceTime, info, i, apartmentTitle) - 1;
+                if (i < report.ListAdvanceTime.Count() - 1)
                 {
                     paragraph = section.AddParagraph();
                     paragraph.Format.SpaceAfter = "3.0cm";
@@ -1960,7 +2034,7 @@ namespace ReportesObra.Utilities
             return value.Count;
         }
 
-        private int FillInfoAdvanceCost<T>(List<T> value, Table table, int tableIndex, string title, int fontSize = 8)
+        private int FillInfoAdvanceCostOrtTime<T>(List<T> value, Table table, int tableIndex, string title, int fontSize = 8)
         {
             Table _table = table;
             string currentName = "";

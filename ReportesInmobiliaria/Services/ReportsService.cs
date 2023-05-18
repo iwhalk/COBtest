@@ -253,8 +253,7 @@ namespace ReportesObra.Services
                 return null;
 
             ReportAdvanceTime reportAdvanceTime = new() { ListAdvanceTime = listTime };
-            return null;
-            //return _reportesFactory.CrearPdf(reportAdvanceCost);
+            return _reportesFactory.CrearPdf(reportAdvanceTime);
         }
 
         public List<DetalladoDepartamentos> GetDetalladoDepartamentos(List<ProgressReport> progressList)
