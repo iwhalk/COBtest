@@ -381,7 +381,7 @@ namespace ReportesObra.Services
             TimeSpan minutes = TimeSpan.FromMinutes(min);
             var product = (factor1 * hours) + (factor1 * minutes);
             string days = product.Days == 1 ? "día" : "días";
-            string result = string.Format("{0:%d} {1} {0:hh\\:mm} hrs", product, days);
+            string result = string.Format("{0:%d} {1} {0:hh} hrs {0:mm} min", product, days);
             return result;
         }
 
