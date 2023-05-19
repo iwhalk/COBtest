@@ -682,68 +682,6 @@ namespace Obra.Client.Pages
             images.Clear();
         }
 
-        public async Task GoBack()
-        {
-
-
-            if (apartments != null)
-            {
-                _idsAparmentSelect.Clear();
-                department = false;
-                allApartments = false;
-            }
-
-            _idsActivitiesSelect.Clear();
-
-            elements.Clear();
-            _idsElementsSelect.Clear();
-
-            subElements.Clear();
-            _idsSubElementsSelect.Clear();
-
-            buttonReport = false;
-            apartmentDetails = true;
-
-            subElementsSelect.Clear();
-            apartmentsSelect.Clear();
-            activitiesSelect.Clear();
-            elementsSelect.Clear();
-
-            allApartments = false;
-            allSubElements = false;
-            allElements = false;
-            allActivities = false;
-            showActivities = false;
-            statusOption = null;
-
-            detalladoDepartamentos.Clear();
-        }
-
-        public async Task ChangeView()
-        {
-
-            loading = true;
-            buttonReport = false;
-
-            var pdf = await _reportesService.PostReporteDetallesPorDepartamento(detalladoDepartamentos, null);
-
-            if (pdf != null)
-            {
-                //_bytesPreviewFile = pdf;
-                loading = false;
-                //_showPreviewFile = true;
-                await _JS.InvokeVoidAsync("OpenInNewPagePDF", pdf);
-                StateHasChanged();
-            }
-            else
-            {
-                _toastService.ShowToast<ToastReport>(new ToastInstanceSettings(5, false));
-            }
-            statusOption = null;
-            loading = false;
-            buttonReport = true;
-        }
-
         public async Task ShowReportAndHideApartment()
         {
 
@@ -768,8 +706,6 @@ namespace Obra.Client.Pages
                 return;
             }
 
-            buttonReport = true;
-            apartmentDetails = false;
             loading = true;
             //if (allApartments == true)
             //{
@@ -807,97 +743,24 @@ namespace Obra.Client.Pages
             data.SubElements = allSubElements ? null : _idsSubElementsSelect;
             data.StatusOption = optionStatus == 0 ? null : optionStatus;
 
-            detalladoDepartamentos = await _reportesService.PostDataDetallesDepartamentos(data);
-            if (detalladoDepartamentos == null || detalladoDepartamentos.Count == 0)
+
+            var pdf = await _reportesService.PostReporteCostosAsync(data);
+
+            if (pdf != null)
             {
-                apartmentsSelect.Clear();
-                activitiesSelect.Clear();
-                elementsSelect.Clear();
-                subElementsSelect.Clear();
+                //_bytesPreviewFile = pdf;
                 loading = false;
-                apartmentDetails = true;
-                _toastService.ShowWarning("La consulta requerida no tiene información relacionada", "AVISO");
-                return;
+                //_showPreviewFile = true;
+                await _JS.InvokeVoidAsync("OpenInNewPagePDF", pdf);
+                StateHasChanged();
+            }
+            else
+            {
+                _toastService.ShowToast<ToastReport>(new ToastInstanceSettings(5, false));
             }
 
             loading = false;
 
-        }
-
-        public async Task CameraButton(int? idProgressLog)
-        {
-
-
-            if (idProgressLog != null)
-            {
-                int contador = 0;
-                string? currentUri;
-                int auxId = (int)idProgressLog;
-                var currentProgressReport = await _progressLogsService.GetProgressLogAsync(auxId);
-                var logsByProgressReport = await _progressLogsService.GetProgressLogsAsync(idProgressReport: currentProgressReport.IdProgressReport);
-                List<string> listUris = new List<string>();
-                if (logsByProgressReport != null)
-                {
-                    logsByProgressReport = logsByProgressReport.OrderByDescending(x => x.IdProgressLog).ToList();
-                    foreach (var log in logsByProgressReport)
-                    {
-                        var currentBlobs = log.IdBlobs;
-                        foreach (var blob in currentBlobs)
-                        {
-                            currentUri = blob.Uri;
-                            if (currentUri != null)
-                            {
-                                listUris.Add(currentUri);
-                                contador++;
-                            }
-                            if (contador >= 3)
-                                break;
-                        }
-                        if (contador >= 3)
-                            break;
-                    }
-                }
-
-                ProgressLog aux = await _progressLogsService.GetProgressLogAsync(auxId);
-
-                if (aux.Observation != null)
-                {
-                    observations = aux.Observation;
-                }
-
-                //if (aux.IdBlobs != null)
-                //{
-                //    foreach (var item in aux.IdBlobs)
-                //    {
-                //        images.Add(item.Uri);
-                //    }
-                //}
-                if (listUris != null)
-                {
-                    foreach (var item in listUris)
-                    {
-                        images.Add(item);
-                    }
-                }
-
-                if (observations != null && observations != "" || images.Count() > 0)
-                {
-                    showModal = true;
-                }
-                else
-                {
-                    _toastService.ShowToast<ToastImages>(new ToastInstanceSettings(5, false));
-                }
-            }
-            else
-            {
-                _toastService.ShowToast<ToastImages>(new ToastInstanceSettings(5, false));
-            }
-        }
-
-        public async Task NotificationImages()
-        {
-            _toastService.ShowToast<ToastImages>(new ToastInstanceSettings(5, false));
         }
 
         public void CheckboxClicked(int? idStatus, ChangeEventArgs e)
