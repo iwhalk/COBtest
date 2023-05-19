@@ -1,0 +1,15 @@
+﻿.imgfondo {
+    position: relative;
+    min-height: 100vh;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.scroll {
+    overflow-y: scroll;
+}
+
+    .scroll::-webkit-scrollbar {
+        display: none;
+    }

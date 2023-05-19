@@ -1,4 +1,4 @@
-﻿@page "/ProjectProgressReport"
+﻿@page "/CostAdvance"
 <PageTitle>Sistema COB</PageTitle>
 
 <div class="pt-28 pb-12 min-h-screen bg-[url('/assets/img/imgFondo.png')] z-0 opacity-25 imgfondo fixed inset-0 bg-gray-500 bg-opacity-25 transition-opacity"></div>
@@ -7,16 +7,8 @@
 {
     if (loading == false)
     {
-        <div class="h-screen 2xl:pt-20 2xl:pb-12 fixed inset-0 flex flex-col justify-center items-center">
-            <div class="w-full flex justify-center items-center xl:mt-9 2xl:mt-5">
-                <div class="flex justify-between items-center w-[50rem]">
-                    <label class="bg-[#162D4E] rounded-2xl xl:text-base 2xl:text-lg text-white font-medium leading-6 xl:w-[7rem] xl:h-[2rem] 2xl:w-[10rem] 2xl:h-[2.5rem] flex justify-center items-center">Fecha Inicio</label>
-                    <input @bind-value="DateStart" type="date" class="rounded-2xl xl:text-base 2xl:text-lg  text-black font-medium leading-6 border border-stone-400 xl:w-[9rem] xl:h-[2rem] 2xl:w-[12rem] 2xl:h-[2.5rem]" />
-                    <label class="bg-[#162D4E] rounded-2xl xl:text-base 2xl:text-lg  text-white font-medium leading-6 xl:w-[7rem] xl:h-[2rem] 2xl:w-[10rem] 2xl:h-[2.5rem] flex justify-center items-center">Fecha Fin</label>
-                    <input @bind-value="DateEnd" type="date" class="rounded-2xl xl:text-base 2xl:text-lg  text-black font-medium leading-6 border border-stone-400 xl:w-[9rem] xl:h-[2rem] 2xl:w-[12rem] 2xl:h-[2.5rem]" />
-                </div>
-            </div>
-            <div class="flex justify-items-center w-screen rounded-2xl xl:my-12 2xl:my-0 xl:h-3/6 2xl:h-5/6 flow-root">
+        <div class="h-screen pt-20 pb-12 fixed inset-0 flex flex-col justify-center items-center">
+            <div class="flex justify-items-center w-screen rounded-2xl xl:my-12 2xl:my-0 xl:h-4/6 2xl:h-5/6 flow-root">
                 <div class="flex justify-center justify-content-around" style="direction: ltr;">
                     <div class="flex justify-content-around">
                         <div class="p-1 md:w-[8rem] lg:w-[12rem] xl:w-[15rem] 2xl:w-[19rem]">
@@ -180,21 +172,24 @@
                     </div>
                 </div>
             </div>
-            <div class="d-flex justify-between xl:mb-2 2xl:mb-1">
-                <div class="xl:mr-[4rem] 2xl:mr-[15rem]">
-                    <buton @onclick="() => StatusChanged(0)" class="mx-2 @(optionStatus == (int)Statuses.Todos ? "bg-[#19376D]" : "bg-[#BDCDD6]") p-2 rounded-2xl xl:text-base 2xl:text-lg text-white font-medium leading-6 border border-stone-400 hover:border-white">Todos los Estatus</buton>
-                    <buton @onclick="() => StatusChanged(1)" class="mx-2 @(optionStatus == (int)Statuses.Pendiente ? "bg-[#19376D]" : "bg-[#BDCDD6]") p-2 rounded-2xl xl:text-base 2xl:text-lg text-white font-medium leading-6 border border-stone-400 hover:border-white">Estatus Pendiente</buton>
-                    <buton @onclick="() => StatusChanged(2)" class="mx-2 @(optionStatus == (int)Statuses.EnCurso ? "bg-[#19376D]" : "bg-[#BDCDD6]") p-2 rounded-2xl xl:text-base 2xl:text-lg text-white font-medium leading-6 border border-stone-400 hover:border-white">Estatus En Curso</buton>
-                    <buton @onclick="() => StatusChanged(3)" class="mx-2 @(optionStatus == (int)Statuses.Terminado ? "bg-[#19376D]" : "bg-[#BDCDD6]") p-2 rounded-2xl xl:text-base 2xl:text-lg text-white font-medium leading-6 border border-stone-400 hover:border-white">Estatus Terminado</buton>
-                </div>
-                <div>
-                    <buton @onclick="() => ActivityFunc()" class="mx-2 @(ActivityButtonTrue == true ? "bg-lime-600" : "bg-lime-200") p-2 rounded-2xl xl:text-base 2xl:text-lg text-white font-medium leading-6 border border-green-400">Con actividad</buton>
-                    <buton @onclick="() => ActivityFunc()" class="mx-2 @(ActivityButtonFalse == true ? "bg-red-700" : "bg-red-200") p-2 rounded-2xl xl:text-base 2xl:text-lg text-white font-medium leading-6 border border-red-600">Sin actividad</buton>
-
-                </div>
+            <div class="d-flex justify-center max-xl:py-2">
+                <buton @onclick="() => StatusChanged(0)" class="mx-2 @(optionStatus == (int)Statuses.Todos ? "bg-[#19376D]" : "bg-[#BDCDD6]") p-2 rounded-2xl xl:text-base 2xl:text-lg text-white font-medium leading-6 border border-stone-400 hover:border-white">Todos los Estatus</buton>
+                <buton @onclick="() => StatusChanged(1)" class="mx-2 @(optionStatus == (int)Statuses.Pendiente ? "bg-[#19376D]" : "bg-[#BDCDD6]") p-2 rounded-2xl xl:text-base 2xl:text-lg text-white font-medium leading-6 border border-stone-400 hover:border-white">Estatus Pendiente</buton>
+                <buton @onclick="() => StatusChanged(2)" class="mx-2 @(optionStatus == (int)Statuses.EnCurso ? "bg-[#19376D]" : "bg-[#BDCDD6]") p-2 rounded-2xl xl:text-base 2xl:text-lg text-white font-medium leading-6 border border-stone-400 hover:border-white">Estatus En Curso</buton>
+                <buton @onclick="() => StatusChanged(3)" class="mx-2 @(optionStatus == (int)Statuses.Terminado ? "bg-[#19376D]" : "bg-[#BDCDD6]") p-2 rounded-2xl xl:text-base 2xl:text-lg text-white font-medium leading-6 border border-stone-400 hover:border-white">Estatus Terminado</buton>
             </div>
-            <div class="w-full flex justify-end xl:mt-2 2xl:mb-5">
+            <div class="w-full flex justify-end xl:py-2 2xl:py-3">
                 <button @onclick="() => ShowReportAndHideApartment()" class="mx-auto bg-[#B9352E] hover:bg-red-500 p-2 rounded-2xl xl:text-base 2xl:text-lg text-white font-medium leading-6 border border-stone-400 hover:border-white">Generar Reporte</button>
+                @if (alert == true)
+                {
+                    <div class="bg-red-100 border border-red-400 text-red-700 pl-4 pr-12 py-2 rounded fixed inset-x-90 bottom-20 w-[32]" role="alert">
+                        <strong class="font-bold">¡Advertencia!</strong>
+                        <span class="block sm:inline">@messageError</span>
+                        <span class="absolute top-0 bottom-0 right-0 px-4 py-2">
+                            <svg class="fill-current h-6 w-6 text-red-500" role="button" @onclick="() => ShowMessage()" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><title>Close</title><path d="M14.348 14.849a1.2 1.2 0 0 1-1.697 0L10 11.819l-2.651 3.029a1.2 1.2 0 1 1-1.697-1.697l2.758-3.15-2.759-3.152a1.2 1.2 0 1 1 1.697-1.697L10 8.183l2.651-3.031a1.2 1.2 0 1 1 1.697 1.697l-2.758 3.152 2.758 3.15a1.2 1.2 0 0 1 0 1.698z" /></svg>
+                        </span>
+                    </div>
+                }
             </div>
         </div>
 
@@ -229,4 +224,4 @@ else
 <Navbar></Navbar>
 <Footer></Footer>
 
-<label class="hidden lg:block mx-64 fixed top-0 left-0 right-0 text-base md:text-xl lg:text-2xl xl:text-4xl text-white leading-6 text-center py-2 mt-3">Avance por Periodo</label>
+<label class="hidden lg:block mx-64 fixed top-0 left-0 right-0 text-base md:text-xl lg:text-2xl xl:text-4xl text-white leading-6 text-center py-2 mt-3">Avance por Costos</label>
