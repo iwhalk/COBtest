@@ -345,6 +345,7 @@ namespace ReportesObra.Services
                     Subelement = progress.IdSubElementNavigation != null ? progress.IdSubElementNavigation.SubElementName : "N/A",
                     TotalCost = double.Parse(progress.TotalPieces) * (progress.CostPiece ?? 1),
                     AdvanceCost = Int32.Parse(advance) * (progress.CostPiece ?? 1),
+                    Remaining = 0.01,
                     Status = advance != "0" ? progress.ProgressLogs.Last().IdStatusNavigation.StatusName : _status1,
                 });
             }
@@ -368,6 +369,7 @@ namespace ReportesObra.Services
                     Subelement = progress.IdSubElementNavigation != null ? progress.IdSubElementNavigation.SubElementName : "N/A",
                     TotalTime = getTimeMultiplication(Int32.Parse(progress.TotalPieces), progress.TimePiece ?? 1),
                     AdvanceTime = getTimeMultiplication(Int32.Parse(advance), progress.TimePiece ?? 1),
+                    Remaining = "x:x",
                     Status = advance != "0" ? progress.ProgressLogs.Last().IdStatusNavigation.StatusName : _status1,
                 });
             }
@@ -380,8 +382,9 @@ namespace ReportesObra.Services
             var min = Math.Round( (factor2 % 1) * 100 );
             TimeSpan minutes = TimeSpan.FromMinutes(min);
             var product = (factor1 * hours) + (factor1 * minutes);
-            string days = product.Days == 1 ? "día" : "días";
-            string result = string.Format("{0:%d} {1} {0:hh} hrs {0:mm} min", product, days);
+            //string days = product.Days == 1 ? "día" : "días";
+            //string result = string.Format("{0:%d} {1} {0:hh} hrs {0:mm} min", product, days);
+            string result = string.Format("{0} hrs {1} min", Math.Truncate(product.TotalHours), product.Minutes);
             return result;
         }
 

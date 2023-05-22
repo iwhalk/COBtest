@@ -698,8 +698,9 @@ namespace ReportesObra.Utilities
                 info.AddColumn("2.2cm");
                 info.AddColumn("2.2cm");
                 info.AddColumn("2.4cm");
-                info.AddColumn("2.8cm");
-                info.AddColumn("2.5cm");
+                info.AddColumn("2.4cm");
+                info.AddColumn("2.4cm");
+                info.AddColumn("2.4cm");
                 info.AddColumn("1.6cm");
 
                 rowInfo = info.AddRow();
@@ -709,9 +710,10 @@ namespace ReportesObra.Utilities
                 rowInfo.Cells[1].AddParagraph("Área");
                 rowInfo.Cells[2].AddParagraph("Elemento");
                 rowInfo.Cells[3].AddParagraph("Subelemento");
-                rowInfo.Cells[4].AddParagraph("Costo Total");
+                rowInfo.Cells[4].AddParagraph("Costo Programado");
                 rowInfo.Cells[5].AddParagraph("Avance");
-                rowInfo.Cells[6].AddParagraph("Estatus");
+                rowInfo.Cells[6].AddParagraph("Restante");
+                rowInfo.Cells[7].AddParagraph("Estatus");
 
                 //contadorFilasEvolucion++;
                 i = FillInfoAdvanceCostOrtTime(report.ListAdvanceCost, info, i, apartmentTitle) - 1;
@@ -763,10 +765,11 @@ namespace ReportesObra.Utilities
                 info.Format.Font.Size = 8;
                 info.AddColumn("1.8cm");
                 info.AddColumn("2.2cm");
-                info.AddColumn("2.2cm");
+                info.AddColumn("2.0cm");
                 info.AddColumn("2.4cm");
-                info.AddColumn("3.2cm");
-                info.AddColumn("3.2cm");
+                info.AddColumn("2.4cm");
+                info.AddColumn("2.4cm");
+                info.AddColumn("2.4cm");
                 info.AddColumn("1.6cm");
 
                 rowInfo = info.AddRow();
@@ -776,9 +779,10 @@ namespace ReportesObra.Utilities
                 rowInfo.Cells[1].AddParagraph("Área");
                 rowInfo.Cells[2].AddParagraph("Elemento");
                 rowInfo.Cells[3].AddParagraph("Subelemento");
-                rowInfo.Cells[4].AddParagraph("Tiempo Total");
+                rowInfo.Cells[4].AddParagraph("Tiempo Programado");
                 rowInfo.Cells[5].AddParagraph("Avance");
-                rowInfo.Cells[6].AddParagraph("Estatus");
+                rowInfo.Cells[6].AddParagraph("Restante");
+                rowInfo.Cells[7].AddParagraph("Estatus");
 
                 //contadorFilasEvolucion++;
                 i = FillInfoAdvanceCostOrtTime(report.ListAdvanceTime, info, i, apartmentTitle) - 1;
@@ -2071,7 +2075,7 @@ namespace ReportesObra.Utilities
                         }
                         else
                         {
-                            if (index < 8)
+                            if (index <= 8)
                             {
                                 if (type == typeof(DateTime))
                                 {
@@ -2113,6 +2117,7 @@ namespace ReportesObra.Utilities
                     row.Cells[4].Shading.Color = newColorGray;
                     row.Cells[5].Shading.Color = newColorGray;
                     row.Cells[6].Shading.Color = newColorGray;
+                    row.Cells[7].Shading.Color = newColorGray;
                 }
                 rowCount++;
             }
