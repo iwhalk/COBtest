@@ -79,6 +79,8 @@ namespace ReportesObra.Utilities
         private bool _firstActivity = true;
         private int contadorIndexTitulo = 0;
         private int contadorFilasEvolucion = 0;
+        private static double totalTotal;
+        private static double totalAvance;
         /// <summary>
         /// Initializes a new instance of the class BillFrom and opens the specified XML document.
         /// </summary>
@@ -669,8 +671,10 @@ namespace ReportesObra.Utilities
             Table info;
             Row rowD;
             Row rowInfo;
+            Row totalsRow;
             Paragraph paragraph;
             bool firstApartment = true;
+            totalTotal = totalAvance = 0.0;
 
             for (int i = 0; i < report.ListAdvanceCost.Count; i++)
             {
@@ -706,17 +710,26 @@ namespace ReportesObra.Utilities
                 rowInfo = info.AddRow();
                 rowInfo.HeadingFormat = true;
                 rowInfo.Format.Font.Size = 9;
+                rowInfo.Height = 22;
                 rowInfo.Cells[0].AddParagraph("Actividad");
                 rowInfo.Cells[1].AddParagraph("Área");
                 rowInfo.Cells[2].AddParagraph("Elemento");
                 rowInfo.Cells[3].AddParagraph("Subelemento");
                 rowInfo.Cells[4].AddParagraph("Costo Programado");
-                rowInfo.Cells[5].AddParagraph("Avance");
+                rowInfo.Cells[5].AddParagraph("Costo Ejecutado");
                 rowInfo.Cells[6].AddParagraph("Restante");
                 rowInfo.Cells[7].AddParagraph("Estatus");
 
                 //contadorFilasEvolucion++;
-                i = FillInfoAdvanceCostOrtTime(report.ListAdvanceCost, info, i, apartmentTitle) - 1;
+                i = FillInfoAdvanceCostOrtTime(report.ListAdvanceCost, info, i, apartmentTitle, true) - 1;
+                totalsRow = info.AddRow();
+                totalsRow.Format.Font.Bold = true;
+                totalsRow.Format.Font.Size = 8;
+                totalsRow.Cells[3].AddParagraph("TOTAL");
+                totalsRow.Cells[4].AddParagraph(totalTotal.ToString("C0", CultureInfo.CreateSpecificCulture("en-US")));
+                totalsRow.Cells[5].AddParagraph(totalAvance.ToString("C0", CultureInfo.CreateSpecificCulture("en-US")));
+                totalsRow.Cells[6].AddParagraph((totalTotal - totalAvance).ToString("C0", CultureInfo.CreateSpecificCulture("en-US")));
+                totalTotal = totalAvance = 0.0;
                 if (i < report.ListAdvanceCost.Count() - 1)
                 {
                     paragraph = section.AddParagraph();
@@ -775,12 +788,13 @@ namespace ReportesObra.Utilities
                 rowInfo = info.AddRow();
                 rowInfo.HeadingFormat = true;
                 rowInfo.Format.Font.Size = 9;
+                rowInfo.Height = 22;
                 rowInfo.Cells[0].AddParagraph("Actividad");
                 rowInfo.Cells[1].AddParagraph("Área");
                 rowInfo.Cells[2].AddParagraph("Elemento");
                 rowInfo.Cells[3].AddParagraph("Subelemento");
                 rowInfo.Cells[4].AddParagraph("Tiempo Programado");
-                rowInfo.Cells[5].AddParagraph("Avance");
+                rowInfo.Cells[5].AddParagraph("Tiempo ejecutado");
                 rowInfo.Cells[6].AddParagraph("Restante");
                 rowInfo.Cells[7].AddParagraph("Estatus");
 
@@ -2038,7 +2052,7 @@ namespace ReportesObra.Utilities
             return value.Count;
         }
 
-        private int FillInfoAdvanceCostOrtTime<T>(List<T> value, Table table, int tableIndex, string title, int fontSize = 8)
+        private int FillInfoAdvanceCostOrtTime<T>(List<T> value, Table table, int tableIndex, string title, bool usingCost = false, int fontSize = 8)
         {
             Table _table = table;
             string currentName = "";
@@ -2100,6 +2114,21 @@ namespace ReportesObra.Utilities
                                 if (type == typeof(double))
                                 {
                                     row.Cells[index - 1].AddParagraph(((double)prop.GetValue(item, null)).ToString("C0", CultureInfo.CreateSpecificCulture("en-US")));
+                                }
+                            }
+
+                            if (usingCost)
+                            {
+                                switch (index)
+                                {
+                                    case 5:
+                                        totalTotal += (double)prop.GetValue(item, null);
+                                        break;
+                                    case 6:
+                                        totalAvance += (double)prop.GetValue(item, null);
+                                        break;
+                                    default:
+                                        break;
                                 }
                             }
 
