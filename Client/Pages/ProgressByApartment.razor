@@ -49,7 +49,7 @@
                                     {
                                         <div class="bg-[#115D28] z-10 h-5 md:text-sm xl:text-base text-white text-end w-[@Convert.ToInt32(_idsAparmentSelect[apartment.IdApartment].Item1)%] pb-1 pr-1 pl-1">@_idsAparmentSelect[apartment.IdApartment].Item1.ToString("0.##")%</div>
                                     }
-                                    @if (@_idsAparmentSelect[apartment.IdApartment].Item1 < 100)
+                                    @if (@_idsAparmentSelect[apartment.IdApartment].Item1 > 0)
                                     {
                                         <div class="bg-[#CB3030] h-5 md:text-sm xl:text-base text-white text-end w-[@Convert.ToInt32(_idsAparmentSelect[apartment.IdApartment].Item2)%] pb-1 pr-1 pl-1">@_idsAparmentSelect[apartment.IdApartment].Item2.ToString("0.##")%</div>
                                     }

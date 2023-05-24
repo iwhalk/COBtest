@@ -519,6 +519,13 @@ namespace ReportesObra.Services
                         Pices = x.Sum(s => Convert.ToInt32(s.TotalPieces))
                     }).ToList();
 
+            List<TotalCostByApartment> totalCostByApartments = progressReports.GroupBy(x => x.IdApartment)
+                .Select(x => new TotalCostByApartment
+                {
+                    IdAparment = x.Key,
+                    Cost = (double)x.Sum(s => s.CostPiece * Convert.ToDouble(s.TotalPieces))
+                }).ToList();
+
             var progressReportsByAparment = progressReports.Join(progressLogs, x => x.IdProgressReport, y => y.IdProgressReport, (report, log) => new { report, log }).GroupBy(x => x.report.IdApartment);
 
             var list = new List<AparmentProgress>();
@@ -526,10 +533,16 @@ namespace ReportesObra.Services
             {
                 long total = totalOfPicesByAparment.FirstOrDefault(x => x.IdAparment == aparment.Key).Pices;
                 long current = aparment.GroupBy(x => x.log.IdProgressReport).Select(x => x.OrderByDescending(x => x.log.DateCreated).FirstOrDefault()).Sum(x => long.Parse(x.log.Pieces));
+
+                double totalCost = totalCostByApartments.FirstOrDefault(x => x.IdAparment == aparment.Key).Cost;
+                double cost = (double)aparment.GroupBy(x => x.log.IdProgressReport).Select(x => x.OrderByDescending(x => x.log.DateCreated).FirstOrDefault()).Sum(x => Convert.ToDouble(x.log.Pieces) * x.report.CostPiece);
+
                 list.Add(new AparmentProgress()
                 {
                     ApartmentNumber = apartments.FirstOrDefault(x => x.IdApartment == aparment.Key).ApartmentNumber,
-                    ApartmentProgress = Math.Truncate(100.00 / total * current)
+                    ApartmentProgress = Math.Truncate(100.00 / total * current),
+                    ApartmentCostTotal = totalCost,
+                    ApartmentCost = cost
                 });
             }
             return list;

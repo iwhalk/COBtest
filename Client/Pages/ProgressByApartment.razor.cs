@@ -55,7 +55,15 @@ namespace Obra.Client.Pages
                 {
                     var porcentageProgress = Math.Round(infoProgress.FirstOrDefault().ApartmentProgress, 2);
                     var porcentage = new Tuple<double, double>(porcentageProgress, 100 - porcentageProgress);
-                    _idsAparmentSelect.Add(idDeparment, porcentage);
+
+                    string moneyProgress = infoProgress.FirstOrDefault().ApartmentCost.ToString("0.##");
+                    string moneyTotal = infoProgress.FirstOrDefault().ApartmentCostTotal.ToString("0.##");
+
+                    var restante = Convert.ToDouble(moneyTotal) - Convert.ToDouble(moneyProgress);
+
+                    var moneyR = new Tuple<double, double>(Convert.ToDouble(moneyProgress), restante);
+                    
+                    _idsAparmentSelect.Add(idDeparment, moneyR);
                 }
                 else
                 {
