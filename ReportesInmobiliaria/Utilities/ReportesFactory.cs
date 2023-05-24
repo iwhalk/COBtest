@@ -79,6 +79,8 @@ namespace ReportesObra.Utilities
         private bool _firstActivity = true;
         private int contadorIndexTitulo = 0;
         private int contadorFilasEvolucion = 0;
+        private static double totalTotal;
+        private static double totalAvance;
         /// <summary>
         /// Initializes a new instance of the class BillFrom and opens the specified XML document.
         /// </summary>
@@ -337,9 +339,9 @@ namespace ReportesObra.Utilities
             {
                 case 3: title = "Avances por Periodo de Tiempo";
                     break;
-                case 4: title = "Reporte Avances por Costo";
+                case 4: title = "Reporte Avances por Costos Programados";
                     break;
-                case 5: title = "Reporte Avances por Tiempo";
+                case 5: title = "Reporte Avances por Tiempos Programados";
                     break;
                 default: title = "";
                     break;
@@ -669,8 +671,10 @@ namespace ReportesObra.Utilities
             Table info;
             Row rowD;
             Row rowInfo;
+            Row totalsRow;
             Paragraph paragraph;
             bool firstApartment = true;
+            totalTotal = totalAvance = 0.0;
 
             for (int i = 0; i < report.ListAdvanceCost.Count; i++)
             {
@@ -698,23 +702,34 @@ namespace ReportesObra.Utilities
                 info.AddColumn("2.2cm");
                 info.AddColumn("2.2cm");
                 info.AddColumn("2.4cm");
-                info.AddColumn("2.8cm");
-                info.AddColumn("2.5cm");
+                info.AddColumn("2.4cm");
+                info.AddColumn("2.4cm");
+                info.AddColumn("2.4cm");
                 info.AddColumn("1.6cm");
 
                 rowInfo = info.AddRow();
                 rowInfo.HeadingFormat = true;
                 rowInfo.Format.Font.Size = 9;
+                rowInfo.Height = 22;
                 rowInfo.Cells[0].AddParagraph("Actividad");
                 rowInfo.Cells[1].AddParagraph("Área");
                 rowInfo.Cells[2].AddParagraph("Elemento");
                 rowInfo.Cells[3].AddParagraph("Subelemento");
-                rowInfo.Cells[4].AddParagraph("Costo Total");
-                rowInfo.Cells[5].AddParagraph("Avance");
-                rowInfo.Cells[6].AddParagraph("Estatus");
+                rowInfo.Cells[4].AddParagraph("Costo Programado");
+                rowInfo.Cells[5].AddParagraph("Costo Ejecutado");
+                rowInfo.Cells[6].AddParagraph("Restante");
+                rowInfo.Cells[7].AddParagraph("Estatus");
 
                 //contadorFilasEvolucion++;
-                i = FillInfoAdvanceCostOrtTime(report.ListAdvanceCost, info, i, apartmentTitle) - 1;
+                i = FillInfoAdvanceCostOrtTime(report.ListAdvanceCost, info, i, apartmentTitle, true) - 1;
+                totalsRow = info.AddRow();
+                totalsRow.Format.Font.Bold = true;
+                totalsRow.Format.Font.Size = 8;
+                totalsRow.Cells[3].AddParagraph("TOTAL");
+                totalsRow.Cells[4].AddParagraph(totalTotal.ToString("C0", CultureInfo.CreateSpecificCulture("en-US")));
+                totalsRow.Cells[5].AddParagraph(totalAvance.ToString("C0", CultureInfo.CreateSpecificCulture("en-US")));
+                totalsRow.Cells[6].AddParagraph((totalTotal - totalAvance).ToString("C0", CultureInfo.CreateSpecificCulture("en-US")));
+                totalTotal = totalAvance = 0.0;
                 if (i < report.ListAdvanceCost.Count() - 1)
                 {
                     paragraph = section.AddParagraph();
@@ -763,22 +778,25 @@ namespace ReportesObra.Utilities
                 info.Format.Font.Size = 8;
                 info.AddColumn("1.8cm");
                 info.AddColumn("2.2cm");
-                info.AddColumn("2.2cm");
+                info.AddColumn("2.0cm");
                 info.AddColumn("2.4cm");
-                info.AddColumn("3.2cm");
-                info.AddColumn("3.2cm");
+                info.AddColumn("2.4cm");
+                info.AddColumn("2.4cm");
+                info.AddColumn("2.4cm");
                 info.AddColumn("1.6cm");
 
                 rowInfo = info.AddRow();
                 rowInfo.HeadingFormat = true;
                 rowInfo.Format.Font.Size = 9;
+                rowInfo.Height = 22;
                 rowInfo.Cells[0].AddParagraph("Actividad");
                 rowInfo.Cells[1].AddParagraph("Área");
                 rowInfo.Cells[2].AddParagraph("Elemento");
                 rowInfo.Cells[3].AddParagraph("Subelemento");
-                rowInfo.Cells[4].AddParagraph("Tiempo Total");
-                rowInfo.Cells[5].AddParagraph("Avance");
-                rowInfo.Cells[6].AddParagraph("Estatus");
+                rowInfo.Cells[4].AddParagraph("Tiempo Programado");
+                rowInfo.Cells[5].AddParagraph("Tiempo ejecutado");
+                rowInfo.Cells[6].AddParagraph("Restante");
+                rowInfo.Cells[7].AddParagraph("Estatus");
 
                 //contadorFilasEvolucion++;
                 i = FillInfoAdvanceCostOrtTime(report.ListAdvanceTime, info, i, apartmentTitle) - 1;
@@ -2034,7 +2052,7 @@ namespace ReportesObra.Utilities
             return value.Count;
         }
 
-        private int FillInfoAdvanceCostOrtTime<T>(List<T> value, Table table, int tableIndex, string title, int fontSize = 8)
+        private int FillInfoAdvanceCostOrtTime<T>(List<T> value, Table table, int tableIndex, string title, bool usingCost = false, int fontSize = 8)
         {
             Table _table = table;
             string currentName = "";
@@ -2071,7 +2089,7 @@ namespace ReportesObra.Utilities
                         }
                         else
                         {
-                            if (index < 8)
+                            if (index <= 8)
                             {
                                 if (type == typeof(DateTime))
                                 {
@@ -2099,6 +2117,21 @@ namespace ReportesObra.Utilities
                                 }
                             }
 
+                            if (usingCost)
+                            {
+                                switch (index)
+                                {
+                                    case 5:
+                                        totalTotal += (double)prop.GetValue(item, null);
+                                        break;
+                                    case 6:
+                                        totalAvance += (double)prop.GetValue(item, null);
+                                        break;
+                                    default:
+                                        break;
+                                }
+                            }
+
                             beforeName = currentName;
                         }
                     }
@@ -2113,6 +2146,7 @@ namespace ReportesObra.Utilities
                     row.Cells[4].Shading.Color = newColorGray;
                     row.Cells[5].Shading.Color = newColorGray;
                     row.Cells[6].Shading.Color = newColorGray;
+                    row.Cells[7].Shading.Color = newColorGray;
                 }
                 rowCount++;
             }

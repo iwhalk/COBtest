@@ -9,6 +9,7 @@
         public string Subelement { get; set; }
         public double TotalCost { get; set; }
         public double AdvanceCost { get; set; }
+        public double Remaining { get; set; }
         public string Status { get; set; }
     }
 }

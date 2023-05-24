@@ -9,6 +9,7 @@
         public string Subelement { get; set; }
         public string TotalTime { get; set; }
         public string AdvanceTime { get; set; }
+        public string Remaining { get; set; }
         public string Status { get; set; }
     }
 }
