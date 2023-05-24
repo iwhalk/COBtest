@@ -337,9 +337,9 @@ namespace ReportesObra.Utilities
             {
                 case 3: title = "Avances por Periodo de Tiempo";
                     break;
-                case 4: title = "Reporte Avances por Costo";
+                case 4: title = "Reporte Avances por Costos Programados";
                     break;
-                case 5: title = "Reporte Avances por Tiempo";
+                case 5: title = "Reporte Avances por Tiempos Programados";
                     break;
                 default: title = "";
                     break;

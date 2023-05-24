@@ -2,6 +2,7 @@
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
+using NuGet.DependencyResolver;
 using NuGet.Packaging;
 using NuGet.Versioning;
 using ReportesObra.Interfaces;
@@ -38,6 +39,11 @@ namespace ReportesObra.Services
         private string _status1 = "Not Started";
         private string _status2 = "Started";
         private string _status3 = "Finished";
+        private static TimeSpan totalTime;
+        private static TimeSpan advanceTime;
+        private static double totalCost;
+        private static double advanceCost;
+
 
         //private readonly InmobiliariaDbContextProcedures _dbContextProcedure;
 
@@ -343,9 +349,9 @@ namespace ReportesObra.Services
                     Area = progress.IdAreaNavigation.AreaName,
                     Element = progress.IdElementNavigation.ElementName,
                     Subelement = progress.IdSubElementNavigation != null ? progress.IdSubElementNavigation.SubElementName : "N/A",
-                    TotalCost = double.Parse(progress.TotalPieces) * (progress.CostPiece ?? 1),
-                    AdvanceCost = Int32.Parse(advance) * (progress.CostPiece ?? 1),
-                    Remaining = 0.01,
+                    TotalCost = totalCost = double.Parse(progress.TotalPieces) * (progress.CostPiece ?? 1),
+                    AdvanceCost = advanceCost = Int32.Parse(advance) * (progress.CostPiece ?? 1),
+                    Remaining = totalCost - advanceCost,
                     Status = advance != "0" ? progress.ProgressLogs.Last().IdStatusNavigation.StatusName : _status1,
                 });
             }
@@ -367,25 +373,35 @@ namespace ReportesObra.Services
                     Area = progress.IdAreaNavigation.AreaName,
                     Element = progress.IdElementNavigation.ElementName,
                     Subelement = progress.IdSubElementNavigation != null ? progress.IdSubElementNavigation.SubElementName : "N/A",
-                    TotalTime = getTimeMultiplication(Int32.Parse(progress.TotalPieces), progress.TimePiece ?? 1),
-                    AdvanceTime = getTimeMultiplication(Int32.Parse(advance), progress.TimePiece ?? 1),
-                    Remaining = "x:x",
+                    TotalTime = getTimeMultiplication(Int32.Parse(progress.TotalPieces), progress.TimePiece ?? 1, true),
+                    AdvanceTime = getTimeMultiplication(Int32.Parse(advance), progress.TimePiece ?? 1, false),
+                    Remaining = getTimeDiference(),
                     Status = advance != "0" ? progress.ProgressLogs.Last().IdStatusNavigation.StatusName : _status1,
                 });
             }
             return listAdvanceTime;
         }
 
-        private string getTimeMultiplication(int factor1, double factor2)
+        private string getTimeMultiplication(int factor1, double factor2, bool first)
         {
             TimeSpan hours = TimeSpan.FromHours(Math.Truncate(factor2));
             var min = Math.Round( (factor2 % 1) * 100 );
             TimeSpan minutes = TimeSpan.FromMinutes(min);
             var product = (factor1 * hours) + (factor1 * minutes);
+            if (first)
+                totalTime = product;
+            else
+                advanceTime = product;
             //string days = product.Days == 1 ? "día" : "días";
             //string result = string.Format("{0:%d} {1} {0:hh} hrs {0:mm} min", product, days);
             string result = string.Format("{0} hrs {1} min", Math.Truncate(product.TotalHours), product.Minutes);
             return result;
+        }
+
+        private string getTimeDiference()
+        {
+            TimeSpan result = totalTime - advanceTime;
+            return string.Format("{0} hrs {1} min", Math.Truncate(result.TotalHours), result.Minutes);
         }
 
         private int GetPiecesByDate(ICollection<ProgressLog> logs, DateTime date)
