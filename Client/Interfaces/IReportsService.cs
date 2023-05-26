@@ -24,6 +24,8 @@ namespace Obra.Client.Interfaces
 
         //MetodosReportes
         Task<List<AparmentProgress>?> GetProgressByAparmentDataViewAsync(int? idBuilding, int? idAparment);
+        Task<double> GetCostTotal(int? idBuilding, int? idAparment);
+
         Task<byte[]> PostProgressByAparmentPDFAsync(List<AparmentProgress> progressReportList, string subTitle);
         Task<List<ActivityProgress>?> GetProgressByActivityDataViewAsync(int? idBuilding, int? idActivity);
         Task<byte[]> PostProgressByActivityPDFAsync(List<ActivityProgress> progressReportList, string subTitle);

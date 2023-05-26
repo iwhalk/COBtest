@@ -19,12 +19,16 @@ namespace Obra.Client.Pages
         private string subTitle = "(Seleccionados)";
         //Variable locales
         private Dictionary<int, Tuple<double, double>> _idsAparmentSelect { get; set; } = new();
+        private Dictionary<int, Tuple<double, double>> _idsAparmentSelectMoney { get; set; } = new();
         public bool _isLoadingProcess { get; set; }
         private bool _isFullAparment { get; set; }
         private bool _showPreviewFile { get; set; }
         private byte[] _bytesPreviewFile { get; set; }
         private const string PDF_FILE_NAME = "AvancePorDepartamento.pdf";
         public ObjectAccessUser Accesos { get; private set; }
+
+        public bool ButtonMoneyAndPorcentaje { get; set; } = false;
+
         public ProgressByApartment(ApplicationContext context, NavigationManager navigationManager, IApartmentsService apartmentsService,
             IProgressLogsService progressLogsService, IReportsService reportService, IJSRuntime jS, IObjectAccessService accessService)
         {
@@ -43,6 +47,9 @@ namespace Obra.Client.Pages
             _context.Apartment = await _apartmentsService.GetApartmentsAsync();
             _context.Apartment = _context.Apartment.Where(x => apartmentsId.Contains(x.IdApartment)).ToList();
         }
+
+        private void ButtonMP() => ButtonMoneyAndPorcentaje = !ButtonMoneyAndPorcentaje;
+
         private void BackPage() => _navigationManager.NavigateTo("/ProjectOverview");
         private void ChangeOpenModalPreview() => _showPreviewFile = _showPreviewFile ? false : true;
         private async void AddIdAparmentSelect(int idDeparment)
@@ -63,11 +70,16 @@ namespace Obra.Client.Pages
 
                     var moneyR = new Tuple<double, double>(Convert.ToDouble(moneyProgress), restante);
                     
-                    _idsAparmentSelect.Add(idDeparment, moneyR);
+                    _idsAparmentSelect.Add(idDeparment, porcentage);
+                    _idsAparmentSelectMoney.Add(idDeparment, moneyR);
                 }
                 else
                 {
                     _idsAparmentSelect.Add(idDeparment, new Tuple<double, double>(0.0, 100.00));
+
+                    var aux = (await _reportService.GetCostTotal(Accesos.IdBuilding, idDeparment)).ToString("0.##");
+
+                    _idsAparmentSelectMoney.Add(idDeparment, new Tuple<double, double>(0.0, Convert.ToDouble(aux)));
                 }
                 if(apartmentsId.Count() == _idsAparmentSelect.Count())
                     subTitle = "(Todos)";
@@ -75,6 +87,8 @@ namespace Obra.Client.Pages
             else
             {
                 _idsAparmentSelect = _idsAparmentSelect.Where(x => x.Key != idDeparment).Select(x => new { x.Key, x.Value }).ToDictionary(x => x.Key, x => x.Value);
+                _idsAparmentSelectMoney = _idsAparmentSelectMoney.Where(x => x.Key != idDeparment).Select(x => new { x.Key, x.Value }).ToDictionary(x => x.Key, x => x.Value);
+
                 subTitle = "(Seleccionados)";
             }
             _isLoadingProcess = false;
@@ -87,11 +101,15 @@ namespace Obra.Client.Pages
             {
                 _isFullAparment = false;
                 _idsAparmentSelect.Clear();
+                _idsAparmentSelectMoney.Clear();
+
                 subTitle = "(Seleccionados)";
             }
             else
             {
                 _idsAparmentSelect.Clear();
+                _idsAparmentSelectMoney.Clear();
+
                 subTitle = "(Todos)";
                 var infoProgress = await _reportService.GetProgressByAparmentDataViewAsync(Accesos.IdBuilding, null);
                 if (infoProgress != null)
@@ -103,11 +121,24 @@ namespace Obra.Client.Pages
                             var porcentageProgress = Math.Round(infoProgress.Where(x => x.ApartmentNumber == aparment.ApartmentNumber).FirstOrDefault().ApartmentProgress, 2);
                             var porcentage = new Tuple<double, double>(porcentageProgress, 100 - porcentageProgress);
                             //porcentageProgress = porcentageProgress < 1.0 ? porcentageProgress + 1.5 : porcentageProgress;
+
+                            string moneyProgress = infoProgress.Where(x => x.ApartmentNumber == aparment.ApartmentNumber).FirstOrDefault().ApartmentCost.ToString("0.##");
+                            string moneyTotal = infoProgress.Where(x => x.ApartmentNumber == aparment.ApartmentNumber).FirstOrDefault().ApartmentCostTotal.ToString("0.##");
+
+                            var restante = Convert.ToDouble(moneyTotal) - Convert.ToDouble(moneyProgress);
+
+                            var moneyR = new Tuple<double, double>(Convert.ToDouble(moneyProgress), restante);
+
                             _idsAparmentSelect.Add(aparment.IdApartment, porcentage);
+                            _idsAparmentSelectMoney.Add(aparment.IdApartment, moneyR);
                         }
                         else
                         {
                             _idsAparmentSelect.Add(aparment.IdApartment, new Tuple<double, double>(0.0, 100.00));
+
+                            var aux = (await _reportService.GetCostTotal(Accesos.IdBuilding, aparment.IdApartment)).ToString("0.##");
+
+                            _idsAparmentSelectMoney.Add(aparment.IdApartment, new Tuple<double, double>(0.0, Convert.ToDouble(aux)));
                         }
                     }
                     _isFullAparment = true;
