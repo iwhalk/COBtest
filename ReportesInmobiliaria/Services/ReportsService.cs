@@ -195,9 +195,9 @@ namespace ReportesObra.Services
             var listCosts = new List<ObjectAdvanceCost>();
             listCosts = GetListAdvanceCost(listReport);
 
+            string? statusSelected = null;
             if (status != null)
-            {
-                string statusSelected;
+            {                
                 switch (status)
                 {
                     case 1:
@@ -219,7 +219,7 @@ namespace ReportesObra.Services
             if (listCosts.Count == 0)
                 return null;
 
-            ReportAdvanceCost reportAdvanceCost = new() { ListAdvanceCost = listCosts };
+            ReportAdvanceCost reportAdvanceCost = new() { ListAdvanceCost = listCosts, Status = statusSelected};
 
             return _reportesFactory.CrearPdf(reportAdvanceCost);
         }

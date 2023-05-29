@@ -2400,4 +2400,14 @@ namespace ReportesObra.Utilities
             }
         }
     }
+
+    public class ObjetoResumen
+    {
+        public string Apartmernt { get; set; }
+        public int Subtotal { get; set; }
+        public double TotalCost { get; set; }
+        public double AdvanceCost { get; set; }
+        public double Remaining { get; set; }
+        public string Status { get; set; }
+    }
 }
