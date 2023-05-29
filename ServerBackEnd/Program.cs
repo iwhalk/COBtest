@@ -60,7 +60,7 @@ var openApiInfo = new OpenApiInfo()
 if (builder.Environment.IsDevelopment())
 {
     certificate = new X509Certificate2(
-    "cert.pfx",
+    "cert2.pfx",
     "12345"
 );
 }
