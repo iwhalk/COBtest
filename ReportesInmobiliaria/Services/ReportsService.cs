@@ -3,6 +3,7 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using NuGet.DependencyResolver;
+using Microsoft.Extensions.Hosting;
 using NuGet.Packaging;
 using NuGet.Versioning;
 using ReportesObra.Interfaces;
@@ -19,6 +20,7 @@ using System.Data.Entity.Infrastructure;
 //using System.Diagnostics;
 using System.Linq;
 using static System.Runtime.InteropServices.JavaScript.JSType;
+using System.Diagnostics;
 
 namespace ReportesObra.Services
 {
@@ -137,14 +139,14 @@ namespace ReportesObra.Services
         {
             List<ProgressReport> listReport = new List<ProgressReport>();
             listReport = await _progressReportsService.GetProgressReportsDetailedAsync(idBuilding, idApartments, idAreas, idElements, idSubElements, idActivities);
-            listReport = listReport.OrderBy(x => x.IdApartment).ThenBy(x => x.IdArea).ToList();                       
+            listReport = listReport.OrderBy(x => x.IdApartment).ThenBy(x => x.IdArea).ToList();
 
             var list = new List<ObjectEvolution>();
             //Se agrega un día a las fechas porque la hora se queda en 00:00 por defecto
             inicio = inicio.AddDays(1).AddSeconds(-1);
             fin = fin.AddDays(1).AddSeconds(-1);
-            list = GetDetailEvolution(listReport, inicio , fin);            
-            
+            list = GetDetailEvolution(listReport, inicio, fin);
+
             if (status != null)
             {
                 string statusSelected;
@@ -163,7 +165,7 @@ namespace ReportesObra.Services
                         statusSelected = _status1;
                         break;
                 }
-                list = list.Where(x => x.Status == statusSelected).ToList(); 
+                list = list.Where(x => x.Status == statusSelected).ToList();
             }
             if (withActivities != null)
             {
@@ -281,7 +283,7 @@ namespace ReportesObra.Services
                     HasObservationsOrBlobs = progress.ProgressLogs != null && progress.ProgressLogs.Count != 0 ? progressLogHasContent(progress.ProgressLogs) : false
                     //Obserbation = progress.ProgressLogs != null && progress.ProgressLogs.Count != 0 ? (progress.ProgressLogs.Last().Observation ?? null) : null,
                     //Blobs = getURIBlobs(progress.ProgressLogs)
-                }) ;
+                });
             }
             return list;
         }
@@ -303,7 +305,7 @@ namespace ReportesObra.Services
                     avance = progress.ProgressLogs != null && progress.ProgressLogs.Count != 0 ? Int32.Parse(progress.ProgressLogs.Last().Pieces) : 0,
                     IdProgressLog = progress.ProgressLogs != null && progress.ProgressLogs.Count != 0 ? progress.ProgressLogs.Last().IdProgressLog : null,
                     HasObservationsOrBlobs = progress.ProgressLogs != null && progress.ProgressLogs.Count != 0 ? progressLogHasContent(progress.ProgressLogs) : false
-                }) ;
+                });
             }
             return list;
         }
@@ -385,7 +387,7 @@ namespace ReportesObra.Services
         private string getTimeMultiplication(int factor1, double factor2, bool first)
         {
             TimeSpan hours = TimeSpan.FromHours(Math.Truncate(factor2));
-            var min = Math.Round( (factor2 % 1) * 100 );
+            var min = Math.Round((factor2 % 1) * 100);
             TimeSpan minutes = TimeSpan.FromMinutes(min);
             var product = (factor1 * hours) + (factor1 * minutes);
             if (first)
@@ -488,7 +490,7 @@ namespace ReportesObra.Services
         public List<AparmentProgress> GetAparmentsAsync(int? idAparment)
         {
             IQueryable<ProgressReport> progressReports = _dbContext.ProgressReports;
-            IQueryable<ProgressLog> progressLogs= _dbContext.ProgressLogs;
+            IQueryable<ProgressLog> progressLogs = _dbContext.ProgressLogs;
             IQueryable<Apartment> apartments = _dbContext.Apartments;
 
             if (idAparment != null)
@@ -501,11 +503,11 @@ namespace ReportesObra.Services
                         Pices = x.Sum(s => Convert.ToInt32(s.TotalPieces))
                     }).ToList();
 
-            var progressReportsByAparment = progressReports.Join(progressLogs, x => x.IdProgressReport, y => y.IdProgressReport, (report, log) => new {report, log}).GroupBy(x => x.report.IdApartment);
+            var progressReportsByAparment = progressReports.Join(progressLogs, x => x.IdProgressReport, y => y.IdProgressReport, (report, log) => new { report, log }).GroupBy(x => x.report.IdApartment);
 
             var list = new List<AparmentProgress>();
             foreach (var aparment in progressReportsByAparment)
-            {                
+            {
                 long total = totalOfPicesByAparment.FirstOrDefault(x => x.IdAparment == aparment.Key).Pices;
                 long current = aparment.GroupBy(x => x.log.IdProgressReport).Select(x => x.OrderByDescending(x => x.log.DateCreated).FirstOrDefault()).Sum(x => long.Parse(x.log.Pieces));
                 list.Add(new AparmentProgress()
@@ -538,6 +540,13 @@ namespace ReportesObra.Services
                         Pices = x.Sum(s => Convert.ToInt32(s.TotalPieces))
                     }).ToList();
 
+            List<TotalCostByApartment> totalCostByApartments = progressReports.GroupBy(x => x.IdApartment)
+                .Select(x => new TotalCostByApartment
+                {
+                    IdAparment = x.Key,
+                    Cost = (double)x.Sum(s => s.CostPiece * Convert.ToDouble(s.TotalPieces))
+                }).ToList();
+
             var progressReportsByAparment = progressReports.Join(progressLogs, x => x.IdProgressReport, y => y.IdProgressReport, (report, log) => new { report, log }).GroupBy(x => x.report.IdApartment);
 
             var list = new List<AparmentProgress>();
@@ -545,14 +554,43 @@ namespace ReportesObra.Services
             {
                 long total = totalOfPicesByAparment.FirstOrDefault(x => x.IdAparment == aparment.Key).Pices;
                 long current = aparment.GroupBy(x => x.log.IdProgressReport).Select(x => x.OrderByDescending(x => x.log.DateCreated).FirstOrDefault()).Sum(x => long.Parse(x.log.Pieces));
+
+                double totalCost = totalCostByApartments.FirstOrDefault(x => x.IdAparment == aparment.Key).Cost;
+                double cost = (double)aparment.GroupBy(x => x.log.IdProgressReport).Select(x => x.OrderByDescending(x => x.log.DateCreated).FirstOrDefault()).Sum(x => Convert.ToDouble(x.log.Pieces) * x.report.CostPiece);
+
                 list.Add(new AparmentProgress()
                 {
                     ApartmentNumber = apartments.FirstOrDefault(x => x.IdApartment == aparment.Key).ApartmentNumber,
-                    ApartmentProgress = Math.Truncate(100.00 / total * current)
+                    ApartmentProgress = Math.Truncate(100.00 / total * current),
+                    ApartmentCostTotal = totalCost,
+                    ApartmentCost = cost
                 });
             }
+
             return list;
         }
+
+        public async Task<double> GetAparmentTotalCost(int? idBuilding, int? idAparment)
+        {
+            if (idBuilding == null)
+                idBuilding = 1;
+            IQueryable<ProgressReport> progressReports = _dbContext.ProgressReports;
+
+            if (idAparment != null)
+                progressReports = progressReports.Where(x => x.IdApartment == idAparment);
+
+            progressReports = progressReports.Where(x => x.IdBuilding == idBuilding);
+
+            List<TotalCostByApartment> totalCostByApartments = progressReports.GroupBy(x => x.IdApartment)
+                .Select(x => new TotalCostByApartment
+                {
+                    IdAparment = x.Key,
+                    Cost = (double)x.Sum(s => s.CostPiece * Convert.ToDouble(s.TotalPieces))
+                }).ToList();
+
+            return totalCostByApartments.FirstOrDefault().Cost;
+        }
+
         //public async Task<byte[]> GetActivityProgress(int idBuilding, List<int>? idActivities)
         public async Task<List<ActivityProgress>> GetActivityProgress(int? idBuilding, int? idActivity)
         {
@@ -562,7 +600,7 @@ namespace ReportesObra.Services
             IQueryable<ProgressReport> progressReports = _dbContext.ProgressReports;
             IQueryable<ProgressLog> progressLogs = _dbContext.ProgressLogs;
             IQueryable<SharedLibrary.Models.Activity> activities = _dbContext.Activities;
-            progressReports = progressReports.Where(x => x.IdBuilding == idBuilding);            
+            progressReports = progressReports.Where(x => x.IdBuilding == idBuilding);
 
             foreach (var progressReport in progressReports)
             {
@@ -574,7 +612,8 @@ namespace ReportesObra.Services
                     IdArea = progressReport.IdArea,
                     IdActivity = getIdActividadByElement(progressReport.IdElement),
                     IdElement = progressReport.IdElement,
-                    TotalPieces = progressReport.TotalPieces
+                    TotalPieces = progressReport.TotalPieces,
+                    Cost = (double)progressReport.CostPiece,
                 });
             }
             if (idActivity != null)
@@ -587,6 +626,13 @@ namespace ReportesObra.Services
                         Pieces = x.Sum(s => Convert.ToInt32(s.TotalPieces))
                     }).ToList();
 
+            List<TotalCostByActivity> totalCostByActivities = progressReportsWithActivity.GroupBy(x => x.IdActivity)
+             .Select(x => new TotalCostByActivity
+             {
+                 IdActivity = (int)x.Key,
+                 Cost = (double)x.Sum(s => s.Cost * Convert.ToDouble(s.TotalPieces))
+             }).ToList();
+
             var progressReportsByActivity = progressReportsWithActivity.Join(progressLogs, x => x.IdProgressReport, y => y.IdProgressReport,
                 (report, log) => new { report, log }).GroupBy(x => x.report.IdActivity);
             var list = new List<ActivityProgress>();
@@ -594,20 +640,57 @@ namespace ReportesObra.Services
             {
                 long total = totalPieces.FirstOrDefault(x => x.IdActivity == activity.Key).Pieces;
                 long current = activity.GroupBy(x => x.log.IdProgressReport).Select(x => x.OrderByDescending(x => x.log.DateCreated).FirstOrDefault()).Sum(x => long.Parse(x.log.Pieces));
+
+                double totalCost = totalCostByActivities.FirstOrDefault(x => x.IdActivity == activity.Key).Cost;
+                double cost = (double)activity.GroupBy(x => x.log.IdProgressReport).Select(x => x.OrderByDescending(x => x.log.DateCreated).FirstOrDefault()).Sum(x => Convert.ToDouble(x.log.Pieces) * x.report.Cost);
+
                 list.Add(new ActivityProgress()
                 {
                     ActivityName = activities.FirstOrDefault(x => x.IdActivity == activity.Key).ActivityName,
-                    Progress = Math.Truncate( 100.00 / total * current)
+                    Progress = Math.Truncate(100.00 / total * current),
+                    ActivityCostTotal = totalCost,
+                    ActivitytCost = cost
                 });
             }
-            //list = list.OrderBy(x => x.ActivityName).ToList();
+
             return list;
-            //ReporteAvanceActividad reporteAvance = new()
-            //{
-            //    FechaGeneracion = DateTime.Now,
-            //    Activities = list
-            //};
-            //return _reportesFactory.CrearPdf(reporteAvance, title);
+        }
+
+        public async Task<double> GetActivityTotalCost(int? idBuilding, int? idActivity)
+        {
+            if (idBuilding == null)
+                idBuilding = 1;
+            List<ProgressReportActivityAdded> progressReportsWithActivity = new List<ProgressReportActivityAdded>();
+            IQueryable<ProgressReport> progressReports = _dbContext.ProgressReports;
+
+            progressReports = progressReports.Where(x => x.IdBuilding == idBuilding);
+
+            foreach (var progressReport in progressReports)
+            {
+                progressReportsWithActivity.Add(new ProgressReportActivityAdded()
+                {
+                    IdProgressReport = progressReport.IdProgressReport,
+                    DateCreated = progressReport.DateCreated,
+                    IdApartment = progressReport.IdApartment,
+                    IdArea = progressReport.IdArea,
+                    IdActivity = getIdActividadByElement(progressReport.IdElement),
+                    IdElement = progressReport.IdElement,
+                    TotalPieces = progressReport.TotalPieces,
+                    Cost = progressReport.CostPiece,
+                });
+            }
+
+            if (idActivity != null)
+                progressReportsWithActivity = progressReportsWithActivity.Where(x => x.IdActivity == idActivity).ToList();
+
+            List<TotalCostByActivity> totalCostByActivities = progressReportsWithActivity.GroupBy(x => x.IdActivity)
+             .Select(x => new TotalCostByActivity
+             {
+                 IdActivity = (int)x.Key,
+                 Cost = (double)x.Sum(s => s.Cost * Convert.ToDouble(s.TotalPieces))
+             }).ToList();
+
+            return totalCostByActivities.FirstOrDefault().Cost;
         }
 
         public async Task<byte[]> GetReporteAvanceActividad(List<ActivityProgress> activityProgress, string subTitle)
@@ -635,7 +718,7 @@ namespace ReportesObra.Services
         }
 
         public async Task<List<AparmentProgress>> GetActivitiesByAparment(int? idBuilding, int? idActividad)
-        {            
+        {
             if (idBuilding == null)
                 idBuilding = 1;
             IQueryable<ProgressReport> progress = _dbContext.ProgressReports.Where(x => x.IdBuilding == idBuilding);
@@ -643,7 +726,7 @@ namespace ReportesObra.Services
             var activitiesId = progress.Select(x => x.IdElementNavigation.IdActivity).Distinct();
 
             IQueryable<ProgressReport> progressReports = _dbContext.ProgressReports.Include(x => x.IdApartmentNavigation).Include(x => x.IdElementNavigation).Include(x => x.IdElementNavigation.IdActivityNavigation);
-            IQueryable<Activity> Activities = _dbContext.Activities;
+            IQueryable<SharedLibrary.Models.Activity> Activities = _dbContext.Activities;
             Activities = Activities.Where(x => activitiesId.Contains(x.IdActivity));
             IQueryable<ProgressLog> progressLogs = _dbContext.ProgressLogs;
             IQueryable<Apartment> apartments = _dbContext.Apartments;
@@ -656,7 +739,7 @@ namespace ReportesObra.Services
 
             progressReports = progressReports.Where(x => x.IdBuilding == idBuilding);
 
-            foreach(var activity in Activities)
+            foreach (var activity in Activities)
             {
                 if (idActividad != null && activity.IdActivity != idActividad)
                     continue;
@@ -684,11 +767,11 @@ namespace ReportesObra.Services
                     {
                         Activity_ = activity.ActivityName,
                         ApartmentNumber = apartment.ApartmentNumber,
-                        ApartmentProgress = Math.Truncate( 100.00 / total * current )
+                        ApartmentProgress = Math.Truncate(100.00 / total * current)
                     });
                 }
 
-            }            
+            }
             return list;
         }
 
@@ -718,7 +801,7 @@ namespace ReportesObra.Services
             var activitiesId = progress.Select(x => x.IdElementNavigation.IdActivity).Distinct();
 
             IQueryable<ProgressReport> progressReports = _dbContext.ProgressReports.Include(x => x.IdApartmentNavigation).Include(x => x.IdElementNavigation).Include(x => x.IdElementNavigation.IdActivityNavigation);
-            IQueryable<Activity> Activities = _dbContext.Activities;
+            IQueryable<SharedLibrary.Models.Activity> Activities = _dbContext.Activities;
             Activities = Activities.Where(x => activitiesId.Contains(x.IdActivity));
             IQueryable<Apartment> apartments = _dbContext.Apartments;
             apartments = apartments.Where(x => apartmentsId.Contains(x.IdApartment)).OrderBy(x => x.IdApartment);

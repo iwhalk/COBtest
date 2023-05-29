@@ -9,5 +9,6 @@
         public int? IdActivity { get; set; }
         public int IdElement { get; set; }
         public string TotalPieces { get; set; }
+        public double? Cost { get; set; }
     }
 }

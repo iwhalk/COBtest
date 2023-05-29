@@ -76,6 +76,22 @@ namespace Obra.Client.Services
             parameters.Add("idAparment", idAparment.ToString());
             return await _repository.GetAsync<List<AparmentProgress>?>(parameters, path: "api/Reports/ProgressByAparmentDataView");
         }
+        public async Task<double> GetCostTotal(int? idBuilding, int? idAparment)
+        {
+            Dictionary<string, string> parameters = new();
+            parameters.Add("idBuilding", idBuilding.ToString());
+            parameters.Add("idAparment", idAparment.ToString());
+            return await _repository.GetAsync<double>(parameters, path: "api/Reports/CostTotal");
+        }
+
+        public async Task<double> GetCostTotalActivity(int? idBuilding, int? idActivity)
+        {
+            Dictionary<string, string> parameters = new();
+            parameters.Add("idBuilding", idBuilding.ToString());
+            parameters.Add("idActivity", idActivity.ToString());
+            return await _repository.GetAsync<double>(parameters, path: "api/Reports/CostTotalActivity");
+        }
+
         public async Task<byte[]> PostProgressByAparmentPDFAsync(List<AparmentProgress> progressReportList, string subTitle)
         {
             return await _repository.PostAsync<byte[]>(progressReportList, path: "api/Reports/ProgressByAparmentPDF?subTitle=" + subTitle);

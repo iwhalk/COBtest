@@ -126,6 +126,36 @@ namespace ApiGateway.Controllers
             return BadRequest(result);
         }
 
+        [HttpGet("CostTotal")]
+        public async Task<ActionResult> GetCostTotal(int? idBuilding, int? idAparment)
+        {
+            var result = await _reportesService.GetCostTotal(idBuilding, idAparment);
+            if (result != null)
+            {
+                if (result.Succeeded)
+                {
+                    return Ok(result);
+                }
+                return BadRequest(result);
+            }
+            return BadRequest(result);
+        }
+
+        [HttpGet("CostTotalActivity")]
+        public async Task<ActionResult> GetCostTotalActivity(int? idBuilding, int? idActivity)
+        {
+            var result = await _reportesService.GetCostTotalActivity(idBuilding, idActivity);
+            if (result != null)
+            {
+                if (result.Succeeded)
+                {
+                    return Ok(result);
+                }
+                return BadRequest(result);
+            }
+            return BadRequest(result);
+        }
+
         [HttpPost("ProgressByAparmentPDF")]
         public async Task<ActionResult> PostProgressByAparmentPDF(List<AparmentProgress> progressReport, string subTitle)
         {
