@@ -20,6 +20,7 @@ using System.Data.Entity.Infrastructure;
 //using System.Diagnostics;
 using System.Linq;
 using static System.Runtime.InteropServices.JavaScript.JSType;
+using System.Diagnostics;
 
 namespace ReportesObra.Services
 {
@@ -611,7 +612,8 @@ namespace ReportesObra.Services
                     IdArea = progressReport.IdArea,
                     IdActivity = getIdActividadByElement(progressReport.IdElement),
                     IdElement = progressReport.IdElement,
-                    TotalPieces = progressReport.TotalPieces
+                    TotalPieces = progressReport.TotalPieces,
+                    Cost = (double)progressReport.CostPiece,
                 });
             }
             if (idActivity != null)
@@ -624,6 +626,13 @@ namespace ReportesObra.Services
                         Pieces = x.Sum(s => Convert.ToInt32(s.TotalPieces))
                     }).ToList();
 
+            List<TotalCostByActivity> totalCostByActivities = progressReportsWithActivity.GroupBy(x => x.IdActivity)
+             .Select(x => new TotalCostByActivity
+             {
+                 IdActivity = (int)x.Key,
+                 Cost = (double)x.Sum(s => s.Cost * Convert.ToDouble(s.TotalPieces))
+             }).ToList();
+
             var progressReportsByActivity = progressReportsWithActivity.Join(progressLogs, x => x.IdProgressReport, y => y.IdProgressReport,
                 (report, log) => new { report, log }).GroupBy(x => x.report.IdActivity);
             var list = new List<ActivityProgress>();
@@ -631,20 +640,57 @@ namespace ReportesObra.Services
             {
                 long total = totalPieces.FirstOrDefault(x => x.IdActivity == activity.Key).Pieces;
                 long current = activity.GroupBy(x => x.log.IdProgressReport).Select(x => x.OrderByDescending(x => x.log.DateCreated).FirstOrDefault()).Sum(x => long.Parse(x.log.Pieces));
+
+                double totalCost = totalCostByActivities.FirstOrDefault(x => x.IdActivity == activity.Key).Cost;
+                double cost = (double)activity.GroupBy(x => x.log.IdProgressReport).Select(x => x.OrderByDescending(x => x.log.DateCreated).FirstOrDefault()).Sum(x => Convert.ToDouble(x.log.Pieces) * x.report.Cost);
+
                 list.Add(new ActivityProgress()
                 {
                     ActivityName = activities.FirstOrDefault(x => x.IdActivity == activity.Key).ActivityName,
-                    Progress = Math.Truncate(100.00 / total * current)
+                    Progress = Math.Truncate(100.00 / total * current),
+                    ActivityCostTotal = totalCost,
+                    ActivitytCost = cost
                 });
             }
-            //list = list.OrderBy(x => x.ActivityName).ToList();
+
             return list;
-            //ReporteAvanceActividad reporteAvance = new()
-            //{
-            //    FechaGeneracion = DateTime.Now,
-            //    Activities = list
-            //};
-            //return _reportesFactory.CrearPdf(reporteAvance, title);
+        }
+
+        public async Task<double> GetActivityTotalCost(int? idBuilding, int? idActivity)
+        {
+            if (idBuilding == null)
+                idBuilding = 1;
+            List<ProgressReportActivityAdded> progressReportsWithActivity = new List<ProgressReportActivityAdded>();
+            IQueryable<ProgressReport> progressReports = _dbContext.ProgressReports;
+
+            progressReports = progressReports.Where(x => x.IdBuilding == idBuilding);
+
+            foreach (var progressReport in progressReports)
+            {
+                progressReportsWithActivity.Add(new ProgressReportActivityAdded()
+                {
+                    IdProgressReport = progressReport.IdProgressReport,
+                    DateCreated = progressReport.DateCreated,
+                    IdApartment = progressReport.IdApartment,
+                    IdArea = progressReport.IdArea,
+                    IdActivity = getIdActividadByElement(progressReport.IdElement),
+                    IdElement = progressReport.IdElement,
+                    TotalPieces = progressReport.TotalPieces,
+                    Cost = progressReport.CostPiece,
+                });
+            }
+
+            if (idActivity != null)
+                progressReportsWithActivity = progressReportsWithActivity.Where(x => x.IdActivity == idActivity).ToList();
+
+            List<TotalCostByActivity> totalCostByActivities = progressReportsWithActivity.GroupBy(x => x.IdActivity)
+             .Select(x => new TotalCostByActivity
+             {
+                 IdActivity = (int)x.Key,
+                 Cost = (double)x.Sum(s => s.Cost * Convert.ToDouble(s.TotalPieces))
+             }).ToList();
+
+            return totalCostByActivities.FirstOrDefault().Cost;
         }
 
         public async Task<byte[]> GetReporteAvanceActividad(List<ActivityProgress> activityProgress, string subTitle)
@@ -680,7 +726,7 @@ namespace ReportesObra.Services
             var activitiesId = progress.Select(x => x.IdElementNavigation.IdActivity).Distinct();
 
             IQueryable<ProgressReport> progressReports = _dbContext.ProgressReports.Include(x => x.IdApartmentNavigation).Include(x => x.IdElementNavigation).Include(x => x.IdElementNavigation.IdActivityNavigation);
-            IQueryable<Activity> Activities = _dbContext.Activities;
+            IQueryable<SharedLibrary.Models.Activity> Activities = _dbContext.Activities;
             Activities = Activities.Where(x => activitiesId.Contains(x.IdActivity));
             IQueryable<ProgressLog> progressLogs = _dbContext.ProgressLogs;
             IQueryable<Apartment> apartments = _dbContext.Apartments;
@@ -755,7 +801,7 @@ namespace ReportesObra.Services
             var activitiesId = progress.Select(x => x.IdElementNavigation.IdActivity).Distinct();
 
             IQueryable<ProgressReport> progressReports = _dbContext.ProgressReports.Include(x => x.IdApartmentNavigation).Include(x => x.IdElementNavigation).Include(x => x.IdElementNavigation.IdActivityNavigation);
-            IQueryable<Activity> Activities = _dbContext.Activities;
+            IQueryable<SharedLibrary.Models.Activity> Activities = _dbContext.Activities;
             Activities = Activities.Where(x => activitiesId.Contains(x.IdActivity));
             IQueryable<Apartment> apartments = _dbContext.Apartments;
             apartments = apartments.Where(x => apartmentsId.Contains(x.IdApartment)).OrderBy(x => x.IdApartment);

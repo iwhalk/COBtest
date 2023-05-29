@@ -83,6 +83,20 @@ namespace ApiGateway.Services
             return await GetAsync<double>(path: "ReportGetCost", parameters: parameters);
         }
 
+        public async Task<ApiResponse<double>> GetCostTotalActivity(int? idBuilding, int? idActivity)
+        {
+            Dictionary<string, string> parameters = new();
+            if (idBuilding != null)
+            {
+                parameters.Add("idBuilding", idBuilding.ToString());
+            }
+            if (idActivity != null)
+            {
+                parameters.Add("idActivity", idActivity.ToString());
+            }
+            return await GetAsync<double>(path: "ReportGetCostActivity", parameters: parameters);
+        }
+
         public async Task<ApiResponse<byte[]>> PostProgressByAparmentPDFAsync(List<AparmentProgress> progressReport, string subTitle)
         {
             return await PostAsync<byte[]>(progressReport, path: "ReportProgressByAparmentPDF?subTitle=" + subTitle);

@@ -247,6 +247,28 @@ namespace ReportesObra.Endpoints
             .Produces<HttpValidationProblemDetails>(StatusCodes.Status500InternalServerError, "application/problem+json")
             .AllowAnonymous();
 
+            routes.MapGet("/ReportGetCostActivity", async (int? idBuilding, int? idActivity, IReportesService _reportesService, ILogger<Program> _logger) =>
+            {
+                try
+                {
+                    var newModule = await _reportesService.GetActivityTotalCost(idBuilding, idActivity);
+                    if (newModule == null) return Results.NoContent();
+                    return Results.Ok(newModule);
+                }
+                catch (Exception e)
+                {
+                    _logger.LogError(e, e.Message);
+                    if (e.GetType() == typeof(ValidationException))
+                        return Results.Problem(e.Message, statusCode: 400);
+                    return Results.Problem(e.Message);
+                }
+            })
+          .WithName("ReportGetCostActivity")
+          .Produces<IResult>(StatusCodes.Status200OK)
+          .Produces<HttpValidationProblemDetails>(StatusCodes.Status400BadRequest, "application/problem+json")
+          .Produces<HttpValidationProblemDetails>(StatusCodes.Status500InternalServerError, "application/problem+json")
+          .AllowAnonymous();
+
             routes.MapPost("/ReportOfAparmentByActivityPDF", async (List<AparmentProgress> aparmentProgresses,bool all, IReportesService _reportesService, ILogger<Program> _logger) =>
             {
                 try

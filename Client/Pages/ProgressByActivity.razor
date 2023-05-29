@@ -40,13 +40,27 @@
                             @if (_idsActivitySelect.ContainsKey(activity.IdActivity))
                             {
                                 <div class="w-5/6 md:w-4/6 inline-flex p-0.5 flex flex-row justify-center items-center">
-                                    @if (_idsActivitySelect[activity.IdActivity].Item1 > 0)
+                                    @if (ButtonMoneyAndPorcentaje == false)
                                     {
-                                        <div class="bg-[#115D28] z-10 h-5 md:text-sm xl:text-base text-white text-end w-[@Convert.ToInt32(_idsActivitySelect[activity.IdActivity].Item1)%] pb-1 pr-1 pl-1">@_idsActivitySelect[activity.IdActivity].Item1.ToString("0.##")%</div>
-                                    }                                    
-                                    @if (_idsActivitySelect[activity.IdActivity].Item1 < 100)
+                                        @if (_idsActivitySelect[activity.IdActivity].Item1 >= 0)
+                                        {
+                                            <div class="bg-[#115D28] relative z-10 h-5 md:text-sm xl:text-base text-white text-start w-[@Convert.ToInt32(_idsActivitySelect[activity.IdActivity].Item1)%] pb-1 pr-1 pl-1"><label class="absolute left-0 z-10">@_idsActivitySelect[activity.IdActivity].Item1.ToString("0.##")%</label></div>
+                                        }
+                                        @if (@_idsActivitySelect[activity.IdActivity].Item1 <= 100)
+                                        {
+                                            <div class="bg-[#CB3030] relative h-5 md:text-sm xl:text-base text-white text-end w-[@Convert.ToInt32(_idsActivitySelect[activity.IdActivity].Item2)%] pb-1 pr-1 pl-1"><label class="absolute right-0 z-10">@_idsActivitySelect[activity.IdActivity].Item2.ToString("0.##")%</label></div>
+                                        }
+                                    }
+                                    else
                                     {
-                                        <div class="bg-[#CB3030] h-5 md:text-sm xl:text-base text-white text-end w-[@Convert.ToInt32(_idsActivitySelect[activity.IdActivity].Item2)%] pb-1 pr-1 pl-1">@_idsActivitySelect[activity.IdActivity].Item2.ToString("0.##")%</div>
+                                        @if (_idsActivitySelectMoney[activity.IdActivity].Item1 != null)
+                                        {
+                                            <div class="bg-[#115D28] relative z-10 h-5 md:text-sm xl:text-base text-white text-start w-[@Convert.ToInt32(_idsActivitySelectMoney[activity.IdActivity].Item1)%] pb-1 pr-1 pl-1"><label class="absolute left-0 z-10">$@_idsActivitySelectMoney[activity.IdActivity].Item1.ToString("0.##")</label></div>
+                                        }
+                                        @if (_idsActivitySelectMoney[activity.IdActivity].Item1 != null)
+                                        {
+                                            <div class="bg-[#CB3030] relative h-5 md:text-sm xl:text-base text-white text-end w-[@Convert.ToInt32(_idsActivitySelectMoney[activity.IdActivity].Item2)%] pb-1 pr-1 pl-1"><label class="absolute right-0 z-10">$@_idsActivitySelectMoney[activity.IdActivity].Item2.ToString("0.##")</label></div>
+                                        }
                                     }
                                 </div>
                             }
@@ -54,9 +68,17 @@
                     }
                 </div>
             </div>
-            <div class="w-full flex py-2">
-                @* <button @onclick="() => GeneratePDfPorgressaprment()" class="mx-auto bg-[#B9352E] hover:bg-red-500 w-32 p-1 md:p-2 rounded-2xl text-base md:text-lg text-white font-medium leading-6 border border-stone-400 hover:border-white">Descargar</button> *@
-                <button @onclick="() => PreviewFileReport()" class="mx-auto bg-[#B9352E] hover:bg-red-500 w-32 p-1 md:p-2 rounded-2xl text-base md:text-lg text-white font-medium leading-6 border border-stone-400 hover:border-white">Descargar</button>
+            <div class="w-full flex justify-between items-center">
+                <div class="w-full flex py-2">
+                    @* <button @onclick="() => GeneratePDfPorgressaprment()" class="mx-auto bg-[#B9352E] hover:bg-red-500 w-32 p-1 md:p-2 rounded-2xl text-base md:text-lg text-white font-medium leading-6 border border-stone-400 hover:border-white">Descargar</button> *@
+                    <button @onclick="() => PreviewFileReport()" class="mx-auto bg-[#B9352E] hover:bg-red-500 w-32 p-1 md:p-2 rounded-2xl text-base md:text-lg text-white font-medium leading-6 border border-stone-400 hover:border-white">Descargar</button>
+                </div>
+                <div class="w-full flex py-2">
+                    <button @onclick="() => ButtonMP()" class="@(ButtonMoneyAndPorcentaje == false ? "bg-[#19376D]" : "bg-[#BDCDD6]") mx-auto w-32 p-1 md:p-2 rounded-2xl text-base md:text-lg text-white font-medium leading-6 border border-stone-400 hover:border-white">Porcentaje</button>
+                </div>
+                <div class="w-full flex py-2">
+                    <button @onclick="() => ButtonMP()" class="@(ButtonMoneyAndPorcentaje == true ? "bg-[#19376D]" : "bg-[#BDCDD6]") mx-auto w-32 p-1 md:p-2 rounded-2xl text-base md:text-lg text-white font-medium leading-6 border border-stone-400 hover:border-white">Dinero</button>
+                </div>
             </div>
         </div>
     </div>
