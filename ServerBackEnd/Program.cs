@@ -24,7 +24,7 @@ var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 var secretKey = Encoding.ASCII.GetBytes(builder.Configuration.GetValue<string>("SecretKey"));
 var key = new SymmetricSecurityKey(secretKey);
-var certificateThumbprint = "A2956D21BD9AD1B06AD9DBE8949782B0D8210948";
+var certificateThumbprint = "3E41977D1ACEAAB98F9E39FB8E1A2497B365683B";
 X509Certificate2? certificate = null;
     
 var securityScheme = new OpenApiSecurityScheme()
