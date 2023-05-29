@@ -669,12 +669,17 @@ namespace ReportesObra.Utilities
             string apartmentTitle;
             Table dates;
             Table info;
+            Table tableResumen;
             Row rowD;
             Row rowInfo;
             Row totalsRow;
+            Row rowResumen;
             Paragraph paragraph;
             bool firstApartment = true;
             totalTotal = totalAvance = 0.0;
+            List<ObjetoResumen> listResumen = new List<ObjetoResumen>();
+            double sumaTotalTotal = 0.0;
+            double sumaTotalAvance = 0.0;
 
             for (int i = 0; i < report.ListAdvanceCost.Count; i++)
             {
@@ -729,6 +734,17 @@ namespace ReportesObra.Utilities
                 totalsRow.Cells[4].AddParagraph(totalTotal.ToString("C0", CultureInfo.CreateSpecificCulture("en-US")));
                 totalsRow.Cells[5].AddParagraph(totalAvance.ToString("C0", CultureInfo.CreateSpecificCulture("en-US")));
                 totalsRow.Cells[6].AddParagraph((totalTotal - totalAvance).ToString("C0", CultureInfo.CreateSpecificCulture("en-US")));
+
+                listResumen.Add(new ObjetoResumen()
+                {
+                    Apartment = apartmentTitle,
+                    Text = "Subtotal",
+                    TotalCost = totalTotal,
+                    AdvanceCost = totalAvance,
+                    Remaining = totalTotal - totalAvance,
+                    Status = report.Status ?? "Diverso"
+                });
+
                 totalTotal = totalAvance = 0.0;
                 if (i < report.ListAdvanceCost.Count() - 1)
                 {
@@ -739,8 +755,66 @@ namespace ReportesObra.Utilities
                     //    document.LastSection.AddPageBreak();
                     //    contadorFilasEvolucion = 0;
                     //}
-                }
+                }                
             }
+
+            paragraph = section.AddParagraph();
+            paragraph.AddLineBreak();
+            paragraph.Format.SpaceBefore = "1.0cm";
+            paragraph.Format.SpaceAfter = "1.0cm";
+            paragraph.Format.Font.Size = 11;
+            paragraph.Format.Font.Bold = true;
+            paragraph.AddText("Resumen de Costos");
+            paragraph.Format.Alignment = ParagraphAlignment.Center;
+
+            tableResumen = section.AddTable();
+            tableResumen.Style = "Table";            
+            tableResumen.Format.Alignment = ParagraphAlignment.Center;
+            tableResumen.Rows.Height = 20;
+            tableResumen.Rows.Alignment = RowAlignment.Center;
+            tableResumen.Rows.VerticalAlignment = VerticalAlignment.Center;
+            tableResumen.Format.Alignment = ParagraphAlignment.Center;
+            tableResumen.Format.Font.Size = 9;
+            tableResumen.Borders.Visible = true;
+            tableResumen.AddColumn("2.5cm");
+            tableResumen.AddColumn("2.5cm");
+            tableResumen.AddColumn("2.5cm");
+            tableResumen.AddColumn("2.5cm");
+            tableResumen.AddColumn("2.5cm");
+            tableResumen.AddColumn("2.5cm");
+            rowResumen = tableResumen.AddRow();
+            rowResumen.HeadingFormat = true;
+            rowResumen.Format.Font.Size = 9;
+            rowResumen.Format.Font.Bold = true;
+            rowResumen.Shading.Color = Color.Parse("0xffC9EEFF");
+            rowResumen.Height = 22;
+            rowResumen.Cells[2].AddParagraph("Costo Programado");
+            rowResumen.Cells[3].AddParagraph("Costo Ejecutado");
+            rowResumen.Cells[4].AddParagraph("Restante");
+            rowResumen.Cells[5].AddParagraph("Estatus");
+
+            foreach (var elementResumen in listResumen)
+            {
+                sumaTotalTotal += elementResumen.TotalCost;
+                sumaTotalAvance += elementResumen.AdvanceCost;
+                rowResumen = tableResumen.AddRow();
+                rowResumen.Cells[0].Format.Font.Bold = true;
+                rowResumen.Cells[0].AddParagraph(elementResumen.Apartment);
+                rowResumen.Cells[1].AddParagraph(elementResumen.Text);
+                rowResumen.Cells[2].AddParagraph(elementResumen.TotalCost.ToString("C0", CultureInfo.CreateSpecificCulture("en-US")));
+                rowResumen.Cells[3].AddParagraph(elementResumen.AdvanceCost.ToString("C0", CultureInfo.CreateSpecificCulture("en-US")));
+                rowResumen.Cells[4].AddParagraph((elementResumen.TotalCost - elementResumen.AdvanceCost).ToString("C0", CultureInfo.CreateSpecificCulture("en-US")));
+                rowResumen.Cells[5].AddParagraph(elementResumen.Status);
+            }
+
+            rowResumen = tableResumen.AddRow();
+            rowResumen.Format.Font.Size = 9;
+            rowResumen.Format.Font.Bold = true;
+            rowResumen.Height = 22;
+            rowResumen.Cells[1].AddParagraph("TOTAL");
+            rowResumen.Cells[2].AddParagraph(sumaTotalTotal.ToString("C0", CultureInfo.CreateSpecificCulture("en-US")));
+            rowResumen.Cells[3].AddParagraph(sumaTotalAvance.ToString("C0", CultureInfo.CreateSpecificCulture("en-US")));
+            rowResumen.Cells[4].AddParagraph((sumaTotalTotal - sumaTotalAvance).ToString("C0", CultureInfo.CreateSpecificCulture("en-US")));
         }
 
         void CrearReporteAvancePorTiempo(ReportAdvanceTime report)
@@ -2399,5 +2473,15 @@ namespace ReportesObra.Utilities
                 gfx.DrawImage(COBRender, x, y, 400, 266);
             }
         }
+    }
+
+    public class ObjetoResumen
+    {
+        public string Apartment { get; set; }
+        public string Text { get; set; }
+        public double TotalCost { get; set; }
+        public double AdvanceCost { get; set; }
+        public double Remaining { get; set; }
+        public string Status { get; set; }
     }
 }
