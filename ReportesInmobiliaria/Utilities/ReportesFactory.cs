@@ -1546,7 +1546,7 @@ namespace ReportesObra.Utilities
                         row.Borders.Color = newColorGray;
                         row.Borders.Width = 1;
                         int fixIndex;
-                        if (index== 0)
+                        if (index == 0 || index > 2)
                             continue;
                         else
                             fixIndex = index - 1;
@@ -1763,6 +1763,8 @@ namespace ReportesObra.Utilities
                         row.Borders.Color = newColorGray;
                         row.Borders.Width = 1;
                         //row.Borders.Style = BorderStyle.
+                        if (index > 1)
+                            continue;
                         var type = Nullable.GetUnderlyingType(prop.PropertyType) ?? prop.PropertyType;
                         if (type == typeof(Double))
                         {
