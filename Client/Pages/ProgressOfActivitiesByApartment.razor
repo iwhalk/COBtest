@@ -55,11 +55,11 @@
                                                     </button>
                                                 </div>
                                                 <div class="inline-flex w-2/4 xl:w-3/5 ml-3 p-0.5 flex flex-row justify-center items-center">
-                                                    @if (activity.porcentage.Item1 > 0)
+                                                    @if (activity.porcentage.Item1 >= 0)
                                                     {
                                                         <div class="bg-[#115D28] relative z-10 h-6 text-xs md:text-lg text-white text-end w-[@Convert.ToInt32(activity.porcentage.Item1)%] pb-1 pr-1 pl-1"><label class="absolute left-0 z-10">@activity.porcentage.Item1.ToString("0.##")%</label></div>
                                                     }
-                                                    @if (activity.porcentage.Item1 < 100)
+                                                    @if (activity.porcentage.Item2 <= 100)
                                                     {
                                                         <div class="bg-[#CB3030] relative h-6 text-xs md:text-lg text-white text-end w-[@Convert.ToInt32(activity.porcentage.Item2)%] pb-1 pr-1 pl-1"><label class="absolute right-0 z-10">@activity.porcentage.Item2.ToString("0.##")%</label></div>
                                                     }
@@ -82,7 +82,7 @@
                                                     {
                                                         <div class="bg-[#115D28] relative z-10 h-6 text-xs md:text-lg text-white text-end w-[@Convert.ToInt32(activity.porcentage.Item1)%] pb-1 pr-1 pl-1"><label class="absolute left-0 z-10">$@activity.porcentage.Item1.ToString("0.##")</label></div>
                                                     }
-                                                    @if (activity.porcentage.Item1 != null)
+                                                    @if (activity.porcentage.Item2 != null)
                                                     {
                                                         <div class="bg-[#CB3030] relative h-6 text-xs md:text-lg text-white text-end w-[@Convert.ToInt32(activity.porcentage.Item2)%] pb-1 pr-1 pl-1"><label class="absolute right-0 z-10">$@activity.porcentage.Item2.ToString("0.##")</label></div>
                                                     }

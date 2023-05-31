@@ -16,8 +16,10 @@ namespace ApiGateway.Interfaces
 
         Task<ApiResponse<List<AparmentProgress>>?> GetProgressByAparmentViewAsync(int? idBuilding, int? id);
         Task<ApiResponse<double>> GetCostTotal(int? idBuilding, int? id);
-
         Task<ApiResponse<double>> GetCostTotalActivity(int? idBuilding, int? id);
+
+        Task<ApiResponse<double>> GetCostTotalActivitiesByAparment(int? idBuilding, int? id);
+        Task<ApiResponse<double>> GetCostAparmentsByActivity(int? idBuilding, int? id);
 
         Task<ApiResponse<byte[]>> PostProgressByAparmentPDFAsync(List<AparmentProgress> progressReport, string subTitle);
 

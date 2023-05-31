@@ -93,6 +93,7 @@ namespace Obra.Client.Pages
                 else
                 {
                     var listAparmentPorcentage = new List<InfoActivityIn>();
+
                     foreach (var activity in _context.Activity)
                     {
                         listAparmentPorcentage.Add(new InfoActivityIn
@@ -102,6 +103,20 @@ namespace Obra.Client.Pages
                         });
                     }
 
+                    var listAparmentCost = new List<InfoActivityIn>();
+
+                    foreach (var activity in _context.Activity)
+                    {
+                        var aux = await _reportService.GetCostAparmentsByActivity(Accesos.IdBuilding, activity.IdActivity);
+
+                        listAparmentCost.Add(new InfoActivityIn
+                        {
+                            activityNumber = activity.ActivityName,
+                            porcentage = new Tuple<double, double>(0.0, aux)
+                        });
+                    }
+
+                    _idsAparmentSelectCost.Add(idAparment, listAparmentCost);
                     _idsAparmentSelect.Add(idAparment, listAparmentPorcentage);
                 }
             }
@@ -169,6 +184,20 @@ namespace Obra.Client.Pages
                                 });
                             }
 
+                            var listAparmentCost = new List<InfoActivityIn>();
+
+                            foreach (var activity in _context.Activity)
+                            {
+                                var aux = await _reportService.GetCostAparmentsByActivity(Accesos.IdBuilding, activity.IdActivity);
+
+                                listAparmentCost.Add(new InfoActivityIn
+                                {
+                                    activityNumber = activity.ActivityName,
+                                    porcentage = new Tuple<double, double>(0.0, aux)
+                                });
+                            }
+
+                            _idsAparmentSelectCost.Add(apartment.IdApartment, listAparmentCost);
                             _idsAparmentSelect.Add(apartment.IdApartment, listAparmentPorcentage);
                         }
                     }

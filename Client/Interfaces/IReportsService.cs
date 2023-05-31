@@ -27,6 +27,9 @@ namespace Obra.Client.Interfaces
         Task<double> GetCostTotal(int? idBuilding, int? idAparment);
         Task<double> GetCostTotalActivity(int? idBuilding, int? idActivity);
 
+        Task<double> GetCostTotalActivitiesByAparment(int? idBuilding, int? idAparment);
+        Task<double> GetCostAparmentsByActivity(int? idBuilding, int? idActivity);
+
         Task<byte[]> PostProgressByAparmentPDFAsync(List<AparmentProgress> progressReportList, string subTitle);
         Task<List<ActivityProgress>?> GetProgressByActivityDataViewAsync(int? idBuilding, int? idActivity);
         Task<byte[]> PostProgressByActivityPDFAsync(List<ActivityProgress> progressReportList, string subTitle);

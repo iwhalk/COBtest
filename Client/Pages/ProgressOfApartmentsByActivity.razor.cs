@@ -65,6 +65,7 @@ namespace Obra.Client.Pages
             {
                 //change for real endpoint for this view
                 var infoProgress = await _reportService.GetProgressOfAparmentByActivityDataViewAsync(Accesos.IdBuilding, idActivity);
+
                 if (infoProgress != null)
                 {
                     List<InfoAparmentIn> listAparmentPorcentage = new List<InfoAparmentIn>();
@@ -91,6 +92,7 @@ namespace Obra.Client.Pages
                 else
                 {
                     var listAparmentPorcentage = new List<InfoAparmentIn>();
+
                     foreach (var aparment in _context.Apartment)
                     {
                         listAparmentPorcentage.Add(new InfoAparmentIn
@@ -99,6 +101,21 @@ namespace Obra.Client.Pages
                             porcentage = new Tuple<double, double>(0.0, 100.0)
                         });
                     }
+
+                    var listAparmentCost = new List<InfoAparmentIn>();
+
+                    foreach (var aparment in _context.Apartment)
+                    {
+                        var aux = await _reportService.GetCostTotalActivitiesByAparment(Accesos.IdBuilding, aparment.IdApartment);
+
+                        listAparmentCost.Add(new InfoAparmentIn
+                        {
+                            aparmentNumber = aparment.ApartmentNumber,
+                            porcentage = new Tuple<double, double>(0.0, aux)
+                        });
+                    }
+
+                    _idsAparmentSelectCost.Add(idActivity, listAparmentCost);
                     _idsActivitySelect.Add(idActivity, listAparmentPorcentage);
                 }
             }
@@ -156,6 +173,7 @@ namespace Obra.Client.Pages
                         else
                         {
                             var listAparmentPorcentage = new List<InfoAparmentIn>();
+
                             foreach (var aparment in _context.Apartment)
                             {
                                 listAparmentPorcentage.Add(new InfoAparmentIn
@@ -164,6 +182,21 @@ namespace Obra.Client.Pages
                                     porcentage = new Tuple<double, double>(0.0, 100.0)
                                 });
                             }
+
+                            var listAparmentCost = new List<InfoAparmentIn>();
+
+                            foreach (var aparment in _context.Apartment)
+                            {
+                                var aux = await _reportService.GetCostTotalActivitiesByAparment(Accesos.IdBuilding, aparment.IdApartment);
+
+                                listAparmentCost.Add(new InfoAparmentIn
+                                {
+                                    aparmentNumber = aparment.ApartmentNumber,
+                                    porcentage = new Tuple<double, double>(0.0, aux)
+                                });
+                            }
+
+                            _idsAparmentSelectCost.Add(activity.IdActivity, listAparmentCost);
                             _idsActivitySelect.Add(activity.IdActivity, listAparmentPorcentage);
                         }
                     }

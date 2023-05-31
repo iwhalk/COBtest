@@ -683,7 +683,9 @@ namespace ReportesObra.Services
             if (idActivity != null)
                 progressReportsWithActivity = progressReportsWithActivity.Where(x => x.IdActivity == idActivity).ToList();
 
-            List<TotalCostByActivity> totalCostByActivities = progressReportsWithActivity.GroupBy(x => x.IdActivity)
+            List<TotalCostByActivity> totalCostByActivities = new();
+
+            totalCostByActivities = progressReportsWithActivity.GroupBy(x => x.IdActivity)
              .Select(x => new TotalCostByActivity
              {
                  IdActivity = (int)x.Key,
@@ -778,7 +780,10 @@ namespace ReportesObra.Services
                         cost = (double)progressReportsCurrentActivityCurrentAparment.GroupBy(x => x.log.IdProgressReport).Select(x => x.OrderByDescending(x => x.log.DateCreated).FirstOrDefault()).Sum(x => Convert.ToDouble(x.log.Pieces) * x.report.CostPiece);
                     }
                     else
+                    {
                         current = 0;
+                        totalCost = totalCostByApartment.FirstOrDefault(x => x.IdAparment == apartment.IdApartment).Cost;
+                    }
 
                     list.Add(new AparmentProgress()
                     {
@@ -792,6 +797,47 @@ namespace ReportesObra.Services
 
             }
             return list;
+        }
+
+        public async Task<double> GetActivitiesByAparmentTotal(int? idBuilding, int? idActividad)
+        {
+            if (idBuilding == null)
+                idBuilding = 1;
+            IQueryable<ProgressReport> progress = _dbContext.ProgressReports.Where(x => x.IdBuilding == idBuilding);
+            var apartmentsId = progress.Select(x => x.IdApartment).Distinct();
+            var activitiesId = progress.Select(x => x.IdElementNavigation.IdActivity).Distinct();
+
+            IQueryable<ProgressReport> progressReports = _dbContext.ProgressReports.Include(x => x.IdApartmentNavigation).Include(x => x.IdElementNavigation).Include(x => x.IdElementNavigation.IdActivityNavigation);
+            IQueryable<SharedLibrary.Models.Activity> Activities = _dbContext.Activities;
+            Activities = Activities.Where(x => activitiesId.Contains(x.IdActivity));
+            IQueryable<ProgressLog> progressLogs = _dbContext.ProgressLogs;
+            IQueryable<Apartment> apartments = _dbContext.Apartments;
+            apartments = apartments.Where(x => apartmentsId.Contains(x.IdApartment)).OrderBy(x => x.IdApartment);
+
+            var list = new List<AparmentProgress>();
+
+            if (idActividad != null)
+                progressReports = progressReports.Where(x => x.IdElementNavigation.IdActivityNavigation.IdActivity == idActividad);
+
+            progressReports = progressReports.Where(x => x.IdBuilding == idBuilding);
+
+            List<TotalCostByApartment> totalCostByApartment = new();
+
+            foreach (var activity in Activities)
+            {
+                if (idActividad != null && activity.IdActivity != idActividad)
+                    continue;
+                var progressReportsCurrentActivity = progressReports.Where(x => x.IdElementNavigation.IdActivityNavigation.IdActivity.Equals(activity.IdActivity));
+
+                totalCostByApartment = progressReportsCurrentActivity.GroupBy(x => x.IdApartment)
+                     .Select(x => new TotalCostByApartment
+                     {
+                         IdAparment = (int)x.Key,
+                         Cost = (double)x.Sum(s => s.CostPiece * Convert.ToDouble(s.TotalPieces))
+                     }).ToList();
+            }
+
+            return totalCostByApartment.FirstOrDefault().Cost;
         }
 
         public async Task<byte[]> GetReporteAvancDeActividadPorDepartamento(List<AparmentProgress> aparmentProgress, bool all)
@@ -871,7 +917,10 @@ namespace ReportesObra.Services
                         cost = (double)progressReportsCurrentAparmentByActivityCurrentActivity.GroupBy(x => x.log.IdProgressReport).Select(x => x.OrderByDescending(x => x.log.DateCreated).FirstOrDefault()).Sum(x => Convert.ToDouble(x.log.Pieces) * x.report.CostPiece);
                     }
                     else
+                    {
+                        totalCost = totalCostByActivities.FirstOrDefault(x => x.IdActivity == activity.IdActivity).Cost;
                         current = 0;
+                    }
 
                     list.Add(new ActivityProgressByAparment()
                     {
@@ -885,6 +934,47 @@ namespace ReportesObra.Services
 
             }
             return list;
+        }
+
+        public async Task<double> GetAparmentsByActivityTotal(int? idBuilding, int? idApartment)
+        {
+            if (idBuilding == null)
+                idBuilding = 1;
+            IQueryable<ProgressReport> progress = _dbContext.ProgressReports.Where(x => x.IdBuilding == idBuilding);
+            var apartmentsId = progress.Select(x => x.IdApartment).Distinct();
+            var activitiesId = progress.Select(x => x.IdElementNavigation.IdActivity).Distinct();
+
+            IQueryable<ProgressReport> progressReports = _dbContext.ProgressReports.Include(x => x.IdApartmentNavigation).Include(x => x.IdElementNavigation).Include(x => x.IdElementNavigation.IdActivityNavigation);
+            IQueryable<SharedLibrary.Models.Activity> Activities = _dbContext.Activities;
+            Activities = Activities.Where(x => activitiesId.Contains(x.IdActivity));
+            IQueryable<Apartment> apartments = _dbContext.Apartments;
+            apartments = apartments.Where(x => apartmentsId.Contains(x.IdApartment)).OrderBy(x => x.IdApartment);
+            IQueryable<ProgressLog> progressLogs = _dbContext.ProgressLogs;
+            var list = new List<ActivityProgressByAparment>();
+
+            if (idApartment != null)
+                progressReports = progressReports.Where(x => x.IdApartment == idApartment);
+
+            progressReports = progressReports.Where(x => x.IdBuilding == idBuilding);
+
+            List<TotalCostByActivity> totalCostByActivities = new();
+
+            foreach (var aparment in apartments)
+            {
+                if (idApartment != null && aparment.IdApartment != idApartment)
+                    continue;
+                var progressReportsCurrentAparment = progressReports.Where(x => x.IdApartmentNavigation.IdApartment.Equals(aparment.IdApartment));
+
+                totalCostByActivities = progressReportsCurrentAparment.GroupBy(x => x.IdElementNavigation.IdActivity)
+                     .Select(x => new TotalCostByActivity
+                     {
+                         IdActivity = (int)x.Key,
+                         Cost = (double)x.Sum(s => s.CostPiece * Convert.ToDouble(s.TotalPieces))
+                     }).ToList();
+
+            }
+
+            return totalCostByActivities.FirstOrDefault().Cost;
         }
 
         public async Task<byte[]> GetReporteAvanceDeDepartamentoPorActividad(List<ActivityProgressByAparment> activityProgressByAparment, bool all)
