@@ -186,7 +186,7 @@ namespace ReportesObra.Endpoints
                 try
                 {
                     var newModule = await _reportesService.GetAparments(idBuilding, idAparment);
-                    if (newModule.Count == 0) return Results.NoContent();                    
+                    if (newModule.Count == 0) return Results.NoContent();
                     return Results.Ok(newModule);
                 }
                 catch (Exception e)
@@ -224,6 +224,50 @@ namespace ReportesObra.Endpoints
           .Produces<HttpValidationProblemDetails>(StatusCodes.Status400BadRequest, "application/problem+json")
           .Produces<HttpValidationProblemDetails>(StatusCodes.Status500InternalServerError, "application/problem+json")
           .AllowAnonymous();
+
+            routes.MapGet("/ReportGetCostActivitiesByAparment", async (int? idBuilding, int? idActividad, IReportesService _reportesService, ILogger<Program> _logger) =>
+            {
+                try
+                {
+                    var newModule = await _reportesService.GetActivitiesByAparmentTotal(idBuilding, idActividad);
+                    if (newModule == null) return Results.NoContent();
+                    return Results.Ok(newModule);
+                }
+                catch (Exception e)
+                {
+                    _logger.LogError(e, e.Message);
+                    if (e.GetType() == typeof(ValidationException))
+                        return Results.Problem(e.Message, statusCode: 400);
+                    return Results.Problem(e.Message);
+                }
+            })
+        .WithName("ReportGetCostActivitiesByAparment")
+        .Produces<IResult>(StatusCodes.Status200OK)
+        .Produces<HttpValidationProblemDetails>(StatusCodes.Status400BadRequest, "application/problem+json")
+        .Produces<HttpValidationProblemDetails>(StatusCodes.Status500InternalServerError, "application/problem+json")
+        .AllowAnonymous();
+
+            routes.MapGet("/ReportGetCostAparmentsByActivity", async (int? idBuilding, int? idAparment, IReportesService _reportesService, ILogger<Program> _logger) =>
+            {
+                try
+                {
+                    var newModule = await _reportesService.GetAparmentsByActivityTotal(idBuilding, idAparment);
+                    if (newModule == null) return Results.NoContent();
+                    return Results.Ok(newModule);
+                }
+                catch (Exception e)
+                {
+                    _logger.LogError(e, e.Message);
+                    if (e.GetType() == typeof(ValidationException))
+                        return Results.Problem(e.Message, statusCode: 400);
+                    return Results.Problem(e.Message);
+                }
+            })
+        .WithName("ReportGetCostAparmentsByActivity")
+        .Produces<IResult>(StatusCodes.Status200OK)
+        .Produces<HttpValidationProblemDetails>(StatusCodes.Status400BadRequest, "application/problem+json")
+        .Produces<HttpValidationProblemDetails>(StatusCodes.Status500InternalServerError, "application/problem+json")
+        .AllowAnonymous();
 
             routes.MapGet("/ReportOfAparmentByActivityView", async (int? idBuilding, int? idActivity, IReportesService _reportesService, ILogger<Program> _logger) =>
             {
@@ -269,13 +313,13 @@ namespace ReportesObra.Endpoints
           .Produces<HttpValidationProblemDetails>(StatusCodes.Status500InternalServerError, "application/problem+json")
           .AllowAnonymous();
 
-            routes.MapPost("/ReportOfAparmentByActivityPDF", async (List<AparmentProgress> aparmentProgresses,bool all, IReportesService _reportesService, ILogger<Program> _logger) =>
+            routes.MapPost("/ReportOfAparmentByActivityPDF", async (List<AparmentProgress> aparmentProgresses, bool all, IReportesService _reportesService, ILogger<Program> _logger) =>
             {
                 try
                 {
                     var newModule = await _reportesService.GetReporteAvancDeActividadPorDepartamento(aparmentProgresses, all);
                     if (newModule == null) return Results.NoContent();
-                    return Results.File(newModule,"application/pdf");
+                    return Results.File(newModule, "application/pdf");
                 }
                 catch (Exception e)
                 {

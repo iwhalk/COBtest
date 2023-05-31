@@ -22,6 +22,9 @@ namespace ReportesObra.Interfaces
         Task<double> GetAparmentTotalCost(int? idBuilding, int? idAparment);
         Task<double> GetActivityTotalCost(int? idBuilding, int? IdActivity);
 
+        Task<double> GetActivitiesByAparmentTotal(int? idBuilding, int? idActividad);
+        Task<double> GetAparmentsByActivityTotal(int? idBuilding, int? idAparment);
+
         Task<List<AparmentProgress>> GetActivitiesByAparment(int? idBuilding, int? idAparment);
         Task<List<ActivityProgressByAparment>> GetAparmentsByActivity(int? idBuilding, int? idApartment);
         Task<List<ActivityProgress>> GetActivityProgress(int? idBuilding, int? idActivity);

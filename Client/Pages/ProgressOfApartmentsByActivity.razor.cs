@@ -5,6 +5,7 @@ using Obra.Client.Stores;
 using SharedLibrary.Models;
 using System.Diagnostics;
 using System.Reflection.Metadata.Ecma335;
+using static Obra.Client.Pages.ProgressOfActivitiesByApartment;
 
 namespace Obra.Client.Pages
 {
@@ -20,12 +21,16 @@ namespace Obra.Client.Pages
         private readonly IObjectAccessService _accessService;
         //Variable locales        
         private Dictionary<int, List<InfoAparmentIn>> _idsActivitySelect { get; set; } = new();
+        private Dictionary<int, List<InfoAparmentIn>> _idsAparmentSelectCost { get; set; } = new();
         public bool _isLoadingProcess { get; set; }
         private bool _isFullAparment { get; set; }
         private bool _showPreviewFile { get; set; }
         private byte[] _bytesPreviewFile { get; set; }
         private const string PDF_FILE_NAME = "AvanceDepartamentoPorActividad.pdf";
         public ObjectAccessUser Accesos { get; private set; }
+
+        public bool ButtonMoneyAndPorcentaje { get; set; } = false;
+
         public ProgressOfApartmentsByActivity(ApplicationContext context, NavigationManager navigationManager, IActivitiesService activityService, IApartmentsService apartmentService,
             IProgressLogsService progressLogsService, IReportsService reportService, IJSRuntime jS, IObjectAccessService accessService)
         {
@@ -48,6 +53,8 @@ namespace Obra.Client.Pages
             _context.Apartment = await _apartmentService.GetApartmentsAsync();
             _context.Apartment = _context.Apartment.Where(x => apartmentsId.Contains(x.IdApartment)).ToList();
         }
+
+        private void ButtonMP() => ButtonMoneyAndPorcentaje = !ButtonMoneyAndPorcentaje;
         private void BackPage() => _navigationManager.NavigateTo("/ProjectOverview");
         private void ChangeOpenModalPreview() => _showPreviewFile = _showPreviewFile ? false : true;
         private async void AddIdActivitySelect(int idActivity)
@@ -58,20 +65,34 @@ namespace Obra.Client.Pages
             {
                 //change for real endpoint for this view
                 var infoProgress = await _reportService.GetProgressOfAparmentByActivityDataViewAsync(Accesos.IdBuilding, idActivity);
+
                 if (infoProgress != null)
                 {
                     List<InfoAparmentIn> listAparmentPorcentage = new List<InfoAparmentIn>();
+                    List<InfoAparmentIn> listAparmentCost = new List<InfoAparmentIn>();
+
                     foreach (var item in infoProgress)
                     {
                         var porcentageProgress = Math.Round(item.ApartmentProgress, 2);
                         var porcentage = new Tuple<double, double>(porcentageProgress, 100 - porcentageProgress);
+                        string moneyProgress = item.ApartmentCost.ToString("0.##");
+                        string moneyTotal = item.ApartmentCostTotal.ToString("0.##");
+
+                        var restante = Convert.ToDouble(moneyTotal) - Convert.ToDouble(moneyProgress);
+
+                        var moneyR = new Tuple<double, double>(Convert.ToDouble(moneyProgress), restante);
+
+                        listAparmentCost.Add(new InfoAparmentIn { aparmentNumber = item.ApartmentNumber, porcentage = moneyR });
                         listAparmentPorcentage.Add(new InfoAparmentIn { aparmentNumber = item.ApartmentNumber, porcentage = porcentage });
                     }
+
+                    _idsAparmentSelectCost.Add(idActivity, listAparmentCost);
                     _idsActivitySelect.Add(idActivity, listAparmentPorcentage);
                 }
                 else
                 {
                     var listAparmentPorcentage = new List<InfoAparmentIn>();
+
                     foreach (var aparment in _context.Apartment)
                     {
                         listAparmentPorcentage.Add(new InfoAparmentIn
@@ -80,12 +101,28 @@ namespace Obra.Client.Pages
                             porcentage = new Tuple<double, double>(0.0, 100.0)
                         });
                     }
+
+                    var listAparmentCost = new List<InfoAparmentIn>();
+
+                    foreach (var aparment in _context.Apartment)
+                    {
+                        var aux = await _reportService.GetCostTotalActivitiesByAparment(Accesos.IdBuilding, aparment.IdApartment);
+
+                        listAparmentCost.Add(new InfoAparmentIn
+                        {
+                            aparmentNumber = aparment.ApartmentNumber,
+                            porcentage = new Tuple<double, double>(0.0, aux)
+                        });
+                    }
+
+                    _idsAparmentSelectCost.Add(idActivity, listAparmentCost);
                     _idsActivitySelect.Add(idActivity, listAparmentPorcentage);
                 }
             }
             else
             {
                 _idsActivitySelect = _idsActivitySelect.Where(x => x.Key != idActivity).Select(x => new { x.Key, x.Value }).ToDictionary(x => x.Key, x => x.Value);
+                _idsAparmentSelectCost = _idsAparmentSelectCost.Where(x => x.Key != idActivity).Select(x => new { x.Key, x.Value }).ToDictionary(x => x.Key, x => x.Value);
             }
             _isLoadingProcess = false;
             StateHasChanged();
@@ -98,10 +135,12 @@ namespace Obra.Client.Pages
             {
                 _isFullAparment = false;
                 _idsActivitySelect.Clear();
+                _idsAparmentSelectCost.Clear();
             }
             else
             {
                 _idsActivitySelect.Clear();
+                _idsAparmentSelectCost.Clear();
                 var infoProgress = await _reportService.GetProgressOfAparmentByActivityDataViewAsync(Accesos.IdBuilding, null);            
                 if (infoProgress != null)
                 {
@@ -111,17 +150,30 @@ namespace Obra.Client.Pages
                         if (infoProgress.Any(x => x.Activity_ == activity.ActivityName))
                         {
                             List<InfoAparmentIn> listAparmentPorcentage = new List<InfoAparmentIn>();
+                            List<InfoAparmentIn> listAparmentCost = new List<InfoAparmentIn>();
+
                             foreach (var item in infoProgress.Where(x => x.Activity_ == activity.ActivityName))
                             {
                                 var porcentageProgress = Math.Round(item.ApartmentProgress, 2);
                                 var porcentage = new Tuple<double, double>(porcentageProgress, 100 - porcentageProgress);
+                                string moneyProgress = item.ApartmentCost.ToString("0.##");
+                                string moneyTotal = item.ApartmentCostTotal.ToString("0.##");
+
+                                var restante = Convert.ToDouble(moneyTotal) - Convert.ToDouble(moneyProgress);
+
+                                var moneyR = new Tuple<double, double>(Convert.ToDouble(moneyProgress), restante);
+
+                                listAparmentCost.Add(new InfoAparmentIn { aparmentNumber = item.ApartmentNumber, porcentage = moneyR });
                                 listAparmentPorcentage.Add(new InfoAparmentIn { aparmentNumber = item.ApartmentNumber, porcentage = porcentage });
                             }
+
+                            _idsAparmentSelectCost.Add(activity.IdActivity, listAparmentCost);
                             _idsActivitySelect.Add(activity.IdActivity, listAparmentPorcentage);
                         }
                         else
                         {
                             var listAparmentPorcentage = new List<InfoAparmentIn>();
+
                             foreach (var aparment in _context.Apartment)
                             {
                                 listAparmentPorcentage.Add(new InfoAparmentIn
@@ -130,6 +182,21 @@ namespace Obra.Client.Pages
                                     porcentage = new Tuple<double, double>(0.0, 100.0)
                                 });
                             }
+
+                            var listAparmentCost = new List<InfoAparmentIn>();
+
+                            foreach (var aparment in _context.Apartment)
+                            {
+                                var aux = await _reportService.GetCostTotalActivitiesByAparment(Accesos.IdBuilding, aparment.IdApartment);
+
+                                listAparmentCost.Add(new InfoAparmentIn
+                                {
+                                    aparmentNumber = aparment.ApartmentNumber,
+                                    porcentage = new Tuple<double, double>(0.0, aux)
+                                });
+                            }
+
+                            _idsAparmentSelectCost.Add(activity.IdActivity, listAparmentCost);
                             _idsActivitySelect.Add(activity.IdActivity, listAparmentPorcentage);
                         }
                     }

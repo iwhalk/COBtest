@@ -11,5 +11,8 @@ namespace SharedLibrary.Models
         public string ApartmentNumber { get; set; }
         public string Activity_ { get; set; }
         public double ApartmentProgress { get; set; }
+
+        public double ActivityCostTotal { get; set; }
+        public double ActivitytCost { get; set; }
     }
 }
