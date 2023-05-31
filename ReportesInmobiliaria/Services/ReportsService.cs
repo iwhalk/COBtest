@@ -752,6 +752,13 @@ namespace ReportesObra.Services
                         Pices = x.Sum(s => Convert.ToInt32(s.TotalPieces))
                     }).ToList();
 
+                List<TotalCostByApartment> totalCostByApartment = progressReportsCurrentActivity.GroupBy(x => x.IdApartment)
+                     .Select(x => new TotalCostByApartment
+                     {
+                         IdAparment = (int)x.Key,
+                         Cost = (double)x.Sum(s => s.CostPiece * Convert.ToDouble(s.TotalPieces))
+                     }).ToList();
+
                 var progressReportsCurrentActivityByAparment = progressReportsCurrentActivity.Join(progressLogs, x => x.IdProgressReport, y => y.IdProgressReport, (report, log) => new { report, log }).GroupBy(x => x.report.IdApartment).ToList();
 
                 foreach (var apartment in apartments)
@@ -759,15 +766,27 @@ namespace ReportesObra.Services
                     Double total = totalOfPicesByAparment.FirstOrDefault(x => x.IdAparment == apartment.IdApartment).Pices;
                     var progressReportsCurrentActivityCurrentAparment = progressReportsCurrentActivityByAparment.FirstOrDefault(x => x.Key == apartment.IdApartment);
                     Double current;
+
+                    double totalCost = 0;
+                    double cost = 0;
+
                     if (progressReportsCurrentActivityCurrentAparment != null)
+                    {
                         current = progressReportsCurrentActivityCurrentAparment.GroupBy(x => x.log.IdProgressReport).Select(x => x.OrderByDescending(x => x.log.DateCreated).FirstOrDefault()).Sum(x => long.Parse(x.log.Pieces));
+
+                        totalCost = totalCostByApartment.FirstOrDefault(x => x.IdAparment == apartment.IdApartment).Cost;
+                        cost = (double)progressReportsCurrentActivityCurrentAparment.GroupBy(x => x.log.IdProgressReport).Select(x => x.OrderByDescending(x => x.log.DateCreated).FirstOrDefault()).Sum(x => Convert.ToDouble(x.log.Pieces) * x.report.CostPiece);
+                    }
                     else
                         current = 0;
+
                     list.Add(new AparmentProgress()
                     {
                         Activity_ = activity.ActivityName,
                         ApartmentNumber = apartment.ApartmentNumber,
-                        ApartmentProgress = Math.Truncate(100.00 / total * current)
+                        ApartmentProgress = Math.Truncate(100.00 / total * current),
+                        ApartmentCostTotal = totalCost,
+                        ApartmentCost = cost
                     });
                 }
 
@@ -826,6 +845,13 @@ namespace ReportesObra.Services
                         Pieces = x.Sum(s => Convert.ToInt32(s.TotalPieces))
                     }).ToList();
 
+                List<TotalCostByActivity> totalCostByActivities = progressReportsCurrentAparment.GroupBy(x => x.IdElementNavigation.IdActivity)
+                     .Select(x => new TotalCostByActivity
+                     {
+                         IdActivity = (int)x.Key,
+                         Cost = (double)x.Sum(s => s.CostPiece * Convert.ToDouble(s.TotalPieces))
+                     }).ToList();
+
                 var progressReportsCurrentAparmentByActivity = progressReportsCurrentAparment.Join(progressLogs, x => x.IdProgressReport, y => y.IdProgressReport, (report, log) => new { report, log }).GroupBy(x => x.report.IdElementNavigation.IdActivity).ToList();
 
                 foreach (var activity in Activities)
@@ -833,20 +859,31 @@ namespace ReportesObra.Services
                     Double total = totalPiecesByActivity.FirstOrDefault(x => x.IdActivity == activity.IdActivity).Pieces;
                     Double current;
                     var progressReportsCurrentAparmentByActivityCurrentActivity = progressReportsCurrentAparmentByActivity.FirstOrDefault(x => x.Key == activity.IdActivity);
+
+                    double totalCost = 0;
+                    double cost = 0;
+
                     if (progressReportsCurrentAparmentByActivityCurrentActivity != null)
+                    {
                         current = progressReportsCurrentAparmentByActivityCurrentActivity.GroupBy(x => x.log.IdProgressReport).Select(x => x.OrderByDescending(x => x.log.DateCreated).FirstOrDefault()).Sum(x => long.Parse(x.log.Pieces));
+
+                        totalCost = totalCostByActivities.FirstOrDefault(x => x.IdActivity == activity.IdActivity).Cost;
+                        cost = (double)progressReportsCurrentAparmentByActivityCurrentActivity.GroupBy(x => x.log.IdProgressReport).Select(x => x.OrderByDescending(x => x.log.DateCreated).FirstOrDefault()).Sum(x => Convert.ToDouble(x.log.Pieces) * x.report.CostPiece);
+                    }
                     else
                         current = 0;
+
                     list.Add(new ActivityProgressByAparment()
                     {
                         ApartmentNumber = aparment.ApartmentNumber,
                         Activity_ = activity.ActivityName,
-                        ApartmentProgress = Math.Truncate(100.00 / total * current)
+                        ApartmentProgress = Math.Truncate(100.00 / total * current),
+                        ActivityCostTotal = totalCost,
+                        ActivitytCost = cost
                     });
                 }
 
             }
-            //var listasd = list.GroupBy(x => x.ApartmentNumber);
             return list;
         }
 
